@@ -179,7 +179,8 @@ def across_subjects(sb, metrics, block_size, kind):
             if n > 1:
                 sd = v.std(ddof=1); sem = sd / np.sqrt(n)
                 h = stats.t.ppf(0.975, n - 1) * sem
-                row.update(sd=sd, sem=sem, ci95_low=v.mean() - h, ci95_high=v.mean() + h)
+                row.update(sd=sd, var=v.var(ddof=1), sem=sem,
+                           ci95_low=v.mean() - h, ci95_high=v.mean() + h)
             rows.append(row)
     return pd.DataFrame(rows)
 
@@ -250,7 +251,7 @@ def direction_stats(trials):
             if n:
                 row.update(mean=v.mean(), median=v.median())
             if n > 1:
-                row["sd"] = v.std(ddof=1); row["sem"] = row["sd"] / np.sqrt(n)
+                row["sd"] = v.std(ddof=1); row["var"] = v.var(ddof=1); row["sem"] = row["sd"] / np.sqrt(n)
             rows.append(row)
     return pd.DataFrame(rows), per_subject
 

@@ -190,8 +190,10 @@ def paired_stats(pre, post):
         return row
     a, b = d.iloc[:, 0].values, d.iloc[:, 1].values
     diff = b - a
-    row.update(pre_mean=a.mean(), pre_sd=a.std(ddof=1) if n > 1 else np.nan, pre_median=np.median(a),
-               post_mean=b.mean(), post_sd=b.std(ddof=1) if n > 1 else np.nan, post_median=np.median(b),
+    row.update(pre_mean=a.mean(), pre_sd=a.std(ddof=1) if n > 1 else np.nan,
+               pre_var=a.var(ddof=1) if n > 1 else np.nan, pre_median=np.median(a),
+               post_mean=b.mean(), post_sd=b.std(ddof=1) if n > 1 else np.nan,
+               post_var=b.var(ddof=1) if n > 1 else np.nan, post_median=np.median(b),
                diff_mean=diff.mean(),
                diff_percent=100 * diff.mean() / a.mean() if a.mean() else np.nan,
                n_improved_lower=int((diff < 0).sum()), n_improved_higher=int((diff > 0).sum()))
@@ -319,5 +321,5 @@ def describe(values):
     if n:
         row.update(mean=v.mean(), median=v.median(), min=v.min(), max=v.max())
     if n > 1:
-        row["sd"] = v.std(ddof=1); row["sem"] = row["sd"] / math.sqrt(n)
+        row["sd"] = v.std(ddof=1); row["var"] = v.var(ddof=1); row["sem"] = row["sd"] / math.sqrt(n)
     return row

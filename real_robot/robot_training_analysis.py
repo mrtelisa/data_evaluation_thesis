@@ -225,7 +225,7 @@ def main():
             if n:
                 row.update(mean=v.mean(), median=v.median(), min=v.min(), max=v.max())
             if n > 1:
-                row["sd"] = v.std(ddof=1); row["sem"] = row["sd"] / np.sqrt(n)
+                row["sd"] = v.std(ddof=1); row["var"] = v.var(ddof=1); row["sem"] = row["sd"] / np.sqrt(n)
             rows.append(row)
         reps = sorted(wide.columns)
         trow = {"metric": m, "better_if": LEG_METRICS[m][1], "n_repetitions": len(reps),

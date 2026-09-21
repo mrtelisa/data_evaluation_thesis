@@ -85,7 +85,7 @@ def load_responses(prefix, risposte_dir=DEFAULT_RISPOSTE):
 # Statistiche
 # ---------------------------------------------------------------------------
 STAT_COLUMNS = ["section", "item", "n", "percent",
-                "mean", "sd", "median", "min", "max"]
+                "mean", "sd", "var", "sem", "median", "min", "max"]
 
 
 def count_rows(section, series, order=None):
@@ -115,6 +115,8 @@ def describe_row(section, item, series):
     return {"section": section, "item": item, "n": int(len(s)),
             "mean": round(s.mean(), 2),
             "sd": round(s.std(ddof=1), 2) if len(s) > 1 else 0.0,
+            "var": round(s.var(ddof=1), 2) if len(s) > 1 else 0.0,
+            "sem": round(s.std(ddof=1) / len(s) ** 0.5, 2) if len(s) > 1 else 0.0,
             "median": round(s.median(), 2),
             "min": round(s.min(), 2), "max": round(s.max(), 2)}
 

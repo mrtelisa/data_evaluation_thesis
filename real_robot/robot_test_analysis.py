@@ -135,12 +135,14 @@ def load_all(dirs, n_objects, optimal_path):
     return df
 
 
-def regions_grid(sub_phase):
-    g = sub_phase[[f"{r}_percent" for r in REGIONS]].mean()
+def regions_grid(sub_phase, stat="mean"):
+    g = getattr(sub_phase[[f"{r}_percent" for r in REGIONS]], stat)(ddof=1) if stat == "std" \
+        else sub_phase[[f"{r}_percent" for r in REGIONS]].mean()
     return g.values.reshape(3, 3)
 
 
-def draw_region_grid(ax, g, title, cmap="Blues", vmin=0, vmax=None, diff=False):
+def draw_region_grid(ax, g, title, cmap="Blues", vmin=0, vmax=None, diff=False, sd=None):
+    """g: griglia 3x3 delle medie; sd: griglia 3x3 delle SD tra soggetti (scritta sotto la media)."""
     if diff:
         lim = max(1e-6, np.nanmax(np.abs(g)))
         im = ax.imshow(g, cmap="RdBu_r", vmin=-lim, vmax=lim)
@@ -149,7 +151,10 @@ def draw_region_grid(ax, g, title, cmap="Blues", vmin=0, vmax=None, diff=False):
     for i in range(3):
         for j in range(3):
             v = g[i, j]
-            ax.text(j, i, f"{v:+.1f}" if diff else f"{v:.1f}%", ha="center", va="center", fontsize=10,
+            txt = f"{v:+.1f}" if diff else f"{v:.1f}%"
+            if sd is not None and np.isfinite(sd[i, j]):
+                txt += f"\n± {sd[i, j]:.1f}"
+            ax.text(j, i, txt, ha="center", va="center", fontsize=9,
                     color="white" if abs(v) > 0.6 * im.get_clim()[1] else INK)
             ax.text(j - 0.42, i - 0.38, str(3 * i + j + 1), fontsize=7, color=INK2)
     ax.set_xticks([]); ax.set_yticks([]); ax.grid(False)
@@ -209,7 +214,8 @@ def analyse_phase(sub, phase, metrics, out_dir, tag):
         save_figure(fig, f"{tag}_grid", out_dir)
     if sp["region1_percent"].notna().any():
         fig, ax = plt.subplots(figsize=(4.2, 4))
-        draw_region_grid(ax, regions_grid(sp), f"{tag} – % of driving time per region (mean, N = {n})")
+        draw_region_grid(ax, regions_grid(sp), f"{tag} – % of driving time per region (mean ± SD, N = {n})",
+                         sd=regions_grid(sp, "std"))
         save_figure(fig, f"{tag}_regions", out_dir)
     have = sp[sp["_odom"].notna()]
     if len(have):
@@ -270,13 +276,14 @@ def analyse_prepost(sub, df_all, metrics, out_dir):
         save_figure(fig, "prepost_grid", out_dir)
 
     if sub["region1_percent"].notna().any():
-        pre, post = regions_grid(sub[sub["phase"] == "pre"]), regions_grid(sub[sub["phase"] == "post"])
+        sp_pre, sp_post = sub[sub["phase"] == "pre"], sub[sub["phase"] == "post"]
+        pre, post = regions_grid(sp_pre), regions_grid(sp_post)
         vmax = max(1e-6, np.nanmax([pre, post]))
         fig, axes = plt.subplots(1, 3, figsize=(12, 3.8))
-        draw_region_grid(axes[0], pre, "Test 1 (pre) – % of driving time", vmax=vmax)
-        draw_region_grid(axes[1], post, "Test 2 (post) – % of driving time", vmax=vmax)
-        draw_region_grid(axes[2], post - pre, "post − pre", diff=True)
-        fig.suptitle("Region usage (3×3 cursor grid, mean over subjects)", fontweight="bold")
+        draw_region_grid(axes[0], pre, "Test 1 (pre) – % of driving time", vmax=vmax, sd=regions_grid(sp_pre, "std"))
+        draw_region_grid(axes[1], post, "Test 2 (post) – % of driving time", vmax=vmax, sd=regions_grid(sp_post, "std"))
+        draw_region_grid(axes[2], post - pre, "post − pre (mean)", diff=True)
+        fig.suptitle("Region usage (3×3 cursor grid, mean ± SD over subjects)", fontweight="bold")
         fig.tight_layout()
         save_figure(fig, "regions_heatmap", out_dir)
 
