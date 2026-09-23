@@ -63,8 +63,12 @@ def main():
     sds = scores[DIMENSIONS].std(ddof=1).fillna(0)
     fig, ax = plt.subplots(figsize=(7, 4))
     x = np.arange(len(DIMENSIONS))
-    ax.bar(x, means, yerr=sds, color=BLUE, width=0.6, capsize=3,
-           error_kw={"ecolor": MUTED, "elinewidth": 1})
+    ax.bar(x, means, color=BLUE, width=0.6)
+    # la SD tra soggetti e' la banda in cui sfuma la cima della barra
+    for xi, m, s in zip(x, means, sds):
+        if s > 0:
+            ax.fill_between([xi - 0.3, xi + 0.3], [m, m], [m + s, m + s], color=BLUE, alpha=0.3, lw=0, zorder=3)
+            ax.fill_between([xi - 0.3, xi + 0.3], [m - s, m - s], [m, m], color="white", alpha=0.45, lw=0, zorder=3)
     for xi, m in zip(x, means):
         ax.text(xi, 0.5, f"{m:.1f}", ha="center", va="bottom",
                 color="white", fontsize=9)

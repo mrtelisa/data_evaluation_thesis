@@ -38,7 +38,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from robot_utils import (BASE_DIR, BLUE, DEFAULT_OUT, INK, INK2, ORANGE, box_dots,
+from robot_utils import (BASE_DIR, BLUE, DEFAULT_OUT, INK, INK2, POST_COLOR, PRE_COLOR, box_dots,
                          count_hist, describe, grouped_count_hist, load_session,
                          odometry_metrics, paired_plot, paired_stats, parse_session_name,
                          save_figure, set_title, setup_style)
@@ -290,8 +290,8 @@ def analyse_prepost(sub, df_all, metrics, out_dir):
     have = sub[sub["_odom"].notna()]
     if len(have):
         fig, ax = plt.subplots(figsize=(7, 6))
-        draw_trajectories(ax, have[have["phase"] == "pre"], ORANGE, labels[0])
-        draw_trajectories(ax, have[have["phase"] == "post"], BLUE, labels[1])
+        draw_trajectories(ax, have[have["phase"] == "pre"], PRE_COLOR, labels[0])
+        draw_trajectories(ax, have[have["phase"] == "post"], POST_COLOR, labels[1])
         h, l = ax.get_legend_handles_labels(); uniq = dict(zip(l, h))
         ax.legend(uniq.values(), uniq.keys(), loc="best")
         set_title(ax, "Base trajectories (odometry), all subjects – test 1 vs test 2")
@@ -300,7 +300,7 @@ def analyse_prepost(sub, df_all, metrics, out_dir):
         ncol = min(4, len(subjects)); nrow = int(np.ceil(len(subjects) / ncol))
         fig, axes = plt.subplots(nrow, ncol, figsize=(3.6 * ncol, 3.4 * nrow), squeeze=False)
         for ax, s in zip(axes.flat, subjects):
-            for phase, color, lab in (("pre", ORANGE, labels[0]), ("post", BLUE, labels[1])):
+            for phase, color, lab in (("pre", PRE_COLOR, labels[0]), ("post", POST_COLOR, labels[1])):
                 r = have[(have["subject"] == s) & (have["phase"] == phase)]
                 if len(r):
                     o = r.iloc[0]["_odom"]

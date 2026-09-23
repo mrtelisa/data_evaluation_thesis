@@ -39,6 +39,9 @@ BACKWARD_SPEED = 0.02    # [m/s] vx sotto -questo = retromarcia
 
 # --- stile (stessa palette degli altri script) ---
 BLUE, ORANGE, GREEN = "#2a78d6", "#eb6834", "#1baf7a"
+# confronto prima/dopo: arancione carota vs blu scuro (tinte opposte e molto
+# diverse in luminosita': leggibili anche in bianco/nero e con daltonismo)
+PRE_COLOR, POST_COLOR = "#ed7014", "#104281"
 INK, INK2, MUTED, GRID, AXIS = "#0b0b0b", "#52514e", "#898781", "#e1e0d9", "#c3c2b7"
 SUBJECT_LINE = "#c3c2b7"
 
@@ -239,8 +242,10 @@ def paired_plot(ax, pre, post, ylabel, labels=("Pre", "Post"), p=None):
         means = [a.mean(), b.mean()]
         sems = [a.std(ddof=1) / math.sqrt(n) if n > 1 else 0,
                 b.std(ddof=1) / math.sqrt(n) if n > 1 else 0]
-        ax.errorbar([0, 1], means, yerr=sems, color=BLUE, linewidth=2.2, marker="o",
-                    markersize=7, capsize=4, zorder=3)
+        lo = [m - s for m, s in zip(means, sems)]
+        hi = [m + s for m, s in zip(means, sems)]
+        ax.fill_between([0, 1], lo, hi, color=POST_COLOR, alpha=0.22, lw=0, zorder=2)
+        ax.plot([0, 1], means, color=POST_COLOR, linewidth=2.2, marker="o", markersize=7, zorder=3)
     ax.set_xticks([0, 1]); ax.set_xticklabels(labels); ax.set_xlim(-0.4, 1.4)
     ax.set_ylabel(ylabel)
     if p is not None and not np.isnan(p):
@@ -279,8 +284,8 @@ def grouped_count_hist(ax, pre, post, labels=("Pre", "Post"), p=None):
     lo, hi = int(min(a.min(), b.min())), int(max(a.max(), b.max()))
     xs = np.arange(lo, hi + 1)
     ca, cb = a.value_counts().reindex(xs, fill_value=0), b.value_counts().reindex(xs, fill_value=0)
-    ax.bar(xs - 0.2, ca.values, width=0.38, color=ORANGE, label=labels[0], zorder=2)
-    ax.bar(xs + 0.2, cb.values, width=0.38, color=BLUE, label=labels[1], zorder=2)
+    ax.bar(xs - 0.2, ca.values, width=0.38, color=PRE_COLOR, label=labels[0], zorder=2)
+    ax.bar(xs + 0.2, cb.values, width=0.38, color=POST_COLOR, label=labels[1], zorder=2)
     for x, c in zip(xs - 0.2, ca.values):
         if c: ax.text(x, c + 0.05, str(c), ha="center", va="bottom", fontsize=8, color=INK)
     for x, c in zip(xs + 0.2, cb.values):
