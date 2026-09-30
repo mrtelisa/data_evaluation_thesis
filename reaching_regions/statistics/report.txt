@@ -18,56 +18,58 @@ COME LEGGERE QUESTO REPORT
 Soggetti: 6 (S001, S002, S003, S004, S005, S006)
   training pre: 6 soggetti
   training post: 6 soggetti
+Metriche calcolate dai _raw.csv (webcam 29.4-30.4 Hz); cursore nascosto per 1.0 s dopo la comparsa del target: gli errori sono calcolati li'.
 Blocchi di 8 target: 12 per sessione, 24 in tutto.
 Confronti pianificati: 3 Wilcoxon fra blocchi, Holm sui 3, per ogni metrica.
 
-Reach time [s]  (metrica principale)
-------------------------------------
+Euclidean error at 1 s [px]  (metrica principale)
+-------------------------------------------------
+  sessione intera: pre 269.99 [243.89-279.64] -> post 213.11 [200.95-254.88] (esplorativo: p=0.156, r=-0.71)
+  training 1: first vs last block: pre b1 295.40 [260.12-347.99] -> pre b12 246.31 [223.53-283.86] | migliorato | n=6 (cambiano 6), p=0.094, p Holm=0.281, significativo: no | effetto r=-0.81 (grande)
+  retention: last pre vs first post block: pre b12 246.31 [223.53-283.86] -> post b1 285.77 [271.57-300.81] | peggiorato | n=6 (cambiano 6), p=0.094, p Holm=0.281, significativo: no | effetto r=0.81 (grande)
+  training 2: last pre vs last post block: pre b12 246.31 [223.53-283.86] -> post b12 187.59 [181.00-233.90] | migliorato | n=6 (cambiano 6), p=0.156, p Holm=0.281, significativo: no | effetto r=-0.71 (grande)
+  curva di gruppo: fit esponenziale non riuscito (curva piatta o troppo rumorosa)
+
+Direction error at 1 s [deg]  (metrica principale)
+--------------------------------------------------
+  sessione intera: pre 33.43 [29.34-37.58] -> post 28.34 [25.42-29.39] (esplorativo: p=0.062, r=-0.90)
+  training 1: first vs last block: pre b1 51.64 [41.00-68.17] -> pre b12 31.89 [27.73-39.76] | migliorato | n=6 (cambiano 6), p=0.031, p Holm=0.094, significativo: no | effetto r=-1.00 (grande)
+  retention: last pre vs first post block: pre b12 31.89 [27.73-39.76] -> post b1 41.18 [27.92-45.29] | peggiorato | n=6 (cambiano 6), p=0.219, p Holm=0.219, significativo: no | effetto r=0.62 (grande)
+  training 2: last pre vs last post block: pre b12 31.89 [27.73-39.76] -> post b12 26.74 [21.05-27.39] | migliorato | n=6 (cambiano 6), p=0.094, p Holm=0.188, significativo: no | effetto r=-0.81 (grande)
+  curva di gruppo: plateau stimato 26.59, 95% del miglioramento al blocco 23.1 (nel training 2); R2 del fit 0.59
+
+Extent error at 1 s [px]  (metrica principale)
+----------------------------------------------
+  sessione intera: pre -67.56 [-172.66--44.15] -> post -44.51 [-108.12--4.96] (esplorativo: p=0.312, r=0.52)
+  training 1: first vs last block: pre b1 -84.13 [-139.12--39.10] -> pre b12 -52.01 [-179.75-18.10] | - | n=6 (cambiano 6), p=0.844, p Holm=1.000, significativo: no | effetto r=0.14 (piccolo)
+  retention: last pre vs first post block: pre b12 -52.01 [-179.75-18.10] -> post b1 -106.00 [-168.54--64.88] | - | n=6 (cambiano 6), p=0.562, p Holm=1.000, significativo: no | effetto r=-0.33 (medio)
+  training 2: last pre vs last post block: pre b12 -52.01 [-179.75-18.10] -> post b12 -50.20 [-100.66--0.38] | - | n=6 (cambiano 6), p=0.312, p Holm=0.938, significativo: no | effetto r=0.52 (grande)
+  curva di gruppo: plateau stimato 16.75, 95% del miglioramento al blocco 111.0 (non ancora raggiunto a fine training 2); R2 del fit 0.25
+  (< 0 = il cursore resta corto rispetto al target; meglio = piu' vicino a 0)
+
+Movement time [s]  (metrica principale)
+---------------------------------------
   sessione intera: pre 2.48 [2.19-2.64] -> post 2.03 [1.89-2.09] (esplorativo: p=0.031, r=-1.00)
   training 1: first vs last block: pre b1 3.31 [2.96-3.82] -> pre b12 2.36 [2.08-2.54] | migliorato | n=6 (cambiano 6), p=0.031, p Holm=0.094, significativo: no | effetto r=-1.00 (grande)
   retention: last pre vs first post block: pre b12 2.36 [2.08-2.54] -> post b1 2.20 [2.05-2.42] | migliorato | n=6 (cambiano 6), p=0.562, p Holm=0.562, significativo: no | effetto r=-0.33 (medio)
   training 2: last pre vs last post block: pre b12 2.36 [2.08-2.54] -> post b12 1.76 [1.74-1.84] | migliorato | n=6 (cambiano 6), p=0.031, p Holm=0.094, significativo: no | effetto r=-1.00 (grande)
   curva di gruppo: plateau stimato 1.95, 95% del miglioramento al blocco 19.7 (nel training 2); R2 del fit 0.91
 
-Normalized path length  (metrica principale)
---------------------------------------------
-  sessione intera: pre 2.12 [1.94-2.24] -> post 1.69 [1.65-1.78] (esplorativo: p=0.031, r=-1.00)
-  training 1: first vs last block: pre b1 2.71 [2.49-2.79] -> pre b12 1.92 [1.67-2.23] | migliorato | n=6 (cambiano 6), p=0.094, p Holm=0.188, significativo: no | effetto r=-0.81 (grande)
-  retention: last pre vs first post block: pre b12 1.92 [1.67-2.23] -> post b1 1.79 [1.64-2.08] | migliorato | n=6 (cambiano 6), p=0.562, p Holm=0.562, significativo: no | effetto r=-0.33 (medio)
-  training 2: last pre vs last post block: pre b12 1.92 [1.67-2.23] -> post b12 1.51 [1.43-1.62] | migliorato | n=6 (cambiano 6), p=0.062, p Holm=0.188, significativo: no | effetto r=-0.90 (grande)
-  curva di gruppo: plateau stimato 1.58, 95% del miglioramento al blocco 25.4 (non ancora raggiunto a fine training 2); R2 del fit 0.88
+Linearity index  (metrica principale)
+-------------------------------------
+  sessione intera: pre 1.14 [0.96-1.26] -> post 0.69 [0.67-0.78] (esplorativo: p=0.031, r=-1.00)
+  training 1: first vs last block: pre b1 1.74 [1.52-1.78] -> pre b12 0.95 [0.68-1.24] | migliorato | n=6 (cambiano 6), p=0.094, p Holm=0.188, significativo: no | effetto r=-0.81 (grande)
+  retention: last pre vs first post block: pre b12 0.95 [0.68-1.24] -> post b1 0.80 [0.65-1.11] | migliorato | n=6 (cambiano 6), p=0.438, p Holm=0.438, significativo: no | effetto r=-0.43 (medio)
+  training 2: last pre vs last post block: pre b12 0.95 [0.68-1.24] -> post b12 0.52 [0.45-0.63] | migliorato | n=6 (cambiano 6), p=0.031, p Holm=0.094, significativo: no | effetto r=-1.00 (grande)
+  curva di gruppo: plateau stimato 0.60, 95% del miglioramento al blocco 24.5 (non ancora raggiunto a fine training 2); R2 del fit 0.88
 
-Initial direction error [deg]  (metrica principale)
----------------------------------------------------
-  sessione intera: pre 56.80 [52.95-62.50] -> post 56.53 [55.50-59.10] (esplorativo: p=0.844, r=-0.14)
-  training 1: first vs last block: pre b1 57.32 [39.06-92.69] -> pre b12 57.78 [38.33-58.56] | peggiorato | n=6 (cambiano 6), p=0.312, p Holm=0.625, significativo: no | effetto r=-0.52 (grande)
-  retention: last pre vs first post block: pre b12 57.78 [38.33-58.56] -> post b1 61.76 [54.10-88.09] | peggiorato | n=6 (cambiano 6), p=0.031, p Holm=0.094, significativo: no | effetto r=1.00 (grande)
-  training 2: last pre vs last post block: pre b12 57.78 [38.33-58.56] -> post b12 62.96 [46.24-78.89] | peggiorato | n=6 (cambiano 6), p=0.312, p Holm=0.625, significativo: no | effetto r=0.52 (grande)
-  curva di gruppo: plateau stimato 51.22, 95% del miglioramento al blocco 76.2 (non ancora raggiunto a fine training 2); R2 del fit 0.06
-
-Correct region at reveal [%]  (metrica principale)
---------------------------------------------------
-  sessione intera: pre 21.88 [14.84-28.12] -> post 30.73 [26.30-33.59] (esplorativo: p=0.094, r=0.81)
-  training 1: first vs last block: pre b1 12.50 [12.50-21.88] -> pre b12 25.00 [15.62-25.00] | migliorato | n=6 (cambiano 5), p=0.157, p Holm=0.392, significativo: no | effetto r=0.67 (grande)
-  retention: last pre vs first post block: pre b12 25.00 [15.62-25.00] -> post b1 12.50 [3.12-21.88] | peggiorato | n=6 (cambiano 5), p=0.180, p Holm=0.392, significativo: no | effetto r=-0.60 (grande)
-  training 2: last pre vs last post block: pre b12 25.00 [15.62-25.00] -> post b12 37.50 [28.12-56.25] | migliorato | n=6 (cambiano 5), p=0.131, p Holm=0.392, significativo: no | effetto r=0.73 (grande)
-  curva di gruppo: plateau stimato 6083.58, 95% del miglioramento al blocco 29958.2 (non ancora raggiunto a fine training 2); R2 del fit 0.31
-
-Speed peaks
------------
-  sessione intera: pre 5.00 [5.00-5.38] -> post 4.00 [4.00-4.00] (esplorativo: p=0.031, r=-1.00)
-  training 1: first vs last block: pre b1 8.00 [7.25-8.00] -> pre b12 5.00 [4.25-5.38] | migliorato | n=6 (cambiano 5), p=0.039, p Holm=0.118, significativo: no | effetto r=-1.00 (grande)
-  retention: last pre vs first post block: pre b12 5.00 [4.25-5.38] -> post b1 5.25 [5.00-5.50] | peggiorato | n=6 (cambiano 3), p=0.785, p Holm=0.785, significativo: no | effetto r=0.17 (piccolo)
-  training 2: last pre vs last post block: pre b12 5.00 [4.25-5.38] -> post b12 3.25 [3.00-3.50] | migliorato | n=6 (cambiano 5), p=0.042, p Holm=0.118, significativo: no | effetto r=-1.00 (grande)
-  curva di gruppo: plateau stimato 4.08, 95% del miglioramento al blocco 18.0 (nel training 2); R2 del fit 0.83
-
-Movement time [s]
------------------
-  sessione intera: pre 2.30 [2.04-2.39] -> post 1.83 [1.67-1.96] (esplorativo: p=0.031, r=-1.00)
-  training 1: first vs last block: pre b1 3.09 [2.74-3.69] -> pre b12 2.08 [1.85-2.31] | migliorato | n=6 (cambiano 6), p=0.031, p Holm=0.094, significativo: no | effetto r=-1.00 (grande)
-  retention: last pre vs first post block: pre b12 2.08 [1.85-2.31] -> post b1 2.16 [2.01-2.28] | peggiorato | n=6 (cambiano 6), p=1.000, p Holm=1.000, significativo: no | effetto r=0.05 (trascurabile)
-  training 2: last pre vs last post block: pre b12 2.08 [1.85-2.31] -> post b12 1.65 [1.49-1.77] | migliorato | n=6 (cambiano 6), p=0.031, p Holm=0.094, significativo: no | effetto r=-1.00 (grande)
-  curva di gruppo: plateau stimato 1.77, 95% del miglioramento al blocco 19.4 (nel training 2); R2 del fit 0.89
+Correct region at reveal [%]
+----------------------------
+  sessione intera: pre 21.88 [15.10-27.08] -> post 32.29 [25.78-34.90] (esplorativo: p=0.094, r=0.81)
+  training 1: first vs last block: pre b1 18.75 [12.50-25.00] -> pre b12 25.00 [15.62-25.00] | migliorato | n=6 (cambiano 6), p=0.312, p Holm=0.557, significativo: no | effetto r=0.52 (grande)
+  retention: last pre vs first post block: pre b12 25.00 [15.62-25.00] -> post b1 12.50 [3.12-21.88] | peggiorato | n=6 (cambiano 5), p=0.025, p Holm=0.076, significativo: no | effetto r=-1.00 (grande)
+  training 2: last pre vs last post block: pre b12 25.00 [15.62-25.00] -> post b12 43.75 [28.12-59.38] | migliorato | n=6 (cambiano 5), p=0.279, p Holm=0.557, significativo: no | effetto r=0.53 (grande)
+  curva di gruppo: fit esponenziale non riuscito (curva piatta o troppo rumorosa)
 
 Reached while hidden [%]
 ------------------------
@@ -77,11 +79,29 @@ Reached while hidden [%]
   training 2: last pre vs last post block: pre b12 0.00 [0.00-0.00] -> post b12 0.00 [0.00-0.00] | migliorato | n=6 (cambiano 1), p=0.317, p Holm=0.952, significativo: no | effetto r=1.00 (grande)
   curva di gruppo: plateau stimato 0.41, 95% del miglioramento al blocco 18.0 (nel training 2); R2 del fit 0.02
 
-Durata della sessione [s] (timer a schermo)
--------------------------------------------
-  durata del training [s]: pre 533 [484-563] -> post 436 [411-456] | migliorato | n=6 (cambiano 6), p=0.031, significativo: si' | effetto r=-1.00 (grande)
+Speed peaks
+-----------
+  sessione intera: pre 2.00 [2.00-2.75] -> post 2.00 [2.00-2.00] (esplorativo: p=0.157, r=-1.00)
+  training 1: first vs last block: pre b1 3.00 [2.25-3.00] -> pre b12 2.00 [2.00-2.00] | migliorato | n=6 (cambiano 3), p=0.102, p Holm=0.307, significativo: no | effetto r=-1.00 (grande)
+  retention: last pre vs first post block: pre b12 2.00 [2.00-2.00] -> post b1 2.25 [2.00-2.50] | peggiorato | n=6 (cambiano 3), p=0.414, p Holm=0.635, significativo: no | effetto r=0.50 (grande)
+  training 2: last pre vs last post block: pre b12 2.00 [2.00-2.00] -> post b12 2.00 [2.00-2.00] | migliorato | n=6 (cambiano 1), p=0.317, p Holm=0.635, significativo: no | effetto r=-1.00 (grande)
+  curva di gruppo: plateau stimato 2.00, 95% del miglioramento al blocco 9.5 (gia' nel training 1); R2 del fit 0.87
+
+Sessione intera (tutti i frame, script del laboratorio)
+-------------------------------------------------------
+  Session duration (log) (tt.m) [s]: pre 535 [486-564] -> post 436 [411-457] | migliorato | n=6 (cambiano 6), p=0.031, significativo: si' | effetto r=-1.00 (grande)
+  Cursor path length (cursor_distance.m) [px]: pre 162189 [159467-167815] -> post 130584 [126539-132531] | migliorato | n=6 (cambiano 6), p=0.031, significativo: si' | effetto r=-1.00 (grande)
+  Mean cursor speed (speed1.m) [px/s]: pre 309 [286-353] -> post 300 [278-328] | - | n=6 (cambiano 6), p=0.312, significativo: no | effetto r=-0.52 (grande)
+  SD of cursor speed (speed1.m) [px/s]: pre 380 [340-412] -> post 371 [345-401] | - | n=6 (cambiano 6), p=0.844, significativo: no | effetto r=0.14 (piccolo)
+  Peak cursor speed (speed1.m) [px/s]: pre 4695 [4451-6951] -> post 5693 [4886-7204] | - | n=6 (cambiano 6), p=0.688, significativo: no | effetto r=0.24 (piccolo)
+  Mean jerk (jerk1.m) [px/s^3]: pre 24186 [21470-31768] -> post 24084 [20529-28953] | migliorato | n=6 (cambiano 6), p=0.562, significativo: no | effetto r=-0.33 (medio)
+  Dimensionless jerk (segments, log10) (jerk1.m): pre 15.110 [15.082-15.229] -> post 14.773 [14.737-14.839] | migliorato | n=6 (cambiano 6), p=0.031, significativo: si' | effetto r=-1.00 (grande)
+  Speed peaks (smooth.m): pre 133 [82-154] -> post 82 [48-117] | migliorato | n=6 (cambiano 5), p=0.138, significativo: no | effetto r=-0.73 (grande)
+  Smoothness (1 / speed peaks) (smooth.m): pre 0.008 [0.006-0.013] -> post 0.012 [0.009-0.022] | migliorato | n=6 (cambiano 5), p=0.345, significativo: no | effetto r=0.47 (medio)
+  Region changes (movement_train.m): pre 462 [454-478] -> post 368 [352-394] | migliorato | n=6 (cambiano 6), p=0.031, significativo: si' | effetto r=-1.00 (grande)
 
 Metriche esplorative
 --------------------
   Tutte le altre metriche sono in training_tests.csv e plots/metrics/, calcolate allo stesso modo.
   I ritorni al centro sono in training_homes.csv.
+  plots/figure4/<soggetto>.png: ogni soggetto prova per prova; plots/figure4_group.png: il gruppo.

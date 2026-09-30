@@ -5,39 +5,68 @@ phase_durations.approach,Approach time,s,False,run 1 vs run 2,6,4.0,0.21875,,-0.
 phase_durations.grasp,Grasp time,s,False,run 1 vs run 2,6,10.0,1.0,,0.047619047619047616,rank-biserial r,28.915152311325073,28.820947885513306,down
 phase_durations.return,Return time,s,True,run 1 vs run 2,6,1.0,0.0625,0.25,-0.9047619047619048,rank-biserial r,274.0103169679642,233.42910385131836,down
 phase_durations.placement,Placement time,s,False,run 1 vs run 2,6,10.0,1.0,,-0.047619047619047616,rank-biserial r,28.650449633598328,28.028444528579712,down
-path_length_outbound,Path length – outbound,m,False,run 1 vs run 2,6,10.0,1.0,,-0.047619047619047616,rank-biserial r,22.273489162220734,22.586493644432863,down
-path_length_return,Path length – return,m,False,run 1 vs run 2,6,4.0,0.21875,,-0.6190476190476191,rank-biserial r,25.71132408656141,25.44013574897585,down
-cumulative_rotation_outbound,Cumulative rotation – outbound,rad,False,run 1 vs run 2,6,7.0,0.5625,,-0.3333333333333333,rank-biserial r,18.527391810479457,18.050504571852798,down
-cumulative_rotation_return,Cumulative rotation – return,rad,False,run 1 vs run 2,6,2.0,0.09375,,-0.8095238095238095,rank-biserial r,27.079917877873,23.955916281467424,down
 n_dwell_declined,Dwells declined,,False,run 1 vs run 2,6,0.0,0.31731050786291415,,-1.0,rank-biserial r,0.0,0.0,down
 n_repositioning,Repositionings,,False,run 1 vs run 2,6,1.5,0.4142161782425252,,0.5,rank-biserial r,0.0,0.0,down
 n_repositioning_per_phase.grasp,Repositionings – grasp,,False,run 1 vs run 2,6,1.5,0.4142161782425252,,0.5,rank-biserial r,0.0,0.0,down
 n_repositioning_per_phase.placement,Repositionings – placement,,False,run 1 vs run 2,6,0.0,1.0,,0.0,rank-biserial r,0.0,0.0,down
 manual.n_collisions,Collisions,,False,run 1 vs run 2,1,,,,,rank-biserial r,0.0,0.0,down
-driving.outbound.stop_percent,Stop time – outbound,%,False,run 1 vs run 2,6,0.0,0.03125,,-1.0,rank-biserial r,30.91385110609538,23.14005613367585,down
-driving.outbound.command_changes_per_min,Command changes – outbound,/min,True,run 1 vs run 2,6,1.0,0.0625,0.25,0.9047619047619048,rank-biserial r,19.7403008524539,27.081158704942638,down
-driving.outbound.non_adjacent_percent,Non-adjacent changes – outbound,%,True,run 1 vs run 2,6,0.0,1.0,1.0,0.0,rank-biserial r,0.0,0.0,down
-driving.outbound.reversal_percent,Reversals – outbound,%,False,run 1 vs run 2,6,3.0,0.22491588401596185,,-0.6,rank-biserial r,25.735294117647058,23.15711094564408,down
-driving.outbound.mean_command_duration,Mean command duration – outbound,s,False,run 1 vs run 2,6,1.0,0.0625,,-0.9047619047619048,rank-biserial r,3.4278155651357443,2.4956665601758727,up
-driving.outbound.stop_passage_percent,Passages through stop – outbound,%,False,run 1 vs run 2,6,4.0,0.21875,,-0.6190476190476191,rank-biserial r,64.83957219251337,39.75786924939467,down
-driving.outbound.sequence_entropy,Sequence entropy – outbound,bits,False,run 1 vs run 2,6,6.0,0.4375,,-0.42857142857142855,rank-biserial r,1.1281913951919176,0.9276698799548031,down
-driving.outbound.log_dimensionless_jerk,Smoothness (-ln DJ) – outbound,,False,run 1 vs run 2,6,2.0,0.09375,,0.8095238095238095,rank-biserial r,-14.513527438050584,-14.10000356305047,up
-driving.outbound.driving_time,Driving time – outbound,s,False,run 1 vs run 2,6,3.0,0.15625,,-0.7142857142857143,rank-biserial r,210.97864627838135,174.87398838996887,down
-driving.approach.stop_percent,Stop time – approach,%,False,run 1 vs run 2,6,4.0,0.21875,,-0.6190476190476191,rank-biserial r,57.71727581453564,46.606851015800174,down
-driving.approach.command_changes_per_min,Command changes – approach,/min,False,run 1 vs run 2,6,6.0,0.4375,,0.42857142857142855,rank-biserial r,26.122483680235952,29.97210396173031,down
-driving.approach.non_adjacent_percent,Non-adjacent changes – approach,%,False,run 1 vs run 2,6,0.0,1.0,,0.0,rank-biserial r,0.0,0.0,down
-driving.approach.reversal_percent,Reversals – approach,%,False,run 1 vs run 2,6,7.0,0.892738400944348,,0.06666666666666667,rank-biserial r,18.333333333333336,18.055555555555557,down
-driving.approach.mean_command_duration,Mean command duration – approach,s,False,run 1 vs run 2,6,5.0,0.3125,,0.5238095238095238,rank-biserial r,1.7602866793435719,1.8998142745759752,up
-driving.approach.stop_passage_percent,Passages through stop – approach,%,False,run 1 vs run 2,6,2.0,0.27332167829229814,,0.6,rank-biserial r,87.5,100.0,down
-driving.approach.sequence_entropy,Sequence entropy – approach,bits,False,run 1 vs run 2,6,7.0,0.5625,,-0.3333333333333333,rank-biserial r,0.7125643498415585,0.6769674542518229,down
-driving.approach.log_dimensionless_jerk,Smoothness (-ln DJ) – approach,,False,run 1 vs run 2,6,4.0,0.21875,,0.6190476190476191,rank-biserial r,-11.81258989386444,-11.307395285520318,up
-driving.approach.driving_time,Driving time – approach,s,False,run 1 vs run 2,6,3.0,0.15625,,-0.7142857142857143,rank-biserial r,32.45784819126129,24.59084391593933,down
-driving.return.stop_percent,Stop time – return,%,False,run 1 vs run 2,6,0.0,0.03125,,-1.0,rank-biserial r,23.4847532338133,17.697480699807322,down
-driving.return.command_changes_per_min,Command changes – return,/min,False,run 1 vs run 2,6,9.0,0.84375,,0.14285714285714285,rank-biserial r,25.527200502615997,26.600827306603797,down
-driving.return.non_adjacent_percent,Non-adjacent changes – return,%,False,run 1 vs run 2,6,0.0,1.0,,0.0,rank-biserial r,0.0,0.0,down
-driving.return.reversal_percent,Reversals – return,%,False,run 1 vs run 2,6,2.0,0.09375,,-0.8095238095238095,rank-biserial r,23.40082159624413,21.19047619047619,down
-driving.return.mean_command_duration,Mean command duration – return,s,False,run 1 vs run 2,6,9.0,0.84375,,0.14285714285714285,rank-biserial r,2.780676658231362,2.6991382547822154,up
-driving.return.stop_passage_percent,Passages through stop – return,%,False,run 1 vs run 2,6,4.0,0.21875,,-0.6190476190476191,rank-biserial r,45.47732067510549,39.833019122003776,down
-driving.return.sequence_entropy,Sequence entropy – return,bits,False,run 1 vs run 2,6,8.0,0.6875,,-0.23809523809523808,rank-biserial r,1.1251267467726893,1.0310590681231209,down
-driving.return.log_dimensionless_jerk,Smoothness (-ln DJ) – return,,False,run 1 vs run 2,6,1.0,0.0625,,0.9047619047619048,rank-biserial r,-15.010444759542345,-14.613285987106371,up
-driving.return.driving_time,Driving time – return,s,False,run 1 vs run 2,6,0.0,0.03125,,-1.0,rank-biserial r,251.6005003452301,209.76197600364685,down
+raw.outbound.stop_percent,Stop time – outbound,%,False,run 1 vs run 2,6,0.0,0.03125,,-1.0,rank-biserial r,30.913813253184173,23.139897367996312,down
+raw.outbound.command_changes_per_min,Command changes – outbound,/min,True,run 1 vs run 2,6,1.0,0.0625,0.25,0.9047619047619048,rank-biserial r,19.74030368958537,27.08115854508454,down
+raw.outbound.non_adjacent_percent,Non-adjacent changes – outbound,%,True,run 1 vs run 2,6,0.0,1.0,1.0,0.0,rank-biserial r,0.0,0.0,down
+raw.outbound.reversal_percent,Reversals – outbound,%,False,run 1 vs run 2,6,3.0,0.22491588401596185,,-0.6,rank-biserial r,25.735294117647058,23.15711094564408,down
+raw.outbound.mean_command_duration,Mean command duration – outbound,s,False,run 1 vs run 2,6,1.0,0.0625,,-0.9047619047619048,rank-biserial r,3.427815694444444,2.495671954365079,up
+raw.outbound.stop_passage_percent,Passages through stop – outbound,%,False,run 1 vs run 2,6,4.0,0.21875,,-0.6190476190476191,rank-biserial r,64.83957219251337,39.75786924939467,down
+raw.outbound.sequence_entropy,Sequence entropy – outbound,bits,False,run 1 vs run 2,6,6.0,0.4375,,-0.42857142857142855,rank-biserial r,1.1281913951919176,0.9276698799548031,down
+raw.outbound.driving_time,Driving time – outbound,s,False,run 1 vs run 2,6,3.0,0.15625,,-0.7142857142857143,rank-biserial r,210.97865000000002,174.87400000000002,down
+raw.outbound.robot_path_length,Path length – outbound (cursor_distance.m),m,False,run 1 vs run 2,6,10.0,1.0,,-0.047619047619047616,rank-biserial r,22.273489162220752,22.5864936444329,down
+raw.outbound.cumulative_rotation,Cumulative rotation – outbound,rad,False,run 1 vs run 2,6,7.0,0.5625,,-0.3333333333333333,rank-biserial r,18.52739181047945,18.050504571852798,down
+raw.outbound.region_changes_per_min,Region changes – outbound (movement_train.m),/min,False,run 1 vs run 2,6,0.0,0.03125,,1.0,rank-biserial r,22.11950331779312,30.70583833380511,down
+raw.outbound.robot_lin_speed_mean,Robot linear speed – outbound (speed1.m),m/s,False,run 1 vs run 2,6,1.0,0.0625,,0.9047619047619048,rank-biserial r,0.10531223649623053,0.12375886599763178,
+raw.outbound.robot_lin_speed_peak,Robot peak linear speed – outbound (speed1.m),m/s,False,run 1 vs run 2,6,9.0,0.84375,,0.14285714285714285,rank-biserial r,0.26932831869599916,0.30016670747682384,
+raw.outbound.robot_ang_speed_mean,Robot angular speed – outbound (speed1.m),rad/s,False,run 1 vs run 2,6,2.0,0.09375,,0.8095238095238095,rank-biserial r,0.10235890273558448,0.11387855415852302,
+raw.outbound.robot_mean_jerk,Robot mean jerk – outbound (jerk1.m),m/s^3,False,run 1 vs run 2,6,1.0,0.0625,,0.9047619047619048,rank-biserial r,1.8442691182457973,2.2791193499888784,down
+raw.outbound.robot_log10_dimensionless_jerk,"Robot dimensionless jerk, log10 – outbound (jerk1.m)",,False,run 1 vs run 2,6,8.0,0.6875,,-0.23809523809523808,rank-biserial r,11.49688119486985,11.281236143338335,down
+raw.outbound.cursor_path_length,Cursor path length – outbound (cursor_distance.m),px,False,run 1 vs run 2,6,9.0,0.84375,,-0.14285714285714285,rank-biserial r,37095.99461046013,41451.393805787535,
+raw.outbound.cursor_mean_speed,Cursor speed – outbound (speed1.m),px/s,False,run 1 vs run 2,6,0.0,0.03125,,1.0,rank-biserial r,167.43019477626893,210.12114708224664,
+raw.outbound.cursor_mean_jerk,Cursor mean jerk – outbound (jerk1.m),px/s^3,False,run 1 vs run 2,6,5.0,0.3125,,0.5238095238095238,rank-biserial r,5289.059232770366,7045.838169764007,down
+raw.outbound.cursor_speed_peaks,Cursor speed peaks – outbound (smooth.m),,False,run 1 vs run 2,6,4.0,0.21875,,0.6190476190476191,rank-biserial r,39.5,48.0,down
+raw.approach.stop_percent,Stop time – approach,%,False,run 1 vs run 2,6,4.0,0.21875,,-0.6190476190476191,rank-biserial r,57.716657275261106,46.60649657837329,down
+raw.approach.command_changes_per_min,Command changes – approach,/min,False,run 1 vs run 2,6,6.0,0.4375,,0.42857142857142855,rank-biserial r,26.12248742941647,29.972168512017305,down
+raw.approach.non_adjacent_percent,Non-adjacent changes – approach,%,False,run 1 vs run 2,6,0.0,1.0,,0.0,rank-biserial r,0.0,0.0,down
+raw.approach.reversal_percent,Reversals – approach,%,False,run 1 vs run 2,6,7.0,0.892738400944348,,0.06666666666666667,rank-biserial r,18.333333333333336,18.055555555555557,down
+raw.approach.mean_command_duration,Mean command duration – approach,s,False,run 1 vs run 2,6,5.0,0.3125,,0.5238095238095238,rank-biserial r,1.7603142857142893,1.8998277777777761,up
+raw.approach.stop_passage_percent,Passages through stop – approach,%,False,run 1 vs run 2,6,2.0,0.27332167829229814,,0.6,rank-biserial r,87.5,100.0,down
+raw.approach.sequence_entropy,Sequence entropy – approach,bits,False,run 1 vs run 2,6,7.0,0.5625,,-0.3333333333333333,rank-biserial r,0.7125643498415585,0.6769674542518229,down
+raw.approach.driving_time,Driving time – approach,s,False,run 1 vs run 2,6,3.0,0.15625,,-0.7142857142857143,rank-biserial r,32.45785000000001,24.590799999999987,down
+raw.approach.robot_path_length,Path length – approach (cursor_distance.m),m,False,run 1 vs run 2,6,10.0,1.0,,-0.047619047619047616,rank-biserial r,1.236756901508449,1.3052804875545743,down
+raw.approach.cumulative_rotation,Cumulative rotation – approach,rad,False,run 1 vs run 2,6,4.0,0.21875,,-0.6190476190476191,rank-biserial r,1.9379549920558932,1.678832747042177,down
+raw.approach.region_changes_per_min,Region changes – approach (movement_train.m),/min,False,run 1 vs run 2,6,7.0,0.5625,,0.3333333333333333,rank-biserial r,30.207996335915027,36.472039408590916,down
+raw.approach.robot_lin_speed_mean,Robot linear speed – approach (speed1.m),m/s,False,run 1 vs run 2,6,8.0,0.6875,,0.23809523809523808,rank-biserial r,0.028708023964101242,0.037887409147071394,
+raw.approach.robot_lin_speed_peak,Robot peak linear speed – approach (speed1.m),m/s,False,run 1 vs run 2,6,10.0,1.0,,-0.047619047619047616,rank-biserial r,0.20274107651754764,0.2005037188054306,
+raw.approach.robot_ang_speed_mean,Robot angular speed – approach (speed1.m),rad/s,False,run 1 vs run 2,6,7.0,0.5625,,0.3333333333333333,rank-biserial r,0.0496672417152947,0.05543211817030835,
+raw.approach.robot_mean_jerk,Robot mean jerk – approach (jerk1.m),m/s^3,False,run 1 vs run 2,6,8.0,0.6875,,0.23809523809523808,rank-biserial r,0.6610767115577392,0.7529262290965557,down
+raw.approach.robot_log10_dimensionless_jerk,"Robot dimensionless jerk, log10 – approach (jerk1.m)",,False,run 1 vs run 2,6,9.0,0.84375,,-0.14285714285714285,rank-biserial r,9.59130252803439,9.53794986336021,down
+raw.approach.cursor_path_length,Cursor path length – approach (cursor_distance.m),px,False,run 1 vs run 2,6,10.0,1.0,,-0.047619047619047616,rank-biserial r,8248.525793710693,9462.003660989465,
+raw.approach.cursor_mean_speed,Cursor speed – approach (speed1.m),px/s,False,run 1 vs run 2,6,9.0,0.84375,,0.14285714285714285,rank-biserial r,169.68761774383873,183.60851466825807,
+raw.approach.cursor_mean_jerk,Cursor mean jerk – approach (jerk1.m),px/s^3,False,run 1 vs run 2,6,9.0,0.84375,,0.14285714285714285,rank-biserial r,4804.172838840801,6363.820957666465,down
+raw.approach.cursor_speed_peaks,Cursor speed peaks – approach (smooth.m),,False,run 1 vs run 2,6,10.0,1.0,,0.047619047619047616,rank-biserial r,13.0,16.5,down
+raw.return.stop_percent,Stop time – return,%,False,run 1 vs run 2,6,0.0,0.03125,,-1.0,rank-biserial r,23.48471982672057,17.697425609754355,down
+raw.return.command_changes_per_min,Command changes – return,/min,False,run 1 vs run 2,6,9.0,0.84375,,0.14285714285714285,rank-biserial r,25.527202901539127,26.600825853682267,down
+raw.return.non_adjacent_percent,Non-adjacent changes – return,%,False,run 1 vs run 2,6,0.0,1.0,,0.0,rank-biserial r,0.0,0.0,down
+raw.return.reversal_percent,Reversals – return,%,False,run 1 vs run 2,6,2.0,0.09375,,-0.8095238095238095,rank-biserial r,23.40082159624413,21.19047619047619,down
+raw.return.mean_command_duration,Mean command duration – return,s,False,run 1 vs run 2,6,9.0,0.84375,,0.14285714285714285,rank-biserial r,2.780676734188284,2.699136206454917,up
+raw.return.stop_passage_percent,Passages through stop – return,%,False,run 1 vs run 2,6,4.0,0.21875,,-0.6190476190476191,rank-biserial r,45.47732067510549,39.833019122003776,down
+raw.return.sequence_entropy,Sequence entropy – return,bits,False,run 1 vs run 2,6,8.0,0.6875,,-0.23809523809523808,rank-biserial r,1.1251267467726893,1.0310590681231209,down
+raw.return.driving_time,Driving time – return,s,False,run 1 vs run 2,6,0.0,0.03125,,-1.0,rank-biserial r,251.60054999999997,209.76199999999997,down
+raw.return.robot_path_length,Path length – return (cursor_distance.m),m,False,run 1 vs run 2,6,2.0,0.09375,,-0.8095238095238095,rank-biserial r,25.7113240865614,25.43539263607701,down
+raw.return.cumulative_rotation,Cumulative rotation – return,rad,False,run 1 vs run 2,6,2.0,0.09375,,-0.8095238095238095,rank-biserial r,27.079917877872994,23.70082873073791,down
+raw.return.region_changes_per_min,Region changes – return (movement_train.m),/min,False,run 1 vs run 2,6,7.0,0.5625,,0.3333333333333333,rank-biserial r,27.18562068534449,30.592547940007215,down
+raw.return.robot_lin_speed_mean,Robot linear speed – return (speed1.m),m/s,False,run 1 vs run 2,6,0.0,0.03125,,1.0,rank-biserial r,0.10266299796442252,0.11716719448404031,
+raw.return.robot_lin_speed_peak,Robot peak linear speed – return (speed1.m),m/s,False,run 1 vs run 2,6,8.0,0.6875,,0.23809523809523808,rank-biserial r,0.2703191554102925,0.2647181596650484,
+raw.return.robot_ang_speed_mean,Robot angular speed – return (speed1.m),rad/s,False,run 1 vs run 2,6,5.0,0.3125,,0.5238095238095238,rank-biserial r,0.11782975498472939,0.12434907444479024,
+raw.return.robot_mean_jerk,Robot mean jerk – return (jerk1.m),m/s^3,False,run 1 vs run 2,6,5.0,0.3125,,0.5238095238095238,rank-biserial r,1.8946460495910504,2.145618057110304,down
+raw.return.robot_log10_dimensionless_jerk,"Robot dimensionless jerk, log10 – return (jerk1.m)",,False,run 1 vs run 2,6,6.0,0.4375,,-0.42857142857142855,rank-biserial r,12.028747114684746,11.094967615719,down
+raw.return.cursor_path_length,Cursor path length – return (cursor_distance.m),px,False,run 1 vs run 2,6,6.0,0.4375,,-0.42857142857142855,rank-biserial r,60040.93417259676,51450.14871017388,
+raw.return.cursor_mean_speed,Cursor speed – return (speed1.m),px/s,False,run 1 vs run 2,6,7.0,0.5625,,0.3333333333333333,rank-biserial r,215.54638033145017,240.81288363782613,
+raw.return.cursor_mean_jerk,Cursor mean jerk – return (jerk1.m),px/s^3,False,run 1 vs run 2,6,8.0,0.6875,,0.23809523809523808,rank-biserial r,6206.27419177049,8332.290948583388,down
+raw.return.cursor_speed_peaks,Cursor speed peaks – return (smooth.m),,False,run 1 vs run 2,6,6.0,0.4375,,-0.42857142857142855,rank-biserial r,84.0,62.5,down

@@ -28,7 +28,7 @@ Trasferimento: la stessa abilita' con il cursore e con il robot
       (planning errors (blind) vs overcorrections (robot); atteso +) rho=-0.03 (trascurabile), p=0.957, n=6, nella direzione attesa: no
   Blind test 3 – end-point error [px]  vs  Run 1 – outbound time [s]
       (map knowledge (blind) vs driving time (robot); atteso +) rho=0.49 (medio), p=0.329, n=6, nella direzione attesa: si'
-  Training gain: reach time first – last block [s]  vs  Robot gain: outbound time run 1 – run 2 [s]
+  Training gain: movement time first – last block [s]  vs  Robot gain: outbound time run 1 – run 2 [s]
       (who improves in the training improves on the robot; atteso +) rho=0.43 (medio), p=0.397, n=6, nella direzione attesa: si'
 
 Questionari e prestazioni

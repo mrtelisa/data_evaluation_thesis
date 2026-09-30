@@ -1,0 +1,55 @@
+CALIBRAZIONE BoMI – customizzazione per soggetto
+================================================
+
+COME LEGGERE QUESTO REPORT
+- "mediana [Q1-Q3]": il valore tipico del gruppo e la fascia in cui sta la meta' centrale
+  dei soggetti. Ogni soggetto pesa 1: prima un valore per soggetto, poi il gruppo.
+- p: probabilita' di vedere una differenza cosi' grande se in realta' non ci fosse nessun
+  effetto. p Holm: lo stesso p corretto perche' si fanno piu' confronti sulla stessa
+  domanda. Significativo = p Holm < 0.05 (per i confronti esplorativi si guarda p).
+- effetto: quanto e' grande la differenza (rank-biserial r per 2 momenti, W di Kendall per
+  Friedman, rho per le correlazioni). |0.1| piccolo, |0.3| medio, |0.5| grande.
+  Con pochi soggetti conta piu' l'effetto del p-value.
+- migliorato / peggiorato: in base a cosa e' meglio per quella metrica (es. tempo: meno
+  e' meglio; hit rate: piu' e' meglio).
+- "cambiano k": quanti soggetti hanno un valore diverso fra i due momenti. Se sono pochi
+  (es. 1 su 9) l'effetto puo' risultare "grande" ma riguarda solo quei soggetti.
+
+Soggetti: 6 (S001, S002, S003, S004, S005, S006)
+
+Mappa condivisa
+---------------
+  Stessa rete (autoencoder) per tutti i soggetti: cambia solo la customizzazione.
+  VAF train 95.6% (n=1286), VAF test 95.0% (n=322).
+
+Customizzazione (descrittive tra soggetti)
+------------------------------------------
+  Soggetti con almeno un passo: 4/6 (senza customizzazione: S002, S006)
+  Scala cambiata: 4/6, offset cambiato: 3/6, rotazione cambiata: 0/6, flip X finale: 0/6
+  Customization steps (key presses): 3.50 [0.75-44.50] (min 0.00, max 134.00)
+  Scale steps: 2.00 [0.50-2.75] (min 0.00, max 4.00)
+  Offset steps: 1.00 [0.00-38.00] (min 0.00, max 132.00)
+  Flip steps: 0.00 [0.00-0.00] (min 0.00, max 4.00)
+  Rotation steps: 0.00 [0.00-0.00] (min 0.00, max 0.00)
+  Final scale [x]: 1.21 [1.05-1.30] (min 1.00, max 1.46)
+  Final rotation [deg]: 0.00 [0.00-0.00] (min 0.00, max 0.00)
+  Final offset X [px]: 0.00 [-429.83-0.00] (min -605.00, max 0.00)
+  Final offset Y [px]: 0.00 [0.00-16.50] (min 0.00, max 266.20)
+  Final offset (distance) [px]: 11.00 [0.00-459.25] (min 0.00, max 631.91)
+
+Per soggetto
+------------
+  S001: scala x1.331, rotazione +0 deg, flip X no, offset (+0, +0) px | 3 passi (scala 3, offset 0, flip 0, rotazione 0)
+  S002: scala x1.000, rotazione +0 deg, flip X no, offset (+0, +0) px | 0 passi (scala 0, offset 0, flip 0, rotazione 0)
+  S003: scala x1.210, rotazione +0 deg, flip X no, offset (+0, +22) px | 4 passi (scala 2, offset 2, flip 0, rotazione 0)
+  S004: scala x1.210, rotazione +0 deg, flip X no, offset (-573, +266) px | 134 passi (scala 2, offset 132, flip 0, rotazione 0)
+  S005: scala x1.464, rotazione +0 deg, flip X no, offset (-605, +0) px | 58 passi (scala 4, offset 50, flip 4, rotazione 0)
+  S006: scala x1.000, rotazione +0 deg, flip X no, offset (+0, +0) px | 0 passi (scala 0, offset 0, flip 0, rotazione 0)
+  Il numero di passi dipende anche da come e' stata fatta la sessione (es. l'offset
+  si sposta di 10 px a tasto): e' una misura di quanto la mappa e' stata adattata,
+  non della difficolta' del soggetto.
+
+Calibrazione condivisa, dai campioni raw
+----------------------------------------
+  Manca shared_calib.npy (e shared.npz): copiali qui da calibrations/ del repo del task
+  per ricalcolare varianza latente e PCA (pca_analysis.py) dai dati raw.

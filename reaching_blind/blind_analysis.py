@@ -2,10 +2,16 @@
 
 Input: i file di results_blind/ del repo reachy2_teleop_grasping_and_simulation,
 incollati ovunque dentro questa cartella (es. reaching_blind/results/):
-    <soggetto>_blind_test<N>[_k]_trials.csv       una riga per prova (12 per test)
-    <soggetto>_blind_test<N>[_k]_trajectory.csv   ogni campione del cursore (per i grafici)
+    <soggetto>_blind_test<N>[_k]_raw.csv          ogni frame: da qui si calcola TUTTO
+    <soggetto>_blind_test<N>[_k]_summary.json     config del test (durata prova, raggio, dwell...)
+    <soggetto>_blind_test<N>[_k]_trials.csv       solo per controllo (numero di prove e hit)
 Se un test e' stato ripetuto (_1, _2, ...) si usa l'ultima ripetizione.
-Le prove interrotte da un abort (success = False) sono escluse.
+Le prove interrotte da un abort (piu' corte di trial_s) sono escluse.
+Metriche di ogni prova: hit, errori, regioni, target scelto come nel task
+(reaching_blind.py); cinematica (linearity index, aspect ratio, jerk, picchi,
+velocita', percorso) con le funzioni del laboratorio (common/reach_metrics.py);
+piu' le metriche del test intero (tt.m, cursor_distance.m, speed1.m, jerk1.m,
+smooth.m, movement_train.m).
 
 Analisi (vedi README.md):
 1. per ogni soggetto e test, un valore per metrica: la percentuale per le
@@ -38,6 +44,7 @@ Uso:
 """
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -47,9 +54,10 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common.data import aggregate, find_sessions, to_bool   # noqa: E402
+from common.data import aggregate, find_sessions   # noqa: E402
 from common.plots import (CATEGORICAL, INK2, MUTED, grid_axes, save_figure,   # noqa: E402
                           setup_style, spaghetti)
+from common.reach_metrics import onset_metrics, reach_metrics, region_of, session_metrics   # noqa: E402
 from common.report import Report   # noqa: E402
 from common.stats import describe, friedman, holm, wilcoxon_paired   # noqa: E402
 
@@ -59,14 +67,14 @@ TEST_LABELS = [f"test {t}" for t in TESTS]
 # confronti pianificati: (primo, secondo, cosa misura)
 PAIRS = ((1, 2, "effect of training 1"), (2, 3, "effect of training 2"),
          (3, 4, "effect of free exploration + robot run 1"), (4, 5, "effect of robot run 2"))
-PATTERN = r"(?P<subject>.+)_blind_test(?P<test>\d)(?:_(?P<rep>\d+))?_trials\.csv"
+PATTERN = r"(?P<subject>.+)_blind_test(?P<test>\d)(?:_(?P<rep>\d+))?_raw\.csv"
 CANVAS_W, CANVAS_H, TARGET_RADIUS = 1200, 650, 70
 
 # metrica -> (etichetta, unita', meglio se 'up'/'down'/None, aggregazione, principale)
 METRICS = {
     "hit":                     ("Hit rate", "%", "up", "rate", True),
     "end_error":               ("End-point error", "px", "down", "median", True),
-    "reach_time":              ("Reach time (hits)", "s", "down", "median", True),
+    "reach_time":              ("Reach time = movement time (hits)", "s", "down", "median", True),
     "initial_direction_error": ("Initial direction error", "deg", "down", "median", True),
     "region_at_end_correct":   ("Region accuracy", "%", "up", "rate", True),
     "final_error":             ("Final error", "px", "down", "median", False),
@@ -81,32 +89,125 @@ METRICS = {
     "time_in_region":          ("Time in region", "%", "up", "mean", False),
     "initial_direction_error_peak": ("Initial direction error (peak)", "deg", "down", "median", False),
     "reaction_time":           ("Reaction time", "s", "down", "median", False),
-    "movement_time":           ("Movement time", "s", "down", "median", False),
-    "normalized_path_length":  ("Normalized path length", "", "down", "median", False),
-    "max_deviation":           ("Max deviation", "px", "down", "median", False),
-    "log_dimensionless_jerk":  ("Smoothness (-ln DJ)", "", "up", "median", False),
+    "linearity_index":         ("Linearity index", "", "down", "median", False),
+    "aspect_ratio":            ("Aspect ratio", "", "down", "median", False),
+    "dimensionless_jerk":      ("Dimensionless jerk", "", "down", "median", False),
     "n_speed_peaks":           ("Speed peaks", "", "down", "median", False),
+    "path_length":             ("Path length", "px", None, "median", False),
     "mean_speed":              ("Mean speed", "px/s", None, "median", False),
+    "sd_speed":                ("SD of speed", "px/s", None, "median", False),
     "peak_speed":              ("Peak speed", "px/s", None, "median", False),
     "hand_lost":               ("Hand lost", "%", "down", "mean", False),
+    # test intero (tutti i frame): gli script del laboratorio sul log completo
+    "session_log_duration":    ("Test duration (log, tt.m)", "s", None, "mean", False),
+    "session_path_length":     ("Cursor path length (cursor_distance.m)", "px", None, "mean", False),
+    "session_mean_speed":      ("Mean cursor speed (speed1.m)", "px/s", None, "mean", False),
+    "session_peak_speed":      ("Peak cursor speed (speed1.m)", "px/s", None, "mean", False),
+    "session_mean_jerk":       ("Mean jerk (jerk1.m)", "px/s^3", "down", "mean", False),
+    "session_speed_peaks":     ("Speed peaks (smooth.m)", "", "down", "mean", False),
+    "session_region_changes":  ("Region changes (movement_train.m)", "", None, "mean", False),
 }
+# cinematica di ogni prova dalle funzioni del laboratorio (i "_1s" del training non servono:
+# nel blind test il cursore non ricompare mai)
+KINEMATIC_KEYS = ("linearity_index", "aspect_ratio", "dimensionless_jerk", "n_speed_peaks", "path_length",
+                  "mean_speed", "sd_speed", "peak_speed")
 MAIN = [k for k, v in METRICS.items() if v[4]]
+
+
+def trials_from_raw(raw: pd.DataFrame, cfg: dict) -> pd.DataFrame:
+    """Una riga per prova, tutto dal _raw.csv con le definizioni del task
+    (reaching_blind.py: hit, errori, regioni, target scelto) e, per la cinematica,
+    le funzioni del laboratorio (common/reach_metrics.py)."""
+    trial_s = float(cfg.get("trial_s", 4.0))
+    dwell_s = float(cfg.get("dwell_s", 0.5))
+    end_s = float(cfg.get("end_window_s", 1.0))
+    radius = float(cfg.get("target_radius", TARGET_RADIUS))
+    onset_speed = float(cfg.get("motion_onset_speed", 40.0))
+    x_edges = cfg.get("region_x_edges", [0, CANVAS_W / 3, 2 * CANVAS_W / 3, CANVAS_W])
+    y_edges = cfg.get("region_y_edges", [0, CANVAS_H / 3, 2 * CANVAS_H / 3, CANVAS_H])
+    positions = {int(k): tuple(v) for k, v in cfg.get("targets", {}).items()}
+    fs = 1.0 / float(raw["time"].diff().median())
+    t0 = 0.0   # "time" del raw = secondi dall'ENTER, quando compare il primo target
+    rows = []
+    for k, g in raw.groupby("trial"):
+        t_shown = t0 + (int(k) - 1) * trial_s        # il task cambia target ogni trial_s esatti
+        g = g[g["time"] < t_shown + trial_s]         # l'ultimo frame del test cade gia' dopo la prova
+        t = g["time"].to_numpy(float)
+        xy = g[["cursor_x", "cursor_y"]].to_numpy(float)
+        target = int(g["target_id"].iloc[0])
+        goal = np.array([g["target_x"].iloc[0], g["target_y"].iloc[0]], float)
+        positions.setdefault(target, tuple(goal))
+        d = np.hypot(xy[:, 0] - goal[0], xy[:, 1] - goal[1])
+        inside = d < radius
+        # hit: prima permanenza di dwell_s nel cerchio senza uscirne; t_enter = inizio della permanenza
+        t_enter, t_in = None, None
+        for ti, ok in zip(t, inside):
+            t_in = (t_in if t_in is not None else ti) if ok else None
+            if t_in is not None and ti - t_in >= dwell_s:
+                t_enter = t_in
+                break
+        dt = np.diff(t, append=t[-1])
+        total = float(dt.sum())
+        reg = np.array([region_of(px, py, x_edges, y_edges) for px, py in xy])
+        end = t >= t[-1] - end_s
+        row = {"trial": int(k), "target": target, "target_number": int(k), "goal_x": goal[0], "goal_y": goal[1],
+               "success": bool(t[-1] - t_shown >= trial_s - 2.0 / fs),
+               "hit": 100.0 if t_enter is not None else 0.0,
+               "reach_time": (t_enter - t_shown) if t_enter is not None else np.nan,
+               "time_in_target": 100.0 * float(dt[inside].sum()) / total if total > 0 else np.nan,
+               "hand_lost": 100.0 * float(dt[g["hand_detected"].to_numpy() == 0].sum()) / total if total > 0 else np.nan,
+               "on_target_at_end": 100.0 if inside[-1] else 0.0,
+               "initial_error": float(d[0]), "final_error": float(d[-1]),
+               "end_error": float(d[end].mean()), "min_error": float(d.min()),
+               "relative_final_error": float(d[-1] / d[0]) if d[0] > 1e-6 else np.nan}
+        chosen = min(positions, key=lambda c: np.hypot(xy[-1, 0] - positions[c][0], xy[-1, 1] - positions[c][1]))
+        row["chosen_target"], row["chosen_correct"] = chosen, 100.0 if chosen == target else 0.0
+        row["region_at_end"] = int(reg[-1])
+        row["region_at_end_correct"] = 100.0 if reg[-1] == target else 0.0
+        row["time_in_region"] = 100.0 * float(dt[reg == target].sum()) / total if total > 0 else np.nan
+        row["end_time_in_region"] = 100.0 * float(dt[end & (reg == target)].sum()) / max(float(dt[end].sum()), 1e-9)
+        t_stay, row["region_reach_time"] = None, np.nan
+        for ti, ok in zip(t, reg == target):
+            t_stay = (t_stay if t_stay is not None else ti) if ok else None
+            if t_stay is not None and ti - t_stay >= dwell_s:
+                row["region_reach_time"] = t_stay - t_shown
+                break
+        row["region_hit"] = 0.0 if np.isnan(row["region_reach_time"]) else 100.0
+        # cinematica: dall'inizio della prova all'entrata del hit (hit) o alla fine (mancati)
+        kin = reach_metrics(t, xy, goal, t_enter if t_enter is not None else t[-1], 0.0, fs)
+        row.update({k2: kin[k2] for k2 in KINEMATIC_KEYS})
+        om = onset_metrics(t, xy, goal, onset_speed, fs)
+        om["reaction_time"] += t[0] - t_shown
+        row.update(om)
+        row["_x"], row["_y"] = xy[:, 0], xy[:, 1]
+        rows.append(row)
+    df = pd.DataFrame(rows)
+    for key, v in session_metrics(raw["time"], raw[["cursor_x", "cursor_y"]], raw["region"], fs).items():
+        df[key] = v
+    return df
 
 
 def load_trials(root: Path, skip_first: bool) -> tuple:
     chosen, dropped = find_sessions(root, PATTERN, ("test",))
-    frames = []
+    frames, problems = [], []
     for (subject, test), path in sorted(chosen.items()):
-        df = pd.read_csv(path)
-        df = df[to_bool(df["success"])] if "success" in df.columns else df
+        stem = str(path)[:-len("_raw.csv")]
+        summary = Path(stem + "_summary.json")
+        cfg = json.loads(summary.read_text()).get("config", {}) if summary.exists() else {}
+        df = trials_from_raw(pd.read_csv(path), cfg)
+        check = Path(stem + "_trials.csv")
+        if check.exists():
+            tr = pd.read_csv(check)
+            if len(tr) != len(df) or (tr["hit"].to_numpy() != df["hit"].to_numpy()).any():
+                problems.append(f"{subject} test {test}: prove o hit diversi fra raw e trials.csv")
+        df = df[df["success"]]
         if skip_first:
             df = df[df["trial"] != df["trial"].min()]
         df.insert(0, "test", int(test))
         df.insert(0, "subject", subject)
-        df["_trajectory"] = str(path).replace("_trials.csv", "_trajectory.csv")
         frames.append(df)
     trials = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
-    return trials, dropped
+    return trials, dropped, problems
 
 
 def subject_table(trials: pd.DataFrame, by=("subject", "test")) -> pd.DataFrame:
@@ -233,13 +334,8 @@ def plots(subjects, per_target, trials, out):
             colors = {tg: CATEGORICAL[i % len(CATEGORICAL)] for i, tg in enumerate(sorted(tpos.index))}
             for tg, (gx, gy) in tpos.iterrows():
                 ax.add_patch(plt.Circle((gx, gy), TARGET_RADIUS, fill=False, color=colors[tg], lw=1.2))
-            traj_path = Path(gt["_trajectory"].iloc[0])
-            if traj_path.exists():
-                tr = pd.read_csv(traj_path)
-                used = set(gt["trial"])
-                for trial, seg in tr.groupby("trial"):
-                    if trial in used:
-                        ax.plot(seg["x"], seg["y"], color=colors.get(seg["target"].iloc[0], INK2), lw=0.7, alpha=0.8)
+            for _, r in gt.iterrows():
+                ax.plot(r["_x"], r["_y"], color=colors.get(r["target"], INK2), lw=0.7, alpha=0.8)
         fig.suptitle(f"{subject} – cursor paths (colour = target)", x=0.01, ha="left", fontweight="bold", fontsize=10)
         fig.tight_layout(rect=(0, 0, 1, 0.97))
         save_figure(fig, out, f"trajectories/{subject}")
@@ -253,9 +349,9 @@ def main():
                    help="esclude la prima prova di ogni test (parte dalla posizione della mano, non da un target)")
     args = p.parse_args()
 
-    trials, dropped = load_trials(args.results, args.skip_first_trial)
+    trials, dropped, problems = load_trials(args.results, args.skip_first_trial)
     if trials.empty:
-        print(f"Nessun file *_blind_test<N>_trials.csv in {args.results}")
+        print(f"Nessun file *_blind_test<N>_raw.csv in {args.results}")
         return
     args.out.mkdir(parents=True, exist_ok=True)
     report = Report("BLIND REACHING TEST – 5 ripetizioni")
@@ -267,6 +363,9 @@ def main():
         report.text(f"  test {t}: {len(who)} soggetti" + (f" (mancano: {', '.join(missing)})" if missing else ""))
     if dropped:
         report.text("Ripetizioni scartate (si usa l'ultima): " + ", ".join(p.name for p in dropped))
+    for msg in problems:
+        report.text("ATTENZIONE: " + msg)
+    report.text("Tutte le metriche sono calcolate dai _raw.csv (cinematica con le funzioni del laboratorio).")
     if args.skip_first_trial:
         report.text("La prima prova di ogni test e' esclusa (--skip-first-trial).")
     report.text("Confronti pianificati: 4 Wilcoxon fra test consecutivi, Holm sui 4, per ogni metrica.")
@@ -276,7 +375,7 @@ def main():
     per_target_subj = subject_table(trials, by=("subject", "test", "target"))
     per_target = []
     for m in METRICS:
-        if m in per_target_subj.columns:
+        if m in per_target_subj.columns and not m.startswith("session_"):
             for (tg, t), g in per_target_subj.groupby(["target", "test"]):
                 per_target.append({"metric": m, "target": tg, "test": t, **describe(g[m])})
     per_target = pd.DataFrame(per_target)
@@ -285,7 +384,7 @@ def main():
     stats_df.to_csv(args.out / "blind_statistics.csv", index=False)
     tests_df.to_csv(args.out / "blind_tests.csv", index=False)
     per_target.to_csv(args.out / "blind_per_target.csv", index=False)
-    trials.drop(columns=["_trajectory"]).to_csv(args.out / "blind_trials_all.csv", index=False)
+    trials.drop(columns=["_x", "_y"]).to_csv(args.out / "blind_trials_all.csv", index=False)
     plots(subjects, per_target, trials, args.out)
     report.section("Metriche esplorative")
     report.text("  Tutte le altre metriche sono in blind_tests.csv e plots/metrics/, calcolate allo stesso modo.")

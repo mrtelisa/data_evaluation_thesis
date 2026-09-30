@@ -1,6 +1,6 @@
 """Lancia tutte le analisi nell'ordine giusto:
     1. questionari (punteggi per soggetto)
-    2. blind test, training, robot reale
+    2. blind test, training, robot reale, calibrazioni BoMI
     3. collegamenti fra le parti e questionari (usa i risultati di 1 e 2)
 
     python3 run_all.py
@@ -19,6 +19,7 @@ STEPS = [
     ("reaching_blind", "blind_analysis.py"),
     ("reaching_regions", "training_analysis.py"),
     ("real_robot", "robot_analysis.py"),
+    ("calibrations", "calibration_analysis.py"),
     ("cross_analysis", "cross_analysis.py"),
 ]
 

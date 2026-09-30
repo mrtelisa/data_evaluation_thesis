@@ -21,6 +21,7 @@ Soggetti: 6 (S001, S002, S003, S004, S005, S006)
   test 3: 6 soggetti
   test 4: 6 soggetti
   test 5: 6 soggetti
+Tutte le metriche sono calcolate dai _raw.csv (cinematica con le funzioni del laboratorio).
 Confronti pianificati: 4 Wilcoxon fra test consecutivi, Holm sui 4, per ogni metrica.
 
 Hit rate [%]
@@ -41,8 +42,8 @@ End-point error [px]
   effect of free exploration + robot run 1 (test 3 vs 4): test 3 281.11 [210.27-399.25] -> test 4 254.05 [194.57-307.70] | migliorato | n=6 (cambiano 6), p=0.562, p Holm=1.000, significativo: no | effetto r=-0.33 (medio)
   effect of robot run 2 (test 4 vs 5): test 4 254.05 [194.57-307.70] -> test 5 267.18 [209.53-343.94] | peggiorato | n=6 (cambiano 6), p=0.062, p Holm=0.250, significativo: no | effetto r=0.90 (grande)
 
-Reach time (hits) [s]
----------------------
+Reach time = movement time (hits) [s]
+-------------------------------------
   per test, mediana [Q1-Q3]: test 1: 1.14 [1.14-1.14] | test 2: 1.74 [1.45-2.11] | test 3: 1.97 [1.65-2.27] | test 4: 1.90 [1.07-2.19] | test 5: -
   Friedman: servono almeno 2 soggetti con tutti e 5 i test
   effect of training 1 (test 1 vs 2): test 1 1.14 [1.14-1.14] -> test 2 1.74 [1.45-2.11] | peggiorato | n=1 (cambiano 0), p=-, p Holm=-, significativo: - | effetto r=- (-)
@@ -52,12 +53,12 @@ Reach time (hits) [s]
 
 Initial direction error [deg]
 -----------------------------
-  per test, mediana [Q1-Q3]: test 1: 77.70 [49.36-85.18] | test 2: 47.33 [42.82-88.32] | test 3: 74.83 [71.73-90.35] | test 4: 59.64 [58.23-60.31] | test 5: 61.44 [59.13-64.62]
+  per test, mediana [Q1-Q3]: test 1: 77.70 [49.37-85.12] | test 2: 47.33 [42.81-88.32] | test 3: 74.83 [71.73-90.35] | test 4: 59.63 [58.23-60.32] | test 5: 61.42 [59.12-64.62]
   Friedman (c'e' qualche differenza fra i 5 test?): n=6, p=0.209, W=0.24
-  effect of training 1 (test 1 vs 2): test 1 77.70 [49.36-85.18] -> test 2 47.33 [42.82-88.32] | migliorato | n=6 (cambiano 6), p=0.438, p Holm=1.000, significativo: no | effetto r=-0.43 (medio)
-  effect of training 2 (test 2 vs 3): test 2 47.33 [42.82-88.32] -> test 3 74.83 [71.73-90.35] | peggiorato | n=6 (cambiano 6), p=0.156, p Holm=0.625, significativo: no | effetto r=0.71 (grande)
-  effect of free exploration + robot run 1 (test 3 vs 4): test 3 74.83 [71.73-90.35] -> test 4 59.64 [58.23-60.31] | migliorato | n=6 (cambiano 6), p=0.438, p Holm=1.000, significativo: no | effetto r=-0.43 (medio)
-  effect of robot run 2 (test 4 vs 5): test 4 59.64 [58.23-60.31] -> test 5 61.44 [59.13-64.62] | peggiorato | n=6 (cambiano 6), p=1.000, p Holm=1.000, significativo: no | effetto r=-0.05 (trascurabile)
+  effect of training 1 (test 1 vs 2): test 1 77.70 [49.37-85.12] -> test 2 47.33 [42.81-88.32] | migliorato | n=6 (cambiano 6), p=0.438, p Holm=1.000, significativo: no | effetto r=-0.43 (medio)
+  effect of training 2 (test 2 vs 3): test 2 47.33 [42.81-88.32] -> test 3 74.83 [71.73-90.35] | peggiorato | n=6 (cambiano 6), p=0.156, p Holm=0.625, significativo: no | effetto r=0.71 (grande)
+  effect of free exploration + robot run 1 (test 3 vs 4): test 3 74.83 [71.73-90.35] -> test 4 59.63 [58.23-60.32] | migliorato | n=6 (cambiano 6), p=0.438, p Holm=1.000, significativo: no | effetto r=-0.43 (medio)
+  effect of robot run 2 (test 4 vs 5): test 4 59.63 [58.23-60.32] -> test 5 61.42 [59.12-64.62] | peggiorato | n=6 (cambiano 6), p=1.000, p Holm=1.000, significativo: no | effetto r=-0.05 (trascurabile)
 
 Region accuracy [%]
 -------------------

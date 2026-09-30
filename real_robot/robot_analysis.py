@@ -48,6 +48,7 @@ from common.data import find_sessions   # noqa: E402
 from common.plots import (CATEGORICAL, FIRST_COLOR, INK, INK2, MUTED, SECOND_COLOR,   # noqa: E402
                           SEQUENTIAL_CMAP, grid_axes, heatmap3x3, save_figure, setup_style, spaghetti)
 from common.report import Report   # noqa: E402
+from robot_raw import raw_metrics   # noqa: E402
 from common.stats import describe, fmt_num, holm, wilcoxon_paired   # noqa: E402
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -60,33 +61,42 @@ MODE_COLORS = {"max_speed": CATEGORICAL[0], "reduced_speed": CATEGORICAL[2],
 
 # Le 4 metriche primarie (la famiglia della correzione di Holm): cambiale qui se servono altre
 PRIMARY = ("phase_durations.outbound", "phase_durations.return",
-           "driving.outbound.non_adjacent_percent", "driving.outbound.command_changes_per_min")
+           "raw.outbound.non_adjacent_percent", "raw.outbound.command_changes_per_min")
 
 # chiave nel json (con i punti) -> (etichetta, unita', meglio se)
 METRICS = {
     "test_duration": ("Test duration", "s", "down"),
     **{f"phase_durations.{p}": (f"{p.capitalize()} time", "s", "down") for p in PHASES},
-    "path_length_outbound": ("Path length – outbound", "m", "down"),
-    "path_length_return": ("Path length – return", "m", "down"),
-    "cumulative_rotation_outbound": ("Cumulative rotation – outbound", "rad", "down"),
-    "cumulative_rotation_return": ("Cumulative rotation – return", "rad", "down"),
     "n_dwell_declined": ("Dwells declined", "", "down"),
     "n_repositioning": ("Repositionings", "", "down"),
     "n_repositioning_per_phase.grasp": ("Repositionings – grasp", "", "down"),
     "n_repositioning_per_phase.placement": ("Repositionings – placement", "", "down"),
     "manual.n_collisions": ("Collisions", "", "down"),
 }
+# metriche di guida: tutte ricalcolate dai file raw (robot_raw.py)
 for _ph in DRIVING:
     METRICS.update({
-        f"driving.{_ph}.stop_percent": (f"Stop time – {_ph}", "%", "down"),
-        f"driving.{_ph}.command_changes_per_min": (f"Command changes – {_ph}", "/min", "down"),
-        f"driving.{_ph}.non_adjacent_percent": (f"Non-adjacent changes – {_ph}", "%", "down"),
-        f"driving.{_ph}.reversal_percent": (f"Reversals – {_ph}", "%", "down"),
-        f"driving.{_ph}.mean_command_duration": (f"Mean command duration – {_ph}", "s", "up"),
-        f"driving.{_ph}.stop_passage_percent": (f"Passages through stop – {_ph}", "%", "down"),
-        f"driving.{_ph}.sequence_entropy": (f"Sequence entropy – {_ph}", "bits", "down"),
-        f"driving.{_ph}.log_dimensionless_jerk": (f"Smoothness (-ln DJ) – {_ph}", "", "up"),
-        f"driving.{_ph}.driving_time": (f"Driving time – {_ph}", "s", "down"),
+        f"raw.{_ph}.stop_percent": (f"Stop time – {_ph}", "%", "down"),
+        f"raw.{_ph}.command_changes_per_min": (f"Command changes – {_ph}", "/min", "down"),
+        f"raw.{_ph}.non_adjacent_percent": (f"Non-adjacent changes – {_ph}", "%", "down"),
+        f"raw.{_ph}.reversal_percent": (f"Reversals – {_ph}", "%", "down"),
+        f"raw.{_ph}.mean_command_duration": (f"Mean command duration – {_ph}", "s", "up"),
+        f"raw.{_ph}.stop_passage_percent": (f"Passages through stop – {_ph}", "%", "down"),
+        f"raw.{_ph}.sequence_entropy": (f"Sequence entropy – {_ph}", "bits", "down"),
+        f"raw.{_ph}.driving_time": (f"Driving time – {_ph}", "s", "down"),
+        f"raw.{_ph}.robot_path_length": (f"Path length – {_ph} (cursor_distance.m)", "m", "down"),
+        f"raw.{_ph}.cumulative_rotation": (f"Cumulative rotation – {_ph}", "rad", "down"),
+        # script del laboratorio
+        f"raw.{_ph}.region_changes_per_min": (f"Region changes – {_ph} (movement_train.m)", "/min", "down"),
+        f"raw.{_ph}.robot_lin_speed_mean": (f"Robot linear speed – {_ph} (speed1.m)", "m/s", None),
+        f"raw.{_ph}.robot_lin_speed_peak": (f"Robot peak linear speed – {_ph} (speed1.m)", "m/s", None),
+        f"raw.{_ph}.robot_ang_speed_mean": (f"Robot angular speed – {_ph} (speed1.m)", "rad/s", None),
+        f"raw.{_ph}.robot_mean_jerk": (f"Robot mean jerk – {_ph} (jerk1.m)", "m/s^3", "down"),
+        f"raw.{_ph}.robot_log10_dimensionless_jerk": (f"Robot dimensionless jerk, log10 – {_ph} (jerk1.m)", "", "down"),
+        f"raw.{_ph}.cursor_path_length": (f"Cursor path length – {_ph} (cursor_distance.m)", "px", None),
+        f"raw.{_ph}.cursor_mean_speed": (f"Cursor speed – {_ph} (speed1.m)", "px/s", None),
+        f"raw.{_ph}.cursor_mean_jerk": (f"Cursor mean jerk – {_ph} (jerk1.m)", "px/s^3", "down"),
+        f"raw.{_ph}.cursor_speed_peaks": (f"Cursor speed peaks – {_ph} (smooth.m)", "", "down"),
     })
 # conteggi rari: solo descrittivi (i dropped dipendono dal robot, non dal soggetto)
 COUNTS = {"success": "Task completed", "manual.n_collisions": "Collisions",
@@ -105,7 +115,7 @@ def get(d, path):
 
 def load(root: Path) -> tuple:
     chosen, dropped = find_sessions(root, PATTERN, ("run",))
-    rows, sessions = [], {}
+    rows, sessions, problems = [], {}, []
     for (subject, run), path in sorted(chosen.items()):
         s = json.loads(path.read_text(encoding="utf-8"))
         run = int(run)
@@ -115,12 +125,16 @@ def load(root: Path) -> tuple:
         for key in set(METRICS) | set(COUNTS):
             if key != "success":
                 row[key] = get(s, key)
+        raw, missing = raw_metrics(path)
+        row.update(raw)
+        if missing:
+            problems.append(f"{subject} run {run}: mancano {', '.join(missing)}")
         # durata di una fase solo se completata
         for ph in PHASES:
             if not get(s, f"phase_completed.{ph}") is True:
                 row[f"phase_durations.{ph}"] = np.nan
         rows.append(row)
-    return pd.DataFrame(rows), sessions, dropped
+    return pd.DataFrame(rows), sessions, dropped, problems
 
 
 def analyse(df, report):
@@ -149,18 +163,23 @@ def analyse(df, report):
     report.section("Le 13 metriche, per fase (esplorative: p non corretto)")
     groups = [
         ("1. Successo e tempo per fase", ["test_duration"] + [f"phase_durations.{p}" for p in PHASES]),
-        ("2. Cambi di comando", [f"driving.{p}.command_changes_per_min" for p in DRIVING]),
+        ("2. Cambi di comando", [f"raw.{p}.command_changes_per_min" for p in DRIVING]),
         ("3. Insicurezza: dwell rifiutati e repositioning",
          ["n_dwell_declined", "n_repositioning_per_phase.grasp", "n_repositioning_per_phase.placement"]),
-        ("4. Tempo fermo (regione 5, dwell esclusi)", [f"driving.{p}.stop_percent" for p in DRIVING]),
+        ("4. Tempo fermo (regione 5, dwell esclusi)", [f"raw.{p}.stop_percent" for p in DRIVING]),
         ("5. Collisioni (contate a mano)", ["manual.n_collisions"]),
-        ("6. Salti non adiacenti", [f"driving.{p}.non_adjacent_percent" for p in DRIVING]),
-        ("7. Inversioni (sovracorrezioni)", [f"driving.{p}.reversal_percent" for p in DRIVING]),
-        ("8. Durata media di un comando", [f"driving.{p}.mean_command_duration" for p in DRIVING]),
-        ("9. Passaggi per lo stop (stop-and-go vs fluido)", [f"driving.{p}.stop_passage_percent" for p in DRIVING]),
-        ("10. Entropia di sequenza", [f"driving.{p}.sequence_entropy" for p in DRIVING]),
-        ("11. Path length", ["path_length_outbound", "path_length_return"]),
-        ("12. Rotazione cumulata", ["cumulative_rotation_outbound", "cumulative_rotation_return"]),
+        ("6. Salti non adiacenti", [f"raw.{p}.non_adjacent_percent" for p in DRIVING]),
+        ("7. Inversioni (sovracorrezioni)", [f"raw.{p}.reversal_percent" for p in DRIVING]),
+        ("8. Durata media di un comando", [f"raw.{p}.mean_command_duration" for p in DRIVING]),
+        ("9. Passaggi per lo stop (stop-and-go vs fluido)", [f"raw.{p}.stop_passage_percent" for p in DRIVING]),
+        ("10. Entropia di sequenza", [f"raw.{p}.sequence_entropy" for p in DRIVING]),
+        ("11. Path length", [f"raw.{p}.robot_path_length" for p in ("outbound", "return")]),
+        ("12. Rotazione cumulata", [f"raw.{p}.cumulative_rotation" for p in ("outbound", "return")]),
+        ("Script del laboratorio (esplorative)",
+         [f"raw.{p}.{m}" for p in DRIVING for m in (
+             "region_changes_per_min", "robot_lin_speed_mean", "robot_lin_speed_peak", "robot_ang_speed_mean",
+             "robot_mean_jerk", "robot_log10_dimensionless_jerk", "cursor_path_length", "cursor_mean_speed",
+             "cursor_mean_jerk", "cursor_speed_peaks")]),
     ]
     for title, keys in groups:
         report.text(f"  {title}")
@@ -342,7 +361,7 @@ def main():
     p.add_argument("--out", type=Path, default=BASE_DIR / "statistics")
     args = p.parse_args()
 
-    df, sessions, dropped = load(args.results)
+    df, sessions, dropped, problems = load(args.results)
     if df.empty:
         print(f"Nessun file *_run<N>_session.json in {args.results}")
         return
@@ -356,6 +375,10 @@ def main():
         report.text(f"  run {r}: {len(who)} soggetti" + (f" (mancano: {', '.join(missing)})" if missing else ""))
     if dropped:
         report.text("Ripetizioni scartate (si usa l'ultima): " + ", ".join(p.name for p in dropped))
+    for msg in problems:
+        report.text("ATTENZIONE: " + msg)
+    report.text("Metriche di guida ricalcolate dai file raw (_regions, _odometry, _cursor.csv); durate delle fasi,")
+    report.text("dwell, repositioning e conteggi manuali dal _session.json (nel raw mancano gli istanti degli eventi).")
     report.text("Confronti: Wilcoxon run 1 vs run 2; Holm sulle 4 metriche primarie, le altre sono esplorative.")
 
     stats_df, tests_df = analyse(df, report)
