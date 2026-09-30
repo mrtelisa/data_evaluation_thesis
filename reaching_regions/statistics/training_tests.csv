@@ -1,0 +1,77 @@
+metric,label,role,comparison,meaning,planned,n,statistic,p,p_holm,effect,effect_name,median_first,median_second,better
+reach_time,Reach time,main,pre block 1 vs pre block 12,training 1: first vs last block,True,6,0.0,0.03125,0.09375,-1.0,rank-biserial r,3.3124778866767883,2.362105667591095,down
+reach_time,Reach time,main,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,7.0,0.5625,0.5625,-0.3333333333333333,rank-biserial r,2.362105667591095,2.1980741024017334,down
+reach_time,Reach time,main,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,0.0,0.03125,0.09375,-1.0,rank-biserial r,2.362105667591095,1.7619964480400085,down
+reach_time,Reach time,main,session pre vs post,whole sessions (exploratory),False,6,0.0,0.03125,,-1.0,rank-biserial r,2.477309823036194,2.032629609107971,down
+normalized_path_length,Normalized path length,main,pre block 1 vs pre block 12,training 1: first vs last block,True,6,2.0,0.09375,0.1875,-0.8095238095238095,rank-biserial r,2.711413842666102,1.924291949024559,down
+normalized_path_length,Normalized path length,main,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,7.0,0.5625,0.5625,-0.3333333333333333,rank-biserial r,1.924291949024559,1.786217070256915,down
+normalized_path_length,Normalized path length,main,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,1.0,0.0625,0.1875,-0.9047619047619048,rank-biserial r,1.924291949024559,1.5098185810001354,down
+normalized_path_length,Normalized path length,main,session pre vs post,whole sessions (exploratory),False,6,0.0,0.03125,,-1.0,rank-biserial r,2.120688446255913,1.6878357053873028,down
+initial_direction_error,Initial direction error,main,pre block 1 vs pre block 12,training 1: first vs last block,True,6,5.0,0.3125,0.625,-0.5238095238095238,rank-biserial r,57.31618881430146,57.781207632583495,down
+initial_direction_error,Initial direction error,main,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,0.0,0.03125,0.09375,1.0,rank-biserial r,57.781207632583495,61.758557039427146,down
+initial_direction_error,Initial direction error,main,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,5.0,0.3125,0.625,0.5238095238095238,rank-biserial r,57.781207632583495,62.964744663598516,down
+initial_direction_error,Initial direction error,main,session pre vs post,whole sessions (exploratory),False,6,9.0,0.84375,,-0.14285714285714285,rank-biserial r,56.79976102428251,56.53483140523521,down
+region_at_reveal_correct,Correct region at reveal,main,pre block 1 vs pre block 12,training 1: first vs last block,True,6,2.5,0.15729920705028516,0.3923911854205757,0.6666666666666666,rank-biserial r,12.5,25.0,up
+region_at_reveal_correct,Correct region at reveal,main,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,3.0,0.17971249487899976,0.3923911854205757,-0.6,rank-biserial r,25.0,12.5,up
+region_at_reveal_correct,Correct region at reveal,main,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,2.0,0.13079706180685857,0.3923911854205757,0.7333333333333333,rank-biserial r,25.0,37.5,up
+region_at_reveal_correct,Correct region at reveal,main,session pre vs post,whole sessions (exploratory),False,6,2.0,0.09375,,0.8095238095238095,rank-biserial r,21.875,30.729166666666664,up
+n_speed_peaks,Speed peaks,extra,pre block 1 vs pre block 12,training 1: first vs last block,True,6,0.0,0.039359508888249725,0.11807852666474918,-1.0,rank-biserial r,8.0,5.0,down
+n_speed_peaks,Speed peaks,extra,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,2.5,0.7854947471183542,0.7854947471183542,0.16666666666666666,rank-biserial r,5.0,5.25,down
+n_speed_peaks,Speed peaks,extra,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,0.0,0.04216819709715596,0.11807852666474918,-1.0,rank-biserial r,5.0,3.25,down
+n_speed_peaks,Speed peaks,extra,session pre vs post,whole sessions (exploratory),False,6,0.0,0.03125,,-1.0,rank-biserial r,5.0,4.0,down
+movement_time,Movement time,extra,pre block 1 vs pre block 12,training 1: first vs last block,True,6,0.0,0.03125,0.09375,-1.0,rank-biserial r,3.092812716960907,2.0760945677757263,down
+movement_time,Movement time,extra,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,10.0,1.0,1.0,0.047619047619047616,rank-biserial r,2.0760945677757263,2.157170057296753,down
+movement_time,Movement time,extra,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,0.0,0.03125,0.09375,-1.0,rank-biserial r,2.0760945677757263,1.6487849354743958,down
+movement_time,Movement time,extra,session pre vs post,whole sessions (exploratory),False,6,0.0,0.03125,,-1.0,rank-biserial r,2.295742988586426,1.8283208012580872,down
+reached_hidden,Reached while hidden,extra,pre block 1 vs pre block 12,training 1: first vs last block,True,6,0.0,1.0,1.0,0.0,rank-biserial r,0.0,0.0,up
+reached_hidden,Reached while hidden,extra,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,0.0,1.0,1.0,0.0,rank-biserial r,0.0,0.0,up
+reached_hidden,Reached while hidden,extra,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,0.0,0.31731050786291415,0.9519315235887424,1.0,rank-biserial r,0.0,0.0,up
+reached_hidden,Reached while hidden,extra,session pre vs post,whole sessions (exploratory),False,6,0.0,0.05878172135535886,,1.0,rank-biserial r,0.0,2.0833333333333335,up
+reaction_time,Reaction time,,pre block 1 vs pre block 12,training 1: first vs last block,True,6,10.0,1.0,1.0,-0.047619047619047616,rank-biserial r,0.19511604309082026,0.24008202552795405,down
+reaction_time,Reaction time,,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,2.0,0.09375,0.28125,-0.8095238095238095,rank-biserial r,0.24008202552795405,0.0623831152915954,down
+reaction_time,Reaction time,,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,5.0,0.3125,0.625,-0.5238095238095238,rank-biserial r,0.24008202552795405,0.1686250567436218,down
+reaction_time,Reaction time,,session pre vs post,whole sessions (exploratory),False,6,9.0,0.84375,,-0.14285714285714285,rank-biserial r,0.15505528450012204,0.15258306264877317,down
+error_at_reveal,Error at reveal,,pre block 1 vs pre block 12,training 1: first vs last block,True,6,2.0,0.09375,0.28125,-0.8095238095238095,rank-biserial r,286.9031928505983,252.66979673066174,down
+error_at_reveal,Error at reveal,,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,3.0,0.15625,0.3125,0.7142857142857143,rank-biserial r,252.66979673066174,284.3393117724177,down
+error_at_reveal,Error at reveal,,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,3.0,0.15625,0.3125,-0.7142857142857143,rank-biserial r,252.66979673066174,191.79717151829206,down
+error_at_reveal,Error at reveal,,session pre vs post,whole sessions (exploratory),False,6,4.0,0.21875,,-0.6190476190476191,rank-biserial r,271.8320640177322,217.86870538161332,down
+first_region_correct,First region correct,,pre block 1 vs pre block 12,training 1: first vs last block,True,6,0.0,0.039359508888249725,0.11807852666474918,1.0,rank-biserial r,25.0,50.0,up
+first_region_correct,First region correct,,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,4.0,0.7054569861112734,0.7054569861112734,-0.2,rank-biserial r,50.0,56.25,up
+first_region_correct,First region correct,,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,4.0,0.33399825582199794,0.6679965116439959,0.4666666666666667,rank-biserial r,50.0,56.25,up
+first_region_correct,First region correct,,session pre vs post,whole sessions (exploratory),False,6,0.0,0.03125,,1.0,rank-biserial r,45.3125,52.08333333333333,up
+n_wrong_regions,Wrong regions,,pre block 1 vs pre block 12,training 1: first vs last block,True,6,0.0,0.03125,0.09375,-1.0,rank-biserial r,1.0,0.5,down
+n_wrong_regions,Wrong regions,,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,3.0,0.4614509878333607,0.5526058346749669,0.4,rank-biserial r,0.5,0.5,down
+n_wrong_regions,Wrong regions,,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,3.5,0.27630291733748347,0.5526058346749669,-0.5333333333333333,rank-biserial r,0.5,0.4375,down
+n_wrong_regions,Wrong regions,,session pre vs post,whole sessions (exploratory),False,6,0.0,0.03125,,-1.0,rank-biserial r,0.6197916666666667,0.5052083333333333,down
+n_entries,Entries before the dwell,,pre block 1 vs pre block 12,training 1: first vs last block,True,6,1.0,0.14412703481601533,0.28825406963203065,-0.8,rank-biserial r,1.375,1.3125,down
+n_entries,Entries before the dwell,,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,0.0,0.0832645166635504,0.24979354999065123,-1.0,rank-biserial r,1.3125,1.25,down
+n_entries,Entries before the dwell,,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,2.5,0.31731050786291415,0.31731050786291415,-0.5,rank-biserial r,1.3125,1.25,down
+n_entries,Entries before the dwell,,session pre vs post,whole sessions (exploratory),False,6,0.0,0.03125,,-1.0,rank-biserial r,1.3802083333333335,1.2239583333333333,down
+dwell_time,Dwell time,,pre block 1 vs pre block 12,training 1: first vs last block,True,6,6.0,0.4375,0.9375,-0.42857142857142855,rank-biserial r,0.5166773796081543,0.5148839354515076,down
+dwell_time,Dwell time,,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,5.0,0.3125,0.9375,-0.5238095238095238,rank-biserial r,0.5148839354515076,0.515713632106781,down
+dwell_time,Dwell time,,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,10.0,1.0,1.0,-0.047619047619047616,rank-biserial r,0.5148839354515076,0.5164963603019714,down
+dwell_time,Dwell time,,session pre vs post,whole sessions (exploratory),False,6,0.0,0.03125,,-1.0,rank-biserial r,0.517713725566864,0.5162745714187622,down
+max_deviation,Max deviation,,pre block 1 vs pre block 12,training 1: first vs last block,True,6,2.0,0.09375,0.28125,-0.8095238095238095,rank-biserial r,254.34493375454113,187.3632624450825,down
+max_deviation,Max deviation,,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,10.0,1.0,1.0,-0.047619047619047616,rank-biserial r,187.3632624450825,220.22492222363047,down
+max_deviation,Max deviation,,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,5.0,0.3125,0.625,-0.5238095238095238,rank-biserial r,187.3632624450825,158.9315817252645,down
+max_deviation,Max deviation,,session pre vs post,whole sessions (exploratory),False,6,0.0,0.03125,,-1.0,rank-biserial r,216.1618583022917,189.20207066177346,down
+log_dimensionless_jerk,Smoothness (-ln DJ),,pre block 1 vs pre block 12,training 1: first vs last block,True,6,0.0,0.03125,0.09375,1.0,rank-biserial r,-8.122856907217713,-7.134898873454482,up
+log_dimensionless_jerk,Smoothness (-ln DJ),,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,6.0,0.4375,0.4375,0.42857142857142855,rank-biserial r,-7.134898873454482,-7.196023340360872,up
+log_dimensionless_jerk,Smoothness (-ln DJ),,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,3.0,0.15625,0.3125,0.7142857142857143,rank-biserial r,-7.134898873454482,-6.491622103226254,up
+log_dimensionless_jerk,Smoothness (-ln DJ),,session pre vs post,whole sessions (exploratory),False,6,0.0,0.03125,,1.0,rank-biserial r,-7.393222385416976,-6.762256834478812,up
+initial_direction_error_peak,Initial direction error (peak),,pre block 1 vs pre block 12,training 1: first vs last block,True,6,3.0,0.15625,0.46875,-0.7142857142857143,rank-biserial r,48.30647500870506,41.615845932835185,down
+initial_direction_error_peak,Initial direction error (peak),,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,6.0,0.4375,0.46875,0.42857142857142855,rank-biserial r,41.615845932835185,48.559173887681766,down
+initial_direction_error_peak,Initial direction error (peak),,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,3.0,0.15625,0.46875,-0.7142857142857143,rank-biserial r,41.615845932835185,25.915771428009855,down
+initial_direction_error_peak,Initial direction error (peak),,session pre vs post,whole sessions (exploratory),False,6,0.0,0.03125,,-1.0,rank-biserial r,41.267570332276286,31.613249316904973,down
+path_length,Path length,,pre block 1 vs pre block 12,training 1: first vs last block,True,6,1.0,0.0625,0.1875,-0.9047619047619048,rank-biserial r,1069.089646750728,790.1165778168277,down
+path_length,Path length,,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,10.0,1.0,1.0,-0.047619047619047616,rank-biserial r,790.1165778168277,765.5853994522414,down
+path_length,Path length,,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,2.0,0.09375,0.1875,-0.8095238095238095,rank-biserial r,790.1165778168277,657.1707888552021,down
+path_length,Path length,,session pre vs post,whole sessions (exploratory),False,6,0.0,0.03125,,-1.0,rank-biserial r,818.5265253813079,701.5617647954556,down
+mean_speed,Mean speed,,pre block 1 vs pre block 12,training 1: first vs last block,True,6,5.0,0.3125,0.3125,0.5238095238095238,rank-biserial r,353.6050271398053,374.433872734363,
+mean_speed,Mean speed,,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,2.0,0.09375,0.28125,-0.8095238095238095,rank-biserial r,374.433872734363,349.4082481310073,
+mean_speed,Mean speed,,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,3.0,0.15625,0.3125,0.7142857142857143,rank-biserial r,374.433872734363,384.3993170369073,
+mean_speed,Mean speed,,session pre vs post,whole sessions (exploratory),False,6,8.0,0.6875,,0.23809523809523808,rank-biserial r,359.2342157085331,359.4931564926361,
+peak_speed,Peak speed,,pre block 1 vs pre block 12,training 1: first vs last block,True,6,6.0,0.4375,0.875,0.42857142857142855,rank-biserial r,1399.9897815684528,1427.5303983974316,
+peak_speed,Peak speed,,pre block 12 vs post block 1,retention: last pre vs first post block,True,6,1.0,0.0625,0.1875,-0.9047619047619048,rank-biserial r,1427.5303983974316,1224.3240085234056,
+peak_speed,Peak speed,,pre block 12 vs post block 12,training 2: last pre vs last post block,True,6,9.0,0.84375,0.875,-0.14285714285714285,rank-biserial r,1427.5303983974316,1344.694934517022,
+peak_speed,Peak speed,,session pre vs post,whole sessions (exploratory),False,6,10.0,1.0,,-0.047619047619047616,rank-biserial r,1273.0760722295477,1340.5938258551973,

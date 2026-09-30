@@ -1,0 +1,3 @@
+run,n_sessions,success_total,success_sessions_with,manual.n_collisions_total,manual.n_collisions_sessions_with,manual.n_drops_grasp_total,manual.n_drops_grasp_sessions_with,manual.n_drops_transport_total,manual.n_drops_transport_sessions_with,n_dwell_declined_total,n_dwell_declined_sessions_with,n_repositioning_total,n_repositioning_sessions_with
+1,6,6.0,6,0.0,0,0.0,0,0.0,0,1.0,1,1.0,1
+2,6,6.0,6,0.0,0,0.0,0,0.0,0,0.0,0,6.0,2
