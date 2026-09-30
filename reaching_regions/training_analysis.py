@@ -8,7 +8,8 @@ incollati ovunque dentro questa cartella (es. reaching_regions/results/):
     <soggetto>_regions_<pre|post>[_k]_summary.json     durata della sessione (time_total)
 Se una sessione e' stata ripetuta (_1, _2, ...) si usa l'ultima ripetizione.
 Si analizzano i goal verso i target (centro -> regione); i ritorni al centro
-sono riportati a parte, solo come descrittive.
+sono riportati a parte, solo come descrittive (il primo centro, che avvia la
+sessione, non e' un ritorno ed e' escluso).
 
 Analisi (vedi README.md):
 1. blocchi di 8 target (ogni regione una volta): 12 per sessione, 24 in tutto.
@@ -349,7 +350,9 @@ def main():
             for (ph, reg), g in reg_units.groupby(["phase", "region"]):
                 per_region.append({"metric": m, "phase": ph, "region": reg, **describe(g[m])})
     per_region = pd.DataFrame(per_region)
-    homes = per_unit(goals[goals["kind"] == "home"], ["subject", "phase"], HOME_METRICS)
+    # the first home is the start of the session (the timer starts there), not a return: excluded
+    first_home = goals.groupby(["subject", "phase"])["trial"].transform("min") == goals["trial"]
+    homes = per_unit(goals[(goals["kind"] == "home") & ~first_home], ["subject", "phase"], HOME_METRICS)
     home_rows = [{"metric": m, "phase": ph, **describe(g[m])} for m in HOME_METRICS if m in homes.columns
                  for ph, g in homes.groupby("phase")]
 

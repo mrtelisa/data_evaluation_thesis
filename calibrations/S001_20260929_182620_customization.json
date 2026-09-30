@@ -1,0 +1,52 @@
+{
+  "subject": "S001",
+  "map": "S001_20260929_182620",
+  "saved": "20260929_182620",
+  "base": "shared",
+  "steps": [
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.1,
+      "gain_y": 1.1,
+      "off_x": 0.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.1,
+      "gain_y": 1.1,
+      "off_x": 0.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.1,
+      "gain_y": 1.1,
+      "off_x": 0.0,
+      "off_y": 0.0
+    }
+  ],
+  "n_steps": 3,
+  "rot_deg": 0.0,
+  "scale": 1.3310000000000006,
+  "flip_x": false,
+  "offset_x": 0.0,
+  "offset_y": -1.1368683772161603e-13,
+  "M": [
+    [
+      1.3310000000000004,
+      0.0
+    ],
+    [
+      0.0,
+      1.3310000000000006
+    ]
+  ],
+  "t": [
+    -422.02500000000055,
+    -248.25000000000057
+  ],
+  "residual": 2.220446049250313e-16,
+  "summary_text": "rotation +0.0 deg, scale x1.331, flip X no, offset (+0, -0) px",
+  "steps_text": "scale x1.10; scale x1.10; scale x1.10"
+}
