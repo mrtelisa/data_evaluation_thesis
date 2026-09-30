@@ -5,10 +5,10 @@
 
 import sys
 
-import borg, demografico, edinburgh, nasa, sus
+import demografico, edinburgh, nasa, sus
 
 if __name__ == "__main__":
-    for mod in (demografico, borg, nasa, edinburgh, sus):
+    for mod in (demografico, nasa, edinburgh, sus):
         print(f"\n===== {mod.__name__} =====")
         try:
             mod.main()
