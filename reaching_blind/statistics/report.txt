@@ -1,87 +1,304 @@
-BLIND REACHING TEST – 5 ripetizioni
+BLIND REACHING TEST – 5 repetitions
 ===================================
 
-COME LEGGERE QUESTO REPORT
-- "mediana [Q1-Q3]": il valore tipico del gruppo e la fascia in cui sta la meta' centrale
-  dei soggetti. Ogni soggetto pesa 1: prima un valore per soggetto, poi il gruppo.
-- ANALISI PRINCIPALE (come il laboratorio): ANOVA a misure ripetute e post hoc con t di
-  Student appaiati.
-  ANOVA: F(gdl1, gdl2), p; "p GG" = p con la correzione di Greenhouse-Geisser (epsilon < 1
-  quando i livelli non hanno la stessa variabilita'), da leggere quando ci sono piu' di 2
-  livelli; eta2p = eta^2 parziale (0.01 piccolo, 0.06 medio, 0.14 grande).
-  Post hoc: t(gdl), p, "p Bonf" = p x numero di confronti; d = d di Cohen appaiato
-  (0.2 piccolo, 0.5 medio, 0.8 grande; segno + = il secondo momento e' piu' alto);
-  Shapiro = p del test di normalita' sulle differenze (< 0.05: non normali, guardare
-  anche il controllo non parametrico).
-  Significativo = p Bonf (o p GG) < 0.05; i confronti esplorativi non sono corretti.
-- CONTROLLO NON PARAMETRICO: Wilcoxon con p corretto con Holm (e r rank-biserial nei .csv).
-  Con 6 soggetti il p piu' piccolo possibile del Wilcoxon e' 0.031: dopo la correzione
-  non puo' uscire significativo, conta la direzione.
-- migliorato / peggiorato: in base a cosa e' meglio per la metrica (es. tempo: meno
-  e' meglio; hit rate: piu' e' meglio).
-- "cambiano k": quanti soggetti hanno un valore diverso fra i due momenti. Se sono pochi
-  (es. 1 su 9) l'effetto puo' risultare "grande" ma riguarda solo quei soggetti.
+HOW TO READ THIS REPORT
+- One value per participant and condition (the mean of their trials), then statistics
+  across participants: mean ± SD (parametric) and median [Q1, Q3] (non-parametric).
+- Parametric analysis (as Bellitto et al. 2025 and the jamovi models): repeated-measures
+  ANOVA, F(df1, df2), p with sphericity assumed and with the Greenhouse-Geisser correction
+  (p GG, to be read when a factor has more than 2 levels), eta2 = SS effect / SS total
+  (the jamovi "eta2"), eta2p = partial eta2. Post hoc: paired t-tests on the planned
+  comparisons, Bonferroni-corrected within each metric; dz = Cohen's d for paired data;
+  Shapiro = normality of the differences (p < 0.05: check the Wilcoxon).
+- Non-parametric control: Friedman (Kendall's W) and Wilcoxon signed-rank (Holm-corrected,
+  r = rank-biserial correlation).
+- Significance in the figures: * p < 0.05, ** p < 0.01, *** p < 0.001 (corrected p).
 
-Soggetti: 8 (S001, S002, S003, S004, S005, S006, S009, S010)
-  test 1: 8 soggetti
-  test 2: 8 soggetti
-  test 3: 8 soggetti
-  test 4: 8 soggetti
-  test 5: 8 soggetti
-Tutte le metriche sono calcolate dai _raw.csv (cinematica con le funzioni del laboratorio).
-Analisi principale: ANOVA a misure ripetute sui 5 test (Greenhouse-Geisser); post hoc: 4 t
-appaiati fra test consecutivi, Bonferroni sui 4. Controllo: Friedman e Wilcoxon (Holm).
+Participants: 11 (S001, S002, S003, S004, S005, S006, S007, S008, S009, S010, S011)
+  test 1: 11 participants, 12-12 trials each
+  test 2: 11 participants, 12-12 trials each
+  test 3: 11 participants, 12-12 trials each
+  test 4: 11 participants, 12-12 trials each
+  test 5: 11 participants, 12-12 trials each
+Blocks of 4 trials (3 per test); block value = mean of its trials, test value = mean of the 12
+trials (time to reach: mean of the hits). ANOVA on Test x Block, post hoc on the test values.
+Errors at the end of the 4 s trial, from the cursor position at target onset.
 
-Hit rate [%]
+Hit rate (%)
 ------------
-  per test, mediana [Q1-Q3]: test 1: 0.00 [0.00-2.08] | test 2: 8.33 [0.00-10.42] | test 3: 8.33 [0.00-18.75] | test 4: 8.33 [8.33-16.67] | test 5: 0.00 [0.00-0.00]
-  ANOVA sui 5 test (n=8): test F(4,28)=5.53, p=0.002, eps GG=0.34, p GG=0.034, eta2p=0.44 (grande), significativo: si'
-  controllo: Friedman n=8, p=0.003, W=0.50
-  effect of training 1 (test 1 vs 2): test 1 0.00 [0.00-2.08] -> test 2 8.33 [0.00-10.42] | migliorato | n=8 (cambiano 4), t(7)=2.38, p=0.049, p Bonf=0.197, significativo: no | d=0.84 (grande), Shapiro p=0.03 | Wilcoxon p Holm=0.176  <- differenze NON normali: vale il controllo non parametrico
-  effect of training 2 (test 2 vs 3): test 2 8.33 [0.00-10.42] -> test 3 8.33 [0.00-18.75] | migliorato | n=8 (cambiano 5), t(7)=1.43, p=0.197, p Bonf=0.788, significativo: no | d=0.50 (medio), Shapiro p=0.03 | Wilcoxon p Holm=0.668  <- differenze NON normali: vale il controllo non parametrico
-  effect of free exploration + robot run 1 (test 3 vs 4): test 3 8.33 [0.00-18.75] -> test 4 8.33 [8.33-16.67] | migliorato | n=8 (cambiano 8), t(7)=0.42, p=0.685, p Bonf=1.000, significativo: no | d=0.15 (trascurabile), Shapiro p=0.07 | Wilcoxon p Holm=0.742
-  effect of robot run 2 (test 4 vs 5): test 4 8.33 [8.33-16.67] -> test 5 0.00 [0.00-0.00] | peggiorato | n=8 (cambiano 8), t(7)=-7.51, p=0.000, p Bonf=0.001, significativo: si' | d=-2.66 (grande), Shapiro p=0.00 | Wilcoxon p Holm=0.031  <- differenze NON normali: vale il controllo non parametrico
+  test 1 B1              mean ± SD 2.3 ± 7.5              median [IQR] 0.0 [0.0, 0.0]   (n=11)
+  test 1 B2              mean ± SD 4.5 ± 10.1             median [IQR] 0.0 [0.0, 0.0]   (n=11)
+  test 1 B3              mean ± SD 2.3 ± 7.5              median [IQR] 0.0 [0.0, 0.0]   (n=11)
+  test 2 B1              mean ± SD 4.5 ± 10.1             median [IQR] 0.0 [0.0, 0.0]   (n=11)
+  test 2 B2              mean ± SD 4.5 ± 10.1             median [IQR] 0.0 [0.0, 0.0]   (n=11)
+  test 2 B3              mean ± SD 9.1 ± 12.6             median [IQR] 0.0 [0.0, 25.0]   (n=11)
+  test 3 B1              mean ± SD 9.1 ± 12.6             median [IQR] 0.0 [0.0, 25.0]   (n=11)
+  test 3 B2              mean ± SD 9.1 ± 16.9             median [IQR] 0.0 [0.0, 12.5]   (n=11)
+  test 3 B3              mean ± SD 6.8 ± 11.7             median [IQR] 0.0 [0.0, 12.5]   (n=11)
+  test 4 B1              mean ± SD 6.8 ± 11.7             median [IQR] 0.0 [0.0, 12.5]   (n=11)
+  test 4 B2              mean ± SD 11.4 ± 17.2            median [IQR] 0.0 [0.0, 25.0]   (n=11)
+  test 4 B3              mean ± SD 15.9 ± 12.6            median [IQR] 25.0 [0.0, 25.0]   (n=11)
+  test 5 B1              mean ± SD 2.3 ± 7.5              median [IQR] 0.0 [0.0, 0.0]   (n=11)
+  test 5 B2              mean ± SD 4.5 ± 10.1             median [IQR] 0.0 [0.0, 0.0]   (n=11)
+  test 5 B3              mean ± SD 0.0 ± 0.0              median [IQR] 0.0 [0.0, 0.0]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Test: F(4, 40)=4.53, p=0.004, p GG=0.029 (eps=0.45), eta2=0.086, eta2p=0.312
+    Block: F(2, 20)=0.34, p=0.715, p GG=0.704 (eps=0.95), eta2=0.006, eta2p=0.033
+    Test × Block: F(8, 80)=0.79, p=0.616, p GG=0.528 (eps=0.44), eta2=0.031, eta2p=0.073
+  Friedman (5 tests): chi2(4)=14.64, p=0.006, W=0.33 (n=11)
+  Post hoc (planned comparisons)
+    test 1 vs test 2: t(10)=1.49, p Bonf=0.668, dz=0.45, Shapiro p=0.069 | Wilcoxon p Holm=0.472, r=0.67
+    test 2 vs test 3: t(10)=1.40, p Bonf=0.769, dz=0.42, Shapiro p=0.008 | Wilcoxon p Holm=0.668, r=0.47
+    test 3 vs test 4: t(10)=0.84, p Bonf=1.000, dz=0.25, Shapiro p=0.034 | Wilcoxon p Holm=0.668, r=0.29
+    test 4 vs test 5: t(10)=-5.16, p Bonf=0.002, dz=-1.56, Shapiro p=0.018 | Wilcoxon p Holm=0.024, r=-1.00
 
-End-point error [px]
---------------------
-  per test, mediana [Q1-Q3]: test 1: 413.86 [394.03-495.33] | test 2: 315.21 [251.86-371.91] | test 3: 281.11 [220.05-392.91] | test 4: 254.05 [186.37-305.54] | test 5: 250.88 [213.03-327.70]
-  ANOVA sui 5 test (n=8): test F(4,28)=5.14, p=0.003, eps GG=0.53, p GG=0.019, eta2p=0.42 (grande), significativo: si'
-  controllo: Friedman n=8, p=0.017, W=0.38
-  effect of training 1 (test 1 vs 2): test 1 413.86 [394.03-495.33] -> test 2 315.21 [251.86-371.91] | migliorato | n=8 (cambiano 8), t(7)=-2.87, p=0.024, p Bonf=0.096, significativo: no | d=-1.01 (grande), Shapiro p=0.44 | Wilcoxon p Holm=0.062
-  effect of training 2 (test 2 vs 3): test 2 315.21 [251.86-371.91] -> test 3 281.11 [220.05-392.91] | migliorato | n=8 (cambiano 8), t(7)=0.06, p=0.957, p Bonf=1.000, significativo: no | d=0.02 (trascurabile), Shapiro p=0.95 | Wilcoxon p Holm=0.945
-  effect of free exploration + robot run 1 (test 3 vs 4): test 3 281.11 [220.05-392.91] -> test 4 254.05 [186.37-305.54] | migliorato | n=8 (cambiano 8), t(7)=-0.98, p=0.360, p Bonf=1.000, significativo: no | d=-0.35 (piccolo), Shapiro p=0.27 | Wilcoxon p Holm=0.922
-  effect of robot run 2 (test 4 vs 5): test 4 254.05 [186.37-305.54] -> test 5 250.88 [213.03-327.70] | migliorato | n=8 (cambiano 8), t(7)=2.05, p=0.080, p Bonf=0.320, significativo: no | d=0.72 (medio), Shapiro p=1.00 | Wilcoxon p Holm=0.328
+Target crossing rate (%)
+------------------------
+  test 1 B1              mean ± SD 22.7 ± 17.5            median [IQR] 25.0 [12.5, 25.0]   (n=11)
+  test 1 B2              mean ± SD 20.5 ± 10.1            median [IQR] 25.0 [25.0, 25.0]   (n=11)
+  test 1 B3              mean ± SD 29.5 ± 21.8            median [IQR] 25.0 [25.0, 37.5]   (n=11)
+  test 2 B1              mean ± SD 20.5 ± 18.8            median [IQR] 25.0 [0.0, 25.0]   (n=11)
+  test 2 B2              mean ± SD 29.5 ± 21.8            median [IQR] 25.0 [25.0, 37.5]   (n=11)
+  test 2 B3              mean ± SD 29.5 ± 21.8            median [IQR] 25.0 [25.0, 37.5]   (n=11)
+  test 3 B1              mean ± SD 25.0 ± 19.4            median [IQR] 25.0 [12.5, 37.5]   (n=11)
+  test 3 B2              mean ± SD 18.2 ± 22.6            median [IQR] 0.0 [0.0, 37.5]   (n=11)
+  test 3 B3              mean ± SD 31.8 ± 27.6            median [IQR] 25.0 [12.5, 50.0]   (n=11)
+  test 4 B1              mean ± SD 31.8 ± 29.8            median [IQR] 25.0 [0.0, 50.0]   (n=11)
+  test 4 B2              mean ± SD 29.5 ± 21.8            median [IQR] 25.0 [12.5, 50.0]   (n=11)
+  test 4 B3              mean ± SD 38.6 ± 28.2            median [IQR] 25.0 [25.0, 50.0]   (n=11)
+  test 5 B1              mean ± SD 18.2 ± 16.2            median [IQR] 25.0 [0.0, 25.0]   (n=11)
+  test 5 B2              mean ± SD 29.5 ± 15.1            median [IQR] 25.0 [25.0, 37.5]   (n=11)
+  test 5 B3              mean ± SD 27.3 ± 23.6            median [IQR] 25.0 [12.5, 37.5]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Test: F(4, 40)=1.21, p=0.323, p GG=0.324 (eps=0.79), eta2=0.024, eta2p=0.108
+    Block: F(2, 20)=1.60, p=0.226, p GG=0.230 (eps=0.85), eta2=0.024, eta2p=0.138
+    Test × Block: F(8, 80)=0.60, p=0.778, p GG=0.663 (eps=0.49), eta2=0.021, eta2p=0.056
+  Friedman (5 tests): chi2(4)=4.47, p=0.346, W=0.10 (n=11)
+  Post hoc (planned comparisons)
+    test 1 vs test 2: t(10)=0.40, p Bonf=1.000, dz=0.12, Shapiro p=0.680 | Wilcoxon p Holm=1.000, r=0.11
+    test 2 vs test 3: t(10)=-0.30, p Bonf=1.000, dz=-0.09, Shapiro p=0.871 | Wilcoxon p Holm=1.000, r=-0.04
+    test 3 vs test 4: t(10)=2.24, p Bonf=0.197, dz=0.67, Shapiro p=0.022 | Wilcoxon p Holm=0.231, r=0.86
+    test 4 vs test 5: t(10)=-1.75, p Bonf=0.444, dz=-0.53, Shapiro p=0.237 | Wilcoxon p Holm=0.408, r=-0.56
 
-Reach time = movement time (hits) [s]
--------------------------------------
-  per test, mediana [Q1-Q3]: test 1: 1.36 [1.25-1.47] | test 2: 1.88 [1.59-2.79] | test 3: 1.97 [1.43-2.58] | test 4: 1.80 [0.88-2.16] | test 5: 1.69 [1.69-1.69]
-  ANOVA sui 5 test (n=1): test: -
-  controllo: Friedman non calcolabile
-  effect of training 1 (test 1 vs 2): test 1 1.36 [1.25-1.47] -> test 2 1.88 [1.59-2.79] | peggiorato | n=2 (cambiano 2), t(1)=0.85, p=0.552, p Bonf=1.000, significativo: no | d=0.60 (medio), Shapiro p=- | Wilcoxon p Holm=1.000
-  effect of training 2 (test 2 vs 3): test 2 1.88 [1.59-2.79] -> test 3 1.97 [1.43-2.58] | peggiorato | n=4 (cambiano 4), t(3)=0.90, p=0.435, p Bonf=1.000, significativo: no | d=0.45 (piccolo), Shapiro p=0.56 | Wilcoxon p Holm=1.000
-  effect of free exploration + robot run 1 (test 3 vs 4): test 3 1.97 [1.43-2.58] -> test 4 1.80 [0.88-2.16] | migliorato | n=5 (cambiano 5), t(4)=-0.80, p=0.467, p Bonf=1.000, significativo: no | d=-0.36 (piccolo), Shapiro p=0.01 | Wilcoxon p Holm=1.000  <- differenze NON normali: vale il controllo non parametrico
-  effect of robot run 2 (test 4 vs 5): test 4 1.80 [0.88-2.16] -> test 5 1.69 [1.69-1.69] | migliorato | n=1 (cambiano 1), t=-, p=-, p Bonf=-, significativo: - | d=- (-), Shapiro p=- | Wilcoxon p Holm=-
+Time on target (s)
+------------------
+  test 1 B1              mean ± SD 0.09 ± 0.09            median [IQR] 0.08 [0.02, 0.13]   (n=11)
+  test 1 B2              mean ± SD 0.10 ± 0.15            median [IQR] 0.04 [0.01, 0.08]   (n=11)
+  test 1 B3              mean ± SD 0.08 ± 0.11            median [IQR] 0.03 [0.02, 0.06]   (n=11)
+  test 2 B1              mean ± SD 0.12 ± 0.18            median [IQR] 0.05 [0.00, 0.11]   (n=11)
+  test 2 B2              mean ± SD 0.17 ± 0.25            median [IQR] 0.09 [0.03, 0.12]   (n=11)
+  test 2 B3              mean ± SD 0.22 ± 0.25            median [IQR] 0.09 [0.05, 0.38]   (n=11)
+  test 3 B1              mean ± SD 0.23 ± 0.25            median [IQR] 0.11 [0.02, 0.39]   (n=11)
+  test 3 B2              mean ± SD 0.19 ± 0.43            median [IQR] 0.00 [0.00, 0.18]   (n=11)
+  test 3 B3              mean ± SD 0.19 ± 0.25            median [IQR] 0.05 [0.01, 0.27]   (n=11)
+  test 4 B1              mean ± SD 0.16 ± 0.21            median [IQR] 0.08 [0.00, 0.27]   (n=11)
+  test 4 B2              mean ± SD 0.26 ± 0.34            median [IQR] 0.07 [0.03, 0.44]   (n=11)
+  test 4 B3              mean ± SD 0.27 ± 0.23            median [IQR] 0.22 [0.08, 0.46]   (n=11)
+  test 5 B1              mean ± SD 0.08 ± 0.16            median [IQR] 0.03 [0.00, 0.07]   (n=11)
+  test 5 B2              mean ± SD 0.13 ± 0.17            median [IQR] 0.06 [0.02, 0.16]   (n=11)
+  test 5 B3              mean ± SD 0.03 ± 0.04            median [IQR] 0.02 [0.00, 0.04]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Test: F(4, 40)=3.30, p=0.020, p GG=0.076 (eps=0.38), eta2=0.071, eta2p=0.248
+    Block: F(2, 20)=0.24, p=0.785, p GG=0.772 (eps=0.94), eta2=0.004, eta2p=0.024
+    Test × Block: F(8, 80)=0.49, p=0.863, p GG=0.728 (eps=0.45), eta2=0.020, eta2p=0.046
+  Friedman (5 tests): chi2(4)=11.85, p=0.018, W=0.27 (n=11)
+  Post hoc (planned comparisons)
+    test 1 vs test 2: t(10)=1.72, p Bonf=0.466, dz=0.52, Shapiro p=0.117 | Wilcoxon p Holm=0.721, r=0.39
+    test 2 vs test 3: t(10)=0.89, p Bonf=1.000, dz=0.27, Shapiro p=0.576 | Wilcoxon p Holm=0.721, r=0.42
+    test 3 vs test 4: t(10)=0.38, p Bonf=1.000, dz=0.11, Shapiro p=0.814 | Wilcoxon p Holm=0.721, r=0.15
+    test 4 vs test 5: t(10)=-6.72, p Bonf=<0.001, dz=-2.03, Shapiro p=0.900 | Wilcoxon p Holm=0.004, r=-1.00
 
-Initial direction error [deg]
------------------------------
-  per test, mediana [Q1-Q3]: test 1: 77.70 [52.98-88.36] | test 2: 51.48 [44.87-78.24] | test 3: 74.83 [70.76-83.81] | test 4: 60.15 [59.04-83.91] | test 5: 61.96 [59.52-66.58]
-  ANOVA sui 5 test (n=8): test F(4,28)=1.55, p=0.215, eps GG=0.63, p GG=0.239, eta2p=0.18 (grande), significativo: no
-  controllo: Friedman n=8, p=0.240, W=0.17
-  effect of training 1 (test 1 vs 2): test 1 77.70 [52.98-88.36] -> test 2 51.48 [44.87-78.24] | migliorato | n=8 (cambiano 8), t(7)=-1.66, p=0.140, p Bonf=0.560, significativo: no | d=-0.59 (medio), Shapiro p=0.26 | Wilcoxon p Holm=0.750
-  effect of training 2 (test 2 vs 3): test 2 51.48 [44.87-78.24] -> test 3 74.83 [70.76-83.81] | peggiorato | n=8 (cambiano 8), t(7)=1.82, p=0.111, p Bonf=0.444, significativo: no | d=0.64 (medio), Shapiro p=0.44 | Wilcoxon p Holm=0.594
-  effect of free exploration + robot run 1 (test 3 vs 4): test 3 74.83 [70.76-83.81] -> test 4 60.15 [59.04-83.91] | migliorato | n=8 (cambiano 8), t(7)=-0.53, p=0.612, p Bonf=1.000, significativo: no | d=-0.19 (trascurabile), Shapiro p=0.53 | Wilcoxon p Holm=0.750
-  effect of robot run 2 (test 4 vs 5): test 4 60.15 [59.04-83.91] -> test 5 61.96 [59.52-66.58] | peggiorato | n=8 (cambiano 8), t(7)=-1.42, p=0.198, p Bonf=0.793, significativo: no | d=-0.50 (medio), Shapiro p=0.04 | Wilcoxon p Holm=0.750  <- differenze NON normali: vale il controllo non parametrico
+Euclidean error at 4 s (cm)
+---------------------------
+  test 1 B1              mean ± SD 12.53 ± 2.11           median [IQR] 12.53 [11.83, 13.73]   (n=11)
+  test 1 B2              mean ± SD 12.71 ± 1.36           median [IQR] 12.52 [11.75, 13.65]   (n=11)
+  test 1 B3              mean ± SD 12.47 ± 1.32           median [IQR] 11.88 [11.68, 13.16]   (n=11)
+  test 2 B1              mean ± SD 9.31 ± 2.51            median [IQR] 9.96 [7.30, 10.82]   (n=11)
+  test 2 B2              mean ± SD 9.86 ± 2.96            median [IQR] 9.79 [7.76, 11.89]   (n=11)
+  test 2 B3              mean ± SD 9.54 ± 2.16            median [IQR] 9.47 [8.69, 11.09]   (n=11)
+  test 3 B1              mean ± SD 7.33 ± 3.58            median [IQR] 5.63 [4.87, 8.51]   (n=11)
+  test 3 B2              mean ± SD 9.04 ± 4.12            median [IQR] 8.47 [5.68, 11.62]   (n=11)
+  test 3 B3              mean ± SD 9.59 ± 3.78            median [IQR] 8.80 [6.94, 13.07]   (n=11)
+  test 4 B1              mean ± SD 7.59 ± 3.26            median [IQR] 6.57 [4.99, 9.82]   (n=11)
+  test 4 B2              mean ± SD 8.09 ± 2.31            median [IQR] 8.27 [6.84, 9.31]   (n=11)
+  test 4 B3              mean ± SD 8.04 ± 2.44            median [IQR] 7.33 [6.37, 9.66]   (n=11)
+  test 5 B1              mean ± SD 8.03 ± 3.59            median [IQR] 6.53 [5.53, 10.91]   (n=11)
+  test 5 B2              mean ± SD 8.90 ± 3.27            median [IQR] 8.19 [6.93, 10.11]   (n=11)
+  test 5 B3              mean ± SD 9.33 ± 3.19            median [IQR] 8.84 [6.94, 10.28]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Test: F(4, 40)=10.06, p=<0.001, p GG=<0.001 (eps=0.65), eta2=0.249, eta2p=0.502
+    Block: F(2, 20)=2.48, p=0.109, p GG=0.122 (eps=0.81), eta2=0.013, eta2p=0.199
+    Test × Block: F(8, 80)=1.38, p=0.219, p GG=0.268 (eps=0.38), eta2=0.011, eta2p=0.121
+  Friedman (5 tests): chi2(4)=21.16, p=<0.001, W=0.48 (n=11)
+  Post hoc (planned comparisons)
+    test 1 vs test 2: t(10)=-3.86, p Bonf=0.013, dz=-1.16, Shapiro p=0.603 | Wilcoxon p Holm=0.012, r=-0.94
+    test 2 vs test 3: t(10)=-1.03, p Bonf=1.000, dz=-0.31, Shapiro p=0.559 | Wilcoxon p Holm=0.480, r=-0.42
+    test 3 vs test 4: t(10)=-0.73, p Bonf=1.000, dz=-0.22, Shapiro p=0.026 | Wilcoxon p Holm=0.966, r=-0.03
+    test 4 vs test 5: t(10)=2.16, p Bonf=0.225, dz=0.65, Shapiro p=0.602 | Wilcoxon p Holm=0.305, r=0.58
 
-Region accuracy [%]
--------------------
-  per test, mediana [Q1-Q3]: test 1: 20.83 [16.67-25.00] | test 2: 25.00 [22.92-35.42] | test 3: 37.50 [25.00-43.75] | test 4: 33.33 [25.00-43.75] | test 5: 33.33 [12.50-41.67]
-  ANOVA sui 5 test (n=8): test F(4,28)=1.99, p=0.124, eps GG=0.58, p GG=0.164, eta2p=0.22 (grande), significativo: no
-  controllo: Friedman n=8, p=0.143, W=0.21
-  effect of training 1 (test 1 vs 2): test 1 20.83 [16.67-25.00] -> test 2 25.00 [22.92-35.42] | migliorato | n=8 (cambiano 6), t(7)=2.00, p=0.086, p Bonf=0.342, significativo: no | d=0.71 (medio), Shapiro p=0.27 | Wilcoxon p Holm=0.231
-  effect of training 2 (test 2 vs 3): test 2 25.00 [22.92-35.42] -> test 3 37.50 [25.00-43.75] | migliorato | n=8 (cambiano 6), t(7)=0.80, p=0.448, p Bonf=1.000, significativo: no | d=0.28 (piccolo), Shapiro p=0.09 | Wilcoxon p Holm=0.688
-  effect of free exploration + robot run 1 (test 3 vs 4): test 3 37.50 [25.00-43.75] -> test 4 33.33 [25.00-43.75] | peggiorato | n=8 (cambiano 7), t(7)=0.48, p=0.644, p Bonf=1.000, significativo: no | d=0.17 (trascurabile), Shapiro p=0.31 | Wilcoxon p Holm=0.688
-  effect of robot run 2 (test 4 vs 5): test 4 33.33 [25.00-43.75] -> test 5 33.33 [12.50-41.67] | migliorato | n=8 (cambiano 7), t(7)=-2.55, p=0.038, p Bonf=0.152, significativo: no | d=-0.90 (grande), Shapiro p=0.79 | Wilcoxon p Holm=0.231
+Extent error at 4 s (cm)
+------------------------
+  test 1 B1              mean ± SD -0.51 ± 2.35           median [IQR] -0.72 [-1.62, 0.79]   (n=11)
+  test 1 B2              mean ± SD 5.72 ± 4.35            median [IQR] 7.63 [4.38, 8.07]   (n=11)
+  test 1 B3              mean ± SD 6.87 ± 3.46            median [IQR] 8.13 [6.04, 9.21]   (n=11)
+  test 2 B1              mean ± SD -0.20 ± 3.12           median [IQR] -1.03 [-2.55, 1.32]   (n=11)
+  test 2 B2              mean ± SD 3.54 ± 4.00            median [IQR] 4.37 [1.06, 6.58]   (n=11)
+  test 2 B3              mean ± SD 4.16 ± 4.28            median [IQR] 5.41 [2.19, 6.88]   (n=11)
+  test 3 B1              mean ± SD 0.18 ± 2.10            median [IQR] -0.10 [-0.71, 0.67]   (n=11)
+  test 3 B2              mean ± SD 1.55 ± 1.87            median [IQR] 1.60 [0.57, 2.34]   (n=11)
+  test 3 B3              mean ± SD 2.69 ± 6.43            median [IQR] 4.31 [2.16, 5.45]   (n=11)
+  test 4 B1              mean ± SD -0.32 ± 2.40           median [IQR] -0.45 [-1.65, 1.11]   (n=11)
+  test 4 B2              mean ± SD 2.04 ± 2.13            median [IQR] 2.29 [0.73, 3.56]   (n=11)
+  test 4 B3              mean ± SD 4.24 ± 2.73            median [IQR] 3.39 [2.00, 5.97]   (n=11)
+  test 5 B1              mean ± SD -0.06 ± 1.77           median [IQR] 0.09 [-0.71, 1.07]   (n=11)
+  test 5 B2              mean ± SD 2.36 ± 3.18            median [IQR] 1.95 [0.68, 4.55]   (n=11)
+  test 5 B3              mean ± SD 4.34 ± 3.30            median [IQR] 3.44 [2.88, 4.46]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Test: F(4, 40)=3.08, p=0.026, p GG=0.071 (eps=0.48), eta2=0.048, eta2p=0.236
+    Block: F(2, 20)=38.49, p=<0.001, p GG=<0.001 (eps=0.97), eta2=0.243, eta2p=0.794
+    Test × Block: F(8, 80)=1.94, p=0.066, p GG=0.145 (eps=0.38), eta2=0.040, eta2p=0.162
+  Friedman (5 tests): chi2(4)=8.36, p=0.079, W=0.19 (n=11)
+  Post hoc (planned comparisons)
+    test 1 vs test 2: t(10)=-2.84, p Bonf=0.070, dz=-0.86, Shapiro p=0.931 | Wilcoxon p Holm=0.129, r=-0.73
+    test 2 vs test 3: t(10)=-0.94, p Bonf=1.000, dz=-0.28, Shapiro p=0.090 | Wilcoxon p Holm=0.524, r=-0.48
+    test 3 vs test 4: t(10)=0.65, p Bonf=1.000, dz=0.19, Shapiro p=0.003 | Wilcoxon p Holm=1.000, r=0.12
+    test 4 vs test 5: t(10)=0.51, p Bonf=1.000, dz=0.15, Shapiro p=0.641 | Wilcoxon p Holm=1.000, r=0.09
 
-Metriche esplorative
---------------------
-  Tutte le altre metriche sono in blind_tests.csv e plots/metrics/, calcolate allo stesso modo.
+Direction error at 4 s (deg)
+----------------------------
+  test 1 B1              mean ± SD 40.8 ± 7.5             median [IQR] 40.7 [35.8, 45.7]   (n=11)
+  test 1 B2              mean ± SD 46.6 ± 12.1            median [IQR] 47.8 [39.0, 53.6]   (n=11)
+  test 1 B3              mean ± SD 30.5 ± 13.2            median [IQR] 26.5 [22.3, 35.0]   (n=11)
+  test 2 B1              mean ± SD 33.9 ± 12.2            median [IQR] 28.2 [24.9, 42.2]   (n=11)
+  test 2 B2              mean ± SD 36.6 ± 12.7            median [IQR] 35.8 [27.1, 47.4]   (n=11)
+  test 2 B3              mean ± SD 30.1 ± 14.1            median [IQR] 23.9 [22.4, 37.2]   (n=11)
+  test 3 B1              mean ± SD 29.6 ± 11.3            median [IQR] 29.0 [21.7, 38.4]   (n=11)
+  test 3 B2              mean ± SD 37.4 ± 20.9            median [IQR] 33.5 [25.0, 44.6]   (n=11)
+  test 3 B3              mean ± SD 30.1 ± 13.8            median [IQR] 35.0 [18.7, 38.7]   (n=11)
+  test 4 B1              mean ± SD 28.1 ± 11.9            median [IQR] 22.3 [19.3, 35.8]   (n=11)
+  test 4 B2              mean ± SD 30.6 ± 10.0            median [IQR] 28.5 [24.7, 38.8]   (n=11)
+  test 4 B3              mean ± SD 25.1 ± 16.1            median [IQR] 20.9 [15.8, 29.6]   (n=11)
+  test 5 B1              mean ± SD 30.8 ± 14.2            median [IQR] 27.7 [21.3, 42.0]   (n=11)
+  test 5 B2              mean ± SD 35.0 ± 14.9            median [IQR] 29.6 [26.1, 45.0]   (n=11)
+  test 5 B3              mean ± SD 30.9 ± 11.9            median [IQR] 29.7 [20.3, 37.5]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Test: F(4, 40)=2.74, p=0.042, p GG=0.078 (eps=0.58), eta2=0.069, eta2p=0.215
+    Block: F(2, 20)=6.45, p=0.007, p GG=0.008 (eps=0.94), eta2=0.055, eta2p=0.392
+    Test × Block: F(8, 80)=1.00, p=0.441, p GG=0.419 (eps=0.51), eta2=0.021, eta2p=0.091
+  Friedman (5 tests): chi2(4)=9.82, p=0.044, W=0.22 (n=11)
+  Post hoc (planned comparisons)
+    test 1 vs test 2: t(10)=-1.70, p Bonf=0.476, dz=-0.51, Shapiro p=0.073 | Wilcoxon p Holm=0.369, r=-0.55
+    test 2 vs test 3: t(10)=-0.31, p Bonf=1.000, dz=-0.09, Shapiro p=0.306 | Wilcoxon p Holm=1.000, r=-0.18
+    test 3 vs test 4: t(10)=-0.93, p Bonf=1.000, dz=-0.28, Shapiro p=0.011 | Wilcoxon p Holm=1.000, r=-0.09
+    test 4 vs test 5: t(10)=3.03, p Bonf=0.050, dz=0.91, Shapiro p=0.574 | Wilcoxon p Holm=0.039, r=0.85
+
+Minimum distance to target (cm)
+-------------------------------
+  test 1 B1              mean ± SD 6.89 ± 2.15            median [IQR] 7.96 [5.85, 8.28]   (n=11)
+  test 1 B2              mean ± SD 5.85 ± 1.86            median [IQR] 5.84 [4.51, 6.63]   (n=11)
+  test 1 B3              mean ± SD 4.57 ± 1.76            median [IQR] 4.42 [3.44, 6.19]   (n=11)
+  test 2 B1              mean ± SD 5.27 ± 2.34            median [IQR] 5.08 [3.92, 6.56]   (n=11)
+  test 2 B2              mean ± SD 4.69 ± 2.20            median [IQR] 4.22 [3.51, 4.88]   (n=11)
+  test 2 B3              mean ± SD 4.21 ± 1.96            median [IQR] 4.02 [3.12, 4.86]   (n=11)
+  test 3 B1              mean ± SD 4.18 ± 1.39            median [IQR] 4.21 [3.23, 4.74]   (n=11)
+  test 3 B2              mean ± SD 5.23 ± 1.86            median [IQR] 5.30 [3.89, 6.41]   (n=11)
+  test 3 B3              mean ± SD 4.77 ± 3.57            median [IQR] 3.98 [2.73, 4.97]   (n=11)
+  test 4 B1              mean ± SD 4.36 ± 2.48            median [IQR] 3.95 [2.51, 5.97]   (n=11)
+  test 4 B2              mean ± SD 4.08 ± 1.36            median [IQR] 4.33 [2.82, 4.88]   (n=11)
+  test 4 B3              mean ± SD 3.70 ± 1.69            median [IQR] 3.86 [2.73, 5.18]   (n=11)
+  test 5 B1              mean ± SD 4.91 ± 2.14            median [IQR] 5.40 [3.46, 5.69]   (n=11)
+  test 5 B2              mean ± SD 4.72 ± 1.12            median [IQR] 5.20 [3.66, 5.49]   (n=11)
+  test 5 B3              mean ± SD 4.35 ± 1.65            median [IQR] 4.20 [3.41, 5.53]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Test: F(4, 40)=2.60, p=0.050, p GG=0.074 (eps=0.72), eta2=0.070, eta2p=0.206
+    Block: F(2, 20)=2.12, p=0.146, p GG=0.167 (eps=0.66), eta2=0.026, eta2p=0.175
+    Test × Block: F(8, 80)=1.84, p=0.082, p GG=0.173 (eps=0.31), eta2=0.037, eta2p=0.155
+  Friedman (5 tests): chi2(4)=15.42, p=0.004, W=0.35 (n=11)
+  Post hoc (planned comparisons)
+    test 1 vs test 2: t(10)=-1.80, p Bonf=0.408, dz=-0.54, Shapiro p=0.234 | Wilcoxon p Holm=0.305, r=-0.58
+    test 2 vs test 3: t(10)=0.01, p Bonf=1.000, dz=0.00, Shapiro p=0.113 | Wilcoxon p Holm=1.000, r=0.00
+    test 3 vs test 4: t(10)=-1.16, p Bonf=1.000, dz=-0.35, Shapiro p=0.010 | Wilcoxon p Holm=1.000, r=-0.24
+    test 4 vs test 5: t(10)=2.55, p Bonf=0.115, dz=0.77, Shapiro p=0.346 | Wilcoxon p Holm=0.129, r=0.73
+
+Time to reach (hits) (s)
+------------------------
+  test 1 B1              mean ± SD 1.57 ± 0.00            median [IQR] 1.57 [1.57, 1.57]   (n=1)
+  test 1 B2              mean ± SD 0.95 ± 0.28            median [IQR] 0.95 [0.85, 1.04]   (n=2)
+  test 1 B3              mean ± SD 2.94 ± 0.00            median [IQR] 2.94 [2.94, 2.94]   (n=1)
+  test 2 B1              mean ± SD 2.29 ± 0.70            median [IQR] 2.29 [2.05, 2.54]   (n=2)
+  test 2 B2              mean ± SD 1.02 ± 0.09            median [IQR] 1.02 [0.99, 1.06]   (n=2)
+  test 2 B3              mean ± SD 2.02 ± 0.80            median [IQR] 1.99 [1.68, 2.32]   (n=4)
+  test 3 B1              mean ± SD 2.14 ± 0.63            median [IQR] 1.98 [1.79, 2.33]   (n=4)
+  test 3 B2              mean ± SD 2.24 ± 1.02            median [IQR] 2.56 [1.83, 2.81]   (n=3)
+  test 3 B3              mean ± SD 1.86 ± 0.38            median [IQR] 1.97 [1.70, 2.07]   (n=3)
+  test 4 B1              mean ± SD 2.09 ± 0.58            median [IQR] 1.87 [1.76, 2.31]   (n=3)
+  test 4 B2              mean ± SD 2.05 ± 0.83            median [IQR] 2.12 [1.63, 2.54]   (n=4)
+  test 4 B3              mean ± SD 1.36 ± 0.88            median [IQR] 1.31 [0.82, 2.08]   (n=7)
+  test 5 B1              mean ± SD 1.82 ± 0.00            median [IQR] 1.82 [1.82, 1.82]   (n=1)
+  test 5 B2              mean ± SD 1.81 ± 0.17            median [IQR] 1.81 [1.75, 1.87]   (n=2)
+  test 5 B3              mean ± SD -                      median [IQR] -   (n=0)
+  Repeated-measures ANOVA (n=0 complete participants)
+    Test × Block: not computable
+  Friedman (5 tests): chi2(4)=6.40, p=0.171, W=0.80 (n=2)
+  Post hoc (planned comparisons)
+    test 1 vs test 2: t(2)=1.69, p Bonf=0.935, dz=0.97, Shapiro p=0.475 | Wilcoxon p Holm=1.000, r=0.67
+    test 2 vs test 3: t(4)=1.43, p Bonf=0.908, dz=0.64, Shapiro p=0.950 | Wilcoxon p Holm=0.750, r=0.73
+    test 3 vs test 4: t(5)=-0.87, p Bonf=1.000, dz=-0.35, Shapiro p=0.036 | Wilcoxon p Holm=1.000, r=-0.43
+    test 4 vs test 5: t(1)=-0.94, p Bonf=1.000, dz=-0.66, Shapiro p=- | Wilcoxon p Holm=1.000, r=-0.33
+  NOTE: 10 participant(s) without a value in some block (excluded from the ANOVA)
+
+Linearity index
+---------------
+  test 1 B1              mean ± SD 0.86 ± 0.46            median [IQR] 0.94 [0.55, 1.09]   (n=11)
+  test 1 B2              mean ± SD 0.68 ± 0.39            median [IQR] 0.62 [0.43, 0.83]   (n=11)
+  test 1 B3              mean ± SD 0.73 ± 0.40            median [IQR] 0.70 [0.39, 0.95]   (n=11)
+  test 2 B1              mean ± SD 0.77 ± 0.38            median [IQR] 0.62 [0.50, 0.99]   (n=11)
+  test 2 B2              mean ± SD 1.06 ± 0.85            median [IQR] 0.66 [0.57, 1.07]   (n=11)
+  test 2 B3              mean ± SD 1.33 ± 1.13            median [IQR] 1.07 [0.58, 1.66]   (n=11)
+  test 3 B1              mean ± SD 0.84 ± 0.55            median [IQR] 0.79 [0.47, 1.02]   (n=11)
+  test 3 B2              mean ± SD 1.70 ± 2.21            median [IQR] 0.77 [0.55, 1.65]   (n=11)
+  test 3 B3              mean ± SD 7.82 ± 22.14           median [IQR] 0.80 [0.52, 1.72]   (n=11)
+  test 4 B1              mean ± SD 0.75 ± 0.39            median [IQR] 0.64 [0.49, 0.79]   (n=11)
+  test 4 B2              mean ± SD 1.43 ± 1.76            median [IQR] 0.88 [0.57, 1.29]   (n=11)
+  test 4 B3              mean ± SD 0.97 ± 0.67            median [IQR] 0.74 [0.49, 1.40]   (n=11)
+  test 5 B1              mean ± SD 0.71 ± 0.27            median [IQR] 0.71 [0.53, 0.93]   (n=11)
+  test 5 B2              mean ± SD 0.90 ± 0.46            median [IQR] 0.70 [0.64, 1.16]   (n=11)
+  test 5 B3              mean ± SD 1.76 ± 2.35            median [IQR] 0.96 [0.66, 1.66]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Test: F(4, 40)=1.13, p=0.356, p GG=0.314 (eps=0.26), eta2=0.029, eta2p=0.101
+    Block: F(2, 20)=1.38, p=0.276, p GG=0.269 (eps=0.52), eta2=0.017, eta2p=0.121
+    Test × Block: F(8, 80)=0.94, p=0.492, p GG=0.359 (eps=0.13), eta2=0.043, eta2p=0.086
+  Friedman (5 tests): chi2(4)=1.24, p=0.872, W=0.03 (n=11)
+  Post hoc (planned comparisons)
+    test 1 vs test 2: t(10)=1.64, p Bonf=0.529, dz=0.49, Shapiro p=0.276 | Wilcoxon p Holm=0.824, r=0.45
+    test 2 vs test 3: t(10)=1.04, p Bonf=1.000, dz=0.31, Shapiro p=<0.001 | Wilcoxon p Holm=0.824, r=-0.15
+    test 3 vs test 4: t(10)=-1.04, p Bonf=1.000, dz=-0.31, Shapiro p=<0.001 | Wilcoxon p Holm=0.824, r=-0.33
+    test 4 vs test 5: t(10)=1.24, p Bonf=0.978, dz=0.37, Shapiro p=0.984 | Wilcoxon p Holm=0.824, r=0.42
+
+Movement duration (s)
+---------------------
+  test 1 B1              mean ± SD 3.36 ± 0.54            median [IQR] 3.60 [3.12, 3.77]   (n=11)
+  test 1 B2              mean ± SD 3.25 ± 0.58            median [IQR] 3.49 [2.75, 3.71]   (n=11)
+  test 1 B3              mean ± SD 3.24 ± 0.72            median [IQR] 3.51 [2.86, 3.72]   (n=11)
+  test 2 B1              mean ± SD 3.06 ± 0.63            median [IQR] 3.17 [2.54, 3.64]   (n=11)
+  test 2 B2              mean ± SD 3.08 ± 0.59            median [IQR] 3.00 [2.69, 3.46]   (n=11)
+  test 2 B3              mean ± SD 3.12 ± 0.60            median [IQR] 3.19 [2.86, 3.53]   (n=11)
+  test 3 B1              mean ± SD 3.09 ± 0.67            median [IQR] 3.05 [2.70, 3.73]   (n=11)
+  test 3 B2              mean ± SD 3.00 ± 0.80            median [IQR] 3.16 [2.49, 3.56]   (n=11)
+  test 3 B3              mean ± SD 3.17 ± 0.45            median [IQR] 3.10 [2.90, 3.39]   (n=11)
+  test 4 B1              mean ± SD 3.12 ± 0.46            median [IQR] 3.08 [2.83, 3.48]   (n=11)
+  test 4 B2              mean ± SD 3.13 ± 0.73            median [IQR] 3.42 [2.50, 3.70]   (n=11)
+  test 4 B3              mean ± SD 2.77 ± 0.73            median [IQR] 2.97 [2.41, 3.21]   (n=11)
+  test 5 B1              mean ± SD 3.21 ± 0.36            median [IQR] 2.98 [2.97, 3.52]   (n=11)
+  test 5 B2              mean ± SD 3.18 ± 0.65            median [IQR] 3.21 [2.77, 3.71]   (n=11)
+  test 5 B3              mean ± SD 3.20 ± 0.56            median [IQR] 3.13 [2.77, 3.71]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Test: F(4, 40)=1.53, p=0.212, p GG=0.239 (eps=0.54), eta2=0.026, eta2p=0.133
+    Block: F(2, 20)=0.23, p=0.795, p GG=0.762 (eps=0.86), eta2=0.002, eta2p=0.023
+    Test × Block: F(8, 80)=1.00, p=0.443, p GG=0.423 (eps=0.55), eta2=0.018, eta2p=0.091
+  Friedman (5 tests): chi2(4)=3.27, p=0.513, W=0.07 (n=11)
+  Post hoc (planned comparisons)
+    test 1 vs test 2: t(10)=-1.49, p Bonf=0.669, dz=-0.45, Shapiro p=0.553 | Wilcoxon p Holm=0.492, r=-0.55
+    test 2 vs test 3: t(10)=-0.02, p Bonf=1.000, dz=-0.01, Shapiro p=0.857 | Wilcoxon p Holm=0.966, r=0.03
+    test 3 vs test 4: t(10)=-0.90, p Bonf=1.000, dz=-0.27, Shapiro p=0.849 | Wilcoxon p Holm=0.826, r=-0.30
+    test 4 vs test 5: t(10)=1.76, p Bonf=0.435, dz=0.53, Shapiro p=0.052 | Wilcoxon p Holm=0.492, r=0.52

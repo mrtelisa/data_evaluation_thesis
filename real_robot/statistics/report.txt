@@ -1,124 +1,140 @@
-ROBOT REALE – run 1 vs run 2
-============================
+REAL ROBOT – run 1 vs run 2
+===========================
 
-COME LEGGERE QUESTO REPORT
-- "mediana [Q1-Q3]": il valore tipico del gruppo e la fascia in cui sta la meta' centrale
-  dei soggetti. Ogni soggetto pesa 1: prima un valore per soggetto, poi il gruppo.
-- ANALISI PRINCIPALE (come il laboratorio): ANOVA a misure ripetute e post hoc con t di
-  Student appaiati.
-  ANOVA: F(gdl1, gdl2), p; "p GG" = p con la correzione di Greenhouse-Geisser (epsilon < 1
-  quando i livelli non hanno la stessa variabilita'), da leggere quando ci sono piu' di 2
-  livelli; eta2p = eta^2 parziale (0.01 piccolo, 0.06 medio, 0.14 grande).
-  Post hoc: t(gdl), p, "p Bonf" = p x numero di confronti; d = d di Cohen appaiato
-  (0.2 piccolo, 0.5 medio, 0.8 grande; segno + = il secondo momento e' piu' alto);
-  Shapiro = p del test di normalita' sulle differenze (< 0.05: non normali, guardare
-  anche il controllo non parametrico).
-  Significativo = p Bonf (o p GG) < 0.05; i confronti esplorativi non sono corretti.
-- CONTROLLO NON PARAMETRICO: Wilcoxon con p corretto con Holm (e r rank-biserial nei .csv).
-  Con 6 soggetti il p piu' piccolo possibile del Wilcoxon e' 0.031: dopo la correzione
-  non puo' uscire significativo, conta la direzione.
-- migliorato / peggiorato: in base a cosa e' meglio per la metrica (es. tempo: meno
-  e' meglio; hit rate: piu' e' meglio).
-- "cambiano k": quanti soggetti hanno un valore diverso fra i due momenti. Se sono pochi
-  (es. 1 su 9) l'effetto puo' risultare "grande" ma riguarda solo quei soggetti.
+HOW TO READ THIS REPORT
+- One value per participant and condition (the mean of their trials), then statistics
+  across participants: mean ± SD (parametric) and median [Q1, Q3] (non-parametric).
+- Parametric analysis (as Bellitto et al. 2025 and the jamovi models): repeated-measures
+  ANOVA, F(df1, df2), p with sphericity assumed and with the Greenhouse-Geisser correction
+  (p GG, to be read when a factor has more than 2 levels), eta2 = SS effect / SS total
+  (the jamovi "eta2"), eta2p = partial eta2. Post hoc: paired t-tests on the planned
+  comparisons, Bonferroni-corrected within each metric; dz = Cohen's d for paired data;
+  Shapiro = normality of the differences (p < 0.05: check the Wilcoxon).
+- Non-parametric control: Friedman (Kendall's W) and Wilcoxon signed-rank (Holm-corrected,
+  r = rank-biserial correlation).
+- Significance in the figures: * p < 0.05, ** p < 0.01, *** p < 0.001 (corrected p).
 
-Soggetti: 8 (S001, S002, S003, S004, S005, S006, S009, S010)
-  run 1: 8 soggetti
-  run 2: 8 soggetti
-Metriche di guida ricalcolate dai file raw (_regions, _odometry, _cursor.csv); durate delle fasi,
-dwell, repositioning e conteggi manuali dal _session.json (nel raw mancano gli istanti degli eventi).
-Confronti: t appaiato run 1 vs run 2, Bonferroni sulle 4 metriche primarie (controllo: Wilcoxon,
-Holm); le altre metriche sono esplorative (p non corretto).
+Participants: 11 (S001, S002, S003, S004, S005, S006, S007, S008, S009, S010, S011)
+  run 1: 11 participants
+  run 2: 11 participants
+Outbound = from the start to the object selection (outbound + approach phases); the four
+phases (outbound, grasp, return, placement) add up to the total time.
+Path length, mean speed and jerk from the base odometry; region transitions = changes of
+the cursor region in the 3 x 3 control interface.
 
-Metriche primarie (t appaiato, Bonferroni sulle 4; controllo Wilcoxon, Holm)
-----------------------------------------------------------------------------
-  Outbound time [s]: run 1 228.35 [207.80-328.62] -> run 2 168.69 [136.04-202.00] | migliorato | n=8 (cambiano 8), t(7)=-2.16, p=0.067, p Bonf=0.269, significativo: no | d=-0.77 (medio), Shapiro p=0.24 | Wilcoxon p Holm=0.164
-  Return time [s]: run 1 274.01 [236.65-345.84] -> run 2 233.43 [206.87-261.36] | migliorato | n=8 (cambiano 8), t(7)=-2.01, p=0.085, p Bonf=0.339, significativo: no | d=-0.71 (medio), Shapiro p=0.00 | Wilcoxon p Holm=0.062  <- differenze NON normali: vale il controllo non parametrico
-  Non-adjacent changes – outbound [%]: run 1 0.00 [0.00-0.00] -> run 2 0.00 [0.00-0.00] | migliorato | n=8 (cambiano 1), t(7)=-1.00, p=0.351, p Bonf=1.000, significativo: no | d=-0.35 (piccolo), Shapiro p=0.00 | Wilcoxon p Holm=0.317  <- differenze NON normali: vale il controllo non parametrico
-  Command changes – outbound [/min]: run 1 19.74 [17.27-24.86] -> run 2 26.59 [22.45-28.33] | peggiorato | n=8 (cambiano 8), t(7)=2.75, p=0.028, p Bonf=0.114, significativo: no | d=0.97 (grande), Shapiro p=0.25 | Wilcoxon p Holm=0.164
+Completion time – outbound (s)
+------------------------------
+  run 1                  mean ± SD 328 ± 93               median [IQR] 294 [268, 389]   (n=11)
+  run 2                  mean ± SD 230 ± 68               median [IQR] 193 [192, 254]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Run: F(1, 10)=12.11, p=0.006, eta2=0.284, eta2p=0.548
+  Post hoc (planned comparisons)
+    run 1 vs run 2: t(10)=-3.48, p Bonf=0.006, dz=-1.05, Shapiro p=0.347 | Wilcoxon p Holm=0.005, r=-0.91
 
-Le 13 metriche, per fase (esplorative: p non corretto)
-------------------------------------------------------
-  1. Successo e tempo per fase
-    Test duration [s]: run 1 637.70 [570.28-784.46] -> run 2 549.94 [485.52-616.10] | migliorato | n=8 (cambiano 8), t(7)=-1.12, p=0.299, significativo: no | d=-0.40 (piccolo), Shapiro p=0.13
-    Outbound time [s]: run 1 228.35 [207.80-328.62] -> run 2 168.69 [136.04-202.00] | migliorato | n=8 (cambiano 8), t(7)=-2.16, p=0.067, significativo: no | d=-0.77 (medio), Shapiro p=0.24
-    Approach time [s]: run 1 57.71 [53.41-60.23] -> run 2 46.81 [41.42-52.37] | migliorato | n=8 (cambiano 8), t(7)=-2.35, p=0.051, significativo: no | d=-0.83 (grande), Shapiro p=0.76
-    Grasp time [s]: run 1 28.95 [28.56-35.94] -> run 2 28.28 [27.38-36.76] | migliorato | n=8 (cambiano 8), t(7)=0.87, p=0.416, significativo: no | d=0.31 (piccolo), Shapiro p=0.00  <- differenze NON normali: vale il controllo non parametrico
-    Return time [s]: run 1 274.01 [236.65-345.84] -> run 2 233.43 [206.87-261.36] | migliorato | n=8 (cambiano 8), t(7)=-2.01, p=0.085, significativo: no | d=-0.71 (medio), Shapiro p=0.00  <- differenze NON normali: vale il controllo non parametrico
-    Placement time [s]: run 1 28.65 [27.35-30.98] -> run 2 28.03 [26.20-31.06] | migliorato | n=8 (cambiano 8), t(7)=-1.07, p=0.319, significativo: no | d=-0.38 (piccolo), Shapiro p=0.21
-  2. Cambi di comando
-    Command changes – outbound [/min]: run 1 19.74 [17.27-24.86] -> run 2 26.59 [22.45-28.33] | peggiorato | n=8 (cambiano 8), t(7)=2.75, p=0.028, significativo: si' | d=0.97 (grande), Shapiro p=0.25
-    Command changes – approach [/min]: run 1 25.25 [21.43-27.17] -> run 2 29.27 [21.02-30.90] | peggiorato | n=8 (cambiano 8), t(7)=0.90, p=0.399, significativo: no | d=0.32 (piccolo), Shapiro p=0.51
-    Command changes – return [/min]: run 1 25.26 [22.65-26.78] -> run 2 26.03 [23.89-28.14] | peggiorato | n=8 (cambiano 8), t(7)=0.87, p=0.411, significativo: no | d=0.31 (piccolo), Shapiro p=0.60
-  3. Insicurezza: dwell rifiutati e repositioning
-    Dwells declined: run 1 0.00 [0.00-1.00] -> run 2 0.00 [0.00-0.00] | migliorato | n=8 (cambiano 3), t(7)=-1.53, p=0.170, significativo: no | d=-0.54 (medio), Shapiro p=0.00  <- differenze NON normali: vale il controllo non parametrico
-    Repositionings – grasp: run 1 0.00 [0.00-0.00] -> run 2 0.00 [0.00-0.25] | peggiorato | n=8 (cambiano 3), t(7)=0.96, p=0.370, significativo: no | d=0.34 (piccolo), Shapiro p=0.00  <- differenze NON normali: vale il controllo non parametrico
-    Repositionings – placement: run 1 0.00 [0.00-0.00] -> run 2 0.00 [0.00-0.00] | invariato | n=8 (cambiano 0), t(7)=0.00, p=1.000, significativo: no | d=0.00 (trascurabile), Shapiro p=-
-  4. Tempo fermo (regione 5, dwell esclusi)
-    Stop time – outbound [%]: run 1 30.91 [28.98-38.68] -> run 2 18.91 [8.53-24.15] | migliorato | n=8 (cambiano 8), t(7)=-3.45, p=0.011, significativo: si' | d=-1.22 (grande), Shapiro p=0.36
-    Stop time – approach [%]: run 1 55.61 [51.96-62.18] -> run 2 40.92 [31.56-51.48] | migliorato | n=8 (cambiano 8), t(7)=-2.32, p=0.053, significativo: no | d=-0.82 (grande), Shapiro p=0.76
-    Stop time – return [%]: run 1 23.48 [17.61-32.32] -> run 2 17.70 [12.46-21.04] | migliorato | n=8 (cambiano 8), t(7)=-2.79, p=0.027, significativo: si' | d=-0.99 (grande), Shapiro p=0.03  <- differenze NON normali: vale il controllo non parametrico
-  5. Collisioni (contate a mano)
-    Collisions: run 1 0.00 [0.00-0.00] -> run 2 0.00 [0.00-0.00] | invariato | n=2 (cambiano 0), t(1)=0.00, p=1.000, significativo: no | d=0.00 (trascurabile), Shapiro p=-
-  6. Salti non adiacenti
-    Non-adjacent changes – outbound [%]: run 1 0.00 [0.00-0.00] -> run 2 0.00 [0.00-0.00] | migliorato | n=8 (cambiano 1), t(7)=-1.00, p=0.351, significativo: no | d=-0.35 (piccolo), Shapiro p=0.00  <- differenze NON normali: vale il controllo non parametrico
-    Non-adjacent changes – approach [%]: run 1 0.00 [0.00-0.00] -> run 2 0.00 [0.00-0.00] | invariato | n=8 (cambiano 0), t(7)=0.00, p=1.000, significativo: no | d=0.00 (trascurabile), Shapiro p=-
-    Non-adjacent changes – return [%]: run 1 0.00 [0.00-0.00] -> run 2 0.00 [0.00-0.00] | invariato | n=8 (cambiano 0), t(7)=0.00, p=1.000, significativo: no | d=0.00 (trascurabile), Shapiro p=-
-  7. Inversioni (sovracorrezioni)
-    Reversals – outbound [%]: run 1 25.74 [23.85-28.69] -> run 2 23.96 [22.60-25.18] | migliorato | n=8 (cambiano 7), t(7)=-1.20, p=0.269, significativo: no | d=-0.42 (piccolo), Shapiro p=0.09
-    Reversals – approach [%]: run 1 18.33 [12.50-27.08] -> run 2 5.56 [0.00-25.89] | migliorato | n=8 (cambiano 7), t(7)=-1.17, p=0.282, significativo: no | d=-0.41 (piccolo), Shapiro p=0.54
-    Reversals – return [%]: run 1 23.40 [18.95-28.06] -> run 2 21.79 [17.48-26.80] | migliorato | n=8 (cambiano 8), t(7)=-0.78, p=0.461, significativo: no | d=-0.28 (piccolo), Shapiro p=0.32
-  8. Durata media di un comando
-    Mean command duration – outbound [s]: run 1 3.21 [2.05-3.57] -> run 2 2.50 [2.26-3.15] | peggiorato | n=8 (cambiano 8), t(7)=-1.10, p=0.306, significativo: no | d=-0.39 (piccolo), Shapiro p=0.14
-    Mean command duration – approach [s]: run 1 1.70 [1.53-1.80] -> run 2 1.99 [1.73-2.38] | migliorato | n=8 (cambiano 8), t(7)=1.92, p=0.096, significativo: no | d=0.68 (medio), Shapiro p=0.91
-    Mean command duration – return [s]: run 1 2.54 [2.18-2.83] -> run 2 2.49 [2.40-3.08] | peggiorato | n=8 (cambiano 8), t(7)=0.50, p=0.630, significativo: no | d=0.18 (trascurabile), Shapiro p=0.44
-  9. Passaggi per lo stop (stop-and-go vs fluido)
-    Passages through stop – outbound [%]: run 1 55.47 [41.97-74.72] -> run 2 27.11 [14.23-50.53] | migliorato | n=8 (cambiano 8), t(7)=-1.85, p=0.107, significativo: no | d=-0.65 (medio), Shapiro p=0.35
-    Passages through stop – approach [%]: run 1 87.50 [68.75-100.00] -> run 2 85.71 [50.00-100.00] | migliorato | n=8 (cambiano 6), t(7)=-0.93, p=0.382, significativo: no | d=-0.33 (piccolo), Shapiro p=0.12
-    Passages through stop – return [%]: run 1 45.48 [39.87-65.16] -> run 2 39.83 [30.95-48.22] | migliorato | n=8 (cambiano 8), t(7)=-1.91, p=0.098, significativo: no | d=-0.68 (medio), Shapiro p=0.62
-  10. Entropia di sequenza
-    Sequence entropy – outbound [bits]: run 1 1.13 [0.90-1.27] -> run 2 0.89 [0.83-1.07] | migliorato | n=8 (cambiano 8), t(7)=-1.54, p=0.168, significativo: no | d=-0.54 (medio), Shapiro p=0.77
-    Sequence entropy – approach [bits]: run 1 0.71 [0.67-0.85] -> run 2 0.59 [0.35-0.69] | migliorato | n=8 (cambiano 8), t(7)=-1.51, p=0.175, significativo: no | d=-0.53 (medio), Shapiro p=0.62
-    Sequence entropy – return [bits]: run 1 1.07 [0.93-1.22] -> run 2 1.02 [0.95-1.09] | migliorato | n=8 (cambiano 8), t(7)=-0.43, p=0.679, significativo: no | d=-0.15 (trascurabile), Shapiro p=0.83
-  11. Path length
-    Path length – outbound (cursor_distance.m) [m]: run 1 22.27 [21.98-22.46] -> run 2 21.70 [21.47-23.33] | migliorato | n=8 (cambiano 8), t(7)=-0.65, p=0.534, significativo: no | d=-0.23 (piccolo), Shapiro p=0.44
-    Path length – return (cursor_distance.m) [m]: run 1 25.46 [25.32-26.17] -> run 2 25.32 [24.88-25.61] | migliorato | n=8 (cambiano 8), t(7)=-2.17, p=0.066, significativo: no | d=-0.77 (medio), Shapiro p=0.77
-  12. Rotazione cumulata
-    Cumulative rotation – outbound [rad]: run 1 18.53 [17.38-21.31] -> run 2 15.34 [13.96-20.63] | migliorato | n=8 (cambiano 8), t(7)=-1.40, p=0.204, significativo: no | d=-0.50 (piccolo), Shapiro p=0.23
-    Cumulative rotation – return [rad]: run 1 26.77 [22.35-30.02] -> run 2 23.70 [19.96-25.24] | migliorato | n=8 (cambiano 8), t(7)=-3.27, p=0.014, significativo: si' | d=-1.16 (grande), Shapiro p=0.62
-  Script del laboratorio (esplorative)
-    Region changes – outbound (movement_train.m) [/min]: run 1 22.12 [18.23-32.37] -> run 2 28.73 [23.64-33.30] | peggiorato | n=8 (cambiano 8), t(7)=1.73, p=0.128, significativo: no | d=0.61 (medio), Shapiro p=0.42
-    Robot linear speed – outbound (speed1.m) [m/s]: run 1 0.11 [0.08-0.11] -> run 2 0.13 [0.12-0.16] | - | n=8 (cambiano 8), t(7)=3.88, p=0.006, significativo: si' | d=1.37 (grande), Shapiro p=0.84
-    Robot peak linear speed – outbound (speed1.m) [m/s]: run 1 0.27 [0.26-0.33] -> run 2 0.30 [0.28-0.34] | - | n=8 (cambiano 8), t(7)=0.68, p=0.519, significativo: no | d=0.24 (piccolo), Shapiro p=0.67
-    Robot angular speed – outbound (speed1.m) [rad/s]: run 1 0.11 [0.10-0.11] -> run 2 0.12 [0.11-0.13] | - | n=8 (cambiano 8), t(7)=2.85, p=0.025, significativo: si' | d=1.01 (grande), Shapiro p=0.95
-    Robot mean jerk – outbound (jerk1.m) [m/s^3]: run 1 1.84 [1.58-2.38] -> run 2 2.52 [2.18-2.90] | peggiorato | n=8 (cambiano 8), t(7)=2.70, p=0.031, significativo: si' | d=0.96 (grande), Shapiro p=0.12
-    Robot dimensionless jerk, log10 – outbound (jerk1.m): run 1 11.18 [10.17-11.64] -> run 2 11.14 [10.79-11.56] | migliorato | n=8 (cambiano 8), t(7)=1.42, p=0.198, significativo: no | d=0.50 (medio), Shapiro p=0.03  <- differenze NON normali: vale il controllo non parametrico
-    Cursor path length – outbound (cursor_distance.m) [px]: run 1 37095.99 [32297.62-52806.53] -> run 2 35561.02 [28509.78-47896.17] | - | n=8 (cambiano 8), t(7)=-0.78, p=0.460, significativo: no | d=-0.28 (piccolo), Shapiro p=0.22
-    Cursor speed – outbound (speed1.m) [px/s]: run 1 182.40 [155.91-226.09] -> run 2 210.12 [187.58-262.22] | - | n=8 (cambiano 8), t(7)=0.48, p=0.644, significativo: no | d=0.17 (trascurabile), Shapiro p=0.00  <- differenze NON normali: vale il controllo non parametrico
-    Cursor mean jerk – outbound (jerk1.m) [px/s^3]: run 1 6077.53 [4615.98-7628.31] -> run 2 7045.84 [5859.95-8485.75] | peggiorato | n=8 (cambiano 8), t(7)=1.04, p=0.332, significativo: no | d=0.37 (piccolo), Shapiro p=0.38
-    Cursor speed peaks – outbound (smooth.m): run 1 34.00 [27.50-47.25] -> run 2 47.50 [36.75-61.75] | peggiorato | n=8 (cambiano 8), t(7)=2.03, p=0.082, significativo: no | d=0.72 (medio), Shapiro p=0.46
-    Region changes – approach (movement_train.m) [/min]: run 1 28.64 [25.15-33.79] -> run 2 37.20 [32.18-44.85] | peggiorato | n=8 (cambiano 8), t(7)=1.36, p=0.217, significativo: no | d=0.48 (piccolo), Shapiro p=0.25
-    Robot linear speed – approach (speed1.m) [m/s]: run 1 0.03 [0.03-0.03] -> run 2 0.04 [0.03-0.05] | - | n=8 (cambiano 8), t(7)=1.93, p=0.095, significativo: no | d=0.68 (medio), Shapiro p=0.84
-    Robot peak linear speed – approach (speed1.m) [m/s]: run 1 0.20 [0.19-0.21] -> run 2 0.20 [0.19-0.21] | - | n=8 (cambiano 8), t(7)=-0.16, p=0.874, significativo: no | d=-0.06 (trascurabile), Shapiro p=0.57
-    Robot angular speed – approach (speed1.m) [rad/s]: run 1 0.05 [0.05-0.06] -> run 2 0.06 [0.05-0.06] | - | n=8 (cambiano 8), t(7)=0.76, p=0.470, significativo: no | d=0.27 (piccolo), Shapiro p=0.07
-    Robot mean jerk – approach (jerk1.m) [m/s^3]: run 1 0.65 [0.55-0.71] -> run 2 0.81 [0.70-1.19] | peggiorato | n=8 (cambiano 8), t(7)=1.01, p=0.346, significativo: no | d=0.36 (piccolo), Shapiro p=0.80
-    Robot dimensionless jerk, log10 – approach (jerk1.m): run 1 9.59 [9.15-9.87] -> run 2 9.47 [8.76-9.61] | migliorato | n=8 (cambiano 8), t(7)=-0.22, p=0.830, significativo: no | d=-0.08 (trascurabile), Shapiro p=0.52
-    Cursor path length – approach (cursor_distance.m) [px]: run 1 8248.53 [7684.49-10784.55] -> run 2 8488.93 [5848.85-10268.01] | - | n=8 (cambiano 8), t(7)=-0.84, p=0.429, significativo: no | d=-0.30 (piccolo), Shapiro p=0.99
-    Cursor speed – approach (speed1.m) [px/s]: run 1 169.69 [136.58-187.58] -> run 2 156.68 [152.08-217.97] | - | n=8 (cambiano 8), t(7)=0.13, p=0.900, significativo: no | d=0.05 (trascurabile), Shapiro p=0.48
-    Cursor mean jerk – approach (jerk1.m) [px/s^3]: run 1 4804.17 [4133.89-6759.61] -> run 2 5431.32 [4790.94-7304.97] | peggiorato | n=8 (cambiano 8), t(7)=0.24, p=0.814, significativo: no | d=0.09 (trascurabile), Shapiro p=0.76
-    Cursor speed peaks – approach (smooth.m): run 1 11.00 [8.50-16.00] -> run 2 14.50 [9.75-18.50] | peggiorato | n=8 (cambiano 8), t(7)=0.56, p=0.595, significativo: no | d=0.20 (trascurabile), Shapiro p=0.12
-    Region changes – return (movement_train.m) [/min]: run 1 26.86 [24.28-28.50] -> run 2 28.87 [25.47-33.81] | peggiorato | n=8 (cambiano 8), t(7)=1.32, p=0.229, significativo: no | d=0.47 (piccolo), Shapiro p=0.68
-    Robot linear speed – return (speed1.m) [m/s]: run 1 0.10 [0.08-0.11] -> run 2 0.12 [0.11-0.13] | - | n=8 (cambiano 8), t(7)=4.77, p=0.002, significativo: si' | d=1.69 (grande), Shapiro p=0.98
-    Robot peak linear speed – return (speed1.m) [m/s]: run 1 0.27 [0.24-0.28] -> run 2 0.26 [0.24-0.29] | - | n=8 (cambiano 8), t(7)=1.34, p=0.223, significativo: no | d=0.47 (piccolo), Shapiro p=0.02  <- differenze NON normali: vale il controllo non parametrico
-    Robot angular speed – return (speed1.m) [rad/s]: run 1 0.12 [0.09-0.13] -> run 2 0.12 [0.11-0.13] | - | n=8 (cambiano 8), t(7)=1.72, p=0.128, significativo: no | d=0.61 (medio), Shapiro p=0.36
-    Robot mean jerk – return (jerk1.m) [m/s^3]: run 1 1.89 [1.48-2.17] -> run 2 2.18 [2.09-2.28] | peggiorato | n=8 (cambiano 8), t(7)=2.06, p=0.079, significativo: no | d=0.73 (medio), Shapiro p=0.74
-    Robot dimensionless jerk, log10 – return (jerk1.m): run 1 11.43 [10.44-12.21] -> run 2 10.69 [10.39-11.51] | migliorato | n=8 (cambiano 8), t(7)=0.16, p=0.875, significativo: no | d=0.06 (trascurabile), Shapiro p=0.17
-    Cursor path length – return (cursor_distance.m) [px]: run 1 60040.93 [48128.02-84348.15] -> run 2 51450.15 [46506.94-61053.13] | - | n=8 (cambiano 8), t(7)=-1.93, p=0.096, significativo: no | d=-0.68 (medio), Shapiro p=0.43
-    Cursor speed – return (speed1.m) [px/s]: run 1 220.69 [208.20-242.17] -> run 2 229.25 [199.41-276.22] | - | n=8 (cambiano 8), t(7)=0.17, p=0.868, significativo: no | d=0.06 (trascurabile), Shapiro p=0.15
-    Cursor mean jerk – return (jerk1.m) [px/s^3]: run 1 6471.57 [6003.27-7588.02] -> run 2 7824.39 [6513.89-8646.04] | peggiorato | n=8 (cambiano 8), t(7)=0.73, p=0.489, significativo: no | d=0.26 (piccolo), Shapiro p=0.36
-    Cursor speed peaks – return (smooth.m): run 1 75.50 [48.25-90.00] -> run 2 57.00 [56.50-69.50] | migliorato | n=8 (cambiano 8), t(7)=-1.04, p=0.332, significativo: no | d=-0.37 (piccolo), Shapiro p=0.99
+Completion time – grasp (s)
+---------------------------
+  run 1                  mean ± SD 37 ± 19                median [IQR] 30 [29, 37]   (n=11)
+  run 2                  mean ± SD 80 ± 146               median [IQR] 29 [28, 45]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Run: F(1, 10)=0.88, p=0.369, eta2=0.044, eta2p=0.081
+  Post hoc (planned comparisons)
+    run 1 vs run 2: t(10)=0.94, p Bonf=0.369, dz=0.28, Shapiro p=<0.001 | Wilcoxon p Holm=0.765, r=-0.12
 
-13. Conteggi (solo descrittivi)
+Completion time – return (s)
+----------------------------
+  run 1                  mean ± SD 332 ± 152              median [IQR] 261 [241, 378]   (n=11)
+  run 2                  mean ± SD 240 ± 52               median [IQR] 225 [210, 270]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Run: F(1, 10)=6.65, p=0.027, eta2=0.154, eta2p=0.399
+  Post hoc (planned comparisons)
+    run 1 vs run 2: t(10)=-2.58, p Bonf=0.027, dz=-0.78, Shapiro p=<0.001 | Wilcoxon p Holm=0.002, r=-0.97
+
+Completion time – placement (s)
 -------------------------------
-  run 1: 8/8 compiti completati; collisioni 0 (in 0 sessioni); borracce cadute al grasp 0, nel trasporto 0 (dipendono dal robot); dwell rifiutati 6; repositioning 1
-  run 2: 8/8 compiti completati; collisioni 0 (in 0 sessioni); borracce cadute al grasp 0, nel trasporto 0 (dipendono dal robot); dwell rifiutati 0; repositioning 6
+  run 1                  mean ± SD 33 ± 10                median [IQR] 29 [27, 31]   (n=11)
+  run 2                  mean ± SD 31 ± 6                 median [IQR] 31 [27, 33]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Run: F(1, 10)=0.74, p=0.410, eta2=0.009, eta2p=0.069
+  Post hoc (planned comparisons)
+    run 1 vs run 2: t(10)=-0.86, p Bonf=0.410, dz=-0.26, Shapiro p=0.019 | Wilcoxon p Holm=0.831, r=-0.09
+
+Completion time – total (s)
+---------------------------
+  run 1                  mean ± SD 731 ± 247              median [IQR] 626 [583, 816]   (n=11)
+  run 2                  mean ± SD 581 ± 182              median [IQR] 545 [471, 617]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Run: F(1, 10)=3.22, p=0.103, eta2=0.115, eta2p=0.243
+  Post hoc (planned comparisons)
+    run 1 vs run 2: t(10)=-1.79, p Bonf=0.103, dz=-0.54, Shapiro p=0.051 | Wilcoxon p Holm=0.042, r=-0.70
+
+Path length – outbound (m)
+--------------------------
+  run 1                  mean ± SD 23.79 ± 0.96           median [IQR] 23.53 [23.27, 23.81]   (n=11)
+  run 2                  mean ± SD 23.35 ± 0.99           median [IQR] 22.99 [22.70, 23.70]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Run: F(1, 10)=1.93, p=0.195, eta2=0.052, eta2p=0.162
+  Post hoc (planned comparisons)
+    run 1 vs run 2: t(10)=-1.39, p Bonf=0.195, dz=-0.42, Shapiro p=0.069 | Wilcoxon p Holm=0.147, r=-0.52
+
+Path length – return (m)
+------------------------
+  run 1                  mean ± SD 25.61 ± 0.78           median [IQR] 25.42 [25.00, 26.26]   (n=11)
+  run 2                  mean ± SD 25.26 ± 0.59           median [IQR] 25.28 [24.80, 25.72]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Run: F(1, 10)=4.98, p=0.050, eta2=0.063, eta2p=0.333
+  Post hoc (planned comparisons)
+    run 1 vs run 2: t(10)=-2.23, p Bonf=0.050, dz=-0.67, Shapiro p=0.916 | Wilcoxon p Holm=0.042, r=-0.70
+
+Mean speed – outbound (m/s)
+---------------------------
+  run 1                  mean ± SD 0.09 ± 0.02            median [IQR] 0.09 [0.07, 0.10]   (n=11)
+  run 2                  mean ± SD 0.12 ± 0.03            median [IQR] 0.13 [0.11, 0.13]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Run: F(1, 10)=31.94, p=<0.001, eta2=0.332, eta2p=0.762
+  Post hoc (planned comparisons)
+    run 1 vs run 2: t(10)=5.65, p Bonf=<0.001, dz=1.70, Shapiro p=0.962 | Wilcoxon p Holm=<0.001, r=1.00
+
+Mean speed – return (m/s)
+-------------------------
+  run 1                  mean ± SD 0.10 ± 0.03            median [IQR] 0.11 [0.08, 0.11]   (n=11)
+  run 2                  mean ± SD 0.12 ± 0.02            median [IQR] 0.12 [0.10, 0.12]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Run: F(1, 10)=40.85, p=<0.001, eta2=0.149, eta2p=0.803
+  Post hoc (planned comparisons)
+    run 1 vs run 2: t(10)=6.39, p Bonf=<0.001, dz=1.93, Shapiro p=0.896 | Wilcoxon p Holm=<0.001, r=1.00
+
+Jerk – outbound (m/s³)
+----------------------
+  run 1                  mean ± SD 1.82 ± 0.63            median [IQR] 1.71 [1.45, 2.18]   (n=11)
+  run 2                  mean ± SD 2.47 ± 0.80            median [IQR] 2.25 [1.96, 2.67]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Run: F(1, 10)=14.60, p=0.003, eta2=0.183, eta2p=0.593
+  Post hoc (planned comparisons)
+    run 1 vs run 2: t(10)=3.82, p Bonf=0.003, dz=1.15, Shapiro p=0.736 | Wilcoxon p Holm=0.003, r=0.94
+
+Jerk – return (m/s³)
+--------------------
+  run 1                  mean ± SD 1.96 ± 0.70            median [IQR] 2.02 [1.41, 2.42]   (n=11)
+  run 2                  mean ± SD 2.35 ± 0.58            median [IQR] 2.19 [2.06, 2.42]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Run: F(1, 10)=7.13, p=0.023, eta2=0.089, eta2p=0.416
+  Post hoc (planned comparisons)
+    run 1 vs run 2: t(10)=2.67, p Bonf=0.023, dz=0.81, Shapiro p=0.496 | Wilcoxon p Holm=0.019, r=0.79
+
+Region transitions – outbound
+-----------------------------
+  run 1                  mean ± SD 117 ± 44               median [IQR] 108 [92, 143]   (n=11)
+  run 2                  mean ± SD 98 ± 36                median [IQR] 93 [68, 118]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Run: F(1, 10)=1.42, p=0.261, eta2=0.060, eta2p=0.124
+  Post hoc (planned comparisons)
+    run 1 vs run 2: t(10)=-1.19, p Bonf=0.261, dz=-0.36, Shapiro p=0.752 | Wilcoxon p Holm=0.240, r=-0.42
+
+Region transitions – return
+---------------------------
+  run 1                  mean ± SD 125 ± 42               median [IQR] 119 [92, 150]   (n=11)
+  run 2                  mean ± SD 106 ± 29               median [IQR] 104 [86, 126]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Run: F(1, 10)=5.05, p=0.048, eta2=0.073, eta2p=0.336
+  Post hoc (planned comparisons)
+    run 1 vs run 2: t(10)=-2.25, p Bonf=0.048, dz=-0.68, Shapiro p=0.559 | Wilcoxon p Holm=0.067, r=-0.64

@@ -1,0 +1,1032 @@
+{
+  "subject": "S011",
+  "task": "reachy2_bomi_pick_and_place",
+  "protocol_step": "run1",
+  "run": 1,
+  "timestamp": "2026-10-01 17:05:17",
+  "session_start": "2026-10-01T17:05:17",
+  "session_end": "2026-10-01T17:15:51",
+  "test_start": "2026-10-01T17:05:34",
+  "test_end": "2026-10-01T17:15:29",
+  "files": {
+    "session": "S011_run1_session.json",
+    "odometry_csv": "S011_run1_odometry.csv",
+    "regions_csv": "S011_run1_regions.csv",
+    "cursor_csv": "S011_run1_cursor.csv",
+    "calibration_map": "S011_20261001_163740.npz"
+  },
+  "screen": {
+    "canvas_width": 2550,
+    "canvas_height": 1500,
+    "origin": "top-left",
+    "x_axis": "right",
+    "y_axis": "down (cursor up = forward)",
+    "regions": "3x3 grid, 1 2 3 / 4 5 6 / 7 8 9, 5 = stop",
+    "region_x_edges": [
+      847,
+      1697
+    ],
+    "region_y_edges": [
+      497,
+      997
+    ],
+    "dead_zone_px": 200,
+    "cursor_map_window": {
+      "width": 510,
+      "height": 300,
+      "position": [
+        0,
+        0
+      ]
+    },
+    "display": {
+      "output": "eDP-1",
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "mapping": {
+    "type": "autoencoder (markerlessBoMI), 42 hand features (21 landmarks x, y, mirrored image) -> 2D cursor",
+    "map_file": "S011_20261001_163740.npz",
+    "shared_map": "shared",
+    "calibration_samples": "shared_calib.npy",
+    "ae": {
+      "hidden_units": 32,
+      "activation": "tanh",
+      "latent_dim": 2,
+      "epochs": 3001,
+      "learning_rate": 0.02,
+      "test_split": 0.2,
+      "seed": 20,
+      "calibration_duration_s": 90.0
+    },
+    "ae_metrics": {
+      "n_train": 1286,
+      "n_test": 322,
+      "vaf_train": 95.58398462831974,
+      "cu_train": [
+        49.92723083496094,
+        50.07277297973633
+      ],
+      "vaf_test": 94.96869333088398,
+      "cu_test": [
+        53.964088439941406,
+        46.03591537475586
+      ]
+    },
+    "customization_steps": [
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.1,
+        "gain_y": 1.1,
+        "off_x": 0.0,
+        "off_y": 0.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.1,
+        "gain_y": 1.1,
+        "off_x": 0.0,
+        "off_y": 0.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 0.9090909090909091,
+        "gain_y": 0.9090909090909091,
+        "off_x": 0.0,
+        "off_y": 0.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.1,
+        "gain_y": 1.1,
+        "off_x": 0.0,
+        "off_y": 0.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.1,
+        "gain_y": 1.1,
+        "off_x": 0.0,
+        "off_y": 0.0
+      }
+    ],
+    "affine": {
+      "A": [
+        [
+          1307.057913746547,
+          0.0
+        ],
+        [
+          0.0,
+          657.7112187774951
+        ]
+      ],
+      "b": [
+        1430.1900966792386,
+        907.1337164772226
+      ]
+    },
+    "vs_shared": {
+      "M": [
+        [
+          1.3310000000000004,
+          0.0
+        ],
+        [
+          0.0,
+          1.3310000000000006
+        ]
+      ],
+      "t": [
+        -422.02500000000055,
+        -248.25000000000045
+      ]
+    },
+    "filter": {
+      "type": "butterworth low-pass",
+      "order": 3,
+      "cutoff_hz": 4.0,
+      "sample_hz": 30.0
+    },
+    "velocity": {
+      "min_linear": 0.2,
+      "max_linear": 0.5,
+      "min_angular": 0.8,
+      "max_angular": 1.1,
+      "dead_zone_px": 200,
+      "reduced_speed_factor": 0.75,
+      "repositioning": "min_linear / min_angular"
+    },
+    "hand_tracking": {
+      "model": "hand_landmarker.task",
+      "num_hands": 1,
+      "min_detection_confidence": 0.7,
+      "min_presence_confidence": 0.5,
+      "min_tracking_confidence": 0.5
+    }
+  },
+  "fps": {
+    "webcam_index": 0,
+    "webcam_nominal": 30.0,
+    "webcam_resolution": [
+      640,
+      480
+    ],
+    "control_loop_hz": 20,
+    "robot_camera_stream_hz": 20.0
+  },
+  "task_config": {
+    "robot_ip": "10.186.13.12",
+    "mode_switch_dwell_s": 10.0,
+    "preview_dwell_s": 3.0,
+    "hover_select_dwell_s": 3.0,
+    "yolo_model": "yolov8n.pt",
+    "yolo_confidence": 0.5,
+    "lidar_slowdown_m": 0.5,
+    "lidar_critical_m": 0.2,
+    "lidar_critical_pre_grasp_m": 0.1
+  },
+  "n_trials_planned": 1,
+  "n_trials_completed": 1,
+  "frames": {
+    "n_frames": 5993,
+    "n_frames_lost": 10121,
+    "n_frames_read_failed": 0,
+    "n_frames_skipped": 10121,
+    "n_frames_no_hand": 0,
+    "no_hand_percent": 0.0,
+    "fps_mean": 11.181298382075596,
+    "tracking_time": 533.5695190429688
+  },
+  "end_reason": "finished",
+  "success": true,
+  "test_duration": 595.2039320468903,
+  "navigation_duration": 273.3534343242645,
+  "phase_durations": {
+    "outbound": 194.3095121383667,
+    "approach": 79.04391884803772,
+    "grasp": 30.976939916610718,
+    "return": 261.34540128707886,
+    "placement": 29.52815318107605
+  },
+  "phase_completed": {
+    "outbound": true,
+    "approach": true,
+    "grasp": true,
+    "return": true,
+    "placement": true
+  },
+  "reached_object_selection": true,
+  "n_repositioning": 0,
+  "n_repositioning_per_phase": {
+    "grasp": 0,
+    "placement": 0
+  },
+  "n_dwell": 3,
+  "n_dwell_declined": 0,
+  "n_dwell_per_phase": {
+    "outbound": 1,
+    "approach": 1,
+    "return": 1
+  },
+  "n_dwell_declined_per_phase": {},
+  "n_objects_moved": 1,
+  "objects_moved": [
+    "bottle"
+  ],
+  "manual": {
+    "n_collisions": 0,
+    "n_drops_grasp": 0,
+    "n_drops_transport": 0,
+    "notes": ""
+  },
+  "experimenter_notes": "",
+  "path_length_outbound": 21.393094621083424,
+  "path_length_return": 24.853322920836593,
+  "cumulative_rotation_outbound": 21.09486406482756,
+  "cumulative_rotation_return": 23.6233311294719,
+  "driving": {
+    "outbound": {
+      "driving_time": 170.17544269561768,
+      "path_length": 21.393094621083424,
+      "cumulative_rotation": 21.09486406482756,
+      "log_dimensionless_jerk": -14.677730177850217,
+      "stop_time": 29.173904180526733,
+      "stop_percent": 17.143427816849165,
+      "region_time_seconds": {
+        "region1": 9.98,
+        "region2": 112.67,
+        "region3": 6.14,
+        "region4": 5.38,
+        "region5": 29.17,
+        "region6": 6.83,
+        "region7": 0.0,
+        "region8": 0.0,
+        "region9": 0.0
+      },
+      "region_time_percent": {
+        "region1": 5.9,
+        "region2": 66.2,
+        "region3": 3.6,
+        "region4": 3.2,
+        "region5": 17.1,
+        "region6": 4.0,
+        "region7": 0.0,
+        "region8": 0.0,
+        "region9": 0.0
+      },
+      "n_commands": 72,
+      "n_command_changes": 55,
+      "command_changes_per_min": 19.391752110217844,
+      "mean_command_duration": 2.5405627380717886,
+      "median_command_duration": 1.4435412883758545,
+      "non_adjacent_percent": 0.0,
+      "n_non_adjacent": 0,
+      "n_motion_changes": 38,
+      "n_reversals": 5,
+      "reversal_percent": 13.157894736842104,
+      "stop_passage_percent": 26.31578947368421,
+      "sequence_entropy": 1.2150771748945486,
+      "command_sequences": [
+        [
+          5,
+          2
+        ],
+        [
+          2
+        ],
+        [
+          1,
+          2,
+          5
+        ],
+        [
+          6,
+          5,
+          2,
+          4
+        ],
+        [
+          4,
+          5,
+          6
+        ],
+        [
+          6,
+          5,
+          2
+        ],
+        [],
+        [
+          5,
+          6,
+          3,
+          5,
+          2,
+          1,
+          2
+        ],
+        [
+          5,
+          2,
+          6,
+          3,
+          2,
+          5
+        ],
+        [
+          5,
+          4,
+          5,
+          2
+        ],
+        [
+          2,
+          3,
+          5,
+          6,
+          5,
+          2,
+          5
+        ],
+        [
+          2
+        ],
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          2,
+          5,
+          3,
+          2,
+          3,
+          2,
+          1,
+          2,
+          5,
+          2,
+          1,
+          2,
+          3,
+          2
+        ],
+        [
+          2
+        ],
+        [
+          2,
+          1,
+          2,
+          1,
+          2
+        ],
+        [
+          2,
+          1,
+          2,
+          5,
+          2
+        ]
+      ]
+    },
+    "approach": {
+      "driving_time": 54.2957284450531,
+      "path_length": 1.9059763835036765,
+      "cumulative_rotation": 5.6047714948654175,
+      "log_dimensionless_jerk": -13.080547694110521,
+      "stop_time": 30.24171257019043,
+      "stop_percent": 55.69814318044344,
+      "region_time_seconds": {
+        "region1": 0.48,
+        "region2": 13.77,
+        "region3": 1.97,
+        "region4": 4.98,
+        "region5": 30.24,
+        "region6": 2.21,
+        "region7": 0.57,
+        "region8": 0.06,
+        "region9": 0.0
+      },
+      "region_time_percent": {
+        "region1": 0.9,
+        "region2": 25.4,
+        "region3": 3.6,
+        "region4": 9.2,
+        "region5": 55.7,
+        "region6": 4.1,
+        "region7": 1.1,
+        "region8": 0.1,
+        "region9": 0.0
+      },
+      "n_commands": 35,
+      "n_command_changes": 32,
+      "command_changes_per_min": 35.361897795386,
+      "mean_command_duration": 1.2593804660596346,
+      "median_command_duration": 0.9992139339447021,
+      "non_adjacent_percent": 0.0,
+      "n_non_adjacent": 0,
+      "n_motion_changes": 17,
+      "n_reversals": 5,
+      "reversal_percent": 29.41176470588235,
+      "stop_passage_percent": 76.47058823529412,
+      "sequence_entropy": 0.9541271554887337,
+      "command_sequences": [
+        [
+          5,
+          2,
+          3,
+          2,
+          5,
+          2,
+          1,
+          2,
+          5,
+          7,
+          5,
+          4,
+          5,
+          4,
+          5,
+          2,
+          5,
+          2,
+          5,
+          6,
+          5,
+          4,
+          5,
+          4,
+          5,
+          4,
+          5
+        ],
+        [
+          5
+        ],
+        [
+          4,
+          5,
+          2,
+          5,
+          2,
+          5,
+          2
+        ]
+      ]
+    },
+    "repositioning": {
+      "driving_time": 0.0,
+      "path_length": 0.0,
+      "cumulative_rotation": 0.0,
+      "log_dimensionless_jerk": null,
+      "stop_time": 0.0,
+      "stop_percent": null,
+      "region_time_seconds": {
+        "region1": 0.0,
+        "region2": 0.0,
+        "region3": 0.0,
+        "region4": 0.0,
+        "region5": 0.0,
+        "region6": 0.0,
+        "region7": 0.0,
+        "region8": 0.0,
+        "region9": 0.0
+      },
+      "region_time_percent": {
+        "region1": 0.0,
+        "region2": 0.0,
+        "region3": 0.0,
+        "region4": 0.0,
+        "region5": 0.0,
+        "region6": 0.0,
+        "region7": 0.0,
+        "region8": 0.0,
+        "region9": 0.0
+      },
+      "n_commands": 0,
+      "n_command_changes": 0,
+      "command_changes_per_min": null,
+      "mean_command_duration": null,
+      "median_command_duration": null,
+      "non_adjacent_percent": null,
+      "n_non_adjacent": 0,
+      "n_motion_changes": 0,
+      "n_reversals": 0,
+      "reversal_percent": null,
+      "stop_passage_percent": null,
+      "sequence_entropy": null,
+      "command_sequences": []
+    },
+    "return": {
+      "driving_time": 231.69895482063293,
+      "path_length": 24.853322920836593,
+      "cumulative_rotation": 23.6233311294719,
+      "log_dimensionless_jerk": -15.173810377255943,
+      "stop_time": 43.231544733047485,
+      "stop_percent": 18.658497948993634,
+      "region_time_seconds": {
+        "region1": 8.61,
+        "region2": 156.53,
+        "region3": 6.82,
+        "region4": 9.74,
+        "region5": 43.23,
+        "region6": 4.67,
+        "region7": 0.0,
+        "region8": 2.1,
+        "region9": 0.0
+      },
+      "region_time_percent": {
+        "region1": 3.7,
+        "region2": 67.6,
+        "region3": 2.9,
+        "region4": 4.2,
+        "region5": 18.7,
+        "region6": 2.0,
+        "region7": 0.0,
+        "region8": 0.9,
+        "region9": 0.0
+      },
+      "n_commands": 102,
+      "n_command_changes": 98,
+      "command_changes_per_min": 25.377757981480467,
+      "mean_command_duration": 2.599277423487769,
+      "median_command_duration": 1.54207444190979,
+      "non_adjacent_percent": 0.0,
+      "n_non_adjacent": 0,
+      "n_motion_changes": 68,
+      "n_reversals": 15,
+      "reversal_percent": 22.058823529411764,
+      "stop_passage_percent": 41.1764705882353,
+      "sequence_entropy": 1.2207789304787982,
+      "command_sequences": [
+        [
+          5,
+          8,
+          5,
+          4,
+          5,
+          4,
+          5,
+          4,
+          5,
+          2,
+          5,
+          6,
+          5,
+          2,
+          5,
+          6,
+          5,
+          2,
+          5,
+          4,
+          5,
+          2,
+          5,
+          4,
+          2,
+          5,
+          6,
+          5,
+          4,
+          5,
+          4,
+          5,
+          2,
+          1,
+          2,
+          5,
+          2,
+          3,
+          5,
+          2,
+          5,
+          2,
+          5,
+          2,
+          3,
+          5,
+          3,
+          5,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          2,
+          3,
+          2
+        ],
+        [],
+        [
+          2,
+          3,
+          2,
+          1,
+          2
+        ],
+        [
+          2
+        ],
+        [
+          2,
+          1,
+          2,
+          3,
+          2,
+          5,
+          2,
+          5,
+          2,
+          1,
+          2,
+          3,
+          2,
+          1,
+          2,
+          5,
+          2,
+          1,
+          5,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          3,
+          2,
+          5,
+          4,
+          5,
+          2,
+          5,
+          4,
+          5
+        ]
+      ]
+    },
+    "all": {
+      "driving_time": 456.1701259613037,
+      "path_length": 48.152393925423695,
+      "cumulative_rotation": 50.32296668916488,
+      "log_dimensionless_jerk": null,
+      "stop_time": 102.64716148376465,
+      "stop_percent": 22.501947331042906,
+      "region_time_seconds": {
+        "region1": 19.07,
+        "region2": 282.98,
+        "region3": 14.92,
+        "region4": 20.1,
+        "region5": 102.65,
+        "region6": 13.72,
+        "region7": 0.57,
+        "region8": 2.16,
+        "region9": 0.0
+      },
+      "region_time_percent": {
+        "region1": 4.2,
+        "region2": 62.0,
+        "region3": 3.3,
+        "region4": 4.4,
+        "region5": 22.5,
+        "region6": 3.0,
+        "region7": 0.1,
+        "region8": 0.5,
+        "region9": 0.0
+      },
+      "n_commands": 209,
+      "n_command_changes": 185,
+      "command_changes_per_min": 24.33302701839269,
+      "mean_command_duration": 2.4027887256178135,
+      "median_command_duration": 1.4217822551727295,
+      "non_adjacent_percent": 0.0,
+      "n_non_adjacent": 0,
+      "n_motion_changes": 123,
+      "n_reversals": 25,
+      "reversal_percent": 20.32520325203252,
+      "stop_passage_percent": 41.46341463414634,
+      "sequence_entropy": 1.2747409674856038,
+      "command_sequences": [
+        [
+          5,
+          2
+        ],
+        [
+          2
+        ],
+        [
+          1,
+          2,
+          5
+        ],
+        [
+          6,
+          5,
+          2,
+          4
+        ],
+        [
+          4,
+          5,
+          6
+        ],
+        [
+          6,
+          5,
+          2
+        ],
+        [],
+        [
+          5,
+          6,
+          3,
+          5,
+          2,
+          1,
+          2
+        ],
+        [
+          5,
+          2,
+          6,
+          3,
+          2,
+          5
+        ],
+        [
+          5,
+          4,
+          5,
+          2
+        ],
+        [
+          2,
+          3,
+          5,
+          6,
+          5,
+          2,
+          5
+        ],
+        [
+          2
+        ],
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          2,
+          5,
+          3,
+          2,
+          3,
+          2,
+          1,
+          2,
+          5,
+          2,
+          1,
+          2,
+          3,
+          2
+        ],
+        [
+          2
+        ],
+        [
+          2,
+          1,
+          2,
+          1,
+          2
+        ],
+        [
+          2,
+          1,
+          2,
+          5,
+          2
+        ],
+        [
+          5,
+          2,
+          3,
+          2,
+          5,
+          2,
+          1,
+          2,
+          5,
+          7,
+          5,
+          4,
+          5,
+          4,
+          5,
+          2,
+          5,
+          2,
+          5,
+          6,
+          5,
+          4,
+          5,
+          4,
+          5,
+          4,
+          5
+        ],
+        [
+          5
+        ],
+        [
+          4,
+          5,
+          2,
+          5,
+          2,
+          5,
+          2
+        ],
+        [
+          5,
+          8,
+          5,
+          4,
+          5,
+          4,
+          5,
+          4,
+          5,
+          2,
+          5,
+          6,
+          5,
+          2,
+          5,
+          6,
+          5,
+          2,
+          5,
+          4,
+          5,
+          2,
+          5,
+          4,
+          2,
+          5,
+          6,
+          5,
+          4,
+          5,
+          4,
+          5,
+          2,
+          1,
+          2,
+          5,
+          2,
+          3,
+          5,
+          2,
+          5,
+          2,
+          5,
+          2,
+          3,
+          5,
+          3,
+          5,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          2,
+          3,
+          2
+        ],
+        [],
+        [
+          2,
+          3,
+          2,
+          1,
+          2
+        ],
+        [
+          2
+        ],
+        [
+          2,
+          1,
+          2,
+          3,
+          2,
+          5,
+          2,
+          5,
+          2,
+          1,
+          2,
+          3,
+          2,
+          1,
+          2,
+          5,
+          2,
+          1,
+          5,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          3,
+          2,
+          5,
+          4,
+          5,
+          2,
+          5,
+          4,
+          5
+        ]
+      ]
+    }
+  },
+  "path_length_max_speed": 21.393094621083424,
+  "path_length_reduced_speed": 1.9059763835036765,
+  "path_length_repositioning": 0.0,
+  "path_length_transport": 24.853322920836593,
+  "path_length_navigation": 23.299071004587102,
+  "path_length_total": 48.152393925423695,
+  "log_dimensionless_jerk": -15.549628675817042,
+  "region_time_percent": {
+    "region1": 4.2,
+    "region2": 62.0,
+    "region3": 3.3,
+    "region4": 4.4,
+    "region5": 22.5,
+    "region6": 3.0,
+    "region7": 0.1,
+    "region8": 0.5,
+    "region9": 0.0
+  },
+  "region_time_seconds": {
+    "region1": 19.07,
+    "region2": 282.98,
+    "region3": 14.92,
+    "region4": 20.1,
+    "region5": 102.65,
+    "region6": 13.72,
+    "region7": 0.57,
+    "region8": 2.16,
+    "region9": 0.0
+  },
+  "region5_dwell_time_removed": 30.0,
+  "n_odometry_samples": {
+    "max_speed": 1580,
+    "reduced_speed": 597,
+    "repositioning": 0,
+    "transport": 2687
+  },
+  "odometry_file": "S011_run1_odometry.csv",
+  "regions_file": "S011_run1_regions.csv",
+  "config": {
+    "min_command_s": 0.25,
+    "dwell_s": 10.0,
+    "region_tick_max_gap_s": 0.5,
+    "frame_max_gap_s": 0.5
+  }
+}

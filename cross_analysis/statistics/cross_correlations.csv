@@ -1,10 +1,10 @@
 family,x,x_label,y,y_label,expected_sign,meaning,n,rho,p,magnitude,as_expected
-transfer,blind3_region_acc,Blind test 3 – region accuracy [%],run1_nonadj,"Run 1 – non-adjacent changes, outbound [%]",-,going to the right region blind vs sweeping across the grid on the robot,8,-0.3359684204526464,0.41585698407248056,medio,si'
-transfer,train_last_dwell,"Training, last block – dwell time [s]",run1_cmd_dur,"Run 1 – mean command duration, outbound [s]",-,holding the cursor still (training) vs holding a command (robot),8,-0.523809523809524,0.18272075053971484,grande,si'
-transfer,blind3_dir_error,Blind test 3 – initial direction error [deg],run1_reversals,"Run 1 – reversals, outbound [%]",+,planning errors (blind) vs overcorrections (robot),8,0.011976262619132589,0.9775466547038871,trascurabile,si'
-transfer,blind3_end_error,Blind test 3 – end-point error [px],run1_outbound,Run 1 – outbound time [s],+,map knowledge (blind) vs driving time (robot),8,0.07142857142857144,0.8665262706759088,trascurabile,si'
-transfer,train_gain,Training gain: movement time first – last block [s],robot_gain,Robot gain: outbound time run 1 – run 2 [s],+,who improves in the training improves on the robot,8,0.14285714285714288,0.735764859879812,piccolo,si'
-questionnaire,sus,SUS score (0-100),run2_test_duration,Run 2 – test duration [s],-,perceived usability vs time on the task,6,0.2571428571428572,0.6227871720116618,piccolo,no
-questionnaire,tlx,NASA-TLX raw (0-100),run2_test_duration,Run 2 – test duration [s],+,perceived workload vs time on the task,6,0.3142857142857143,0.5440932944606414,medio,si'
-questionnaire,tlx_physical,NASA-TLX physical demand (1-20),blind_fatigue,Blind end error: test 4 – test 3 [px] (> 0 = worse after run 1),+,perceived physical demand vs fatigue in the blind test,6,-0.17393131069573453,0.7417339277316277,piccolo,no
-questionnaire,sus,SUS score (0-100),robot_collisions,"Collisions, run 1 + run 2",-,perceived usability vs collisions,6,,,-,-
+transfer,blind3_region_acc,Blind test 3 – region accuracy [%],run1_nonadj,"Run 1 – non-adjacent changes, outbound [%]",-,going to the right region blind vs sweeping across the grid on the robot,11,0.0,1.0,trascurabile,si'
+transfer,train_last_dwell,"Training, last block – dwell time [s]",run1_cmd_dur,"Run 1 – mean command duration, outbound [s]",-,holding the cursor still (training) vs holding a command (robot),11,-0.5090909090909091,0.10973723224165641,grande,si'
+transfer,blind3_dir_error,Blind test 3 – initial direction error [deg],run1_reversals,"Run 1 – reversals, outbound [%]",+,planning errors (blind) vs overcorrections (robot),11,0.2277910237891026,0.5005338307078095,piccolo,si'
+transfer,blind3_end_error,Blind test 3 – end-point error [px],run1_outbound,Run 1 – outbound time [s],+,map knowledge (blind) vs driving time (robot),11,0.16363636363636366,0.6306852146425357,piccolo,si'
+transfer,train_gain,Training gain: movement time first – last block [s],robot_gain,Robot gain: outbound time run 1 – run 2 [s],+,who improves in the training improves on the robot,11,0.07272727272727274,0.831716405381337,trascurabile,si'
+questionnaire,sus,SUS score (0-100),run2_test_duration,Run 2 – test duration [s],-,perceived usability vs time on the task,11,-0.0045662576497722315,0.9893690543827078,trascurabile,si'
+questionnaire,tlx,NASA-TLX raw (0-100),run2_test_duration,Run 2 – test duration [s],+,perceived workload vs time on the task,11,0.05022883414749455,0.8834003164622758,trascurabile,si'
+questionnaire,tlx_physical,NASA-TLX physical demand (1-20),blind_fatigue,Blind end error: test 4 – test 3 [px] (> 0 = worse after run 1),+,perceived physical demand vs fatigue in the blind test,11,-0.00915353377452523,0.9786907392251027,trascurabile,no
+questionnaire,sus,SUS score (0-100),robot_collisions,"Collisions, run 1 + run 2",-,perceived usability vs collisions,11,,,-,-

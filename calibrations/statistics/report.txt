@@ -1,28 +1,7 @@
 CALIBRAZIONE BoMI – customizzazione per soggetto
 ================================================
 
-COME LEGGERE QUESTO REPORT
-- "mediana [Q1-Q3]": il valore tipico del gruppo e la fascia in cui sta la meta' centrale
-  dei soggetti. Ogni soggetto pesa 1: prima un valore per soggetto, poi il gruppo.
-- ANALISI PRINCIPALE (come il laboratorio): ANOVA a misure ripetute e post hoc con t di
-  Student appaiati.
-  ANOVA: F(gdl1, gdl2), p; "p GG" = p con la correzione di Greenhouse-Geisser (epsilon < 1
-  quando i livelli non hanno la stessa variabilita'), da leggere quando ci sono piu' di 2
-  livelli; eta2p = eta^2 parziale (0.01 piccolo, 0.06 medio, 0.14 grande).
-  Post hoc: t(gdl), p, "p Bonf" = p x numero di confronti; d = d di Cohen appaiato
-  (0.2 piccolo, 0.5 medio, 0.8 grande; segno + = il secondo momento e' piu' alto);
-  Shapiro = p del test di normalita' sulle differenze (< 0.05: non normali, guardare
-  anche il controllo non parametrico).
-  Significativo = p Bonf (o p GG) < 0.05; i confronti esplorativi non sono corretti.
-- CONTROLLO NON PARAMETRICO: Wilcoxon con p corretto con Holm (e r rank-biserial nei .csv).
-  Con 6 soggetti il p piu' piccolo possibile del Wilcoxon e' 0.031: dopo la correzione
-  non puo' uscire significativo, conta la direzione.
-- migliorato / peggiorato: in base a cosa e' meglio per la metrica (es. tempo: meno
-  e' meglio; hit rate: piu' e' meglio).
-- "cambiano k": quanti soggetti hanno un valore diverso fra i due momenti. Se sono pochi
-  (es. 1 su 9) l'effetto puo' risultare "grande" ma riguarda solo quei soggetti.
-
-Soggetti: 8 (S001, S002, S003, S004, S005, S006, S009, S010)
+Soggetti: 11 (S001, S002, S003, S004, S005, S006, S007, S008, S009, S010, S011)
 
 Mappa condivisa
 ---------------
@@ -31,18 +10,18 @@ Mappa condivisa
 
 Customizzazione (descrittive tra soggetti)
 ------------------------------------------
-  Soggetti con almeno un passo: 5/8 (senza customizzazione: S002, S006, S010)
-  Scala cambiata: 5/8, offset cambiato: 3/8, rotazione cambiata: 0/8, flip X finale: 0/8
-  Customization steps (key presses): 2.50 [0.00-17.50] (min 0.00, max 134.00)
-  Scale steps: 2.00 [0.00-2.25] (min 0.00, max 4.00)
-  Offset steps: 0.00 [0.00-14.00] (min 0.00, max 132.00)
-  Flip steps: 0.00 [0.00-0.00] (min 0.00, max 4.00)
-  Rotation steps: 0.00 [0.00-0.00] (min 0.00, max 0.00)
-  Final scale [x]: 1.21 [1.00-1.24] (min 1.00, max 1.46)
-  Final rotation [deg]: 0.00 [0.00-0.00] (min 0.00, max 0.00)
-  Final offset X [px]: 0.00 [-143.28-0.00] (min -605.00, max 0.00)
-  Final offset Y [px]: 0.00 [0.00-5.50] (min 0.00, max 266.20)
-  Final offset (distance) [px]: 0.00 [0.00-167.75] (min 0.00, max 631.91)
+  Soggetti con almeno un passo: 8/11 (senza customizzazione: S002, S006, S008)
+  Scala cambiata: 8/11, offset cambiato: 3/11, rotazione cambiata: 0/11, flip X finale: 0/11
+  Customization steps (key presses): 3.00 [0.50, 4.50] (min 0.00, max 134.00)
+  Scale steps: 2.00 [0.50, 3.50] (min 0.00, max 5.00)
+  Offset steps: 0.00 [0.00, 1.00] (min 0.00, max 132.00)
+  Flip steps: 0.00 [0.00, 0.00] (min 0.00, max 4.00)
+  Rotation steps: 0.00 [0.00, 0.00] (min 0.00, max 0.00)
+  Final scale [x]: 1.21 [1.05, 1.33] (min 1.00, max 1.46)
+  Final rotation [deg]: 0.00 [0.00, 0.00] (min 0.00, max 0.00)
+  Final offset X [px]: 0.00 [0.00, 0.00] (min -605.00, max 0.00)
+  Final offset Y [px]: 0.00 [0.00, 0.00] (min 0.00, max 266.20)
+  Final offset (distance) [px]: 0.00 [0.00, 11.00] (min 0.00, max 631.91)
 
 Per soggetto
 ------------
@@ -52,13 +31,19 @@ Per soggetto
   S004: scala x1.210, rotazione +0 deg, flip X no, offset (-573, +266) px | 134 passi (scala 2, offset 132, flip 0, rotazione 0)
   S005: scala x1.464, rotazione +0 deg, flip X no, offset (-605, +0) px | 58 passi (scala 4, offset 50, flip 4, rotazione 0)
   S006: scala x1.000, rotazione +0 deg, flip X no, offset (+0, +0) px | 0 passi (scala 0, offset 0, flip 0, rotazione 0)
-  S009: scala x1.210, rotazione +0 deg, flip X no, offset (+0, +0) px | 2 passi (scala 2, offset 0, flip 0, rotazione 0)
-  S010: scala x1.000, rotazione +0 deg, flip X no, offset (+0, +0) px | 0 passi (scala 0, offset 0, flip 0, rotazione 0)
+  S007: scala x1.210, rotazione +0 deg, flip X no, offset (+0, +0) px | 2 passi (scala 2, offset 0, flip 0, rotazione 0)
+  S008: scala x1.000, rotazione +0 deg, flip X no, offset (+0, +0) px | 0 passi (scala 0, offset 0, flip 0, rotazione 0)
+  S009: scala x1.100, rotazione +0 deg, flip X no, offset (+0, +0) px | 1 passi (scala 1, offset 0, flip 0, rotazione 0)
+  S010: scala x1.464, rotazione +0 deg, flip X no, offset (+0, +0) px | 4 passi (scala 4, offset 0, flip 0, rotazione 0)
+  S011: scala x1.331, rotazione +0 deg, flip X no, offset (+0, +0) px | 5 passi (scala 5, offset 0, flip 0, rotazione 0)
   Il numero di passi dipende anche da come e' stata fatta la sessione (es. l'offset
   si sposta di 10 px a tasto): e' una misura di quanto la mappa e' stata adattata,
   non della difficolta' del soggetto.
 
-Calibrazione condivisa, dai campioni raw
-----------------------------------------
-  Manca shared_calib.npy (e shared.npz): copiali qui da calibrations/ del repo del task
-  per ricalcolare varianza latente e PCA (pca_analysis.py) dai dati raw.
+Calibrazione condivisa, dai campioni raw (shared_calib.npy)
+-----------------------------------------------------------
+  1608 frame validi x 42 coordinate; train 1286, test 322 (stessa divisione del task)
+  Varianza latente (cu x / cu y): train 49.9% / 50.1%, test 54.0% / 46.0% (nella mappa: train 49.9% / 50.1%)
+  VAF autoencoder (dalla mappa, non ricalcolabile: manca il decoder): train 95.6%, test 95.0%
+  PCA con 2 PC (pca_analysis.py): VAF train 92.9%, test 92.3%; PC1 48.6%, PC2 44.3% della varianza totale (fra le prime due: 52% / 48%)
+  Confronto: l'autoencoder (non lineare) spiega 95.0% sul test, la PCA lineare con 2 componenti 92.3%.

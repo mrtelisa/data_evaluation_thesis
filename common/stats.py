@@ -1,16 +1,14 @@
-"""Statistica usata in tutte le analisi (scipy; il modello misto in statsmodels).
+"""Statistica usata in tutte le analisi (scipy).
 
-Scelte (vedi README.md):
-- ogni soggetto pesa 1: prima un valore per soggetto (mediana o percentuale
-  delle sue prove), poi la statistica tra soggetti;
-- descrittive: mediana [Q1-Q3] (IQR), oltre a media e SD per completezza;
-- ANALISI PRINCIPALE (come il laboratorio, Bellitto et al. 2025):
-  ANOVA a misure ripetute (1 o 2 fattori entro soggetto) con correzione di
-  Greenhouse-Geisser ed eta^2 parziale; post hoc t di Student appaiati con
-  d di Cohen (dz) e correzione di Bonferroni; Shapiro-Wilk sulle differenze;
-- CONTROLLO NON PARAMETRICO (nei .csv): Wilcoxon signed-rank con rank-biserial r
-  e Holm, Friedman con W di Kendall;
-- correlazioni: Spearman (rho e' gia' l'effect size).
+Due versioni di ogni analisi (vedi README.md):
+- PARAMETRICA (come il laboratorio, Bellitto et al. 2025, e i modelli jamovi della
+  dottoranda): media +- SD tra soggetti; ANOVA a misure ripetute (1 o 2 fattori entro
+  soggetto, somme dei quadrati di tipo 3, correzione di Greenhouse-Geisser, eta^2 ed
+  eta^2 parziale); post hoc t di Student appaiati con correzione di Bonferroni,
+  d di Cohen (dz) e Shapiro-Wilk sulle differenze;
+- NON PARAMETRICA: mediana [Q1-Q3] tra soggetti; Friedman (W di Kendall) al posto
+  dell'ANOVA; post hoc Wilcoxon signed-rank (rank-biserial r) con correzione di Holm.
+Ogni soggetto pesa 1: prima un valore per soggetto, poi la statistica tra soggetti.
 """
 
 import math
@@ -26,14 +24,13 @@ warnings.filterwarnings("ignore", category=RuntimeWarning, module="scipy")
 
 
 def describe(values) -> dict:
-    """n, mediana, Q1, Q3, IQR, media, SD, min, max dei valori (NaN esclusi)."""
+    """n, media, SD, mediana, Q1, Q3, IQR, min, max (NaN esclusi)."""
     v = pd.to_numeric(pd.Series(values), errors="coerce").dropna()
     if v.empty:
         return {"n": 0}
     q1, q3 = v.quantile(0.25), v.quantile(0.75)
-    return {"n": int(len(v)), "median": float(v.median()), "q1": float(q1), "q3": float(q3),
-            "iqr": float(q3 - q1), "mean": float(v.mean()),
-            "sd": float(v.std(ddof=1)) if len(v) > 1 else 0.0,
+    return {"n": int(len(v)), "mean": float(v.mean()), "sd": float(v.std(ddof=1)) if len(v) > 1 else 0.0,
+            "median": float(v.median()), "q1": float(q1), "q3": float(q3), "iqr": float(q3 - q1),
             "min": float(v.min()), "max": float(v.max())}
 
 
@@ -43,42 +40,81 @@ def fmt_num(x, digits=2) -> str:
     return f"{x:.{digits}f}"
 
 
-def fmt_median_iqr(d: dict, digits=2) -> str:
-    """'85.00 [60.00-110.00]' (mediana [Q1-Q3])."""
+def fmt_p(p) -> str:
+    if p is None or (isinstance(p, float) and math.isnan(p)):
+        return "-"
+    return "<0.001" if p < 0.001 else f"{p:.3f}"
+
+
+def fmt_mean_sd(d: dict, digits=2) -> str:
     if not d or d.get("n", 0) == 0:
         return "-"
-    return f"{d['median']:.{digits}f} [{d['q1']:.{digits}f}-{d['q3']:.{digits}f}]"
+    return f"{d['mean']:.{digits}f} ± {d['sd']:.{digits}f}"
 
 
-def magnitude(effect) -> str:
-    """Soglie indicative di Cohen per r, W e rho: 0.1 piccolo, 0.3 medio, 0.5 grande."""
-    if effect is None or (isinstance(effect, float) and math.isnan(effect)):
+def fmt_median_iqr(d: dict, digits=2) -> str:
+    if not d or d.get("n", 0) == 0:
         return "-"
-    a = abs(effect)
-    if a < 0.1:
-        return "trascurabile"
-    if a < 0.3:
-        return "piccolo"
-    if a < 0.5:
-        return "medio"
-    return "grande"
+    return f"{d['median']:.{digits}f} [{d['q1']:.{digits}f}, {d['q3']:.{digits}f}]"
 
 
-def wilcoxon_paired(first, second) -> dict:
-    """Wilcoxon appaiato fra due momenti (stessi soggetti, stesso ordine).
-    Coppie con un valore mancante escluse. Restituisce n, statistic, p,
-    rank-biserial r (positivo = il secondo momento e' piu' alto)."""
+def bonferroni(pvalues) -> list:
+    """p-value x numero di confronti (massimo 1); NaN restano NaN."""
+    p = np.asarray([np.nan if v is None else v for v in pvalues], dtype=float)
+    m = int(np.sum(~np.isnan(p)))
+    return [float(min(1.0, v * m)) if not np.isnan(v) else np.nan for v in p]
+
+
+def holm(pvalues) -> list:
+    """p-value corretti con Holm (NaN restano NaN)."""
+    p = np.asarray([np.nan if v is None else v for v in pvalues], dtype=float)
+    idx = [i for i in np.argsort(p) if not np.isnan(p[i])]
+    m = len(idx)
+    adj = np.full(len(p), np.nan)
+    running = 0.0
+    for rank, i in enumerate(idx):
+        running = max(running, min(1.0, (m - rank) * p[i]))
+        adj[i] = running
+    return adj.tolist()
+
+
+def _pair(first, second):
     a = pd.to_numeric(pd.Series(first), errors="coerce").to_numpy(dtype=float)
     b = pd.to_numeric(pd.Series(second), errors="coerce").to_numpy(dtype=float)
     keep = ~(np.isnan(a) | np.isnan(b))
-    a, b = a[keep], b[keep]
-    out = {"n": int(len(a)), "n_changed": 0, "statistic": np.nan, "p": np.nan, "effect": np.nan}
+    return a[keep], b[keep]
+
+
+def paired_t(first, second) -> dict:
+    """t di Student appaiato (secondo - primo): n, t, gdl, p, d di Cohen (dz),
+    differenza media e Shapiro-Wilk sulle differenze. Coppie incomplete escluse."""
+    a, b = _pair(first, second)
+    d = b - a
+    out = {"n": int(len(d)), "statistic": np.nan, "df": max(len(d) - 1, 0), "p": np.nan, "effect": np.nan,
+           "mean_diff": float(d.mean()) if len(d) else np.nan, "shapiro_p": np.nan}
+    if len(d) < 2:
+        return out
+    if np.allclose(d, 0):
+        out.update(statistic=0.0, p=1.0, effect=0.0)
+        return out
+    res = stats.ttest_rel(b, a)
+    sd = d.std(ddof=1)
+    out.update(statistic=float(res.statistic), p=float(res.pvalue), effect=float(d.mean() / sd) if sd else np.nan)
+    if len(d) >= 3:
+        out["shapiro_p"] = float(stats.shapiro(d).pvalue)
+    return out
+
+
+def wilcoxon_paired(first, second) -> dict:
+    """Wilcoxon signed-rank (secondo vs primo): n, W, p, rank-biserial r
+    (positivo = il secondo e' piu' alto). Coppie incomplete escluse."""
+    a, b = _pair(first, second)
+    out = {"n": int(len(a)), "statistic": np.nan, "p": np.nan, "effect": np.nan}
     if len(a) < 2:
         return out
     d = b - a
     nz = d[d != 0]
-    out["n_changed"] = int(len(nz))
-    if len(nz) == 0:   # nessuna differenza: nessun effetto
+    if len(nz) == 0:
         out.update(statistic=0.0, p=1.0, effect=0.0)
         return out
     ranks = stats.rankdata(np.abs(nz))
@@ -93,11 +129,10 @@ def wilcoxon_paired(first, second) -> dict:
 
 
 def friedman(wide: pd.DataFrame) -> dict:
-    """Friedman su una tabella soggetti x momenti (solo i soggetti completi).
-    Restituisce n, k, chi2, p, W di Kendall."""
+    """Friedman su soggetti x condizioni (solo i soggetti completi): n, k, chi2, gdl, p, W di Kendall."""
     w = wide.apply(pd.to_numeric, errors="coerce").dropna()
     n, k = w.shape
-    out = {"n": int(n), "k": int(k), "statistic": np.nan, "p": np.nan, "effect": np.nan}
+    out = {"n": int(n), "k": int(k), "statistic": np.nan, "df": k - 1, "p": np.nan, "effect": np.nan}
     if n < 2 or k < 3:
         return out
     try:
@@ -105,89 +140,10 @@ def friedman(wide: pd.DataFrame) -> dict:
     except ValueError:
         return out
     chi2 = float(res.statistic)
-    if math.isnan(chi2):   # tutti i valori identici
+    if math.isnan(chi2):
         out.update(statistic=0.0, p=1.0, effect=0.0)
         return out
     out.update(statistic=chi2, p=float(res.pvalue), effect=chi2 / (n * (k - 1)))
-    return out
-
-
-def holm(pvalues) -> list:
-    """p-value corretti con Holm (NaN restano NaN): ordinati dal piu' piccolo,
-    il primo x m, il secondo x (m-1), ... senza mai scendere sotto il precedente."""
-    p = np.asarray([np.nan if v is None else v for v in pvalues], dtype=float)
-    idx = [i for i in np.argsort(p) if not np.isnan(p[i])]
-    m = len(idx)
-    adj = np.full(len(p), np.nan)
-    running = 0.0
-    for rank, i in enumerate(idx):
-        running = max(running, min(1.0, (m - rank) * p[i]))
-        adj[i] = running
-    return adj.tolist()
-
-
-def spearman(x, y) -> dict:
-    """Correlazione di Spearman sulle coppie complete."""
-    a = pd.to_numeric(pd.Series(x), errors="coerce").to_numpy(dtype=float)
-    b = pd.to_numeric(pd.Series(y), errors="coerce").to_numpy(dtype=float)
-    keep = ~(np.isnan(a) | np.isnan(b))
-    a, b = a[keep], b[keep]
-    out = {"n": int(len(a)), "rho": np.nan, "p": np.nan}
-    if len(a) < 3 or np.all(a == a[0]) or np.all(b == b[0]):
-        return out
-    res = stats.spearmanr(a, b)
-    out.update(rho=float(res.statistic), p=float(res.pvalue))
-    return out
-
-
-def direction(delta, better) -> str:
-    """'migliorato' / 'peggiorato' / 'invariato' dal segno della differenza
-    (secondo - primo) e da cosa e' meglio per la metrica ('up' o 'down')."""
-    if delta is None or (isinstance(delta, float) and math.isnan(delta)) or better not in ("up", "down"):
-        return "-"
-    if delta == 0:
-        return "invariato"
-    return "migliorato" if (delta > 0) == (better == "up") else "peggiorato"
-
-
-def significance(p) -> str:
-    if p is None or (isinstance(p, float) and math.isnan(p)):
-        return "-"
-    return "si'" if p < 0.05 else "no"
-
-
-# ------------------------------------------------------ analisi parametrica ---
-
-def bonferroni(pvalues) -> list:
-    """p-value x numero di confronti (massimo 1); NaN restano NaN."""
-    p = np.asarray([np.nan if v is None else v for v in pvalues], dtype=float)
-    m = int(np.sum(~np.isnan(p)))
-    return [float(min(1.0, v * m)) if not np.isnan(v) else np.nan for v in p]
-
-
-def paired_t(first, second) -> dict:
-    """t di Student appaiato (secondo - primo): n, t, p, d di Cohen (dz = media delle
-    differenze / SD delle differenze; il segno dice se il secondo e' piu' alto),
-    differenza media e Shapiro-Wilk sulle differenze (normalita', n >= 3)."""
-    a = pd.to_numeric(pd.Series(first), errors="coerce").to_numpy(dtype=float)
-    b = pd.to_numeric(pd.Series(second), errors="coerce").to_numpy(dtype=float)
-    keep = ~(np.isnan(a) | np.isnan(b))
-    d = b[keep] - a[keep]
-    out = {"n": int(len(d)), "n_changed": int(np.sum(d != 0)), "statistic": np.nan, "p": np.nan,
-           "effect": np.nan, "mean_diff": float(d.mean()) if len(d) else np.nan, "shapiro_p": np.nan}
-    if len(d) < 2:
-        return out
-    if np.allclose(d, 0):
-        out.update(statistic=0.0, p=1.0, effect=0.0)
-        return out
-    sd = d.std(ddof=1)
-    if sd == 0:   # tutti cambiano della stessa quantita': t infinito
-        out.update(statistic=np.inf * np.sign(d.mean()), p=0.0, effect=np.inf * np.sign(d.mean()))
-        return out
-    res = stats.ttest_rel(b[keep], a[keep])
-    out.update(statistic=float(res.statistic), p=float(res.pvalue), effect=float(d.mean() / sd))
-    if len(d) >= 3:
-        out["shapiro_p"] = float(stats.shapiro(d).pvalue)
     return out
 
 
@@ -197,31 +153,30 @@ def _contrasts(k: int) -> np.ndarray:
     return h[:, 1:]
 
 
-def rm_anova(long: pd.DataFrame, dv: str, within: list, subject: str = "subject") -> list:
-    """ANOVA a misure ripetute con 1 o 2 fattori entro soggetto (disegno bilanciato:
-    si tengono solo i soggetti con tutte le celle). Una riga per effetto:
-    F, gradi di liberta', p con sfericita' assunta e con la correzione di
-    Greenhouse-Geisser (epsilon), eta^2 parziale. Con piu' livelli che soggetti
-    il test di Mauchly non si puo' calcolare: per questo la GG si applica sempre."""
-    d = long[[subject] + list(within) + [dv]].copy()
-    d[dv] = pd.to_numeric(d[dv], errors="coerce")
-    wide = d.pivot_table(index=subject, columns=list(within), values=dv, aggfunc="mean")
-    wide = wide.dropna()
-    n = len(wide)
-    levels = [sorted(d[f].dropna().unique()) for f in within]
-    wide = wide.reindex(columns=pd.MultiIndex.from_product(levels) if len(within) > 1 else levels[0])
-    out = []
-    if n < 2 or wide.isna().any().any():
-        return [{"effect": " x ".join(within), "n": n, "F": np.nan, "p": np.nan, "p_gg": np.nan}]
-    y = wide.to_numpy(float)
-    sizes = [len(lv) for lv in levels]
-    if len(within) == 1:
-        effects = {within[0]: _contrasts(sizes[0])}
+def rm_anova(wide: pd.DataFrame, factors: list) -> list:
+    """ANOVA a misure ripetute come jmv::anovaRM di jamovi (afex, tipo 3; con il disegno
+    bilanciato coincide con questa). `wide`: soggetti x condizioni; con 2 fattori le
+    colonne sono un MultiIndex (livello del primo, livello del secondo), in ordine
+    prodotto (il primo fattore esterno). Si tengono solo
+    i soggetti con tutte le celle (come jamovi). Una riga per effetto: SS, gdl, F, p
+    con sfericita' assunta e con Greenhouse-Geisser (epsilon), eta^2 (SS effetto / SS
+    totale, l'"eta" di jamovi) ed eta^2 parziale."""
+    w = wide.apply(pd.to_numeric, errors="coerce").dropna()
+    n = len(w)
+    sizes = [w.columns.get_level_values(i).unique().size for i in range(w.columns.nlevels)]
+    names = list(factors)
+    if n < 2:
+        return [{"effect": " × ".join(names), "n": n}]
+    y = w.to_numpy(float)
+    if len(sizes) == 1:
+        effects = {names[0]: _contrasts(sizes[0])}
     else:
         ca, cb = _contrasts(sizes[0]), _contrasts(sizes[1])
         ua, ub = np.ones((sizes[0], 1)) / math.sqrt(sizes[0]), np.ones((sizes[1], 1)) / math.sqrt(sizes[1])
-        effects = {within[0]: np.kron(ca, ub), within[1]: np.kron(ua, cb),
-                   f"{within[0]} x {within[1]}": np.kron(ca, cb)}
+        effects = {names[0]: np.kron(ca, ub), names[1]: np.kron(ua, cb),
+                   f"{names[0]} × {names[1]}": np.kron(ca, cb)}
+    ss_total = float(np.sum((y - y.mean()) ** 2))
+    out = []
     for name, c in effects.items():
         z = y @ c
         q = c.shape[1]
@@ -229,96 +184,32 @@ def rm_anova(long: pd.DataFrame, dv: str, within: list, subject: str = "subject"
         ss_eff = n * float(zm @ zm)
         ss_err = float(np.sum((z - zm) ** 2))
         df1, df2 = q, q * (n - 1)
-        row = {"effect": name, "n": n, "df1": df1, "df2": df2, "F": np.nan, "p": np.nan,
-               "eps_gg": np.nan, "p_gg": np.nan, "partial_eta2": np.nan}
+        row = {"effect": name, "n": n, "ss": ss_eff, "df1": df1, "ss_error": ss_err, "df2": df2,
+               "F": np.nan, "p": np.nan, "eps_gg": np.nan, "df1_gg": np.nan, "df2_gg": np.nan, "p_gg": np.nan,
+               "eta2": ss_eff / ss_total if ss_total > 0 else np.nan, "partial_eta2": np.nan}
         if ss_err > 0:
             f = (ss_eff / df1) / (ss_err / df2)
             s_cov = np.cov(z, rowvar=False).reshape(q, q)
             eps = float(np.trace(s_cov) ** 2 / (q * np.trace(s_cov @ s_cov))) if q > 1 else 1.0
             eps = min(1.0, max(eps, 1.0 / q))
-            row.update(F=f, p=float(stats.f.sf(f, df1, df2)), eps_gg=eps,
-                       p_gg=float(stats.f.sf(f, df1 * eps, df2 * eps)),
-                       partial_eta2=ss_eff / (ss_eff + ss_err))
+            row.update(F=f, p=float(stats.f.sf(f, df1, df2)), eps_gg=eps, df1_gg=df1 * eps, df2_gg=df2 * eps,
+                       p_gg=float(stats.f.sf(f, df1 * eps, df2 * eps)), partial_eta2=ss_eff / (ss_eff + ss_err))
         out.append(row)
     return out
 
 
-def eta_magnitude(eta2) -> str:
-    """Soglie indicative di Cohen per eta^2 parziale: 0.01 piccolo, 0.06 medio, 0.14 grande."""
-    if eta2 is None or (isinstance(eta2, float) and math.isnan(eta2)):
-        return "-"
-    return "trascurabile" if eta2 < 0.01 else "piccolo" if eta2 < 0.06 else "medio" if eta2 < 0.14 else "grande"
-
-
-def d_magnitude(d) -> str:
-    """Soglie indicative di Cohen per d: 0.2 piccolo, 0.5 medio, 0.8 grande."""
-    if d is None or (isinstance(d, float) and math.isnan(d)):
-        return "-"
-    a = abs(d)
-    return "trascurabile" if a < 0.2 else "piccolo" if a < 0.5 else "medio" if a < 0.8 else "grande"
-
-
-def mixed_model(df: pd.DataFrame, formula: str, group: str = "subject", slope: str = None) -> dict:
-    """Modello lineare misto (statsmodels MixedLM, REML): effetti fissi della formula e
-    effetti casuali per soggetto. Con `slope` (nome di una variabile) si prova, in ordine:
-      1. intercetta + pendenza casuali correlate,
-      2. intercetta + pendenza casuali indipendenti,
-      3. sola intercetta casuale,
-    e si tiene il primo modello stimabile: convergenza, verosimiglianza finita, varianze > 0
-    e correlazione non a +-1 (al bordo: il modello e' troppo complesso per i dati).
-    Ogni modello si prova con piu' ottimizzatori e si tiene la verosimiglianza piu' alta.
-    Restituisce {"terms": DataFrame (coefficiente, SE, z, p, IC 95%), "re": descrizione degli
-    effetti casuali, "converged", "n_obs", "n_groups"}."""
-    import warnings as _w
-    import statsmodels.formula.api as smf
-    specs = []
-    if slope:
-        specs += [(f"~{slope}", None, f"intercetta + pendenza di {slope} (correlate)"),
-                  ("1", {"slope": f"0 + {slope}"}, f"intercetta + pendenza di {slope} (indipendenti)")]
-    specs.append(("1", None, "solo intercetta"))
-
-    def usable(res, vc):
-        if not (res.converged and np.isfinite(res.llf)):
-            return False
-        cov = np.atleast_2d(np.asarray(res.cov_re, dtype=float))
-        var = np.diag(cov)
-        if np.any(var <= 1e-10):
-            return False
-        if cov.shape[0] == 2 and abs(cov[0, 1] / math.sqrt(var[0] * var[1])) > 0.99:
-            return False
-        if vc is not None and np.any(np.asarray(res.vcomp) <= 1e-10):
-            return False
-        return True
-
-    fallback = None
-    for re_f, vc, desc in specs:
-        best = None
-        for method in ("bfgs", "lbfgs", "nm", "powell"):
-            with _w.catch_warnings():
-                _w.simplefilter("ignore")
-                try:
-                    res = smf.mixedlm(formula, df, groups=df[group], re_formula=re_f,
-                                      vc_formula=vc).fit(reml=True, method=method)
-                except (ValueError, np.linalg.LinAlgError):
-                    continue
-            if np.isfinite(res.llf) and (best is None or res.llf > best.llf):
-                best = res
-        if best is None:
-            continue
-        if fallback is None:
-            fallback = (best, desc)
-        if usable(best, vc):
-            fallback = None
-            chosen, chosen_desc, ok = best, desc, True
-            break
-    else:
-        if fallback is None:
-            return {"terms": pd.DataFrame(), "re": None, "converged": False, "n_obs": len(df), "n_groups": 0}
-        chosen, chosen_desc, ok = fallback[0], fallback[1], False
-    res = chosen
-    idx = res.fe_params.index
-    ci = res.conf_int().loc[idx]
-    terms = pd.DataFrame({"coef": res.fe_params, "se": res.bse_fe, "z": res.tvalues[idx], "p": res.pvalues[idx],
-                          "ci_low": ci[0], "ci_high": ci[1]})
-    return {"terms": terms, "re": chosen_desc, "converged": ok, "n_obs": int(res.nobs),
-            "n_groups": int(res.model.n_groups)}
+def posthoc(wide: pd.DataFrame, pairs: list) -> pd.DataFrame:
+    """Confronti pianificati fra colonne di `wide` (pairs = [(colonna a, colonna b, nome)]):
+    t appaiato (Bonferroni sulla famiglia) e Wilcoxon (Holm sulla famiglia)."""
+    rows = []
+    for a, b, name in pairs:
+        t = paired_t(wide[a], wide[b])
+        wx = wilcoxon_paired(wide[a], wide[b])
+        rows.append({"comparison": name, "n": t["n"], "mean_diff": t["mean_diff"], "t": t["statistic"],
+                     "df": t["df"], "p_t": t["p"], "cohen_dz": t["effect"], "shapiro_p": t["shapiro_p"],
+                     "W": wx["statistic"], "p_wilcoxon": wx["p"], "rank_biserial_r": wx["effect"]})
+    df = pd.DataFrame(rows)
+    if not df.empty:
+        df.insert(df.columns.get_loc("cohen_dz"), "p_t_bonferroni", bonferroni(df["p_t"]))
+        df.insert(df.columns.get_loc("rank_biserial_r"), "p_wilcoxon_holm", holm(df["p_wilcoxon"]))
+    return df

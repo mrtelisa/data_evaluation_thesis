@@ -1,134 +1,207 @@
-TRAINING A 9 REGIONI – pre e post
-=================================
+REACHING TRAINING – outward movements (centre -> target)
+========================================================
 
-COME LEGGERE QUESTO REPORT
-- "mediana [Q1-Q3]": il valore tipico del gruppo e la fascia in cui sta la meta' centrale
-  dei soggetti. Ogni soggetto pesa 1: prima un valore per soggetto, poi il gruppo.
-- ANALISI PRINCIPALE (come il laboratorio): ANOVA a misure ripetute e post hoc con t di
-  Student appaiati.
-  ANOVA: F(gdl1, gdl2), p; "p GG" = p con la correzione di Greenhouse-Geisser (epsilon < 1
-  quando i livelli non hanno la stessa variabilita'), da leggere quando ci sono piu' di 2
-  livelli; eta2p = eta^2 parziale (0.01 piccolo, 0.06 medio, 0.14 grande).
-  Post hoc: t(gdl), p, "p Bonf" = p x numero di confronti; d = d di Cohen appaiato
-  (0.2 piccolo, 0.5 medio, 0.8 grande; segno + = il secondo momento e' piu' alto);
-  Shapiro = p del test di normalita' sulle differenze (< 0.05: non normali, guardare
-  anche il controllo non parametrico).
-  Significativo = p Bonf (o p GG) < 0.05; i confronti esplorativi non sono corretti.
-- CONTROLLO NON PARAMETRICO: Wilcoxon con p corretto con Holm (e r rank-biserial nei .csv).
-  Con 6 soggetti il p piu' piccolo possibile del Wilcoxon e' 0.031: dopo la correzione
-  non puo' uscire significativo, conta la direzione.
-- migliorato / peggiorato: in base a cosa e' meglio per la metrica (es. tempo: meno
-  e' meglio; hit rate: piu' e' meglio).
-- "cambiano k": quanti soggetti hanno un valore diverso fra i due momenti. Se sono pochi
-  (es. 1 su 9) l'effetto puo' risultare "grande" ma riguarda solo quei soggetti.
+HOW TO READ THIS REPORT
+- One value per participant and condition (the mean of their trials), then statistics
+  across participants: mean ± SD (parametric) and median [Q1, Q3] (non-parametric).
+- Parametric analysis (as Bellitto et al. 2025 and the jamovi models): repeated-measures
+  ANOVA, F(df1, df2), p with sphericity assumed and with the Greenhouse-Geisser correction
+  (p GG, to be read when a factor has more than 2 levels), eta2 = SS effect / SS total
+  (the jamovi "eta2"), eta2p = partial eta2. Post hoc: paired t-tests on the planned
+  comparisons, Bonferroni-corrected within each metric; dz = Cohen's d for paired data;
+  Shapiro = normality of the differences (p < 0.05: check the Wilcoxon).
+- Non-parametric control: Friedman (Kendall's W) and Wilcoxon signed-rank (Holm-corrected,
+  r = rank-biserial correlation).
+- Significance in the figures: * p < 0.05, ** p < 0.01, *** p < 0.001 (corrected p).
 
-Soggetti: 8 (S001, S002, S003, S004, S005, S006, S009, S010)
-  training pre: 8 soggetti
-  training post: 8 soggetti
-Metriche calcolate dai _raw.csv (webcam 29.1-30.4 Hz); cursore nascosto per 1.0 s dopo la comparsa del target: gli errori sono calcolati li'.
-Blocchi di 8 target: 12 per sessione, 24 in tutto.
-Analisi principale: ANOVA a misure ripetute sessione (2) x blocco (12), correzione di
-Greenhouse-Geisser; post hoc: 3 t appaiati pianificati fra blocchi, Bonferroni sui 3.
-Controllo non parametrico: Wilcoxon, Holm sui 3. In fondo il modello misto prova per prova.
+Participants: 11 (S001, S002, S003, S004, S005, S006, S007, S008, S009, S010, S011)
+  T1: 11 participants, 96-96 targets each
+  T2: 11 participants, 96-96 targets each
+Blocks of 8 targets; block value = mean of its 8 targets.
+Errors at 1 s after the target onset (when the cursor reappears), measured from the cursor
+position at target onset; movement duration and linearity index from target onset to target entry.
 
-Euclidean error at 1 s [px]  (metrica principale)
--------------------------------------------------
-  ANOVA sessione x blocco (n=8): phase F(1,7)=7.58, p=0.028, eta2p=0.52 (grande), significativo: si' | block F(11,77)=4.89, p=0.000, eps GG=0.32, p GG=0.006, eta2p=0.41 (grande), significativo: si' | phase x block F(11,77)=1.15, p=0.339, eps GG=0.38, p GG=0.356, eta2p=0.14 (grande), significativo: no
-  training 1: first vs last block: pre b1 295.40 [252.35-326.54] -> pre b12 243.65 [214.61-273.48] | migliorato | n=8 (cambiano 8), t(7)=-3.07, p=0.018, p Bonf=0.054, significativo: no | d=-1.09 (grande), Shapiro p=0.19 | Wilcoxon p Holm=0.070
-  retention: last pre vs first post block: pre b12 243.65 [214.61-273.48] -> post b1 273.36 [248.29-296.67] | peggiorato | n=8 (cambiano 8), t(7)=2.78, p=0.027, p Bonf=0.082, significativo: no | d=0.98 (grande), Shapiro p=0.25 | Wilcoxon p Holm=0.078
-  training 2: last pre vs last post block: pre b12 243.65 [214.61-273.48] -> post b12 182.15 [171.18-205.13] | migliorato | n=8 (cambiano 8), t(7)=-2.72, p=0.030, p Bonf=0.089, significativo: no | d=-0.96 (grande), Shapiro p=0.64 | Wilcoxon p Holm=0.078
-  sessione intera (esplorativo): pre 266.06 -> post 206.28, t p=0.062, d=-0.78; Wilcoxon p=0.055
-  curva di gruppo: fit esponenziale non riuscito (curva piatta o troppo rumorosa)
+Euclidean error at 1 s (cm)
+---------------------------
+  T1 B1                  mean ± SD 9.28 ± 1.18            median [IQR] 9.29 [8.57, 10.14]   (n=11)
+  T1 B2                  mean ± SD 8.13 ± 1.65            median [IQR] 8.34 [7.20, 9.28]   (n=11)
+  T1 B3                  mean ± SD 7.84 ± 1.43            median [IQR] 7.93 [7.06, 8.69]   (n=11)
+  T1 B4                  mean ± SD 6.93 ± 1.12            median [IQR] 7.01 [6.07, 7.77]   (n=11)
+  T1 B5                  mean ± SD 7.18 ± 1.52            median [IQR] 7.12 [6.46, 7.63]   (n=11)
+  T1 B6                  mean ± SD 7.41 ± 1.84            median [IQR] 7.00 [6.04, 8.40]   (n=11)
+  T1 B7                  mean ± SD 7.07 ± 1.53            median [IQR] 7.30 [5.83, 7.82]   (n=11)
+  T1 B8                  mean ± SD 6.75 ± 1.41            median [IQR] 6.58 [5.97, 7.64]   (n=11)
+  T1 B9                  mean ± SD 6.62 ± 1.60            median [IQR] 6.58 [5.51, 7.51]   (n=11)
+  T1 B10                 mean ± SD 6.59 ± 1.65            median [IQR] 6.50 [5.42, 7.47]   (n=11)
+  T1 B11                 mean ± SD 6.53 ± 1.56            median [IQR] 6.36 [5.49, 7.34]   (n=11)
+  T1 B12                 mean ± SD 6.73 ± 1.32            median [IQR] 6.89 [5.87, 7.30]   (n=11)
+  T2 B1                  mean ± SD 7.52 ± 1.26            median [IQR] 7.81 [6.83, 8.59]   (n=11)
+  T2 B2                  mean ± SD 6.85 ± 1.61            median [IQR] 6.39 [5.79, 7.33]   (n=11)
+  T2 B3                  mean ± SD 6.52 ± 1.39            median [IQR] 6.33 [5.25, 7.79]   (n=11)
+  T2 B4                  mean ± SD 6.25 ± 1.46            median [IQR] 6.20 [5.74, 7.10]   (n=11)
+  T2 B5                  mean ± SD 6.53 ± 1.10            median [IQR] 6.38 [5.72, 6.77]   (n=11)
+  T2 B6                  mean ± SD 6.47 ± 1.44            median [IQR] 5.99 [5.37, 7.10]   (n=11)
+  T2 B7                  mean ± SD 5.76 ± 1.33            median [IQR] 6.14 [4.39, 7.00]   (n=11)
+  T2 B8                  mean ± SD 5.37 ± 1.15            median [IQR] 5.08 [4.68, 5.84]   (n=11)
+  T2 B9                  mean ± SD 5.79 ± 1.31            median [IQR] 5.58 [4.93, 6.50]   (n=11)
+  T2 B10                 mean ± SD 5.67 ± 1.41            median [IQR] 5.44 [5.12, 6.09]   (n=11)
+  T2 B11                 mean ± SD 5.60 ± 1.29            median [IQR] 5.49 [4.72, 6.31]   (n=11)
+  T2 B12                 mean ± SD 5.23 ± 1.07            median [IQR] 5.29 [4.42, 5.72]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Training: F(1, 10)=19.08, p=0.001, eta2=0.120, eta2p=0.656
+    Block: F(11, 110)=13.93, p=<0.001, p GG=<0.001 (eps=0.23), eta2=0.183, eta2p=0.582
+    Training × Block: F(11, 110)=0.83, p=0.609, p GG=0.518 (eps=0.39), eta2=0.011, eta2p=0.077
+  Friedman (training 1, 12 blocks): chi2(11)=37.83, p=<0.001, W=0.31 (n=11)
+  Friedman (training 2, 12 blocks): chi2(11)=42.19, p=<0.001, W=0.35 (n=11)
+  Post hoc (planned comparisons)
+    T1 B1 vs T1 B12: t(10)=-5.57, p Bonf=<0.001, dz=-1.68, Shapiro p=0.608 | Wilcoxon p Holm=0.006, r=-0.97
+    T1 B12 vs T2 B1: t(10)=3.26, p Bonf=0.026, dz=0.98, Shapiro p=0.866 | Wilcoxon p Holm=0.010, r=0.85
+    T1 B12 vs T2 B12: t(10)=-4.41, p Bonf=0.004, dz=-1.33, Shapiro p=0.441 | Wilcoxon p Holm=0.006, r=-0.94
 
-Direction error at 1 s [deg]  (metrica principale)
---------------------------------------------------
-  ANOVA sessione x blocco (n=8): phase F(1,7)=13.61, p=0.008, eta2p=0.66 (grande), significativo: si' | block F(11,77)=7.37, p=0.000, eps GG=0.27, p GG=0.002, eta2p=0.51 (grande), significativo: si' | phase x block F(11,77)=1.23, p=0.280, eps GG=0.39, p GG=0.318, eta2p=0.15 (grande), significativo: no
-  training 1: first vs last block: pre b1 50.40 [37.51-57.82] -> pre b12 31.89 [26.57-36.99] | migliorato | n=8 (cambiano 8), t(7)=-3.18, p=0.015, p Bonf=0.046, significativo: si' | d=-1.13 (grande), Shapiro p=0.11 | Wilcoxon p Holm=0.023
-  retention: last pre vs first post block: pre b12 31.89 [26.57-36.99] -> post b1 41.18 [28.99-44.70] | peggiorato | n=8 (cambiano 8), t(7)=1.84, p=0.108, p Bonf=0.325, significativo: no | d=0.65 (medio), Shapiro p=0.27 | Wilcoxon p Holm=0.109
-  training 2: last pre vs last post block: pre b12 31.89 [26.57-36.99] -> post b12 22.78 [17.99-27.29] | migliorato | n=8 (cambiano 8), t(7)=-2.84, p=0.025, p Bonf=0.075, significativo: no | d=-1.00 (grande), Shapiro p=0.93 | Wilcoxon p Holm=0.078
-  sessione intera (esplorativo): pre 33.43 -> post 26.36, t p=0.008, d=-1.28; Wilcoxon p=0.016
-  curva di gruppo: plateau stimato 19.27, 95% del miglioramento al blocco 42.0 (non ancora raggiunto a fine training 2); R2 del fit 0.65
-
-Extent error at 1 s [px]  (metrica principale)
-----------------------------------------------
-  ANOVA sessione x blocco (n=8): phase F(1,7)=0.15, p=0.710, eta2p=0.02 (piccolo), significativo: no | block F(11,77)=2.71, p=0.005, eps GG=0.32, p GG=0.060, eta2p=0.28 (grande), significativo: no | phase x block F(11,77)=0.81, p=0.632, eps GG=0.32, p GG=0.520, eta2p=0.10 (medio), significativo: no
-  training 1: first vs last block: pre b1 -84.13 [-144.01--33.36] -> pre b12 -3.10 [-136.58-25.39] | - | n=8 (cambiano 8), t(7)=1.06, p=0.323, p Bonf=0.970, significativo: no | d=0.38 (piccolo), Shapiro p=0.36 | Wilcoxon p Holm=1.000
-  retention: last pre vs first post block: pre b12 -3.10 [-136.58-25.39] -> post b1 -78.72 [-130.72--42.77] | - | n=8 (cambiano 8), t(7)=-1.33, p=0.226, p Bonf=0.679, significativo: no | d=-0.47 (piccolo), Shapiro p=0.77 | Wilcoxon p Holm=1.000
-  training 2: last pre vs last post block: pre b12 -3.10 [-136.58-25.39] -> post b12 -33.97 [-82.08-9.45] | - | n=8 (cambiano 8), t(7)=0.65, p=0.535, p Bonf=1.000, significativo: no | d=0.23 (piccolo), Shapiro p=0.64 | Wilcoxon p Holm=1.000
-  sessione intera (esplorativo): pre -54.98 -> post -34.74, t p=0.480, d=0.26; Wilcoxon p=0.461
-  curva di gruppo: plateau stimato -35.98, 95% del miglioramento al blocco 20.9 (nel training 2); R2 del fit 0.23
-  (< 0 = il cursore resta corto rispetto al target; meglio = piu' vicino a 0)
-
-Movement time [s]  (metrica principale)
----------------------------------------
-  ANOVA sessione x blocco (n=8): phase F(1,7)=27.71, p=0.001, eta2p=0.80 (grande), significativo: si' | block F(11,77)=15.26, p=0.000, eps GG=0.37, p GG=0.000, eta2p=0.69 (grande), significativo: si' | phase x block F(11,77)=3.11, p=0.002, eps GG=0.25, p GG=0.053, eta2p=0.31 (grande), significativo: no
-  training 1: first vs last block: pre b1 3.13 [2.89-3.56] -> pre b12 2.16 [1.97-2.51] | migliorato | n=8 (cambiano 8), t(7)=-7.48, p=0.000, p Bonf=0.000, significativo: si' | d=-2.65 (grande), Shapiro p=0.62 | Wilcoxon p Holm=0.023
-  retention: last pre vs first post block: pre b12 2.16 [1.97-2.51] -> post b1 2.21 [2.07-2.43] | peggiorato | n=8 (cambiano 8), t(7)=0.29, p=0.780, p Bonf=1.000, significativo: no | d=0.10 (trascurabile), Shapiro p=0.75 | Wilcoxon p Holm=0.742
-  training 2: last pre vs last post block: pre b12 2.16 [1.97-2.51] -> post b12 1.74 [1.63-1.79] | migliorato | n=8 (cambiano 8), t(7)=-4.18, p=0.004, p Bonf=0.012, significativo: si' | d=-1.48 (grande), Shapiro p=0.79 | Wilcoxon p Holm=0.023
-  sessione intera (esplorativo): pre 2.38 -> post 1.93, t p=0.002, d=-1.66; Wilcoxon p=0.008
-  curva di gruppo: plateau stimato 1.88, 95% del miglioramento al blocco 22.1 (nel training 2); R2 del fit 0.90
-
-Linearity index  (metrica principale)
--------------------------------------
-  ANOVA sessione x blocco (n=8): phase F(1,7)=40.46, p=0.000, eta2p=0.85 (grande), significativo: si' | block F(11,77)=3.00, p=0.002, eps GG=0.36, p GG=0.036, eta2p=0.30 (grande), significativo: si' | phase x block F(11,77)=1.06, p=0.402, eps GG=0.27, p GG=0.385, eta2p=0.13 (medio), significativo: no
-  training 1: first vs last block: pre b1 1.59 [1.35-1.77] -> pre b12 0.80 [0.59-1.05] | migliorato | n=8 (cambiano 8), t(7)=-2.69, p=0.031, p Bonf=0.093, significativo: no | d=-0.95 (grande), Shapiro p=0.58 | Wilcoxon p Holm=0.078
-  retention: last pre vs first post block: pre b12 0.80 [0.59-1.05] -> post b1 0.90 [0.69-1.06] | peggiorato | n=8 (cambiano 8), t(7)=-0.25, p=0.811, p Bonf=1.000, significativo: no | d=-0.09 (trascurabile), Shapiro p=0.40 | Wilcoxon p Holm=0.945
-  training 2: last pre vs last post block: pre b12 0.80 [0.59-1.05] -> post b12 0.48 [0.43-0.59] | migliorato | n=8 (cambiano 8), t(7)=-2.68, p=0.032, p Bonf=0.095, significativo: no | d=-0.95 (grande), Shapiro p=0.08 | Wilcoxon p Holm=0.023
-  sessione intera (esplorativo): pre 1.01 -> post 0.68, t p=0.001, d=-2.12; Wilcoxon p=0.008
-  curva di gruppo: plateau stimato 0.50, 95% del miglioramento al blocco 32.6 (non ancora raggiunto a fine training 2); R2 del fit 0.85
-
-Correct region at reveal [%]
+Direction error at 1 s (deg)
 ----------------------------
-  ANOVA sessione x blocco (n=8): phase F(1,7)=5.76, p=0.047, eta2p=0.45 (grande), significativo: si' | block F(11,77)=5.30, p=0.000, eps GG=0.26, p GG=0.008, eta2p=0.43 (grande), significativo: si' | phase x block F(11,77)=1.32, p=0.229, eps GG=0.34, p GG=0.288, eta2p=0.16 (grande), significativo: no
-  training 1: first vs last block: pre b1 12.50 [9.38-25.00] -> pre b12 25.00 [12.50-34.38] | migliorato | n=8 (cambiano 8), t(7)=2.02, p=0.083, p Bonf=0.250, significativo: no | d=0.71 (medio), Shapiro p=0.49 | Wilcoxon p Holm=0.219
-  retention: last pre vs first post block: pre b12 25.00 [12.50-34.38] -> post b1 12.50 [0.00-25.00] | peggiorato | n=8 (cambiano 7), t(7)=-3.81, p=0.007, p Bonf=0.020, significativo: si' | d=-1.35 (grande), Shapiro p=0.00 | Wilcoxon p Holm=0.034  <- differenze NON normali: vale il controllo non parametrico
-  training 2: last pre vs last post block: pre b12 25.00 [12.50-34.38] -> post b12 56.25 [34.38-62.50] | migliorato | n=8 (cambiano 6), t(7)=1.66, p=0.142, p Bonf=0.426, significativo: no | d=0.59 (medio), Shapiro p=0.91 | Wilcoxon p Holm=0.219
-  sessione intera (esplorativo): pre 21.88 -> post 34.38, t p=0.047, d=0.85; Wilcoxon p=0.023
-  curva di gruppo: fit esponenziale non riuscito (curva piatta o troppo rumorosa)
+  T1 B1                  mean ± SD 56.4 ± 11.9            median [IQR] 56.3 [48.2, 60.9]   (n=11)
+  T1 B2                  mean ± SD 47.9 ± 14.8            median [IQR] 45.9 [37.2, 54.0]   (n=11)
+  T1 B3                  mean ± SD 46.2 ± 13.6            median [IQR] 45.7 [37.5, 58.9]   (n=11)
+  T1 B4                  mean ± SD 39.2 ± 8.2             median [IQR] 43.0 [31.6, 44.2]   (n=11)
+  T1 B5                  mean ± SD 39.8 ± 14.7            median [IQR] 37.0 [32.0, 43.3]   (n=11)
+  T1 B6                  mean ± SD 38.4 ± 13.8            median [IQR] 34.2 [28.1, 50.7]   (n=11)
+  T1 B7                  mean ± SD 37.0 ± 10.1            median [IQR] 34.9 [32.8, 40.8]   (n=11)
+  T1 B8                  mean ± SD 34.8 ± 9.5             median [IQR] 34.0 [27.7, 40.3]   (n=11)
+  T1 B9                  mean ± SD 33.1 ± 8.4             median [IQR] 34.0 [27.9, 37.2]   (n=11)
+  T1 B10                 mean ± SD 34.7 ± 10.1            median [IQR] 34.1 [28.9, 37.6]   (n=11)
+  T1 B11                 mean ± SD 31.5 ± 8.3             median [IQR] 31.4 [26.7, 36.1]   (n=11)
+  T1 B12                 mean ± SD 36.6 ± 9.4             median [IQR] 35.2 [31.2, 43.6]   (n=11)
+  T2 B1                  mean ± SD 38.9 ± 12.3            median [IQR] 40.8 [32.9, 48.7]   (n=11)
+  T2 B2                  mean ± SD 33.9 ± 7.7             median [IQR] 32.6 [28.6, 36.5]   (n=11)
+  T2 B3                  mean ± SD 32.4 ± 9.8             median [IQR] 29.2 [23.4, 39.8]   (n=11)
+  T2 B4                  mean ± SD 32.3 ± 11.5            median [IQR] 29.9 [24.8, 40.8]   (n=11)
+  T2 B5                  mean ± SD 33.0 ± 7.2             median [IQR] 30.3 [28.5, 35.0]   (n=11)
+  T2 B6                  mean ± SD 33.1 ± 9.7             median [IQR] 31.1 [27.8, 38.5]   (n=11)
+  T2 B7                  mean ± SD 29.6 ± 7.8             median [IQR] 30.7 [22.2, 35.9]   (n=11)
+  T2 B8                  mean ± SD 26.6 ± 8.3             median [IQR] 24.6 [23.0, 28.6]   (n=11)
+  T2 B9                  mean ± SD 30.9 ± 10.7            median [IQR] 28.4 [23.9, 33.5]   (n=11)
+  T2 B10                 mean ± SD 29.2 ± 10.0            median [IQR] 26.3 [24.0, 31.8]   (n=11)
+  T2 B11                 mean ± SD 29.7 ± 9.0             median [IQR] 29.8 [23.1, 34.8]   (n=11)
+  T2 B12                 mean ± SD 27.2 ± 7.7             median [IQR] 28.0 [20.6, 32.6]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Training: F(1, 10)=18.21, p=0.002, eta2=0.117, eta2p=0.646
+    Block: F(11, 110)=9.00, p=<0.001, p GG=<0.001 (eps=0.32), eta2=0.163, eta2p=0.474
+    Training × Block: F(11, 110)=1.72, p=0.078, p GG=0.163 (eps=0.37), eta2=0.036, eta2p=0.147
+  Friedman (training 1, 12 blocks): chi2(11)=49.35, p=<0.001, W=0.41 (n=11)
+  Friedman (training 2, 12 blocks): chi2(11)=21.07, p=0.033, W=0.17 (n=11)
+  Post hoc (planned comparisons)
+    T1 B1 vs T1 B12: t(10)=-4.29, p Bonf=0.005, dz=-1.29, Shapiro p=0.803 | Wilcoxon p Holm=0.006, r=-0.97
+    T1 B12 vs T2 B1: t(10)=0.71, p Bonf=1.000, dz=0.22, Shapiro p=0.289 | Wilcoxon p Holm=0.638, r=0.18
+    T1 B12 vs T2 B12: t(10)=-3.35, p Bonf=0.022, dz=-1.01, Shapiro p=0.284 | Wilcoxon p Holm=0.027, r=-0.82
 
-Reached while hidden [%]
+Extent error at 1 s (cm)
 ------------------------
-  ANOVA sessione x blocco (n=8): phase F(1,7)=9.80, p=0.017, eta2p=0.58 (grande), significativo: si' | block F(11,77)=1.56, p=0.129, eps GG=0.32, p GG=0.221, eta2p=0.18 (grande), significativo: no | phase x block F(11,77)=0.94, p=0.505, eps GG=0.34, p GG=0.450, eta2p=0.12 (medio), significativo: no
-  training 1: first vs last block: pre b1 0.00 [0.00-0.00] -> pre b12 0.00 [0.00-0.00] | invariato | n=8 (cambiano 0), t(7)=0.00, p=1.000, p Bonf=1.000, significativo: no | d=0.00 (trascurabile), Shapiro p=- | Wilcoxon p Holm=1.000
-  retention: last pre vs first post block: pre b12 0.00 [0.00-0.00] -> post b1 0.00 [0.00-0.00] | invariato | n=8 (cambiano 0), t(7)=0.00, p=1.000, p Bonf=1.000, significativo: no | d=0.00 (trascurabile), Shapiro p=- | Wilcoxon p Holm=1.000
-  training 2: last pre vs last post block: pre b12 0.00 [0.00-0.00] -> post b12 0.00 [0.00-3.12] | migliorato | n=8 (cambiano 2), t(7)=1.53, p=0.170, p Bonf=0.511, significativo: no | d=0.54 (medio), Shapiro p=0.00 | Wilcoxon p Holm=0.472  <- differenze NON normali: vale il controllo non parametrico
-  sessione intera (esplorativo): pre 0.00 -> post 2.08, t p=0.017, d=1.11; Wilcoxon p=0.026
-  curva di gruppo: plateau stimato 0.41, 95% del miglioramento al blocco 18.0 (nel training 2); R2 del fit 0.02
+  T1 B1                  mean ± SD -2.63 ± 2.67           median [IQR] -2.08 [-4.10, -0.43]   (n=11)
+  T1 B2                  mean ± SD -2.04 ± 2.62           median [IQR] -1.55 [-3.26, -0.16]   (n=11)
+  T1 B3                  mean ± SD -2.39 ± 2.04           median [IQR] -2.21 [-4.00, -0.85]   (n=11)
+  T1 B4                  mean ± SD -2.17 ± 1.70           median [IQR] -1.89 [-2.78, -0.96]   (n=11)
+  T1 B5                  mean ± SD -2.15 ± 2.35           median [IQR] -1.33 [-3.13, -0.78]   (n=11)
+  T1 B6                  mean ± SD -1.64 ± 2.85           median [IQR] -0.86 [-1.85, -0.54]   (n=11)
+  T1 B7                  mean ± SD -1.64 ± 2.61           median [IQR] -0.79 [-2.40, 0.29]   (n=11)
+  T1 B8                  mean ± SD -1.94 ± 2.48           median [IQR] -0.91 [-2.71, -0.67]   (n=11)
+  T1 B9                  mean ± SD -1.62 ± 2.67           median [IQR] -1.52 [-2.57, 0.48]   (n=11)
+  T1 B10                 mean ± SD -1.10 ± 2.34           median [IQR] 0.02 [-1.91, 0.41]   (n=11)
+  T1 B11                 mean ± SD -0.62 ± 2.58           median [IQR] 0.04 [-0.98, 1.11]   (n=11)
+  T1 B12                 mean ± SD -1.40 ± 2.41           median [IQR] -1.14 [-1.87, 0.07]   (n=11)
+  T2 B1                  mean ± SD -2.15 ± 2.70           median [IQR] -2.19 [-4.21, 0.41]   (n=11)
+  T2 B2                  mean ± SD -1.43 ± 2.99           median [IQR] -1.57 [-1.75, 0.59]   (n=11)
+  T2 B3                  mean ± SD -1.33 ± 2.72           median [IQR] -0.68 [-2.51, 0.19]   (n=11)
+  T2 B4                  mean ± SD -1.87 ± 2.12           median [IQR] -1.63 [-1.98, -0.79]   (n=11)
+  T2 B5                  mean ± SD -1.85 ± 2.74           median [IQR] -1.27 [-2.85, -0.09]   (n=11)
+  T2 B6                  mean ± SD -0.80 ± 2.36           median [IQR] -0.78 [-0.90, 0.81]   (n=11)
+  T2 B7                  mean ± SD -0.97 ± 2.08           median [IQR] -1.26 [-1.68, 0.48]   (n=11)
+  T2 B8                  mean ± SD -0.86 ± 2.25           median [IQR] -0.34 [-1.21, 0.52]   (n=11)
+  T2 B9                  mean ± SD -0.84 ± 2.55           median [IQR] 0.11 [-1.03, 0.72]   (n=11)
+  T2 B10                 mean ± SD -1.08 ± 2.81           median [IQR] -0.76 [-1.95, 0.40]   (n=11)
+  T2 B11                 mean ± SD -0.77 ± 2.04           median [IQR] -0.50 [-1.15, 0.15]   (n=11)
+  T2 B12                 mean ± SD -0.79 ± 2.05           median [IQR] -0.29 [-0.87, 0.25]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Training: F(1, 10)=2.63, p=0.136, eta2=0.013, eta2p=0.208
+    Block: F(11, 110)=3.17, p=<0.001, p GG=0.030 (eps=0.32), eta2=0.038, eta2p=0.241
+    Training × Block: F(11, 110)=0.63, p=0.799, p GG=0.635 (eps=0.34), eta2=0.006, eta2p=0.059
+  Friedman (training 1, 12 blocks): chi2(11)=21.46, p=0.029, W=0.18 (n=11)
+  Friedman (training 2, 12 blocks): chi2(11)=25.27, p=0.008, W=0.21 (n=11)
+  Post hoc (planned comparisons)
+    T1 B1 vs T1 B12: t(10)=1.58, p Bonf=0.436, dz=0.48, Shapiro p=0.240 | Wilcoxon p Holm=0.618, r=0.39
+    T1 B12 vs T2 B1: t(10)=-1.14, p Bonf=0.841, dz=-0.34, Shapiro p=0.713 | Wilcoxon p Holm=0.618, r=-0.39
+    T1 B12 vs T2 B12: t(10)=1.37, p Bonf=0.599, dz=0.41, Shapiro p=0.948 | Wilcoxon p Holm=0.618, r=0.45
 
-Speed peaks
------------
-  ANOVA sessione x blocco (n=8): phase F(1,7)=25.65, p=0.001, eta2p=0.79 (grande), significativo: si' | block F(11,77)=6.66, p=0.000, eps GG=0.38, p GG=0.001, eta2p=0.49 (grande), significativo: si' | phase x block F(11,77)=1.19, p=0.306, eps GG=0.34, p GG=0.336, eta2p=0.15 (grande), significativo: no
-  training 1: first vs last block: pre b1 3.00 [2.75-3.00] -> pre b12 2.00 [2.00-2.00] | migliorato | n=8 (cambiano 5), t(7)=-3.27, p=0.014, p Bonf=0.041, significativo: si' | d=-1.16 (grande), Shapiro p=0.02 | Wilcoxon p Holm=0.102  <- differenze NON normali: vale il controllo non parametrico
-  retention: last pre vs first post block: pre b12 2.00 [2.00-2.00] -> post b1 2.00 [2.00-2.50] | peggiorato | n=8 (cambiano 3), t(7)=0.80, p=0.451, p Bonf=1.000, significativo: no | d=0.28 (piccolo), Shapiro p=0.05 | Wilcoxon p Holm=0.414
-  training 2: last pre vs last post block: pre b12 2.00 [2.00-2.00] -> post b12 2.00 [1.88-2.00] | migliorato | n=8 (cambiano 3), t(7)=-1.93, p=0.095, p Bonf=0.285, significativo: no | d=-0.68 (medio), Shapiro p=0.00 | Wilcoxon p Holm=0.205  <- differenze NON normali: vale il controllo non parametrico
-  sessione intera (esplorativo): pre 2.00 -> post 2.00, t p=0.170, d=-0.54; Wilcoxon p=0.157
-  curva di gruppo: plateau stimato 1.99, 95% del miglioramento al blocco 5.8 (gia' nel training 1); R2 del fit 0.82
+Movement duration (s)
+---------------------
+  T1 B1                  mean ± SD 3.70 ± 0.76            median [IQR] 3.32 [3.22, 4.57]   (n=11)
+  T1 B2                  mean ± SD 3.43 ± 1.07            median [IQR] 2.99 [2.71, 3.78]   (n=11)
+  T1 B3                  mean ± SD 2.88 ± 0.86            median [IQR] 2.61 [2.56, 3.00]   (n=11)
+  T1 B4                  mean ± SD 2.81 ± 0.59            median [IQR] 2.84 [2.35, 2.99]   (n=11)
+  T1 B5                  mean ± SD 2.49 ± 0.55            median [IQR] 2.37 [2.11, 2.58]   (n=11)
+  T1 B6                  mean ± SD 2.46 ± 0.32            median [IQR] 2.38 [2.26, 2.49]   (n=11)
+  T1 B7                  mean ± SD 2.49 ± 0.53            median [IQR] 2.46 [2.16, 2.62]   (n=11)
+  T1 B8                  mean ± SD 2.30 ± 0.35            median [IQR] 2.21 [2.06, 2.61]   (n=11)
+  T1 B9                  mean ± SD 2.33 ± 0.31            median [IQR] 2.30 [2.19, 2.41]   (n=11)
+  T1 B10                 mean ± SD 2.29 ± 0.43            median [IQR] 2.23 [2.03, 2.52]   (n=11)
+  T1 B11                 mean ± SD 2.22 ± 0.34            median [IQR] 2.11 [2.03, 2.27]   (n=11)
+  T1 B12                 mean ± SD 2.21 ± 0.35            median [IQR] 2.22 [1.96, 2.46]   (n=11)
+  T2 B1                  mean ± SD 2.49 ± 0.40            median [IQR] 2.35 [2.28, 2.65]   (n=11)
+  T2 B2                  mean ± SD 2.15 ± 0.26            median [IQR] 2.21 [1.96, 2.29]   (n=11)
+  T2 B3                  mean ± SD 2.13 ± 0.31            median [IQR] 2.13 [1.88, 2.41]   (n=11)
+  T2 B4                  mean ± SD 2.02 ± 0.23            median [IQR] 1.96 [1.86, 2.19]   (n=11)
+  T2 B5                  mean ± SD 1.97 ± 0.29            median [IQR] 1.95 [1.76, 2.10]   (n=11)
+  T2 B6                  mean ± SD 2.05 ± 0.27            median [IQR] 2.05 [1.82, 2.23]   (n=11)
+  T2 B7                  mean ± SD 1.94 ± 0.16            median [IQR] 1.88 [1.83, 2.11]   (n=11)
+  T2 B8                  mean ± SD 1.96 ± 0.30            median [IQR] 1.98 [1.71, 2.15]   (n=11)
+  T2 B9                  mean ± SD 1.95 ± 0.22            median [IQR] 1.95 [1.80, 2.13]   (n=11)
+  T2 B10                 mean ± SD 2.09 ± 0.33            median [IQR] 2.03 [1.83, 2.32]   (n=11)
+  T2 B11                 mean ± SD 2.09 ± 0.31            median [IQR] 2.09 [1.90, 2.31]   (n=11)
+  T2 B12                 mean ± SD 1.82 ± 0.23            median [IQR] 1.81 [1.65, 1.95]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Training: F(1, 10)=67.14, p=<0.001, eta2=0.211, eta2p=0.870
+    Block: F(11, 110)=17.90, p=<0.001, p GG=<0.001 (eps=0.40), eta2=0.228, eta2p=0.642
+    Training × Block: F(11, 110)=5.54, p=<0.001, p GG=0.003 (eps=0.30), eta2=0.078, eta2p=0.357
+  Friedman (training 1, 12 blocks): chi2(11)=72.48, p=<0.001, W=0.60 (n=11)
+  Friedman (training 2, 12 blocks): chi2(11)=40.90, p=<0.001, W=0.34 (n=11)
+  Post hoc (planned comparisons)
+    T1 B1 vs T1 B12: t(10)=-6.08, p Bonf=<0.001, dz=-1.83, Shapiro p=0.061 | Wilcoxon p Holm=0.003, r=-1.00
+    T1 B12 vs T2 B1: t(10)=2.44, p Bonf=0.105, dz=0.74, Shapiro p=0.005 | Wilcoxon p Holm=0.020, r=0.85
+    T1 B12 vs T2 B12: t(10)=-3.33, p Bonf=0.023, dz=-1.00, Shapiro p=0.025 | Wilcoxon p Holm=0.020, r=-0.79
 
-Sessione intera (tutti i frame, script del laboratorio; esplorativo)
---------------------------------------------------------------------
-  Session duration (log) (tt.m) [s]: pre 520 [471-553] -> post 424 [404-447] | migliorato | n=8 (cambiano 8), t(7)=-8.11, p=0.000, significativo: si' | d=-2.87 (grande), Shapiro p=0.45 | Wilcoxon p Holm=0.008
-  Cursor path length (cursor_distance.m) [px]: pre 160712 [155824-164213] -> post 128608 [123374-132239] | migliorato | n=8 (cambiano 8), t(7)=-7.15, p=0.000, significativo: si' | d=-2.53 (grande), Shapiro p=0.00 | Wilcoxon p Holm=0.008  <- differenze NON normali: vale il controllo non parametrico
-  Mean cursor speed (speed1.m) [px/s]: pre 300 [280-336] -> post 300 [285-315] | - | n=8 (cambiano 8), t(7)=-0.66, p=0.531, significativo: no | d=-0.23 (piccolo), Shapiro p=0.97 | Wilcoxon p Holm=0.641
-  SD of cursor speed (speed1.m) [px/s]: pre 369 [332-409] -> post 376 [355-410] | - | n=8 (cambiano 8), t(7)=1.29, p=0.238, significativo: no | d=0.46 (piccolo), Shapiro p=0.76 | Wilcoxon p Holm=0.250
-  Peak cursor speed (speed1.m) [px/s]: pre 5434 [4603-7710] -> post 6677 [5188-7771] | - | n=8 (cambiano 8), t(7)=0.96, p=0.368, significativo: no | d=0.34 (piccolo), Shapiro p=0.07 | Wilcoxon p Holm=0.312
-  Mean jerk (jerk1.m) [px/s^3]: pre 24186 [21204-28675] -> post 24131 [22437-26482] | migliorato | n=8 (cambiano 8), t(7)=-0.58, p=0.577, significativo: no | d=-0.21 (piccolo), Shapiro p=0.06 | Wilcoxon p Holm=0.742
-  Dimensionless jerk (segments, log10) (jerk1.m): pre 15.101 [15.066-15.168] -> post 14.742 [14.705-14.810] | migliorato | n=8 (cambiano 8), t(7)=-6.44, p=0.000, significativo: si' | d=-2.28 (grande), Shapiro p=0.56 | Wilcoxon p Holm=0.008
-  Speed peaks (smooth.m): pre 101 [59-149] -> post 64 [49-102] | migliorato | n=8 (cambiano 7), t(7)=-1.11, p=0.302, significativo: no | d=-0.39 (piccolo), Shapiro p=0.02 | Wilcoxon p Holm=0.310  <- differenze NON normali: vale il controllo non parametrico
-  Smoothness (1 / speed peaks) (smooth.m): pre 0.010 [0.007-0.020] -> post 0.016 [0.010-0.021] | migliorato | n=8 (cambiano 7), t(7)=-0.56, p=0.592, significativo: no | d=-0.20 (trascurabile), Shapiro p=0.00 | Wilcoxon p Holm=0.612  <- differenze NON normali: vale il controllo non parametrico
-  Region changes (movement_train.m): pre 456 [424-469] -> post 368 [354-379] | migliorato | n=8 (cambiano 8), t(7)=-5.08, p=0.001, significativo: si' | d=-1.80 (grande), Shapiro p=0.40 | Wilcoxon p Holm=0.008
-
-Modello misto, prova per prova (96 prove per sessione, senza blocchi)
----------------------------------------------------------------------
-  y ~ sessione * log(prova) + regione, soggetto casuale. log(prova): 'per ogni raddoppio
-  del numero di prova' = coefficiente x ln 2. Movement time e linearity index in scala log (%).
-  Euclidean error at 1 s: apprendimento nel training 1 (per raddoppio della prova) -14.32 [-21.59, -7.04] px, p=0.000 | training 2 vs 1 all'inizio -38.84 [-79.37, +1.69] px, p=0.060 | differenza di apprendimento nel training 2 -1.21 [-8.78, +6.35] px, p=0.754 | effetti casuali: intercetta + pendenza di log_trial (correlate)
-  Direction error at 1 s: apprendimento nel training 1 (per raddoppio della prova) -3.89 [-5.26, -2.51] deg, p=0.000 | training 2 vs 1 all'inizio -15.28 [-25.25, -5.30] deg, p=0.003 | differenza di apprendimento nel training 2 +1.45 [-0.42, +3.31] deg, p=0.128 | effetti casuali: intercetta + pendenza di log_trial (indipendenti)
-  Extent error at 1 s: apprendimento nel training 1 (per raddoppio della prova) +7.29 [-1.04, +15.62] px, p=0.086 | training 2 vs 1 all'inizio -5.92 [-48.15, +36.32] px, p=0.784 | differenza di apprendimento nel training 2 +2.35 [-5.53, +10.23] px, p=0.559 | effetti casuali: intercetta + pendenza di log_trial (correlate)
-  Movement time (log): apprendimento nel training 1 (per raddoppio della prova) -8.5% [-9.9, -7.0], p=0.000 | training 2 vs 1 all'inizio -36.0% [-43.1, -28.0], p=0.000 | differenza di apprendimento nel training 2 +4.5% [+2.2, +6.8], p=0.000 | effetti casuali: intercetta + pendenza di log_trial (correlate)
-  Linearity index (log(1 + y)): apprendimento nel training 1 (per raddoppio della prova) -6.4% [-8.4, -4.4], p=0.000 | training 2 vs 1 all'inizio -34.5% [-42.9, -24.9], p=0.000 | differenza di apprendimento nel training 2 +4.5% [+1.8, +7.2], p=0.001 | effetti casuali: intercetta + pendenza di log_trial (correlate)
-
-Metriche esplorative
---------------------
-  Tutte le altre metriche sono in training_tests.csv e plots/metrics/, calcolate allo stesso modo.
-  I ritorni al centro sono in training_homes.csv.
-  plots/figure4/<soggetto>.png: ogni soggetto prova per prova; plots/figure4_group.png: il gruppo.
+Linearity index
+---------------
+  T1 B1                  mean ± SD 2.66 ± 1.03            median [IQR] 2.39 [1.88, 3.34]   (n=11)
+  T1 B2                  mean ± SD 2.06 ± 0.63            median [IQR] 2.16 [1.63, 2.35]   (n=11)
+  T1 B3                  mean ± SD 1.88 ± 1.24            median [IQR] 1.51 [1.29, 1.80]   (n=11)
+  T1 B4                  mean ± SD 1.73 ± 0.53            median [IQR] 1.66 [1.45, 2.06]   (n=11)
+  T1 B5                  mean ± SD 1.54 ± 0.43            median [IQR] 1.61 [1.26, 1.79]   (n=11)
+  T1 B6                  mean ± SD 1.58 ± 0.54            median [IQR] 1.57 [1.15, 1.79]   (n=11)
+  T1 B7                  mean ± SD 1.56 ± 0.55            median [IQR] 1.55 [1.20, 2.03]   (n=11)
+  T1 B8                  mean ± SD 1.32 ± 0.54            median [IQR] 1.22 [1.10, 1.41]   (n=11)
+  T1 B9                  mean ± SD 1.31 ± 0.42            median [IQR] 1.30 [1.04, 1.53]   (n=11)
+  T1 B10                 mean ± SD 1.34 ± 0.46            median [IQR] 1.27 [1.06, 1.60]   (n=11)
+  T1 B11                 mean ± SD 1.32 ± 0.38            median [IQR] 1.39 [1.05, 1.55]   (n=11)
+  T1 B12                 mean ± SD 1.45 ± 0.49            median [IQR] 1.25 [1.16, 1.75]   (n=11)
+  T2 B1                  mean ± SD 1.35 ± 0.44            median [IQR] 1.42 [1.02, 1.62]   (n=11)
+  T2 B2                  mean ± SD 1.06 ± 0.47            median [IQR] 0.94 [0.87, 1.03]   (n=11)
+  T2 B3                  mean ± SD 1.25 ± 0.47            median [IQR] 1.35 [0.91, 1.51]   (n=11)
+  T2 B4                  mean ± SD 1.06 ± 0.25            median [IQR] 1.02 [0.86, 1.20]   (n=11)
+  T2 B5                  mean ± SD 0.99 ± 0.33            median [IQR] 0.91 [0.75, 1.19]   (n=11)
+  T2 B6                  mean ± SD 1.12 ± 0.33            median [IQR] 1.02 [0.89, 1.29]   (n=11)
+  T2 B7                  mean ± SD 1.10 ± 0.45            median [IQR] 1.09 [0.67, 1.45]   (n=11)
+  T2 B8                  mean ± SD 1.10 ± 0.58            median [IQR] 0.91 [0.73, 1.41]   (n=11)
+  T2 B9                  mean ± SD 1.11 ± 0.39            median [IQR] 1.02 [0.83, 1.41]   (n=11)
+  T2 B10                 mean ± SD 1.32 ± 0.52            median [IQR] 1.13 [1.03, 1.33]   (n=11)
+  T2 B11                 mean ± SD 1.15 ± 0.38            median [IQR] 1.02 [0.88, 1.35]   (n=11)
+  T2 B12                 mean ± SD 0.94 ± 0.29            median [IQR] 0.91 [0.71, 1.16]   (n=11)
+  Repeated-measures ANOVA (n=11 complete participants)
+    Training: F(1, 10)=43.94, p=<0.001, eta2=0.159, eta2p=0.815
+    Block: F(11, 110)=5.06, p=<0.001, p GG=0.002 (eps=0.36), eta2=0.117, eta2p=0.336
+    Training × Block: F(11, 110)=3.37, p=<0.001, p GG=0.017 (eps=0.37), eta2=0.073, eta2p=0.252
+  Friedman (training 1, 12 blocks): chi2(11)=34.31, p=<0.001, W=0.28 (n=11)
+  Friedman (training 2, 12 blocks): chi2(11)=17.64, p=0.090, W=0.15 (n=11)
+  Post hoc (planned comparisons)
+    T1 B1 vs T1 B12: t(10)=-3.43, p Bonf=0.019, dz=-1.03, Shapiro p=0.420 | Wilcoxon p Holm=0.015, r=-0.91
+    T1 B12 vs T2 B1: t(10)=-0.80, p Bonf=1.000, dz=-0.24, Shapiro p=0.702 | Wilcoxon p Holm=0.413, r=-0.30
+    T1 B12 vs T2 B12: t(10)=-4.02, p Bonf=0.007, dz=-1.21, Shapiro p=0.600 | Wilcoxon p Holm=0.015, r=-0.91

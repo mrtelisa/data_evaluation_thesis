@@ -282,7 +282,7 @@ def main():
     subjects = pd.DataFrame(rows)
     args.out.mkdir(parents=True, exist_ok=True)
 
-    report = Report("CALIBRAZIONE BoMI – customizzazione per soggetto")
+    report = Report("CALIBRAZIONE BoMI – customizzazione per soggetto", legend=False)
     report.text(f"Soggetti: {len(subjects)} ({', '.join(subjects.subject)})")
     if dropped:
         report.text("Mappe scartate (si usa l'ultima): " + ", ".join(p.name for p in dropped))
@@ -342,7 +342,7 @@ def main():
     subjects.to_csv(args.out / "calibration_subjects.csv", index=False)
     pd.DataFrame(stats_rows).to_csv(args.out / "calibration_statistics.csv", index=False)
     plots(subjects, args.out)
-    report.write(args.out)
+    report.save(args.out)
 
 
 if __name__ == "__main__":

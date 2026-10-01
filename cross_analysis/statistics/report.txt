@@ -22,42 +22,42 @@ COME LEGGERE QUESTO REPORT
 - "cambiano k": quanti soggetti hanno un valore diverso fra i due momenti. Se sono pochi
   (es. 1 su 9) l'effetto puo' risultare "grande" ma riguarda solo quei soggetti.
 
-Soggetti con almeno un dato: 8
+Soggetti con almeno un dato: 11
 Correlazioni di Spearman ESPLORATIVE: nessuna correzione, da leggere come tendenze.
 
 Trasferimento: la stessa abilita' con il cursore e con il robot
 ---------------------------------------------------------------
   Blind test 3 – region accuracy [%]  vs  Run 1 – non-adjacent changes, outbound [%]
-      (going to the right region blind vs sweeping across the grid on the robot; atteso -) rho=-0.34 (medio), p=0.416, n=8, nella direzione attesa: si'
+      (going to the right region blind vs sweeping across the grid on the robot; atteso -) rho=0.00 (trascurabile), p=1.000, n=11, nella direzione attesa: si'
   Training, last block – dwell time [s]  vs  Run 1 – mean command duration, outbound [s]
-      (holding the cursor still (training) vs holding a command (robot); atteso -) rho=-0.52 (grande), p=0.183, n=8, nella direzione attesa: si'
+      (holding the cursor still (training) vs holding a command (robot); atteso -) rho=-0.51 (grande), p=0.110, n=11, nella direzione attesa: si'
   Blind test 3 – initial direction error [deg]  vs  Run 1 – reversals, outbound [%]
-      (planning errors (blind) vs overcorrections (robot); atteso +) rho=0.01 (trascurabile), p=0.978, n=8, nella direzione attesa: si'
+      (planning errors (blind) vs overcorrections (robot); atteso +) rho=0.23 (piccolo), p=0.501, n=11, nella direzione attesa: si'
   Blind test 3 – end-point error [px]  vs  Run 1 – outbound time [s]
-      (map knowledge (blind) vs driving time (robot); atteso +) rho=0.07 (trascurabile), p=0.867, n=8, nella direzione attesa: si'
+      (map knowledge (blind) vs driving time (robot); atteso +) rho=0.16 (piccolo), p=0.631, n=11, nella direzione attesa: si'
   Training gain: movement time first – last block [s]  vs  Robot gain: outbound time run 1 – run 2 [s]
-      (who improves in the training improves on the robot; atteso +) rho=0.14 (piccolo), p=0.736, n=8, nella direzione attesa: si'
+      (who improves in the training improves on the robot; atteso +) rho=0.07 (trascurabile), p=0.832, n=11, nella direzione attesa: si'
 
 Questionari e prestazioni
 -------------------------
   SUS score (0-100)  vs  Run 2 – test duration [s]
-      (perceived usability vs time on the task; atteso -) rho=0.26 (piccolo), p=0.623, n=6, nella direzione attesa: no
+      (perceived usability vs time on the task; atteso -) rho=-0.00 (trascurabile), p=0.989, n=11, nella direzione attesa: si'
   NASA-TLX raw (0-100)  vs  Run 2 – test duration [s]
-      (perceived workload vs time on the task; atteso +) rho=0.31 (medio), p=0.544, n=6, nella direzione attesa: si'
+      (perceived workload vs time on the task; atteso +) rho=0.05 (trascurabile), p=0.883, n=11, nella direzione attesa: si'
   NASA-TLX physical demand (1-20)  vs  Blind end error: test 4 – test 3 [px] (> 0 = worse after run 1)
-      (perceived physical demand vs fatigue in the blind test; atteso +) rho=-0.17 (piccolo), p=0.742, n=6, nella direzione attesa: no
+      (perceived physical demand vs fatigue in the blind test; atteso +) rho=-0.01 (trascurabile), p=0.979, n=11, nella direzione attesa: no
   SUS score (0-100)  vs  Collisions, run 1 + run 2
-      (perceived usability vs collisions) non calcolabile: n=6 coppie complete, servono almeno 3 e valori non tutti uguali
+      (perceived usability vs collisions) non calcolabile: n=11 coppie complete, servono almeno 3 e valori non tutti uguali
 
 Questionari: descrittive
 ------------------------
-  SUS: 66.2 [58.8-75.6]; 3/6 soggetti sopra il riferimento 68 (media degli studi in letteratura)
-  NASA-TLX Mental demand: 11.0 [10.0-12.0]
-  NASA-TLX Physical demand: 3.5 [3.0-4.8]
-  NASA-TLX Temporal demand: 7.5 [2.8-10.0]
-  NASA-TLX Performance: 13.5 [12.0-15.0]
-  NASA-TLX Effort: 12.5 [10.5-16.8]
-  NASA-TLX Frustration: 6.5 [5.0-9.5]
-  NASA-TLX Raw TLX (1-20): 9.8 [8.6-10.3]
-  NASA-TLX Raw TLX (0-100): 46.5 [40.1-48.9]
-  Edinburgh LQ: 88 [87-89]
+  SUS: 70.0 [61.2-75.0]; 7/11 soggetti sopra il riferimento 68 (media degli studi in letteratura)
+  NASA-TLX Mental demand: 12.0 [9.0-14.0]
+  NASA-TLX Physical demand: 5.0 [3.5-9.0]
+  NASA-TLX Temporal demand: 5.0 [5.0-10.0]
+  NASA-TLX Performance: 15.0 [12.0-16.0]
+  NASA-TLX Effort: 12.0 [10.0-16.5]
+  NASA-TLX Frustration: 8.0 [5.0-11.5]
+  NASA-TLX Raw TLX (1-20): 10.3 [8.9-11.7]
+  NASA-TLX Raw TLX (0-100): 49.1 [41.7-56.1]
+  Edinburgh LQ: 88 [71-95]

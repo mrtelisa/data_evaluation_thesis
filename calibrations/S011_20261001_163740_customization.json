@@ -1,0 +1,66 @@
+{
+  "subject": "S011",
+  "map": "S011_20261001_163740",
+  "saved": "20261001_163740",
+  "base": "shared",
+  "steps": [
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.1,
+      "gain_y": 1.1,
+      "off_x": 0.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.1,
+      "gain_y": 1.1,
+      "off_x": 0.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 0.9090909090909091,
+      "gain_y": 0.9090909090909091,
+      "off_x": 0.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.1,
+      "gain_y": 1.1,
+      "off_x": 0.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.1,
+      "gain_y": 1.1,
+      "off_x": 0.0,
+      "off_y": 0.0
+    }
+  ],
+  "n_steps": 5,
+  "rot_deg": 0.0,
+  "scale": 1.3310000000000006,
+  "flip_x": false,
+  "offset_x": 0.0,
+  "offset_y": 0.0,
+  "M": [
+    [
+      1.3310000000000004,
+      0.0
+    ],
+    [
+      0.0,
+      1.3310000000000006
+    ]
+  ],
+  "t": [
+    -422.02500000000055,
+    -248.25000000000045
+  ],
+  "residual": 2.220446049250313e-16,
+  "summary_text": "rotation +0.0 deg, scale x1.331, flip X no, offset (+0, +0) px",
+  "steps_text": "scale x1.10; scale x1.10; scale x0.91; scale x1.10; scale x1.10"
+}

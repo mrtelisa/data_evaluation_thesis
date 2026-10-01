@@ -1,8 +1,7 @@
-"""Lancia tutte le analisi nell'ordine giusto:
+"""Lancia tutte le analisi:
     1. questionari (punteggi per soggetto)
-    2. blind test, training, robot reale, calibrazioni BoMI
-    3. collegamenti fra le parti e questionari (usa i risultati di 1 e 2)
-    4. il PDF riassuntivo summary/riepilogo_analisi.pdf (usa tutti i risultati)
+    2. blind test, training, robot reale (statistiche, grafici, tabelle jamovi in jamovi/)
+    3. calibrazioni BoMI
 
     python3 run_all.py
 
@@ -21,8 +20,6 @@ STEPS = [
     ("reaching_regions", "training_analysis.py"),
     ("real_robot", "robot_analysis.py"),
     ("calibrations", "calibration_analysis.py"),
-    ("cross_analysis", "cross_analysis.py"),
-    ("summary", "make_summary.py"),   # il PDF riassuntivo, sempre per ultimo
 ]
 
 if __name__ == "__main__":
