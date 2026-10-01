@@ -57,7 +57,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from common.data import aggregate, find_sessions   # noqa: E402
-from common.plots import (ANOVA_TAG, BLUE, CATEGORICAL, INK2, MUTED, NONPARAM_TAG, STARS_NOTE,   # noqa: E402
+from common.plots import (ANOVA_TAG, plot_label, BLUE, CATEGORICAL, INK2, MUTED, NONPARAM_TAG, STARS_NOTE,   # noqa: E402
                           anova_caption, brackets, grid_axes, mean_se, save_figure, setup_style, spaghetti)
 from common.reach_metrics import onset_metrics, reach_metrics, region_of, session_metrics   # noqa: E402
 from common.report import Report   # noqa: E402
@@ -281,6 +281,7 @@ def analyse(subjects: pd.DataFrame, report: Report) -> tuple:
 
 def plot_metric(ax, subjects, m):
     label, unit, better, _, _ = METRICS[m]
+    label = plot_label(label)
     spaghetti(ax, wide(subjects, m), TEST_LABELS, ylabel=f"{label}{f' [{unit}]' if unit else ''}",
               title=label + ("  (higher = better)" if better == "up" else "  (lower = better)" if better == "down" else ""))
     # what happens between two tests, under the axis between the ticks
@@ -293,6 +294,7 @@ def plot_metric(ax, subjects, m):
 def plot_metric_anova(ax, subjects, m, tests, anova):
     """Versione ANOVA: media +- SE sui 5 test, parentesi sui test consecutivi significativi."""
     label, unit, better, _, _ = METRICS[m]
+    label = plot_label(label)
     mean_se(ax, wide(subjects, m), color=BLUE)
     ax.set_xticks(range(len(TESTS)))
     ax.set_xticklabels(TEST_LABELS)
@@ -345,7 +347,7 @@ def plots(subjects, per_target, trials, out, tests, anova):
             s = s.reindex(list(TESTS))
             ax.plot(range(len(TESTS)), s.values, marker="o", color=CATEGORICAL[i % len(CATEGORICAL)],
                     lw=1.8, label=f"target {tg}")
-        label, unit = METRICS[m][0], METRICS[m][1]
+        label, unit = plot_label(METRICS[m][0]), METRICS[m][1]
         ax.set_xticks(range(len(TESTS)))
         ax.set_xticklabels(TEST_LABELS)
         ax.set_ylabel(f"{label}{f' [{unit}]' if unit else ''}")

@@ -215,7 +215,7 @@ def shared_calibration(samples_path: Path, map_path: Path, report: Report, out: 
             label="cumulative")
     ax.set_xlabel("principal component")
     ax.set_ylabel("explained variance (%)")
-    ax.set_title("Shared calibration – PCA of the 42 hand coordinates (pca_analysis.py)", loc="left")
+    ax.set_title("Shared calibration – PCA of the 42 hand coordinates", loc="left")
     ax.legend(fontsize=8)
     save_figure(fig, out, "calibration_pca")
 

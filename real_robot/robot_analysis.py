@@ -46,7 +46,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from common.data import find_sessions   # noqa: E402
-from common.plots import (ANOVA_TAG, BLUE, CATEGORICAL, FIRST_COLOR, INK, INK2, MUTED, NONPARAM_TAG,   # noqa: E402
+from common.plots import (ANOVA_TAG, plot_label, BLUE, CATEGORICAL, FIRST_COLOR, INK, INK2, MUTED, NONPARAM_TAG,   # noqa: E402
                           SECOND_COLOR, SEQUENTIAL_CMAP, STARS_NOTE, brackets, grid_axes, heatmap3x3,
                           mean_se, save_figure, setup_style, spaghetti)
 from common.report import Report   # noqa: E402
@@ -255,6 +255,7 @@ def plots(df, sessions, regions, out, tests):
     fig, axes = grid_axes(len(PRIMARY), ncols=4, width=3.3, height=3.4)
     for ax, key in zip(axes, PRIMARY):
         label, unit, _ = METRICS[key]
+        label = plot_label(label)
         w = df.pivot(index="subject", columns="run", values=key).reindex(columns=list(RUNS))
         spaghetti(ax, w, ["run 1", "run 2"], ylabel=f"{label}{f' [{unit}]' if unit else ''}", title=label)
     fig.suptitle("Real robot – primary metrics, run 1 vs run 2 (one line per subject)\n" + NONPARAM_TAG, x=0.01,
@@ -266,6 +267,7 @@ def plots(df, sessions, regions, out, tests):
     fig, axes = grid_axes(len(PRIMARY), ncols=4, width=3.3, height=3.8)
     for ax, key in zip(axes, PRIMARY):
         label, unit, _ = METRICS[key]
+        label = plot_label(label)
         w = df.pivot(index="subject", columns="run", values=key).reindex(columns=list(RUNS))
         mean_se(ax, w, color=BLUE)
         ax.set_xticks(range(len(RUNS)))
@@ -295,6 +297,7 @@ def plots(df, sessions, regions, out, tests):
     save_figure(fig, out, "robot_phases")
 
     for key, (label, unit, _) in METRICS.items():
+        label = plot_label(label)
         w = df.pivot(index="subject", columns="run", values=key).reindex(columns=list(RUNS))
         if w.apply(pd.to_numeric, errors="coerce").notna().any().any():
             fig, ax = plt.subplots(figsize=(3.8, 3.6))

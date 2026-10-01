@@ -1,5 +1,6 @@
 """Stile e grafici comuni (stessa palette di questionari/utils.py)."""
 
+import re
 from pathlib import Path
 
 import matplotlib
@@ -17,6 +18,13 @@ SEQUENTIAL_CMAP = matplotlib.colors.LinearSegmentedColormap.from_list(
 FIRST_COLOR, SECOND_COLOR = "#ed7014", "#104281"
 INK, INK2, MUTED, GRID, AXIS = "#0b0b0b", "#52514e", "#898781", "#e1e0d9", "#c3c2b7"
 SUBJECT_LINE = "#c3c2b7"
+
+
+def plot_label(label: str) -> str:
+    """Etichetta per i grafici senza lo script di origine: "Mean jerk (jerk1.m)" -> "Mean jerk",
+    "Test duration (log, tt.m)" -> "Test duration (log)". Report e csv tengono l'etichetta intera."""
+    label = re.sub(r",\s*[\w.]+\.(m|py)\)", ")", label)
+    return re.sub(r"\s*\([\w.]+\.(m|py)\)", "", label)
 
 
 def setup_style():
