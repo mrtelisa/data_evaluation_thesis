@@ -69,21 +69,21 @@ Completion time – total (s)
 
 Path length – outbound (m)
 --------------------------
-  run 1                  mean ± SD 23.79 ± 0.96           median [IQR] 23.53 [23.27, 23.81]   (n=11)
-  run 2                  mean ± SD 23.35 ± 0.99           median [IQR] 22.99 [22.70, 23.70]   (n=11)
+  run 1                  mean ± SD 23.85 ± 1.00           median [IQR] 23.53 [23.27, 24.02]   (n=11)
+  run 2                  mean ± SD 23.35 ± 0.99           median [IQR] 23.00 [22.70, 23.70]   (n=11)
   Repeated-measures ANOVA (n=11 complete participants)
-    Run: F(1, 10)=1.93, p=0.195, eta2=0.052, eta2p=0.162
+    Run: F(1, 10)=2.21, p=0.168, eta2=0.064, eta2p=0.181
   Post hoc (planned comparisons)
-    run 1 vs run 2: t(10)=-1.39, p Bonf=0.195, dz=-0.42, Shapiro p=0.069 | Wilcoxon p Holm=0.147, r=-0.52
+    run 1 vs run 2: t(10)=-1.49, p Bonf=0.168, dz=-0.45, Shapiro p=0.133 | Wilcoxon p Holm=0.147, r=-0.52
 
 Path length – return (m)
 ------------------------
-  run 1                  mean ± SD 25.61 ± 0.78           median [IQR] 25.42 [25.00, 26.26]   (n=11)
+  run 1                  mean ± SD 25.70 ± 0.84           median [IQR] 25.42 [25.01, 26.40]   (n=11)
   run 2                  mean ± SD 25.26 ± 0.59           median [IQR] 25.28 [24.80, 25.72]   (n=11)
   Repeated-measures ANOVA (n=11 complete participants)
-    Run: F(1, 10)=4.98, p=0.050, eta2=0.063, eta2p=0.333
+    Run: F(1, 10)=7.16, p=0.023, eta2=0.091, eta2p=0.417
   Post hoc (planned comparisons)
-    run 1 vs run 2: t(10)=-2.23, p Bonf=0.050, dz=-0.67, Shapiro p=0.916 | Wilcoxon p Holm=0.042, r=-0.70
+    run 1 vs run 2: t(10)=-2.68, p Bonf=0.023, dz=-0.81, Shapiro p=0.420 | Wilcoxon p Holm=0.024, r=-0.76
 
 Mean speed – outbound (m/s)
 ---------------------------

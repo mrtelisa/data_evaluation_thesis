@@ -30,7 +30,7 @@ S002,1,completion_time,grasp,29.14646291732788
 S002,1,completion_time,ritorno,250.95774841308594
 S002,1,completion_time,posizionamento,29.384132623672485
 S002,1,completion_time,totale,571.3363289833069
-S002,1,path_length,andata,23.45785047524229
+S002,1,path_length,andata,23.46265951018092
 S002,1,mean_speed,andata,0.09931308960364651
 S002,1,jerk,andata,2.305051056264833
 S002,1,region_transitions,andata,98.0
@@ -82,7 +82,7 @@ S004,1,completion_time,grasp,34.96948981285095
 S004,1,completion_time,ritorno,313.7315492630005
 S004,1,completion_time,posizionamento,31.614482879638672
 S004,1,completion_time,totale,674.2951393127441
-S004,1,path_length,andata,23.697753148459036
+S004,1,path_length,andata,23.697753148459032
 S004,1,mean_speed,andata,0.09099708379351246
 S004,1,jerk,andata,1.5710787955814947
 S004,1,region_transitions,andata,76.0
@@ -95,7 +95,7 @@ S004,2,completion_time,grasp,60.242631673812866
 S004,2,completion_time,ritorno,217.42494177818298
 S004,2,completion_time,posizionamento,30.545056104660034
 S004,2,completion_time,totale,494.51110768318176
-S004,2,path_length,andata,22.99049929904104
+S004,2,path_length,andata,22.995661345721185
 S004,2,mean_speed,andata,0.1377957765085101
 S004,2,jerk,andata,2.251527805532375
 S004,2,region_transitions,andata,60.0
@@ -134,7 +134,7 @@ S006,1,completion_time,grasp,93.47221088409424
 S006,1,completion_time,ritorno,239.96720504760742
 S006,1,completion_time,posizionamento,25.087303161621094
 S006,1,completion_time,totale,601.1107773780823
-S006,1,path_length,andata,23.054375979128253
+S006,1,path_length,andata,23.05437597912825
 S006,1,mean_speed,andata,0.1038653463857036
 S006,1,jerk,andata,2.0461511404952466
 S006,1,region_transitions,andata,111.0
@@ -160,11 +160,11 @@ S007,1,completion_time,grasp,38.85706686973572
 S007,1,completion_time,ritorno,699.2228677272797
 S007,1,completion_time,posizionamento,54.68091654777527
 S007,1,completion_time,totale,1296.6153824329376
-S007,1,path_length,andata,23.92674014942193
+S007,1,path_length,andata,24.346398543994532
 S007,1,mean_speed,andata,0.06798270197333214
 S007,1,jerk,andata,0.8958008834142737
 S007,1,region_transitions,andata,186.0
-S007,1,path_length,ritorno,25.498390870793706
+S007,1,path_length,ritorno,26.129054498943223
 S007,1,mean_speed,ritorno,0.05833327668021071
 S007,1,jerk,ritorno,0.9070412435073115
 S007,1,region_transitions,ritorno,157.0
@@ -186,7 +186,7 @@ S008,1,completion_time,grasp,28.759522199630737
 S008,1,completion_time,ritorno,192.74481010437012
 S008,1,completion_time,posizionamento,27.02003502845764
 S008,1,completion_time,totale,447.41686487197876
-S008,1,path_length,andata,22.84596136746514
+S008,1,path_length,andata,22.845961367465137
 S008,1,mean_speed,andata,0.1304808394682321
 S008,1,jerk,andata,2.4213841321876215
 S008,1,region_transitions,andata,49.0
@@ -212,11 +212,11 @@ S009,1,completion_time,grasp,40.72787070274353
 S009,1,completion_time,ritorno,486.44293904304504
 S009,1,completion_time,posizionamento,51.38716387748718
 S009,1,completion_time,totale,1024.4802033901215
-S009,1,path_length,andata,24.8767877144153
+S009,1,path_length,andata,25.097892546583267
 S009,1,mean_speed,andata,0.06481977995323604
 S009,1,jerk,andata,1.2249162432764278
 S009,1,region_transitions,andata,142.0
-S009,1,path_length,ritorno,26.51292522993528
+S009,1,path_length,ritorno,26.917738573237774
 S009,1,mean_speed,ritorno,0.06829222051967017
 S009,1,jerk,ritorno,1.2383687911060637
 S009,1,region_transitions,ritorno,194.0
@@ -268,7 +268,7 @@ S011,1,path_length,andata,23.29907100458711
 S011,1,mean_speed,andata,0.10413425245391666
 S011,1,jerk,andata,3.1690773279625146
 S011,1,region_transitions,andata,99.0
-S011,1,path_length,ritorno,24.83214135920833
+S011,1,path_length,ritorno,24.85101191627929
 S011,1,mean_speed,ritorno,0.10676477100022438
 S011,1,jerk,ritorno,3.079785760306414
 S011,1,region_transitions,ritorno,112.0
@@ -277,7 +277,7 @@ S011,2,completion_time,grasp,28.332609176635742
 S011,2,completion_time,ritorno,208.57710003852844
 S011,2,completion_time,posizionamento,33.803120613098145
 S011,2,completion_time,totale,462.83202171325684
-S011,2,path_length,andata,22.84088039879769
+S011,2,path_length,andata,22.843324346235793
 S011,2,mean_speed,andata,0.14936830858188482
 S011,2,jerk,andata,4.474783114852947
 S011,2,region_transitions,andata,93.0

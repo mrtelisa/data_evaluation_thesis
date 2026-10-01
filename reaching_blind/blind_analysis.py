@@ -38,7 +38,7 @@ Output:
     statistics/plots/blind_mean_sd.(png|pdf)   media ± SD + t appaiati (Bonferroni)
     statistics/plots/single/<metrica>_<versione>.(png|pdf)  i pannelli uno per uno
     ../jamovi/blind/<sigla>_<metrica>.(omv|csv): un file per metrica, una riga per soggetto,
-        colonne <sigla>_Test1_B1 ... <sigla>_Test5_B3
+        colonne <sigla>_T1_B1 ... <sigla>_T5_B3 (fattore Test, livelli T1-T5; fattore Blocco, B1-B3)
 
 Uso:
     python3 blind_analysis.py [--results DIR] [--out DIR]
@@ -249,11 +249,16 @@ def main():
         w = block_wide(blocks, m, n_blocks)
         cols, desc = {"subject": ids}, {}
         for t, b in w.columns:
-            name = f"{abbr}_Test{t}_B{b}"
+            name = f"{abbr}_T{t}_B{b}"
             cols[name] = w[(t, b)].reindex(ids).to_numpy()
             desc[name] = (f"{label}{f' ({unit})' if unit != '-' else ''}, blind test {t}, block {b} = mean of trials "
                           f"{(b - 1) * 4 + 1}-{b * 4}")
-        write_tables(pd.DataFrame(cols), ROOT / "jamovi" / "blind" / f"{abbr}_{m}", desc)
+        spec = {"title": f"{abbr} – {label}{f' ({unit})' if unit != '-' else ''}",
+                "dep_label": f"{label}{f' ({unit})' if unit != '-' else ''}",
+                "factors": [("Test", [f"T{t}" for t in TESTS]), ("Blocco", [f"B{b}" for b in range(1, n_blocks + 1)])],
+                "cells": [(f"{abbr}_T{t}_B{b}", [f"T{t}", f"B{b}"]) for t, b in w.columns],
+                "post_hoc": []}   # niente post hoc: con 2 fattori le tabelle diventano troppo lunghe
+        write_tables(pd.DataFrame(cols), ROOT / "jamovi" / "blind" / f"{abbr}_{m}", desc, [spec])
 
     plots(subjects, posthocs, args.out)
     report.save(args.out)

@@ -111,7 +111,13 @@ def jamovi_tables(blocks: pd.DataFrame, out_dir: Path):
             cols[name] = w[(tr, b)].reindex(subjects).to_numpy()
             desc[name] = (f"{label}{f' ({unit})' if unit != '-' else ''}, training {tr[1]}, block {b} = mean of "
                           f"targets {(b - 1) * BLOCK_SIZE + 1}-{b * BLOCK_SIZE}")
-        write_tables(pd.DataFrame(cols), out_dir / f"{abbr}_{m}", desc)
+        n_blocks = int(w.columns.get_level_values(1).max())
+        spec = {"title": f"{abbr} – {label}{f' ({unit})' if unit != '-' else ''}",
+                "dep_label": f"{label}{f' ({unit})' if unit != '-' else ''}",
+                "factors": [("Training", ["T1", "T2"]), ("Blocco", [f"B{b}" for b in range(1, n_blocks + 1)])],
+                "cells": [(f"{abbr}_{tr}_B{b}", [tr, f"B{b}"]) for tr, b in w.columns],
+                "post_hoc": []}   # niente post hoc: con 12 blocchi le tabelle diventano troppo lunghe
+        write_tables(pd.DataFrame(cols), out_dir / f"{abbr}_{m}", desc, [spec])
 
 
 def analyse(blocks: pd.DataFrame, report: Report) -> tuple:

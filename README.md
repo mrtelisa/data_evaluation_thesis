@@ -26,9 +26,9 @@ Copy the result files of `reachy2_teleop_grasping_and_simulation` into the `resu
 
 - `jamovi/`: one file per metric (`.omv` with column descriptions, and `.csv`), in the layout of the jamovi models. One row per participant.
   - `jamovi/training/<abbr>_<metric>`: `EE_T1_B1 ... EE_T2_B12` (as `training_reaching_out.omv`; block = mean of 8 targets) for EE, DE, XE, MD, LI. Model: repeated-measures ANOVA Training (T1, T2) × Block (B1–B12).
-  - `jamovi/blind/<abbr>_<metric>`: `HR_Test1_B1 ... HR_Test5_B3` (block = mean of 4 trials) for HR, TC, TT, EE, XE, DE, MinD, TTR, LI, MD. Model: repeated-measures ANOVA Test (1–5) × Block (B1–B3).
+  - `jamovi/blind/<abbr>_<metric>`: `HR_T1_B1 ... HR_T5_B3` (block = mean of 4 trials) for HR, TC, TT, EE, XE, DE, MinD, TTR, LI, MD. Model: repeated-measures ANOVA Test (T1–T5) × Block (B1–B3).
   - `jamovi/reachy/<abbr>_<metric>`: `Test1_andata`, `Test2_andata`, `Test1_ritorno`, `Test2_ritorno` (as `reachy_stats.omv`) for CT, PL, MS, JK, RT; the CT file also has grasp, posizionamento and totale. Model: repeated-measures ANOVA run 1 vs run 2, once on the outbound and once on the return columns.
-  - The `.omv` files contain the data only: jamovi reopens saved analyses without recomputing them, so the model is set up in jamovi as in the template files.
+  - Every `.omv` already contains the repeated-measures ANOVA(s), set up as the supervisor's models (`common/jamovi_template/`): factors and cells, η² and partial η², sphericity tests with Greenhouse-Geisser, post hoc tests only in the robot files (training and blind: no post hoc terms, the tables would be too long for jamovi). The results are saved empty and marked stale (as jamovi does for templates), because jamovi does not recompute saved analyses when opening a file: after opening, change the plot theme or the decimal symbol once in the jamovi settings (⋮ menu, top right) and every analysis is computed.
 - `<task>/statistics/`: `report.txt` (descriptives, ANOVA, post hoc for every metric), `.csv` tables, `plots/` (`.png` 300 dpi and `.pdf`; `plots/single/` has every panel on its own).
 
 ## Metrics

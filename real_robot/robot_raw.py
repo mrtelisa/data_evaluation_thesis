@@ -7,9 +7,13 @@ Solo le due navigazioni (la modalita' del robot dice la fase):
     andata  = max_speed + reduced_speed (dalla partenza alla selezione dell'oggetto)
     ritorno = transport
 Per ognuna:
-    path_length         percorso della base dall'odometria (m), cursor_distance.m con
-                        buchi fino a 1 s (le posizioni sono assolute)
-    mean_speed          velocita' media della base (m/s), speed1.m sugli stessi passi
+    path_length         percorso della base dall'odometria (m): somma di tutti i passi fra
+                        campioni consecutivi della fase, anche dopo un buco nei campioni (le
+                        posizioni sono assolute: lo spostamento c'e' stato davvero). Il passo
+                        fra l'ultimo campione di un'altra fase e il primo di questa NON conta
+                        (il task invece lo attribuisce alla fase nuova)
+    mean_speed          velocita' media della base (m/s), speed1.m: velocita' istantanea dei
+                        passi con buchi fino a 1 s
     jerk                jerk medio della base (m/s^3), jerk1.m sull'odometria
     region_transitions  numero di cambi di regione del cursore nell'interfaccia
                         (movement_train.m sui tick, come Najie et al.: ogni cambio)
@@ -39,9 +43,8 @@ def navigation_metrics(json_path: Path) -> tuple:
             od = od[od["mode"].isin(modes)]
             if len(od) >= 2:
                 t, xy = od["t_test"].to_numpy(float), od[["x", "y"]].to_numpy(float)
-                s = speed_stats(t, xy, ODOM_GAP_S)
-                out[("path_length", phase)] = s["path_length"]
-                out[("mean_speed", phase)] = s["mean_speed"]
+                out[("path_length", phase)] = speed_stats(t, xy, np.inf)["path_length"]
+                out[("mean_speed", phase)] = speed_stats(t, xy, ODOM_GAP_S)["mean_speed"]
                 out[("jerk", phase)] = session_jerk(t, xy)["mean_jerk"]
         if "regions" in data:
             reg = data["regions"]

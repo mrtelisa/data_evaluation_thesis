@@ -186,14 +186,18 @@ def main():
     # un file per metrica, come reachy_stats.omv: Test1_andata, Test2_andata, Test1_ritorno, Test2_ritorno
     # (per il completion time seguono grasp, posizionamento e totale)
     for m, (abbr, label, unit, phases) in METRICS.items():
-        cols, desc = {"subject": ids}, {}
+        cols, desc, specs = {"subject": ids}, {}, []
         for ph in ["andata", "ritorno"] + [p_ for p_ in phases if p_ not in ("andata", "ritorno")]:
+            specs.append({"title": f"{abbr} – {label} – {ph}", "dep_label": f"{label}{f' ({unit})' if unit else ''}",
+                          "factors": [("test", ["test1", "test2"])],
+                          "cells": [(f"Test1_{ph}", ["test1"]), (f"Test2_{ph}", ["test2"])],
+                          "post_hoc": [["test"]]})
             w = wide(df, m, ph)
             for r in RUNS:
                 name = f"Test{r}_{ph}"
                 cols[name] = w[r].reindex(ids).to_numpy()
                 desc[name] = f"{label}{f' ({unit})' if unit else ''}, {PHASES[ph][0].lower()}, run {r}"
-        write_tables(pd.DataFrame(cols), ROOT / "jamovi" / "reachy" / f"{abbr}_{m}", desc)
+        write_tables(pd.DataFrame(cols), ROOT / "jamovi" / "reachy" / f"{abbr}_{m}", desc, specs)
 
     plots(df, posthocs, args.out)
     report.save(args.out)
