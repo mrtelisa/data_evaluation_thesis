@@ -1,9 +1,9 @@
 family,x,x_label,y,y_label,expected_sign,meaning,n,rho,p,magnitude,as_expected
-transfer,blind3_region_acc,Blind test 3 – region accuracy [%],run1_nonadj,"Run 1 – non-adjacent changes, outbound [%]",-,going to the right region blind vs sweeping across the grid on the robot,6,,,-,-
-transfer,train_last_dwell,"Training, last block – dwell time [s]",run1_cmd_dur,"Run 1 – mean command duration, outbound [s]",-,holding the cursor still (training) vs holding a command (robot),6,-0.3714285714285715,0.46847813411078715,medio,si'
-transfer,blind3_dir_error,Blind test 3 – initial direction error [deg],run1_reversals,"Run 1 – reversals, outbound [%]",+,planning errors (blind) vs overcorrections (robot),6,-0.028571428571428574,0.9571545189504373,trascurabile,no
-transfer,blind3_end_error,Blind test 3 – end-point error [px],run1_outbound,Run 1 – outbound time [s],+,map knowledge (blind) vs driving time (robot),6,0.48571428571428577,0.3287230320699709,medio,si'
-transfer,train_gain,Training gain: movement time first – last block [s],robot_gain,Robot gain: outbound time run 1 – run 2 [s],+,who improves in the training improves on the robot,6,0.4285714285714286,0.3965014577259474,medio,si'
+transfer,blind3_region_acc,Blind test 3 – region accuracy [%],run1_nonadj,"Run 1 – non-adjacent changes, outbound [%]",-,going to the right region blind vs sweeping across the grid on the robot,8,-0.3359684204526464,0.41585698407248056,medio,si'
+transfer,train_last_dwell,"Training, last block – dwell time [s]",run1_cmd_dur,"Run 1 – mean command duration, outbound [s]",-,holding the cursor still (training) vs holding a command (robot),8,-0.523809523809524,0.18272075053971484,grande,si'
+transfer,blind3_dir_error,Blind test 3 – initial direction error [deg],run1_reversals,"Run 1 – reversals, outbound [%]",+,planning errors (blind) vs overcorrections (robot),8,0.011976262619132589,0.9775466547038871,trascurabile,si'
+transfer,blind3_end_error,Blind test 3 – end-point error [px],run1_outbound,Run 1 – outbound time [s],+,map knowledge (blind) vs driving time (robot),8,0.07142857142857144,0.8665262706759088,trascurabile,si'
+transfer,train_gain,Training gain: movement time first – last block [s],robot_gain,Robot gain: outbound time run 1 – run 2 [s],+,who improves in the training improves on the robot,8,0.14285714285714288,0.735764859879812,piccolo,si'
 questionnaire,sus,SUS score (0-100),run2_test_duration,Run 2 – test duration [s],-,perceived usability vs time on the task,6,0.2571428571428572,0.6227871720116618,piccolo,no
 questionnaire,tlx,NASA-TLX raw (0-100),run2_test_duration,Run 2 – test duration [s],+,perceived workload vs time on the task,6,0.3142857142857143,0.5440932944606414,medio,si'
 questionnaire,tlx_physical,NASA-TLX physical demand (1-20),blind_fatigue,Blind end error: test 4 – test 3 [px] (> 0 = worse after run 1),+,perceived physical demand vs fatigue in the blind test,6,-0.17393131069573453,0.7417339277316277,piccolo,no

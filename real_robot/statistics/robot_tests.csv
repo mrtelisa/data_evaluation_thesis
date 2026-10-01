@@ -1,143 +1,143 @@
 metric,label,unit,primary,comparison,test,n,statistic,p,p_corrected,correction,effect,effect_name,shapiro_p,median_run1,median_run2,better
-test_duration,Test duration,s,False,run 1 vs run 2,t,6,-0.32523044442529625,0.7581749189877178,,,-0.1327747729434296,Cohen dz,0.013718035072088242,637.7029583454132,550.3866618871689,down
-test_duration,Test duration,s,False,run 1 vs run 2,Wilcoxon,6,6.0,0.4375,,,-0.42857142857142855,rank-biserial r,,637.7029583454132,550.3866618871689,down
-phase_durations.outbound,Outbound time,s,True,run 1 vs run 2,t,6,-1.8949387045994739,0.11661836483067033,0.4664734593226813,Bonferroni,-0.7736054866865423,Cohen dz,0.9785024523735046,228.3476949930191,189.4732881784439,down
-phase_durations.outbound,Outbound time,s,True,run 1 vs run 2,Wilcoxon,6,3.0,0.15625,0.3125,Holm,-0.7142857142857143,rank-biserial r,,228.3476949930191,189.4732881784439,down
-phase_durations.approach,Approach time,s,False,run 1 vs run 2,t,6,-1.4750195806806714,0.20022192266111274,,,-0.6021742222136083,Cohen dz,0.36419475078582764,57.70847773551941,49.3596316576004,down
-phase_durations.approach,Approach time,s,False,run 1 vs run 2,Wilcoxon,6,4.0,0.21875,,,-0.6190476190476191,rank-biserial r,,57.70847773551941,49.3596316576004,down
-phase_durations.grasp,Grasp time,s,False,run 1 vs run 2,t,6,0.8879783319485259,0.4152208637766719,,,0.36251563598693837,Cohen dz,0.000972966430708766,28.915152311325073,28.820947885513306,down
-phase_durations.grasp,Grasp time,s,False,run 1 vs run 2,Wilcoxon,6,10.0,1.0,,,0.047619047619047616,rank-biserial r,,28.915152311325073,28.820947885513306,down
-phase_durations.return,Return time,s,True,run 1 vs run 2,t,6,-3.0640786731039173,0.027971735936016033,0.11188694374406413,Bonferroni,-1.250904880141456,Cohen dz,0.46595677733421326,274.0103169679642,233.42910385131836,down
-phase_durations.return,Return time,s,True,run 1 vs run 2,Wilcoxon,6,1.0,0.0625,0.25,Holm,-0.9047619047619048,rank-biserial r,,274.0103169679642,233.42910385131836,down
-phase_durations.placement,Placement time,s,False,run 1 vs run 2,t,6,-0.24014833015660209,0.8197504291552528,,,-0.09804014524418417,Cohen dz,0.4263399541378021,28.650449633598328,28.028444528579712,down
-phase_durations.placement,Placement time,s,False,run 1 vs run 2,Wilcoxon,6,10.0,1.0,,,-0.047619047619047616,rank-biserial r,,28.650449633598328,28.028444528579712,down
-n_dwell_declined,Dwells declined,,False,run 1 vs run 2,t,6,-1.0,0.36321746764912255,,,-0.408248290463863,Cohen dz,2.0729225070681423e-05,0.0,0.0,down
-n_dwell_declined,Dwells declined,,False,run 1 vs run 2,Wilcoxon,6,0.0,0.31731050786291415,,,-1.0,rank-biserial r,,0.0,0.0,down
-n_repositioning,Repositionings,,False,run 1 vs run 2,t,6,0.9552008998760877,0.38334333083069944,,,0.38995913442395636,Cohen dz,0.019969742745161057,0.0,0.0,down
-n_repositioning,Repositionings,,False,run 1 vs run 2,Wilcoxon,6,1.5,0.4142161782425252,,,0.5,rank-biserial r,,0.0,0.0,down
-n_repositioning_per_phase.grasp,Repositionings – grasp,,False,run 1 vs run 2,t,6,0.9552008998760877,0.38334333083069944,,,0.38995913442395636,Cohen dz,0.019969742745161057,0.0,0.0,down
-n_repositioning_per_phase.grasp,Repositionings – grasp,,False,run 1 vs run 2,Wilcoxon,6,1.5,0.4142161782425252,,,0.5,rank-biserial r,,0.0,0.0,down
-n_repositioning_per_phase.placement,Repositionings – placement,,False,run 1 vs run 2,t,6,0.0,1.0,,,0.0,Cohen dz,,0.0,0.0,down
-n_repositioning_per_phase.placement,Repositionings – placement,,False,run 1 vs run 2,Wilcoxon,6,0.0,1.0,,,0.0,rank-biserial r,,0.0,0.0,down
-manual.n_collisions,Collisions,,False,run 1 vs run 2,t,1,,,,,,Cohen dz,,0.0,0.0,down
-manual.n_collisions,Collisions,,False,run 1 vs run 2,Wilcoxon,1,,,,,,rank-biserial r,,0.0,0.0,down
-raw.outbound.stop_percent,Stop time – outbound,%,False,run 1 vs run 2,t,6,-2.9274574667063016,0.032729153376119105,,,-1.1951295061885188,Cohen dz,0.5407348871231079,30.913813253184173,23.139897367996312,down
-raw.outbound.stop_percent,Stop time – outbound,%,False,run 1 vs run 2,Wilcoxon,6,0.0,0.03125,,,-1.0,rank-biserial r,,30.913813253184173,23.139897367996312,down
-raw.outbound.command_changes_per_min,Command changes – outbound,/min,True,run 1 vs run 2,t,6,3.3524601524589257,0.020274226770605946,0.08109690708242379,Bonferroni,1.3686361260895779,Cohen dz,0.19440877437591553,19.74030368958537,27.08115854508454,down
-raw.outbound.command_changes_per_min,Command changes – outbound,/min,True,run 1 vs run 2,Wilcoxon,6,1.0,0.0625,0.25,Holm,0.9047619047619048,rank-biserial r,,19.74030368958537,27.08115854508454,down
-raw.outbound.non_adjacent_percent,Non-adjacent changes – outbound,%,True,run 1 vs run 2,t,6,0.0,1.0,1.0,Bonferroni,0.0,Cohen dz,,0.0,0.0,down
-raw.outbound.non_adjacent_percent,Non-adjacent changes – outbound,%,True,run 1 vs run 2,Wilcoxon,6,0.0,1.0,1.0,Holm,0.0,rank-biserial r,,0.0,0.0,down
-raw.outbound.reversal_percent,Reversals – outbound,%,False,run 1 vs run 2,t,6,-1.3158216081348408,0.24533198095332778,,,-0.53718192207646,Cohen dz,0.44374364614486694,25.735294117647058,23.15711094564408,down
-raw.outbound.reversal_percent,Reversals – outbound,%,False,run 1 vs run 2,Wilcoxon,6,3.0,0.22491588401596185,,,-0.6,rank-biserial r,,25.735294117647058,23.15711094564408,down
-raw.outbound.mean_command_duration,Mean command duration – outbound,s,False,run 1 vs run 2,t,6,-2.746206802957882,0.040492248548979606,,,-1.121134232567786,Cohen dz,0.9142220616340637,3.427815694444444,2.495671954365079,up
-raw.outbound.mean_command_duration,Mean command duration – outbound,s,False,run 1 vs run 2,Wilcoxon,6,1.0,0.0625,,,-0.9047619047619048,rank-biserial r,,3.427815694444444,2.495671954365079,up
-raw.outbound.stop_passage_percent,Passages through stop – outbound,%,False,run 1 vs run 2,t,6,-1.5204722605295005,0.18886972421029977,,,-0.6207302010588939,Cohen dz,0.5447477698326111,64.83957219251337,39.75786924939467,down
-raw.outbound.stop_passage_percent,Passages through stop – outbound,%,False,run 1 vs run 2,Wilcoxon,6,4.0,0.21875,,,-0.6190476190476191,rank-biserial r,,64.83957219251337,39.75786924939467,down
-raw.outbound.sequence_entropy,Sequence entropy – outbound,bits,False,run 1 vs run 2,t,6,-1.195942709461676,0.2853359545105328,,,-0.4882415666304496,Cohen dz,0.8045035004615784,1.1281913951919176,0.9276698799548031,down
-raw.outbound.sequence_entropy,Sequence entropy – outbound,bits,False,run 1 vs run 2,Wilcoxon,6,6.0,0.4375,,,-0.42857142857142855,rank-biserial r,,1.1281913951919176,0.9276698799548031,down
-raw.outbound.driving_time,Driving time – outbound,s,False,run 1 vs run 2,t,6,-1.9719981769224302,0.10565364078933337,,,-0.8050648845264365,Cohen dz,0.9081546068191528,210.97865000000002,174.87400000000002,down
-raw.outbound.driving_time,Driving time – outbound,s,False,run 1 vs run 2,Wilcoxon,6,3.0,0.15625,,,-0.7142857142857143,rank-biserial r,,210.97865000000002,174.87400000000002,down
-raw.outbound.robot_path_length,Path length – outbound (cursor_distance.m),m,False,run 1 vs run 2,t,6,-0.16959713777393107,0.8719752174195635,,,-0.06923774156377162,Cohen dz,0.7609495520591736,22.273489162220752,22.5864936444329,down
-raw.outbound.robot_path_length,Path length – outbound (cursor_distance.m),m,False,run 1 vs run 2,Wilcoxon,6,10.0,1.0,,,-0.047619047619047616,rank-biserial r,,22.273489162220752,22.5864936444329,down
-raw.outbound.cumulative_rotation,Cumulative rotation – outbound,rad,False,run 1 vs run 2,t,6,-0.8680618453696884,0.425055359783048,,,-0.3543847643890815,Cohen dz,0.265584260225296,18.52739181047945,18.050504571852798,down
-raw.outbound.cumulative_rotation,Cumulative rotation – outbound,rad,False,run 1 vs run 2,Wilcoxon,6,7.0,0.5625,,,-0.3333333333333333,rank-biserial r,,18.52739181047945,18.050504571852798,down
-raw.outbound.region_changes_per_min,Region changes – outbound (movement_train.m),/min,False,run 1 vs run 2,t,6,2.6209212439787564,0.047045445119281874,,,1.0699866172947485,Cohen dz,0.25216710567474365,22.11950331779312,30.70583833380511,down
-raw.outbound.region_changes_per_min,Region changes – outbound (movement_train.m),/min,False,run 1 vs run 2,Wilcoxon,6,0.0,0.03125,,,1.0,rank-biserial r,,22.11950331779312,30.70583833380511,down
-raw.outbound.robot_lin_speed_mean,Robot linear speed – outbound (speed1.m),m/s,False,run 1 vs run 2,t,6,3.003400127170387,0.029981910597955682,,,1.2261329674962593,Cohen dz,0.8282703161239624,0.10531223649623053,0.12375886599763178,
-raw.outbound.robot_lin_speed_mean,Robot linear speed – outbound (speed1.m),m/s,False,run 1 vs run 2,Wilcoxon,6,1.0,0.0625,,,0.9047619047619048,rank-biserial r,,0.10531223649623053,0.12375886599763178,
-raw.outbound.robot_lin_speed_peak,Robot peak linear speed – outbound (speed1.m),m/s,False,run 1 vs run 2,t,6,0.5799315531917174,0.5871110223504648,,,0.23675606517657144,Cohen dz,0.6959671378135681,0.26932831869599916,0.30016670747682384,
-raw.outbound.robot_lin_speed_peak,Robot peak linear speed – outbound (speed1.m),m/s,False,run 1 vs run 2,Wilcoxon,6,9.0,0.84375,,,0.14285714285714285,rank-biserial r,,0.26932831869599916,0.30016670747682384,
-raw.outbound.robot_ang_speed_mean,Robot angular speed – outbound (speed1.m),rad/s,False,run 1 vs run 2,t,6,2.6192521577653407,0.047140279431290726,,,1.0693052157014848,Cohen dz,0.7162346839904785,0.10235890273558448,0.11387855415852302,
-raw.outbound.robot_ang_speed_mean,Robot angular speed – outbound (speed1.m),rad/s,False,run 1 vs run 2,Wilcoxon,6,2.0,0.09375,,,0.8095238095238095,rank-biserial r,,0.10235890273558448,0.11387855415852302,
-raw.outbound.robot_mean_jerk,Robot mean jerk – outbound (jerk1.m),m/s^3,False,run 1 vs run 2,t,6,2.538741386521476,0.05197341061123649,,,1.0364368309772498,Cohen dz,0.668985903263092,1.8442691182457973,2.2791193499888784,down
-raw.outbound.robot_mean_jerk,Robot mean jerk – outbound (jerk1.m),m/s^3,False,run 1 vs run 2,Wilcoxon,6,1.0,0.0625,,,0.9047619047619048,rank-biserial r,,1.8442691182457973,2.2791193499888784,down
-raw.outbound.robot_log10_dimensionless_jerk,"Robot dimensionless jerk, log10 – outbound (jerk1.m)",,False,run 1 vs run 2,t,6,0.32099241830712283,0.7611990654520153,,,0.1310446060257441,Cohen dz,0.039736729115247726,11.49688119486985,11.281236143338335,down
-raw.outbound.robot_log10_dimensionless_jerk,"Robot dimensionless jerk, log10 – outbound (jerk1.m)",,False,run 1 vs run 2,Wilcoxon,6,8.0,0.6875,,,-0.23809523809523808,rank-biserial r,,11.49688119486985,11.281236143338335,down
-raw.outbound.cursor_path_length,Cursor path length – outbound (cursor_distance.m),px,False,run 1 vs run 2,t,6,-0.021479283816027987,0.9836941448865808,,,-0.008768880898281546,Cohen dz,0.9695406556129456,37095.99461046013,41451.393805787535,
-raw.outbound.cursor_path_length,Cursor path length – outbound (cursor_distance.m),px,False,run 1 vs run 2,Wilcoxon,6,9.0,0.84375,,,-0.14285714285714285,rank-biserial r,,37095.99461046013,41451.393805787535,
-raw.outbound.cursor_mean_speed,Cursor speed – outbound (speed1.m),px/s,False,run 1 vs run 2,t,6,3.6946067822574578,0.014078054677081925,,,1.5083169027928012,Cohen dz,0.298210471868515,167.43019477626893,210.12114708224664,
-raw.outbound.cursor_mean_speed,Cursor speed – outbound (speed1.m),px/s,False,run 1 vs run 2,Wilcoxon,6,0.0,0.03125,,,1.0,rank-biserial r,,167.43019477626893,210.12114708224664,
-raw.outbound.cursor_mean_jerk,Cursor mean jerk – outbound (jerk1.m),px/s^3,False,run 1 vs run 2,t,6,1.0273744118426122,0.35135435735791337,,,0.4194238473010633,Cohen dz,0.30434855818748474,5289.059232770366,7045.838169764007,down
-raw.outbound.cursor_mean_jerk,Cursor mean jerk – outbound (jerk1.m),px/s^3,False,run 1 vs run 2,Wilcoxon,6,5.0,0.3125,,,0.5238095238095238,rank-biserial r,,5289.059232770366,7045.838169764007,down
-raw.outbound.cursor_speed_peaks,Cursor speed peaks – outbound (smooth.m),,False,run 1 vs run 2,t,6,1.3948592237653936,0.22185539679514163,,,0.5694488935399729,Cohen dz,0.41058164834976196,39.5,48.0,down
-raw.outbound.cursor_speed_peaks,Cursor speed peaks – outbound (smooth.m),,False,run 1 vs run 2,Wilcoxon,6,4.0,0.21875,,,0.6190476190476191,rank-biserial r,,39.5,48.0,down
-raw.approach.stop_percent,Stop time – approach,%,False,run 1 vs run 2,t,6,-1.407079792804506,0.2184195621398245,,,-0.5744379199586862,Cohen dz,0.7949764132499695,57.716657275261106,46.60649657837329,down
-raw.approach.stop_percent,Stop time – approach,%,False,run 1 vs run 2,Wilcoxon,6,4.0,0.21875,,,-0.6190476190476191,rank-biserial r,,57.716657275261106,46.60649657837329,down
-raw.approach.command_changes_per_min,Command changes – approach,/min,False,run 1 vs run 2,t,6,0.9799928113081114,0.37209594327206996,,,0.40008038988341155,Cohen dz,0.7127175331115723,26.12248742941647,29.972168512017305,down
-raw.approach.command_changes_per_min,Command changes – approach,/min,False,run 1 vs run 2,Wilcoxon,6,6.0,0.4375,,,0.42857142857142855,rank-biserial r,,26.12248742941647,29.972168512017305,down
-raw.approach.non_adjacent_percent,Non-adjacent changes – approach,%,False,run 1 vs run 2,t,6,0.0,1.0,,,0.0,Cohen dz,,0.0,0.0,down
-raw.approach.non_adjacent_percent,Non-adjacent changes – approach,%,False,run 1 vs run 2,Wilcoxon,6,0.0,1.0,,,0.0,rank-biserial r,,0.0,0.0,down
-raw.approach.reversal_percent,Reversals – approach,%,False,run 1 vs run 2,t,6,-0.04209530624937155,0.9680520019378533,,,-0.017185336812858703,Cohen dz,0.4471679627895355,18.333333333333336,18.055555555555557,down
-raw.approach.reversal_percent,Reversals – approach,%,False,run 1 vs run 2,Wilcoxon,6,7.0,0.892738400944348,,,0.06666666666666667,rank-biserial r,,18.333333333333336,18.055555555555557,down
-raw.approach.mean_command_duration,Mean command duration – approach,s,False,run 1 vs run 2,t,6,0.986313111205948,0.36927214781510087,,,0.4026606415119223,Cohen dz,0.48804834485054016,1.7603142857142893,1.8998277777777761,up
-raw.approach.mean_command_duration,Mean command duration – approach,s,False,run 1 vs run 2,Wilcoxon,6,5.0,0.3125,,,0.5238095238095238,rank-biserial r,,1.7603142857142893,1.8998277777777761,up
-raw.approach.stop_passage_percent,Passages through stop – approach,%,False,run 1 vs run 2,t,6,0.9187970198723432,0.40035491930216355,,,0.3750973126461761,Cohen dz,0.6148598194122314,87.5,100.0,down
-raw.approach.stop_passage_percent,Passages through stop – approach,%,False,run 1 vs run 2,Wilcoxon,6,2.0,0.27332167829229814,,,0.6,rank-biserial r,,87.5,100.0,down
-raw.approach.sequence_entropy,Sequence entropy – approach,bits,False,run 1 vs run 2,t,6,-0.304115228700461,0.7732896868331842,,,-0.12415452222098992,Cohen dz,0.11294715851545334,0.7125643498415585,0.6769674542518229,down
-raw.approach.sequence_entropy,Sequence entropy – approach,bits,False,run 1 vs run 2,Wilcoxon,6,7.0,0.5625,,,-0.3333333333333333,rank-biserial r,,0.7125643498415585,0.6769674542518229,down
-raw.approach.driving_time,Driving time – approach,s,False,run 1 vs run 2,t,6,-1.8227466342180534,0.1279561633786475,,,-0.7441331973682807,Cohen dz,0.19423863291740417,32.45785000000001,24.590799999999987,down
-raw.approach.driving_time,Driving time – approach,s,False,run 1 vs run 2,Wilcoxon,6,3.0,0.15625,,,-0.7142857142857143,rank-biserial r,,32.45785000000001,24.590799999999987,down
-raw.approach.robot_path_length,Path length – approach (cursor_distance.m),m,False,run 1 vs run 2,t,6,-0.10723000061001145,0.9187762495288119,,,-0.04377646443547616,Cohen dz,0.2218961864709854,1.236756901508449,1.3052804875545743,down
-raw.approach.robot_path_length,Path length – approach (cursor_distance.m),m,False,run 1 vs run 2,Wilcoxon,6,10.0,1.0,,,-0.047619047619047616,rank-biserial r,,1.236756901508449,1.3052804875545743,down
-raw.approach.cumulative_rotation,Cumulative rotation – approach,rad,False,run 1 vs run 2,t,6,-1.650457177531309,0.15976158429067552,,,-0.6737963212109694,Cohen dz,0.9279859066009521,1.9379549920558932,1.678832747042177,down
-raw.approach.cumulative_rotation,Cumulative rotation – approach,rad,False,run 1 vs run 2,Wilcoxon,6,4.0,0.21875,,,-0.6190476190476191,rank-biserial r,,1.9379549920558932,1.678832747042177,down
-raw.approach.region_changes_per_min,Region changes – approach (movement_train.m),/min,False,run 1 vs run 2,t,6,0.5723289018985631,0.5918707926751456,,,0.23365229578314842,Cohen dz,0.5264376401901245,30.207996335915027,36.472039408590916,down
-raw.approach.region_changes_per_min,Region changes – approach (movement_train.m),/min,False,run 1 vs run 2,Wilcoxon,6,7.0,0.5625,,,0.3333333333333333,rank-biserial r,,30.207996335915027,36.472039408590916,down
-raw.approach.robot_lin_speed_mean,Robot linear speed – approach (speed1.m),m/s,False,run 1 vs run 2,t,6,0.8988886556865675,0.40990924503346865,,,0.36696975700140116,Cohen dz,0.8717457056045532,0.028708023964101242,0.037887409147071394,
-raw.approach.robot_lin_speed_mean,Robot linear speed – approach (speed1.m),m/s,False,run 1 vs run 2,Wilcoxon,6,8.0,0.6875,,,0.23809523809523808,rank-biserial r,,0.028708023964101242,0.037887409147071394,
-raw.approach.robot_lin_speed_peak,Robot peak linear speed – approach (speed1.m),m/s,False,run 1 vs run 2,t,6,-0.16354112095222584,0.8764973197141535,,,-0.06676538304929004,Cohen dz,0.9458940029144287,0.20274107651754764,0.2005037188054306,
-raw.approach.robot_lin_speed_peak,Robot peak linear speed – approach (speed1.m),m/s,False,run 1 vs run 2,Wilcoxon,6,10.0,1.0,,,-0.047619047619047616,rank-biserial r,,0.20274107651754764,0.2005037188054306,
-raw.approach.robot_ang_speed_mean,Robot angular speed – approach (speed1.m),rad/s,False,run 1 vs run 2,t,6,0.3631081887602977,0.7313698370411319,,,0.14823829731482122,Cohen dz,0.12061687558889389,0.0496672417152947,0.05543211817030835,
-raw.approach.robot_ang_speed_mean,Robot angular speed – approach (speed1.m),rad/s,False,run 1 vs run 2,Wilcoxon,6,7.0,0.5625,,,0.3333333333333333,rank-biserial r,,0.0496672417152947,0.05543211817030835,
-raw.approach.robot_mean_jerk,Robot mean jerk – approach (jerk1.m),m/s^3,False,run 1 vs run 2,t,6,0.15801369196885146,0.8806293928425886,,,0.06450881961616706,Cohen dz,0.5825947523117065,0.6610767115577392,0.7529262290965557,down
-raw.approach.robot_mean_jerk,Robot mean jerk – approach (jerk1.m),m/s^3,False,run 1 vs run 2,Wilcoxon,6,8.0,0.6875,,,0.23809523809523808,rank-biserial r,,0.6610767115577392,0.7529262290965557,down
-raw.approach.robot_log10_dimensionless_jerk,"Robot dimensionless jerk, log10 – approach (jerk1.m)",,False,run 1 vs run 2,t,6,-0.6319523008357454,0.555181628111476,,,-0.25799344647089795,Cohen dz,0.04172634333372116,9.59130252803439,9.53794986336021,down
-raw.approach.robot_log10_dimensionless_jerk,"Robot dimensionless jerk, log10 – approach (jerk1.m)",,False,run 1 vs run 2,Wilcoxon,6,9.0,0.84375,,,-0.14285714285714285,rank-biserial r,,9.59130252803439,9.53794986336021,down
-raw.approach.cursor_path_length,Cursor path length – approach (cursor_distance.m),px,False,run 1 vs run 2,t,6,0.010749473893128548,0.9918390441969498,,,0.004388454340255656,Cohen dz,0.9052406549453735,8248.525793710693,9462.003660989465,
-raw.approach.cursor_path_length,Cursor path length – approach (cursor_distance.m),px,False,run 1 vs run 2,Wilcoxon,6,10.0,1.0,,,-0.047619047619047616,rank-biserial r,,8248.525793710693,9462.003660989465,
-raw.approach.cursor_mean_speed,Cursor speed – approach (speed1.m),px/s,False,run 1 vs run 2,t,6,1.0977820591672272,0.3223307766315927,,,0.44816764895691974,Cohen dz,0.0956130102276802,169.68761774383873,183.60851466825807,
-raw.approach.cursor_mean_speed,Cursor speed – approach (speed1.m),px/s,False,run 1 vs run 2,Wilcoxon,6,9.0,0.84375,,,0.14285714285714285,rank-biserial r,,169.68761774383873,183.60851466825807,
-raw.approach.cursor_mean_jerk,Cursor mean jerk – approach (jerk1.m),px/s^3,False,run 1 vs run 2,t,6,0.39835681083936375,0.7068085911488541,,,0.16262848701980673,Cohen dz,0.6506230235099792,4804.172838840801,6363.820957666465,down
-raw.approach.cursor_mean_jerk,Cursor mean jerk – approach (jerk1.m),px/s^3,False,run 1 vs run 2,Wilcoxon,6,9.0,0.84375,,,0.14285714285714285,rank-biserial r,,4804.172838840801,6363.820957666465,down
-raw.approach.cursor_speed_peaks,Cursor speed peaks – approach (smooth.m),,False,run 1 vs run 2,t,6,0.2501877112015184,0.8123968350659029,,,0.10213870539308657,Cohen dz,0.330353319644928,13.0,16.5,down
-raw.approach.cursor_speed_peaks,Cursor speed peaks – approach (smooth.m),,False,run 1 vs run 2,Wilcoxon,6,10.0,1.0,,,0.047619047619047616,rank-biserial r,,13.0,16.5,down
-raw.return.stop_percent,Stop time – return,%,False,run 1 vs run 2,t,6,-2.3034903661133916,0.06946916216017505,,,-0.9403960040657702,Cohen dz,0.10251413285732269,23.48471982672057,17.697425609754355,down
-raw.return.stop_percent,Stop time – return,%,False,run 1 vs run 2,Wilcoxon,6,0.0,0.03125,,,-1.0,rank-biserial r,,23.48471982672057,17.697425609754355,down
-raw.return.command_changes_per_min,Command changes – return,/min,False,run 1 vs run 2,t,6,0.36475494622510146,0.7302139104671092,,,0.14891058323463593,Cohen dz,0.37597429752349854,25.527202901539127,26.600825853682267,down
-raw.return.command_changes_per_min,Command changes – return,/min,False,run 1 vs run 2,Wilcoxon,6,9.0,0.84375,,,0.14285714285714285,rank-biserial r,,25.527202901539127,26.600825853682267,down
-raw.return.non_adjacent_percent,Non-adjacent changes – return,%,False,run 1 vs run 2,t,6,0.0,1.0,,,0.0,Cohen dz,,0.0,0.0,down
-raw.return.non_adjacent_percent,Non-adjacent changes – return,%,False,run 1 vs run 2,Wilcoxon,6,0.0,1.0,,,0.0,rank-biserial r,,0.0,0.0,down
-raw.return.reversal_percent,Reversals – return,%,False,run 1 vs run 2,t,6,-2.3245500616043655,0.06766892677516492,,,-0.9489935887476496,Cohen dz,0.9356961846351624,23.40082159624413,21.19047619047619,down
-raw.return.reversal_percent,Reversals – return,%,False,run 1 vs run 2,Wilcoxon,6,2.0,0.09375,,,-0.8095238095238095,rank-biserial r,,23.40082159624413,21.19047619047619,down
-raw.return.mean_command_duration,Mean command duration – return,s,False,run 1 vs run 2,t,6,0.11083261694561806,0.9160605133533597,,,0.04524722639568475,Cohen dz,0.58034747838974,2.780676734188284,2.699136206454917,up
-raw.return.mean_command_duration,Mean command duration – return,s,False,run 1 vs run 2,Wilcoxon,6,9.0,0.84375,,,0.14285714285714285,rank-biserial r,,2.780676734188284,2.699136206454917,up
-raw.return.stop_passage_percent,Passages through stop – return,%,False,run 1 vs run 2,t,6,-1.3853926942398596,0.22455193212177266,,,-0.565584199044548,Cohen dz,0.8381364345550537,45.47732067510549,39.833019122003776,down
-raw.return.stop_passage_percent,Passages through stop – return,%,False,run 1 vs run 2,Wilcoxon,6,4.0,0.21875,,,-0.6190476190476191,rank-biserial r,,45.47732067510549,39.833019122003776,down
-raw.return.sequence_entropy,Sequence entropy – return,bits,False,run 1 vs run 2,t,6,-0.49795182092325235,0.6396429287994828,,,-0.20328797962528544,Cohen dz,0.8963812589645386,1.1251267467726893,1.0310590681231209,down
-raw.return.sequence_entropy,Sequence entropy – return,bits,False,run 1 vs run 2,Wilcoxon,6,8.0,0.6875,,,-0.23809523809523808,rank-biserial r,,1.1251267467726893,1.0310590681231209,down
-raw.return.driving_time,Driving time – return,s,False,run 1 vs run 2,t,6,-3.218519547490854,0.023504386338928446,,,-1.3139551030876673,Cohen dz,0.49349191784858704,251.60054999999997,209.76199999999997,down
-raw.return.driving_time,Driving time – return,s,False,run 1 vs run 2,Wilcoxon,6,0.0,0.03125,,,-1.0,rank-biserial r,,251.60054999999997,209.76199999999997,down
-raw.return.robot_path_length,Path length – return (cursor_distance.m),m,False,run 1 vs run 2,t,6,-1.9525548515757323,0.1083152740016979,,,-0.7971271801927143,Cohen dz,0.36714184284210205,25.7113240865614,25.43539263607701,down
-raw.return.robot_path_length,Path length – return (cursor_distance.m),m,False,run 1 vs run 2,Wilcoxon,6,2.0,0.09375,,,-0.8095238095238095,rank-biserial r,,25.7113240865614,25.43539263607701,down
-raw.return.cumulative_rotation,Cumulative rotation – return,rad,False,run 1 vs run 2,t,6,-2.4074866690159995,0.061053309324415835,,,-0.9828523169403218,Cohen dz,0.7335473895072937,27.079917877872994,23.70082873073791,down
-raw.return.cumulative_rotation,Cumulative rotation – return,rad,False,run 1 vs run 2,Wilcoxon,6,2.0,0.09375,,,-0.8095238095238095,rank-biserial r,,27.079917877872994,23.70082873073791,down
-raw.return.region_changes_per_min,Region changes – return (movement_train.m),/min,False,run 1 vs run 2,t,6,0.8940325882290406,0.4122667730314395,,,0.36498727576348866,Cohen dz,0.6615912914276123,27.18562068534449,30.592547940007215,down
-raw.return.region_changes_per_min,Region changes – return (movement_train.m),/min,False,run 1 vs run 2,Wilcoxon,6,7.0,0.5625,,,0.3333333333333333,rank-biserial r,,27.18562068534449,30.592547940007215,down
-raw.return.robot_lin_speed_mean,Robot linear speed – return (speed1.m),m/s,False,run 1 vs run 2,t,6,3.769729590419944,0.01302653989303841,,,1.5389856607999806,Cohen dz,0.9993036389350891,0.10266299796442252,0.11716719448404031,
-raw.return.robot_lin_speed_mean,Robot linear speed – return (speed1.m),m/s,False,run 1 vs run 2,Wilcoxon,6,0.0,0.03125,,,1.0,rank-biserial r,,0.10266299796442252,0.11716719448404031,
-raw.return.robot_lin_speed_peak,Robot peak linear speed – return (speed1.m),m/s,False,run 1 vs run 2,t,6,0.9916600317178279,0.3668970065783909,,,0.4048435126701434,Cohen dz,0.04068645462393761,0.2703191554102925,0.2647181596650484,
-raw.return.robot_lin_speed_peak,Robot peak linear speed – return (speed1.m),m/s,False,run 1 vs run 2,Wilcoxon,6,8.0,0.6875,,,0.23809523809523808,rank-biserial r,,0.2703191554102925,0.2647181596650484,
-raw.return.robot_ang_speed_mean,Robot angular speed – return (speed1.m),rad/s,False,run 1 vs run 2,t,6,1.1273879328401732,0.3107548198934864,,,0.4602541962715891,Cohen dz,0.7971975803375244,0.11782975498472939,0.12434907444479024,
-raw.return.robot_ang_speed_mean,Robot angular speed – return (speed1.m),rad/s,False,run 1 vs run 2,Wilcoxon,6,5.0,0.3125,,,0.5238095238095238,rank-biserial r,,0.11782975498472939,0.12434907444479024,
-raw.return.robot_mean_jerk,Robot mean jerk – return (jerk1.m),m/s^3,False,run 1 vs run 2,t,6,1.2005492616096127,0.2836959545096041,,,0.4901221836697774,Cohen dz,0.6677345037460327,1.8946460495910504,2.145618057110304,down
-raw.return.robot_mean_jerk,Robot mean jerk – return (jerk1.m),m/s^3,False,run 1 vs run 2,Wilcoxon,6,5.0,0.3125,,,0.5238095238095238,rank-biserial r,,1.8946460495910504,2.145618057110304,down
-raw.return.robot_log10_dimensionless_jerk,"Robot dimensionless jerk, log10 – return (jerk1.m)",,False,run 1 vs run 2,t,6,-0.8026110960714776,0.45863439270439404,,,-0.3276646078785081,Cohen dz,0.2568809986114502,12.028747114684746,11.094967615719,down
-raw.return.robot_log10_dimensionless_jerk,"Robot dimensionless jerk, log10 – return (jerk1.m)",,False,run 1 vs run 2,Wilcoxon,6,6.0,0.4375,,,-0.42857142857142855,rank-biserial r,,12.028747114684746,11.094967615719,down
-raw.return.cursor_path_length,Cursor path length – return (cursor_distance.m),px,False,run 1 vs run 2,t,6,-1.2592329932893076,0.2635322101064553,,,-0.5140797168060529,Cohen dz,0.2300315499305725,60040.93417259676,51450.14871017388,
-raw.return.cursor_path_length,Cursor path length – return (cursor_distance.m),px,False,run 1 vs run 2,Wilcoxon,6,6.0,0.4375,,,-0.42857142857142855,rank-biserial r,,60040.93417259676,51450.14871017388,
-raw.return.cursor_mean_speed,Cursor speed – return (speed1.m),px/s,False,run 1 vs run 2,t,6,0.5824132437132403,0.5855624055499218,,,0.2377692110894436,Cohen dz,0.3800145089626312,215.54638033145017,240.81288363782613,
-raw.return.cursor_mean_speed,Cursor speed – return (speed1.m),px/s,False,run 1 vs run 2,Wilcoxon,6,7.0,0.5625,,,0.3333333333333333,rank-biserial r,,215.54638033145017,240.81288363782613,
-raw.return.cursor_mean_jerk,Cursor mean jerk – return (jerk1.m),px/s^3,False,run 1 vs run 2,t,6,0.6637991635231675,0.536197234888762,,,0.2709948737196754,Cohen dz,0.15322962403297424,6206.27419177049,8332.290948583388,down
-raw.return.cursor_mean_jerk,Cursor mean jerk – return (jerk1.m),px/s^3,False,run 1 vs run 2,Wilcoxon,6,8.0,0.6875,,,0.23809523809523808,rank-biserial r,,6206.27419177049,8332.290948583388,down
-raw.return.cursor_speed_peaks,Cursor speed peaks – return (smooth.m),,False,run 1 vs run 2,t,6,-0.9976836926815399,0.3642363384397066,,,-0.40730266196091275,Cohen dz,0.9736937284469604,84.0,62.5,down
-raw.return.cursor_speed_peaks,Cursor speed peaks – return (smooth.m),,False,run 1 vs run 2,Wilcoxon,6,6.0,0.4375,,,-0.42857142857142855,rank-biserial r,,84.0,62.5,down
+test_duration,Test duration,s,False,run 1 vs run 2,t,8,-1.121257006615366,0.2991647558792604,,,-0.39642421641532744,Cohen dz,0.1328224092721939,637.7029583454132,549.9442267417908,down
+test_duration,Test duration,s,False,run 1 vs run 2,Wilcoxon,8,7.0,0.1484375,,,-0.6111111111111112,rank-biserial r,,637.7029583454132,549.9442267417908,down
+phase_durations.outbound,Outbound time,s,True,run 1 vs run 2,t,8,-2.1642612564601955,0.0671838908580463,0.2687355634321852,Bonferroni,-0.7651819053511609,Cohen dz,0.24399062991142273,228.3476949930191,168.6877075433731,down
+phase_durations.outbound,Outbound time,s,True,run 1 vs run 2,Wilcoxon,8,4.0,0.0546875,0.1640625,Holm,-0.7777777777777778,rank-biserial r,,228.3476949930191,168.6877075433731,down
+phase_durations.approach,Approach time,s,False,run 1 vs run 2,t,8,-2.35065251251053,0.05103845108655202,,,-0.8310811659046958,Cohen dz,0.7573080658912659,57.70847773551941,46.809192061424255,down
+phase_durations.approach,Approach time,s,False,run 1 vs run 2,Wilcoxon,8,4.0,0.0546875,,,-0.7777777777777778,rank-biserial r,,57.70847773551941,46.809192061424255,down
+phase_durations.grasp,Grasp time,s,False,run 1 vs run 2,t,8,0.8653316718329019,0.4155255715539742,,,0.30594094656426857,Cohen dz,3.5871027648681775e-05,28.95299255847931,28.275354266166687,down
+phase_durations.grasp,Grasp time,s,False,run 1 vs run 2,Wilcoxon,8,15.0,0.7421875,,,-0.16666666666666666,rank-biserial r,,28.95299255847931,28.275354266166687,down
+phase_durations.return,Return time,s,True,run 1 vs run 2,t,8,-2.006735849220576,0.08477294265143885,0.3390917706057554,Bonferroni,-0.7094882635170073,Cohen dz,0.0007376563153229654,274.0103169679642,233.42910385131836,down
+phase_durations.return,Return time,s,True,run 1 vs run 2,Wilcoxon,8,1.0,0.015625,0.0625,Holm,-0.9444444444444444,rank-biserial r,,274.0103169679642,233.42910385131836,down
+phase_durations.placement,Placement time,s,False,run 1 vs run 2,t,8,-1.0733103040096956,0.3187325418394045,,,-0.37947249714132525,Cohen dz,0.20578908920288086,28.650449633598328,28.028444528579712,down
+phase_durations.placement,Placement time,s,False,run 1 vs run 2,Wilcoxon,8,13.0,0.546875,,,-0.2777777777777778,rank-biserial r,,28.650449633598328,28.028444528579712,down
+n_dwell_declined,Dwells declined,,False,run 1 vs run 2,t,8,-1.5275252316519468,0.17047066078705375,,,-0.5400617248673217,Cohen dz,0.0003367919707670808,0.0,0.0,down
+n_dwell_declined,Dwells declined,,False,run 1 vs run 2,Wilcoxon,8,0.0,0.10247043485974937,,,-1.0,rank-biserial r,,0.0,0.0,down
+n_repositioning,Repositionings,,False,run 1 vs run 2,t,8,0.9571992303027341,0.37034955254913626,,,0.33842103334680357,Cohen dz,0.0006449838983826339,0.0,0.0,down
+n_repositioning,Repositionings,,False,run 1 vs run 2,Wilcoxon,8,1.5,0.4142161782425252,,,0.5,rank-biserial r,,0.0,0.0,down
+n_repositioning_per_phase.grasp,Repositionings – grasp,,False,run 1 vs run 2,t,8,0.9571992303027341,0.37034955254913626,,,0.33842103334680357,Cohen dz,0.0006449838983826339,0.0,0.0,down
+n_repositioning_per_phase.grasp,Repositionings – grasp,,False,run 1 vs run 2,Wilcoxon,8,1.5,0.4142161782425252,,,0.5,rank-biserial r,,0.0,0.0,down
+n_repositioning_per_phase.placement,Repositionings – placement,,False,run 1 vs run 2,t,8,0.0,1.0,,,0.0,Cohen dz,,0.0,0.0,down
+n_repositioning_per_phase.placement,Repositionings – placement,,False,run 1 vs run 2,Wilcoxon,8,0.0,1.0,,,0.0,rank-biserial r,,0.0,0.0,down
+manual.n_collisions,Collisions,,False,run 1 vs run 2,t,2,0.0,1.0,,,0.0,Cohen dz,,0.0,0.0,down
+manual.n_collisions,Collisions,,False,run 1 vs run 2,Wilcoxon,2,0.0,1.0,,,0.0,rank-biserial r,,0.0,0.0,down
+raw.outbound.stop_percent,Stop time – outbound,%,False,run 1 vs run 2,t,8,-3.454530683678705,0.010625928368759214,,,-1.221361036123106,Cohen dz,0.3567831814289093,30.913813253184173,18.908887348965273,down
+raw.outbound.stop_percent,Stop time – outbound,%,False,run 1 vs run 2,Wilcoxon,8,0.0,0.0078125,,,-1.0,rank-biserial r,,30.913813253184173,18.908887348965273,down
+raw.outbound.command_changes_per_min,Command changes – outbound,/min,True,run 1 vs run 2,t,8,2.751026349442767,0.028461814991124473,0.11384725996449789,Bonferroni,0.9726346934569268,Cohen dz,0.25027456879615784,19.74030368958537,26.5865991780542,down
+raw.outbound.command_changes_per_min,Command changes – outbound,/min,True,run 1 vs run 2,Wilcoxon,8,4.0,0.0546875,0.1640625,Holm,0.7777777777777778,rank-biserial r,,19.74030368958537,26.5865991780542,down
+raw.outbound.non_adjacent_percent,Non-adjacent changes – outbound,%,True,run 1 vs run 2,t,8,-1.0,0.3506166628202075,1.0,Bonferroni,-0.3535533905932738,Cohen dz,1.0472282383489073e-06,0.0,0.0,down
+raw.outbound.non_adjacent_percent,Non-adjacent changes – outbound,%,True,run 1 vs run 2,Wilcoxon,8,0.0,0.31731050786291415,0.31731050786291415,Holm,-1.0,rank-biserial r,,0.0,0.0,down
+raw.outbound.reversal_percent,Reversals – outbound,%,False,run 1 vs run 2,t,8,-1.19966903926589,0.26929254081507714,,,-0.42414705642223066,Cohen dz,0.09440159797668457,25.735294117647058,23.959827833572454,down
+raw.outbound.reversal_percent,Reversals – outbound,%,False,run 1 vs run 2,Wilcoxon,8,9.0,0.39802471950693785,,,-0.35714285714285715,rank-biserial r,,25.735294117647058,23.959827833572454,down
+raw.outbound.mean_command_duration,Mean command duration – outbound,s,False,run 1 vs run 2,t,8,-1.103955113662786,0.30611028087625275,,,-0.39030707349826094,Cohen dz,0.13779151439666748,3.2111944444444447,2.495671954365079,up
+raw.outbound.mean_command_duration,Mean command duration – outbound,s,False,run 1 vs run 2,Wilcoxon,8,9.0,0.25,,,-0.5,rank-biserial r,,3.2111944444444447,2.495671954365079,up
+raw.outbound.stop_passage_percent,Passages through stop – outbound,%,False,run 1 vs run 2,t,8,-1.8489554029902389,0.10693087239937277,,,-0.6537044517829518,Cohen dz,0.34892240166664124,55.47138047138047,27.10801393728223,down
+raw.outbound.stop_passage_percent,Passages through stop – outbound,%,False,run 1 vs run 2,Wilcoxon,8,6.0,0.109375,,,-0.6666666666666666,rank-biserial r,,55.47138047138047,27.10801393728223,down
+raw.outbound.sequence_entropy,Sequence entropy – outbound,bits,False,run 1 vs run 2,t,8,-1.536017835739703,0.168413100957859,,,-0.5430643138375142,Cohen dz,0.7694848775863647,1.1281913951919176,0.8914918281266273,down
+raw.outbound.sequence_entropy,Sequence entropy – outbound,bits,False,run 1 vs run 2,Wilcoxon,8,9.0,0.25,,,-0.5,rank-biserial r,,1.1281913951919176,0.8914918281266273,down
+raw.outbound.driving_time,Driving time – outbound,s,False,run 1 vs run 2,t,8,-2.4533121322401694,0.04389357124022887,,,-0.867376822537126,Cohen dz,0.8761899471282959,210.97865000000002,154.10375,down
+raw.outbound.driving_time,Driving time – outbound,s,False,run 1 vs run 2,Wilcoxon,8,4.0,0.0546875,,,-0.7777777777777778,rank-biserial r,,210.97865000000002,154.10375,down
+raw.outbound.robot_path_length,Path length – outbound (cursor_distance.m),m,False,run 1 vs run 2,t,8,-0.6547215914792934,0.5335614397114379,,,-0.23147903856212843,Cohen dz,0.4368115961551666,22.273489162220752,21.699233988034813,down
+raw.outbound.robot_path_length,Path length – outbound (cursor_distance.m),m,False,run 1 vs run 2,Wilcoxon,8,13.0,0.546875,,,-0.2777777777777778,rank-biserial r,,22.273489162220752,21.699233988034813,down
+raw.outbound.cumulative_rotation,Cumulative rotation – outbound,rad,False,run 1 vs run 2,t,8,-1.4017002815100936,0.20375384156260723,,,-0.4955758871234398,Cohen dz,0.23479749262332916,18.52739181047945,15.344868560321629,down
+raw.outbound.cumulative_rotation,Cumulative rotation – outbound,rad,False,run 1 vs run 2,Wilcoxon,8,9.0,0.25,,,-0.5,rank-biserial r,,18.52739181047945,15.344868560321629,down
+raw.outbound.region_changes_per_min,Region changes – outbound (movement_train.m),/min,False,run 1 vs run 2,t,8,1.7270345251362618,0.12780097078600516,,,0.6105989120335699,Cohen dz,0.4173767864704132,22.11950331779312,28.733001247998647,down
+raw.outbound.region_changes_per_min,Region changes – outbound (movement_train.m),/min,False,run 1 vs run 2,Wilcoxon,8,5.0,0.078125,,,0.7222222222222222,rank-biserial r,,22.11950331779312,28.733001247998647,down
+raw.outbound.robot_lin_speed_mean,Robot linear speed – outbound (speed1.m),m/s,False,run 1 vs run 2,t,8,3.875369549297628,0.006089290365180814,,,1.3701500439561036,Cohen dz,0.8427835702896118,0.10531223649623053,0.1330316076900395,
+raw.outbound.robot_lin_speed_mean,Robot linear speed – outbound (speed1.m),m/s,False,run 1 vs run 2,Wilcoxon,8,1.0,0.015625,,,0.9444444444444444,rank-biserial r,,0.10531223649623053,0.1330316076900395,
+raw.outbound.robot_lin_speed_peak,Robot peak linear speed – outbound (speed1.m),m/s,False,run 1 vs run 2,t,8,0.6795040766607133,0.518649118150952,,,0.24024097022534702,Cohen dz,0.6666460037231445,0.26932831869599916,0.30016670747682384,
+raw.outbound.robot_lin_speed_peak,Robot peak linear speed – outbound (speed1.m),m/s,False,run 1 vs run 2,Wilcoxon,8,15.0,0.7421875,,,0.16666666666666666,rank-biserial r,,0.26932831869599916,0.30016670747682384,
+raw.outbound.robot_ang_speed_mean,Robot angular speed – outbound (speed1.m),rad/s,False,run 1 vs run 2,t,8,2.848504852700848,0.024741351420947733,,,1.0070985487937785,Cohen dz,0.9467262625694275,0.10832446746119738,0.11555301682365712,
+raw.outbound.robot_ang_speed_mean,Robot angular speed – outbound (speed1.m),rad/s,False,run 1 vs run 2,Wilcoxon,8,3.0,0.0390625,,,0.8333333333333334,rank-biserial r,,0.10832446746119738,0.11555301682365712,
+raw.outbound.robot_mean_jerk,Robot mean jerk – outbound (jerk1.m),m/s^3,False,run 1 vs run 2,t,8,2.702661613977067,0.03052126220748189,,,0.9555351772478817,Cohen dz,0.12110781669616699,1.8442691182457973,2.51664578956985,down
+raw.outbound.robot_mean_jerk,Robot mean jerk – outbound (jerk1.m),m/s^3,False,run 1 vs run 2,Wilcoxon,8,1.0,0.015625,,,0.9444444444444444,rank-biserial r,,1.8442691182457973,2.51664578956985,down
+raw.outbound.robot_log10_dimensionless_jerk,"Robot dimensionless jerk, log10 – outbound (jerk1.m)",,False,run 1 vs run 2,t,8,1.4232832270348295,0.19765899553124114,,,0.5032066106927002,Cohen dz,0.03019655868411064,11.179900995463957,11.138391914659788,down
+raw.outbound.robot_log10_dimensionless_jerk,"Robot dimensionless jerk, log10 – outbound (jerk1.m)",,False,run 1 vs run 2,Wilcoxon,8,13.0,0.546875,,,0.2777777777777778,rank-biserial r,,11.179900995463957,11.138391914659788,down
+raw.outbound.cursor_path_length,Cursor path length – outbound (cursor_distance.m),px,False,run 1 vs run 2,t,8,-0.7817343510852863,0.45998982568886115,,,-0.2763848303694356,Cohen dz,0.21896618604660034,37095.99461046013,35561.02366482544,
+raw.outbound.cursor_path_length,Cursor path length – outbound (cursor_distance.m),px,False,run 1 vs run 2,Wilcoxon,8,14.0,0.640625,,,-0.2222222222222222,rank-biserial r,,37095.99461046013,35561.02366482544,
+raw.outbound.cursor_mean_speed,Cursor speed – outbound (speed1.m),px/s,False,run 1 vs run 2,t,8,0.4827335797521883,0.6440155128986216,,,0.1706720938746147,Cohen dz,0.000980293843895197,182.39764619586072,210.12114708224664,
+raw.outbound.cursor_mean_speed,Cursor speed – outbound (speed1.m),px/s,False,run 1 vs run 2,Wilcoxon,8,8.0,0.1953125,,,0.5555555555555556,rank-biserial r,,182.39764619586072,210.12114708224664,
+raw.outbound.cursor_mean_jerk,Cursor mean jerk – outbound (jerk1.m),px/s^3,False,run 1 vs run 2,t,8,1.0420776168019337,0.33202299096859045,,,0.36843007468168193,Cohen dz,0.3754619061946869,6077.5329408500975,7045.838169764007,down
+raw.outbound.cursor_mean_jerk,Cursor mean jerk – outbound (jerk1.m),px/s^3,False,run 1 vs run 2,Wilcoxon,8,10.0,0.3125,,,0.4444444444444444,rank-biserial r,,6077.5329408500975,7045.838169764007,down
+raw.outbound.cursor_speed_peaks,Cursor speed peaks – outbound (smooth.m),,False,run 1 vs run 2,t,8,2.03333939870058,0.08151013069411721,,,0.7188940386374786,Cohen dz,0.4594630300998688,34.0,47.5,down
+raw.outbound.cursor_speed_peaks,Cursor speed peaks – outbound (smooth.m),,False,run 1 vs run 2,Wilcoxon,8,6.0,0.109375,,,0.6666666666666666,rank-biserial r,,34.0,47.5,down
+raw.approach.stop_percent,Stop time – approach,%,False,run 1 vs run 2,t,8,-2.3214829347470367,0.05327796277108521,,,-0.8207681627842385,Cohen dz,0.7560535073280334,55.60811544795229,40.92143129173667,down
+raw.approach.stop_percent,Stop time – approach,%,False,run 1 vs run 2,Wilcoxon,8,4.0,0.0546875,,,-0.7777777777777778,rank-biserial r,,55.60811544795229,40.92143129173667,down
+raw.approach.command_changes_per_min,Command changes – approach,/min,False,run 1 vs run 2,t,8,0.8981756366783322,0.398930807688574,,,0.3175530416958967,Cohen dz,0.5118662714958191,25.254850556892613,29.270920840291936,down
+raw.approach.command_changes_per_min,Command changes – approach,/min,False,run 1 vs run 2,Wilcoxon,8,12.0,0.4609375,,,0.3333333333333333,rank-biserial r,,25.254850556892613,29.270920840291936,down
+raw.approach.non_adjacent_percent,Non-adjacent changes – approach,%,False,run 1 vs run 2,t,8,0.0,1.0,,,0.0,Cohen dz,,0.0,0.0,down
+raw.approach.non_adjacent_percent,Non-adjacent changes – approach,%,False,run 1 vs run 2,Wilcoxon,8,0.0,1.0,,,0.0,rank-biserial r,,0.0,0.0,down
+raw.approach.reversal_percent,Reversals – approach,%,False,run 1 vs run 2,t,8,-1.1656684036619045,0.2819260547076575,,,-0.4121260164221152,Cohen dz,0.5370420217514038,18.333333333333336,5.555555555555555,down
+raw.approach.reversal_percent,Reversals – approach,%,False,run 1 vs run 2,Wilcoxon,8,8.0,0.3104944343172349,,,-0.42857142857142855,rank-biserial r,,18.333333333333336,5.555555555555555,down
+raw.approach.mean_command_duration,Mean command duration – approach,s,False,run 1 vs run 2,t,8,1.9227646174770043,0.09593863190177276,,,0.6797999498217739,Cohen dz,0.9126001596450806,1.69758571428571,1.9936645833333366,up
+raw.approach.mean_command_duration,Mean command duration – approach,s,False,run 1 vs run 2,Wilcoxon,8,5.0,0.078125,,,0.7222222222222222,rank-biserial r,,1.69758571428571,1.9936645833333366,up
+raw.approach.stop_passage_percent,Passages through stop – approach,%,False,run 1 vs run 2,t,8,-0.9322021169156726,0.38225964635960147,,,-0.3295832191537635,Cohen dz,0.1168782114982605,87.5,85.71428571428572,down
+raw.approach.stop_passage_percent,Passages through stop – approach,%,False,run 1 vs run 2,Wilcoxon,8,8.0,0.6001794871405538,,,-0.23809523809523808,rank-biserial r,,87.5,85.71428571428572,down
+raw.approach.sequence_entropy,Sequence entropy – approach,bits,False,run 1 vs run 2,t,8,-1.5091482929770845,0.17500197279790233,,,-0.5335644958900995,Cohen dz,0.6219950914382935,0.7125643498415585,0.5871707607693999,down
+raw.approach.sequence_entropy,Sequence entropy – approach,bits,False,run 1 vs run 2,Wilcoxon,8,7.0,0.1484375,,,-0.6111111111111112,rank-biserial r,,0.7125643498415585,0.5871707607693999,down
+raw.approach.driving_time,Driving time – approach,s,False,run 1 vs run 2,t,8,-2.884137849665452,0.023512215839042016,,,-1.0196967156876142,Cohen dz,0.3416188657283783,32.45785000000001,21.665049999999994,down
+raw.approach.driving_time,Driving time – approach,s,False,run 1 vs run 2,Wilcoxon,8,3.0,0.0390625,,,-0.8333333333333334,rank-biserial r,,32.45785000000001,21.665049999999994,down
+raw.approach.robot_path_length,Path length – approach (cursor_distance.m),m,False,run 1 vs run 2,t,8,-0.029224013174774435,0.9775016693754675,,,-0.010332248944684003,Cohen dz,0.4115145802497864,1.236756901508449,1.3052804875545743,down
+raw.approach.robot_path_length,Path length – approach (cursor_distance.m),m,False,run 1 vs run 2,Wilcoxon,8,18.0,1.0,,,0.0,rank-biserial r,,1.236756901508449,1.3052804875545743,down
+raw.approach.cumulative_rotation,Cumulative rotation – approach,rad,False,run 1 vs run 2,t,8,-2.7134541044958786,0.03004856680353286,,,-0.9593508988637532,Cohen dz,0.7166799902915955,1.9379549920558932,1.47112599760294,down
+raw.approach.cumulative_rotation,Cumulative rotation – approach,rad,False,run 1 vs run 2,Wilcoxon,8,4.0,0.0546875,,,-0.7777777777777778,rank-biserial r,,1.9379549920558932,1.47112599760294,down
+raw.approach.region_changes_per_min,Region changes – approach (movement_train.m),/min,False,run 1 vs run 2,t,8,1.3556256434319944,0.2173268294444014,,,0.47928604261056995,Cohen dz,0.251762717962265,28.63843638628667,37.197890860245806,down
+raw.approach.region_changes_per_min,Region changes – approach (movement_train.m),/min,False,run 1 vs run 2,Wilcoxon,8,8.0,0.1953125,,,0.5555555555555556,rank-biserial r,,28.63843638628667,37.197890860245806,down
+raw.approach.robot_lin_speed_mean,Robot linear speed – approach (speed1.m),m/s,False,run 1 vs run 2,t,8,1.932528106197279,0.09456970667151214,,,0.6832518643628461,Cohen dz,0.8380361199378967,0.028708023964101242,0.04204837620820805,
+raw.approach.robot_lin_speed_mean,Robot linear speed – approach (speed1.m),m/s,False,run 1 vs run 2,Wilcoxon,8,8.0,0.1953125,,,0.5555555555555556,rank-biserial r,,0.028708023964101242,0.04204837620820805,
+raw.approach.robot_lin_speed_peak,Robot peak linear speed – approach (speed1.m),m/s,False,run 1 vs run 2,t,8,-0.1641887302385937,0.8742229156780819,,,-0.058049482273059186,Cohen dz,0.5741607546806335,0.20274107651754764,0.2005037188054306,
+raw.approach.robot_lin_speed_peak,Robot peak linear speed – approach (speed1.m),m/s,False,run 1 vs run 2,Wilcoxon,8,16.0,0.84375,,,-0.1111111111111111,rank-biserial r,,0.20274107651754764,0.2005037188054306,
+raw.approach.robot_ang_speed_mean,Robot angular speed – approach (speed1.m),rad/s,False,run 1 vs run 2,t,8,0.7635898829988713,0.470060211063583,,,0.2699697921569722,Cohen dz,0.07205456495285034,0.04969164192890624,0.05543211817030835,
+raw.approach.robot_ang_speed_mean,Robot angular speed – approach (speed1.m),rad/s,False,run 1 vs run 2,Wilcoxon,8,10.0,0.3125,,,0.4444444444444444,rank-biserial r,,0.04969164192890624,0.05543211817030835,
+raw.approach.robot_mean_jerk,Robot mean jerk – approach (jerk1.m),m/s^3,False,run 1 vs run 2,t,8,1.010862419987066,0.34574051457203664,,,0.35739383600974906,Cohen dz,0.797364354133606,0.6509215259130434,0.8051727764215328,down
+raw.approach.robot_mean_jerk,Robot mean jerk – approach (jerk1.m),m/s^3,False,run 1 vs run 2,Wilcoxon,8,9.0,0.25,,,0.5,rank-biserial r,,0.6509215259130434,0.8051727764215328,down
+raw.approach.robot_log10_dimensionless_jerk,"Robot dimensionless jerk, log10 – approach (jerk1.m)",,False,run 1 vs run 2,t,8,-0.2229996307514872,0.8299033655994654,,,-0.07884227555323639,Cohen dz,0.5216413140296936,9.59130252803439,9.47437627344734,down
+raw.approach.robot_log10_dimensionless_jerk,"Robot dimensionless jerk, log10 – approach (jerk1.m)",,False,run 1 vs run 2,Wilcoxon,8,17.0,0.9453125,,,-0.05555555555555555,rank-biserial r,,9.59130252803439,9.47437627344734,down
+raw.approach.cursor_path_length,Cursor path length – approach (cursor_distance.m),px,False,run 1 vs run 2,t,8,-0.8394589508056757,0.42894598447790067,,,-0.29679355832121884,Cohen dz,0.9947671890258789,8248.525793710693,8488.931233418069,
+raw.approach.cursor_path_length,Cursor path length – approach (cursor_distance.m),px,False,run 1 vs run 2,Wilcoxon,8,11.0,0.3828125,,,-0.3888888888888889,rank-biserial r,,8248.525793710693,8488.931233418069,
+raw.approach.cursor_mean_speed,Cursor speed – approach (speed1.m),px/s,False,run 1 vs run 2,t,8,0.12983879755337227,0.9003462125323787,,,0.045904947105548426,Cohen dz,0.47839999198913574,169.68761774383873,156.67709978795676,
+raw.approach.cursor_mean_speed,Cursor speed – approach (speed1.m),px/s,False,run 1 vs run 2,Wilcoxon,8,18.0,1.0,,,0.0,rank-biserial r,,169.68761774383873,156.67709978795676,
+raw.approach.cursor_mean_jerk,Cursor mean jerk – approach (jerk1.m),px/s^3,False,run 1 vs run 2,t,8,0.24374220128190574,0.8144197607450582,,,0.08617588169388597,Cohen dz,0.7602222561836243,4804.172838840801,5431.316063790492,down
+raw.approach.cursor_mean_jerk,Cursor mean jerk – approach (jerk1.m),px/s^3,False,run 1 vs run 2,Wilcoxon,8,18.0,1.0,,,0.0,rank-biserial r,,4804.172838840801,5431.316063790492,down
+raw.approach.cursor_speed_peaks,Cursor speed peaks – approach (smooth.m),,False,run 1 vs run 2,t,8,0.5564972721352434,0.5952053684345852,,,0.19675149741932305,Cohen dz,0.1184534877538681,11.0,14.5,down
+raw.approach.cursor_speed_peaks,Cursor speed peaks – approach (smooth.m),,False,run 1 vs run 2,Wilcoxon,8,14.0,0.640625,,,0.2222222222222222,rank-biserial r,,11.0,14.5,down
+raw.return.stop_percent,Stop time – return,%,False,run 1 vs run 2,t,8,-2.78810061780922,0.02698193784751381,,,-0.9857424267416509,Cohen dz,0.025974446907639503,23.48471982672057,17.697425609754355,down
+raw.return.stop_percent,Stop time – return,%,False,run 1 vs run 2,Wilcoxon,8,0.0,0.0078125,,,-1.0,rank-biserial r,,23.48471982672057,17.697425609754355,down
+raw.return.command_changes_per_min,Command changes – return,/min,False,run 1 vs run 2,t,8,0.8736328577896872,0.41128463004888594,,,0.30887585900523523,Cohen dz,0.6001872420310974,25.258195453867064,26.02779459428058,down
+raw.return.command_changes_per_min,Command changes – return,/min,False,run 1 vs run 2,Wilcoxon,8,12.0,0.4609375,,,0.3333333333333333,rank-biserial r,,25.258195453867064,26.02779459428058,down
+raw.return.non_adjacent_percent,Non-adjacent changes – return,%,False,run 1 vs run 2,t,8,0.0,1.0,,,0.0,Cohen dz,,0.0,0.0,down
+raw.return.non_adjacent_percent,Non-adjacent changes – return,%,False,run 1 vs run 2,Wilcoxon,8,0.0,1.0,,,0.0,rank-biserial r,,0.0,0.0,down
+raw.return.reversal_percent,Reversals – return,%,False,run 1 vs run 2,t,8,-0.7793761859001894,0.4612902235861971,,,-0.2755510930726656,Cohen dz,0.3212774991989136,23.40082159624413,21.79324894514768,down
+raw.return.reversal_percent,Reversals – return,%,False,run 1 vs run 2,Wilcoxon,8,10.0,0.3125,,,-0.4444444444444444,rank-biserial r,,23.40082159624413,21.79324894514768,down
+raw.return.mean_command_duration,Mean command duration – return,s,False,run 1 vs run 2,t,8,0.5033833612210619,0.6301452875135605,,,0.1779728941279451,Cohen dz,0.4399831295013428,2.5361224518226155,2.493666987704919,up
+raw.return.mean_command_duration,Mean command duration – return,s,False,run 1 vs run 2,Wilcoxon,8,12.0,0.4609375,,,0.3333333333333333,rank-biserial r,,2.5361224518226155,2.493666987704919,up
+raw.return.stop_passage_percent,Passages through stop – return,%,False,run 1 vs run 2,t,8,-1.9111150412846636,0.09759734751718722,,,-0.6756812026599971,Cohen dz,0.6217502355575562,45.47732067510549,39.833019122003776,down
+raw.return.stop_passage_percent,Passages through stop – return,%,False,run 1 vs run 2,Wilcoxon,8,5.0,0.078125,,,-0.7222222222222222,rank-biserial r,,45.47732067510549,39.833019122003776,down
+raw.return.sequence_entropy,Sequence entropy – return,bits,False,run 1 vs run 2,t,8,-0.4315740601574239,0.679031371405507,,,-0.15258447226076272,Cohen dz,0.8307093381881714,1.073041467401382,1.0194559732630906,down
+raw.return.sequence_entropy,Sequence entropy – return,bits,False,run 1 vs run 2,Wilcoxon,8,16.0,0.84375,,,-0.1111111111111111,rank-biserial r,,1.073041467401382,1.0194559732630906,down
+raw.return.driving_time,Driving time – return,s,False,run 1 vs run 2,t,8,-3.0193681276989537,0.01940362164862551,,,-1.0675078389972297,Cohen dz,0.2729858458042145,251.60054999999997,209.76199999999997,down
+raw.return.driving_time,Driving time – return,s,False,run 1 vs run 2,Wilcoxon,8,0.0,0.0078125,,,-1.0,rank-biserial r,,251.60054999999997,209.76199999999997,down
+raw.return.robot_path_length,Path length – return (cursor_distance.m),m,False,run 1 vs run 2,t,8,-2.173413334202564,0.066282152991156,,,-0.7684176534679485,Cohen dz,0.7691064476966858,25.456743639154567,25.320225503715612,down
+raw.return.robot_path_length,Path length – return (cursor_distance.m),m,False,run 1 vs run 2,Wilcoxon,8,4.0,0.0546875,,,-0.7777777777777778,rank-biserial r,,25.456743639154567,25.320225503715612,down
+raw.return.cumulative_rotation,Cumulative rotation – return,rad,False,run 1 vs run 2,t,8,-3.274677294666734,0.013586393458219687,,,-1.157773260628233,Cohen dz,0.620043158531189,26.76681855316978,23.70082873073791,down
+raw.return.cumulative_rotation,Cumulative rotation – return,rad,False,run 1 vs run 2,Wilcoxon,8,2.0,0.0234375,,,-0.8888888888888888,rank-biserial r,,26.76681855316978,23.70082873073791,down
+raw.return.region_changes_per_min,Region changes – return (movement_train.m),/min,False,run 1 vs run 2,t,8,1.3188859557165349,0.2287141485063106,,,0.46629660144943125,Cohen dz,0.6764900088310242,26.85859837042724,28.874058809665044,down
+raw.return.region_changes_per_min,Region changes – return (movement_train.m),/min,False,run 1 vs run 2,Wilcoxon,8,10.0,0.3125,,,0.4444444444444444,rank-biserial r,,26.85859837042724,28.874058809665044,down
+raw.return.robot_lin_speed_mean,Robot linear speed – return (speed1.m),m/s,False,run 1 vs run 2,t,8,4.771674253162811,0.002031773812788335,,,1.6870416110123392,Cohen dz,0.9789704084396362,0.10266299796442252,0.11716719448404031,
+raw.return.robot_lin_speed_mean,Robot linear speed – return (speed1.m),m/s,False,run 1 vs run 2,Wilcoxon,8,0.0,0.0078125,,,1.0,rank-biserial r,,0.10266299796442252,0.11716719448404031,
+raw.return.robot_lin_speed_peak,Robot peak linear speed – return (speed1.m),m/s,False,run 1 vs run 2,t,8,1.3370670720799787,0.22301533210649999,,,0.4727245967844977,Cohen dz,0.021441929042339325,0.26799330471273286,0.2647181596650484,
+raw.return.robot_lin_speed_peak,Robot peak linear speed – return (speed1.m),m/s,False,run 1 vs run 2,Wilcoxon,8,10.0,0.3125,,,0.4444444444444444,rank-biserial r,,0.26799330471273286,0.2647181596650484,
+raw.return.robot_ang_speed_mean,Robot angular speed – return (speed1.m),rad/s,False,run 1 vs run 2,t,8,1.7243093221139618,0.1283092567768968,,,0.6096354072649806,Cohen dz,0.3605608642101288,0.11782975498472939,0.12434907444479024,
+raw.return.robot_ang_speed_mean,Robot angular speed – return (speed1.m),rad/s,False,run 1 vs run 2,Wilcoxon,8,6.0,0.109375,,,0.6666666666666666,rank-biserial r,,0.11782975498472939,0.12434907444479024,
+raw.return.robot_mean_jerk,Robot mean jerk – return (jerk1.m),m/s^3,False,run 1 vs run 2,t,8,2.0562868556665634,0.0787957960833337,,,0.7270071898532953,Cohen dz,0.7357743382453918,1.8946460495910504,2.184556281487964,down
+raw.return.robot_mean_jerk,Robot mean jerk – return (jerk1.m),m/s^3,False,run 1 vs run 2,Wilcoxon,8,5.0,0.078125,,,0.7222222222222222,rank-biserial r,,1.8946460495910504,2.184556281487964,down
+raw.return.robot_log10_dimensionless_jerk,"Robot dimensionless jerk, log10 – return (jerk1.m)",,False,run 1 vs run 2,t,8,0.16375729025802935,0.8745500617500432,,,0.057896945205093156,Cohen dz,0.16879035532474518,11.428764826738423,10.693164387866847,down
+raw.return.robot_log10_dimensionless_jerk,"Robot dimensionless jerk, log10 – return (jerk1.m)",,False,run 1 vs run 2,Wilcoxon,8,15.0,0.7421875,,,-0.16666666666666666,rank-biserial r,,11.428764826738423,10.693164387866847,down
+raw.return.cursor_path_length,Cursor path length – return (cursor_distance.m),px,False,run 1 vs run 2,t,8,-1.925318167903513,0.09557874286612068,,,-0.680702766233117,Cohen dz,0.43423256278038025,60040.93417259676,51450.14871017388,
+raw.return.cursor_path_length,Cursor path length – return (cursor_distance.m),px,False,run 1 vs run 2,Wilcoxon,8,7.0,0.1484375,,,-0.6111111111111112,rank-biserial r,,60040.93417259676,51450.14871017388,
+raw.return.cursor_mean_speed,Cursor speed – return (speed1.m),px/s,False,run 1 vs run 2,t,8,0.17185555545139447,0.8684138882919961,,,0.06076011432213088,Cohen dz,0.1531330645084381,220.6880979572232,229.24622035802014,
+raw.return.cursor_mean_speed,Cursor speed – return (speed1.m),px/s,False,run 1 vs run 2,Wilcoxon,8,18.0,1.0,,,0.0,rank-biserial r,,220.6880979572232,229.24622035802014,
+raw.return.cursor_mean_jerk,Cursor mean jerk – return (jerk1.m),px/s^3,False,run 1 vs run 2,t,8,0.7292983865604583,0.48949657218298614,,,0.2578459173226541,Cohen dz,0.36151158809661865,6471.570080657808,7824.391847199657,down
+raw.return.cursor_mean_jerk,Cursor mean jerk – return (jerk1.m),px/s^3,False,run 1 vs run 2,Wilcoxon,8,14.0,0.640625,,,0.2222222222222222,rank-biserial r,,6471.570080657808,7824.391847199657,down
+raw.return.cursor_speed_peaks,Cursor speed peaks – return (smooth.m),,False,run 1 vs run 2,t,8,-1.0420162227266645,0.3320495427980622,,,-0.36840836859820814,Cohen dz,0.9903749823570251,75.5,57.0,down
+raw.return.cursor_speed_peaks,Cursor speed peaks – return (smooth.m),,False,run 1 vs run 2,Wilcoxon,8,10.0,0.3125,,,-0.4444444444444444,rank-biserial r,,75.5,57.0,down

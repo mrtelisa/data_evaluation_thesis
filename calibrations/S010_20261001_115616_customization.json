@@ -1,0 +1,30 @@
+{
+  "subject": "S010",
+  "map": "S010_20261001_115616",
+  "saved": "20261001_115616",
+  "base": "shared",
+  "steps": null,
+  "n_steps": null,
+  "rot_deg": 0.0,
+  "scale": 1.0,
+  "flip_x": false,
+  "offset_x": 0.0,
+  "offset_y": 0.0,
+  "M": [
+    [
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0
+    ]
+  ],
+  "t": [
+    0.0,
+    0.0
+  ],
+  "residual": 0.0,
+  "summary_text": "rotation +0.0 deg, scale x1.000, flip X no, offset (+0, +0) px",
+  "steps_text": "not recorded"
+}

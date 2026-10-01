@@ -22,65 +22,65 @@ COME LEGGERE QUESTO REPORT
 - "cambiano k": quanti soggetti hanno un valore diverso fra i due momenti. Se sono pochi
   (es. 1 su 9) l'effetto puo' risultare "grande" ma riguarda solo quei soggetti.
 
-Soggetti: 6 (S001, S002, S003, S004, S005, S006)
-  test 1: 6 soggetti
-  test 2: 6 soggetti
-  test 3: 6 soggetti
-  test 4: 6 soggetti
-  test 5: 6 soggetti
+Soggetti: 8 (S001, S002, S003, S004, S005, S006, S009, S010)
+  test 1: 8 soggetti
+  test 2: 8 soggetti
+  test 3: 8 soggetti
+  test 4: 8 soggetti
+  test 5: 8 soggetti
 Tutte le metriche sono calcolate dai _raw.csv (cinematica con le funzioni del laboratorio).
 Analisi principale: ANOVA a misure ripetute sui 5 test (Greenhouse-Geisser); post hoc: 4 t
 appaiati fra test consecutivi, Bonferroni sui 4. Controllo: Friedman e Wilcoxon (Holm).
 
 Hit rate [%]
 ------------
-  per test, mediana [Q1-Q3]: test 1: 0.00 [0.00-0.00] | test 2: 8.33 [2.08-14.58] | test 3: 8.33 [0.00-22.92] | test 4: 8.33 [8.33-8.33] | test 5: 0.00 [0.00-0.00]
-  ANOVA sui 5 test (n=6): test F(4,20)=3.98, p=0.016, eps GG=0.33, p GG=0.084, eta2p=0.44 (grande), significativo: no
-  controllo: Friedman n=6, p=0.019, W=0.49
-  effect of training 1 (test 1 vs 2): test 1 0.00 [0.00-0.00] -> test 2 8.33 [2.08-14.58] | migliorato | n=6 (cambiano 4), t(5)=2.71, p=0.042, p Bonf=0.169, significativo: no | d=1.11 (grande), Shapiro p=0.21 | Wilcoxon p Holm=0.176
-  effect of training 2 (test 2 vs 3): test 2 8.33 [2.08-14.58] -> test 3 8.33 [0.00-22.92] | migliorato | n=6 (cambiano 4), t(5)=1.00, p=0.363, p Bonf=1.000, significativo: no | d=0.41 (piccolo), Shapiro p=0.09 | Wilcoxon p Holm=1.000
-  effect of free exploration + robot run 1 (test 3 vs 4): test 3 8.33 [0.00-22.92] -> test 4 8.33 [8.33-8.33] | peggiorato | n=6 (cambiano 6), t(5)=-0.24, p=0.822, p Bonf=1.000, significativo: no | d=-0.10 (trascurabile), Shapiro p=0.22 | Wilcoxon p Holm=1.000
-  effect of robot run 2 (test 4 vs 5): test 4 8.33 [8.33-8.33] -> test 5 0.00 [0.00-0.00] | peggiorato | n=6 (cambiano 6), t(5)=-7.00, p=0.001, p Bonf=0.004, significativo: si' | d=-2.86 (grande), Shapiro p=0.00 | Wilcoxon p Holm=0.125  <- differenze NON normali: vale il controllo non parametrico
+  per test, mediana [Q1-Q3]: test 1: 0.00 [0.00-2.08] | test 2: 8.33 [0.00-10.42] | test 3: 8.33 [0.00-18.75] | test 4: 8.33 [8.33-16.67] | test 5: 0.00 [0.00-0.00]
+  ANOVA sui 5 test (n=8): test F(4,28)=5.53, p=0.002, eps GG=0.34, p GG=0.034, eta2p=0.44 (grande), significativo: si'
+  controllo: Friedman n=8, p=0.003, W=0.50
+  effect of training 1 (test 1 vs 2): test 1 0.00 [0.00-2.08] -> test 2 8.33 [0.00-10.42] | migliorato | n=8 (cambiano 4), t(7)=2.38, p=0.049, p Bonf=0.197, significativo: no | d=0.84 (grande), Shapiro p=0.03 | Wilcoxon p Holm=0.176  <- differenze NON normali: vale il controllo non parametrico
+  effect of training 2 (test 2 vs 3): test 2 8.33 [0.00-10.42] -> test 3 8.33 [0.00-18.75] | migliorato | n=8 (cambiano 5), t(7)=1.43, p=0.197, p Bonf=0.788, significativo: no | d=0.50 (medio), Shapiro p=0.03 | Wilcoxon p Holm=0.668  <- differenze NON normali: vale il controllo non parametrico
+  effect of free exploration + robot run 1 (test 3 vs 4): test 3 8.33 [0.00-18.75] -> test 4 8.33 [8.33-16.67] | migliorato | n=8 (cambiano 8), t(7)=0.42, p=0.685, p Bonf=1.000, significativo: no | d=0.15 (trascurabile), Shapiro p=0.07 | Wilcoxon p Holm=0.742
+  effect of robot run 2 (test 4 vs 5): test 4 8.33 [8.33-16.67] -> test 5 0.00 [0.00-0.00] | peggiorato | n=8 (cambiano 8), t(7)=-7.51, p=0.000, p Bonf=0.001, significativo: si' | d=-2.66 (grande), Shapiro p=0.00 | Wilcoxon p Holm=0.031  <- differenze NON normali: vale il controllo non parametrico
 
 End-point error [px]
 --------------------
-  per test, mediana [Q1-Q3]: test 1: 459.69 [406.42-504.61] | test 2: 341.07 [263.86-381.94] | test 3: 281.11 [210.27-399.25] | test 4: 254.05 [194.57-307.70] | test 5: 267.18 [209.53-343.94]
-  ANOVA sui 5 test (n=6): test F(4,20)=3.74, p=0.020, eps GG=0.52, p GG=0.059, eta2p=0.43 (grande), significativo: no
-  controllo: Friedman n=6, p=0.102, W=0.32
-  effect of training 1 (test 1 vs 2): test 1 459.69 [406.42-504.61] -> test 2 341.07 [263.86-381.94] | migliorato | n=6 (cambiano 6), t(5)=-2.40, p=0.062, p Bonf=0.247, significativo: no | d=-0.98 (grande), Shapiro p=0.60 | Wilcoxon p Holm=0.250
-  effect of training 2 (test 2 vs 3): test 2 341.07 [263.86-381.94] -> test 3 281.11 [210.27-399.25] | migliorato | n=6 (cambiano 6), t(5)=-0.07, p=0.948, p Bonf=1.000, significativo: no | d=-0.03 (trascurabile), Shapiro p=0.88 | Wilcoxon p Holm=1.000
-  effect of free exploration + robot run 1 (test 3 vs 4): test 3 281.11 [210.27-399.25] -> test 4 254.05 [194.57-307.70] | migliorato | n=6 (cambiano 6), t(5)=-0.78, p=0.469, p Bonf=1.000, significativo: no | d=-0.32 (piccolo), Shapiro p=0.23 | Wilcoxon p Holm=1.000
-  effect of robot run 2 (test 4 vs 5): test 4 254.05 [194.57-307.70] -> test 5 267.18 [209.53-343.94] | peggiorato | n=6 (cambiano 6), t(5)=2.42, p=0.060, p Bonf=0.239, significativo: no | d=0.99 (grande), Shapiro p=0.82 | Wilcoxon p Holm=0.250
+  per test, mediana [Q1-Q3]: test 1: 413.86 [394.03-495.33] | test 2: 315.21 [251.86-371.91] | test 3: 281.11 [220.05-392.91] | test 4: 254.05 [186.37-305.54] | test 5: 250.88 [213.03-327.70]
+  ANOVA sui 5 test (n=8): test F(4,28)=5.14, p=0.003, eps GG=0.53, p GG=0.019, eta2p=0.42 (grande), significativo: si'
+  controllo: Friedman n=8, p=0.017, W=0.38
+  effect of training 1 (test 1 vs 2): test 1 413.86 [394.03-495.33] -> test 2 315.21 [251.86-371.91] | migliorato | n=8 (cambiano 8), t(7)=-2.87, p=0.024, p Bonf=0.096, significativo: no | d=-1.01 (grande), Shapiro p=0.44 | Wilcoxon p Holm=0.062
+  effect of training 2 (test 2 vs 3): test 2 315.21 [251.86-371.91] -> test 3 281.11 [220.05-392.91] | migliorato | n=8 (cambiano 8), t(7)=0.06, p=0.957, p Bonf=1.000, significativo: no | d=0.02 (trascurabile), Shapiro p=0.95 | Wilcoxon p Holm=0.945
+  effect of free exploration + robot run 1 (test 3 vs 4): test 3 281.11 [220.05-392.91] -> test 4 254.05 [186.37-305.54] | migliorato | n=8 (cambiano 8), t(7)=-0.98, p=0.360, p Bonf=1.000, significativo: no | d=-0.35 (piccolo), Shapiro p=0.27 | Wilcoxon p Holm=0.922
+  effect of robot run 2 (test 4 vs 5): test 4 254.05 [186.37-305.54] -> test 5 250.88 [213.03-327.70] | migliorato | n=8 (cambiano 8), t(7)=2.05, p=0.080, p Bonf=0.320, significativo: no | d=0.72 (medio), Shapiro p=1.00 | Wilcoxon p Holm=0.328
 
 Reach time = movement time (hits) [s]
 -------------------------------------
-  per test, mediana [Q1-Q3]: test 1: 1.14 [1.14-1.14] | test 2: 1.74 [1.45-2.11] | test 3: 1.97 [1.65-2.27] | test 4: 1.90 [1.07-2.19] | test 5: -
+  per test, mediana [Q1-Q3]: test 1: 1.36 [1.25-1.47] | test 2: 1.88 [1.59-2.79] | test 3: 1.97 [1.43-2.58] | test 4: 1.80 [0.88-2.16] | test 5: 1.69 [1.69-1.69]
   ANOVA sui 5 test (n=1): test: -
   controllo: Friedman non calcolabile
-  effect of training 1 (test 1 vs 2): test 1 1.14 [1.14-1.14] -> test 2 1.74 [1.45-2.11] | peggiorato | n=1 (cambiano 1), t=-, p=-, p Bonf=-, significativo: - | d=- (-), Shapiro p=- | Wilcoxon p Holm=-
-  effect of training 2 (test 2 vs 3): test 2 1.74 [1.45-2.11] -> test 3 1.97 [1.65-2.27] | peggiorato | n=3 (cambiano 3), t(2)=0.87, p=0.477, p Bonf=0.953, significativo: no | d=0.50 (medio), Shapiro p=0.21 | Wilcoxon p Holm=1.000
-  effect of free exploration + robot run 1 (test 3 vs 4): test 3 1.97 [1.65-2.27] -> test 4 1.90 [1.07-2.19] | migliorato | n=3 (cambiano 3), t(2)=-0.16, p=0.888, p Bonf=1.000, significativo: no | d=-0.09 (trascurabile), Shapiro p=0.10 | Wilcoxon p Holm=1.000
-  effect of robot run 2 (test 4 vs 5): test 4 1.90 [1.07-2.19] -> test 5 - | - | n=0 (cambiano 0), t=-, p=-, p Bonf=-, significativo: - | d=- (-), Shapiro p=- | Wilcoxon p Holm=-
+  effect of training 1 (test 1 vs 2): test 1 1.36 [1.25-1.47] -> test 2 1.88 [1.59-2.79] | peggiorato | n=2 (cambiano 2), t(1)=0.85, p=0.552, p Bonf=1.000, significativo: no | d=0.60 (medio), Shapiro p=- | Wilcoxon p Holm=1.000
+  effect of training 2 (test 2 vs 3): test 2 1.88 [1.59-2.79] -> test 3 1.97 [1.43-2.58] | peggiorato | n=4 (cambiano 4), t(3)=0.90, p=0.435, p Bonf=1.000, significativo: no | d=0.45 (piccolo), Shapiro p=0.56 | Wilcoxon p Holm=1.000
+  effect of free exploration + robot run 1 (test 3 vs 4): test 3 1.97 [1.43-2.58] -> test 4 1.80 [0.88-2.16] | migliorato | n=5 (cambiano 5), t(4)=-0.80, p=0.467, p Bonf=1.000, significativo: no | d=-0.36 (piccolo), Shapiro p=0.01 | Wilcoxon p Holm=1.000  <- differenze NON normali: vale il controllo non parametrico
+  effect of robot run 2 (test 4 vs 5): test 4 1.80 [0.88-2.16] -> test 5 1.69 [1.69-1.69] | migliorato | n=1 (cambiano 1), t=-, p=-, p Bonf=-, significativo: - | d=- (-), Shapiro p=- | Wilcoxon p Holm=-
 
 Initial direction error [deg]
 -----------------------------
-  per test, mediana [Q1-Q3]: test 1: 77.70 [49.37-85.12] | test 2: 47.33 [42.81-88.32] | test 3: 74.83 [71.73-90.35] | test 4: 59.63 [58.23-60.32] | test 5: 61.42 [59.12-64.62]
-  ANOVA sui 5 test (n=6): test F(4,20)=1.31, p=0.302, eps GG=0.58, p GG=0.313, eta2p=0.21 (grande), significativo: no
-  controllo: Friedman n=6, p=0.209, W=0.24
-  effect of training 1 (test 1 vs 2): test 1 77.70 [49.37-85.12] -> test 2 47.33 [42.81-88.32] | migliorato | n=6 (cambiano 6), t(5)=-1.22, p=0.277, p Bonf=1.000, significativo: no | d=-0.50 (piccolo), Shapiro p=0.17 | Wilcoxon p Holm=1.000
-  effect of training 2 (test 2 vs 3): test 2 47.33 [42.81-88.32] -> test 3 74.83 [71.73-90.35] | peggiorato | n=6 (cambiano 6), t(5)=1.66, p=0.158, p Bonf=0.631, significativo: no | d=0.68 (medio), Shapiro p=0.32 | Wilcoxon p Holm=0.625
-  effect of free exploration + robot run 1 (test 3 vs 4): test 3 74.83 [71.73-90.35] -> test 4 59.63 [58.23-60.32] | migliorato | n=6 (cambiano 6), t(5)=-0.87, p=0.423, p Bonf=1.000, significativo: no | d=-0.36 (piccolo), Shapiro p=0.08 | Wilcoxon p Holm=1.000
-  effect of robot run 2 (test 4 vs 5): test 4 59.63 [58.23-60.32] -> test 5 61.42 [59.12-64.62] | peggiorato | n=6 (cambiano 6), t(5)=-0.86, p=0.430, p Bonf=1.000, significativo: no | d=-0.35 (piccolo), Shapiro p=0.01 | Wilcoxon p Holm=1.000  <- differenze NON normali: vale il controllo non parametrico
+  per test, mediana [Q1-Q3]: test 1: 77.70 [52.98-88.36] | test 2: 51.48 [44.87-78.24] | test 3: 74.83 [70.76-83.81] | test 4: 60.15 [59.04-83.91] | test 5: 61.96 [59.52-66.58]
+  ANOVA sui 5 test (n=8): test F(4,28)=1.55, p=0.215, eps GG=0.63, p GG=0.239, eta2p=0.18 (grande), significativo: no
+  controllo: Friedman n=8, p=0.240, W=0.17
+  effect of training 1 (test 1 vs 2): test 1 77.70 [52.98-88.36] -> test 2 51.48 [44.87-78.24] | migliorato | n=8 (cambiano 8), t(7)=-1.66, p=0.140, p Bonf=0.560, significativo: no | d=-0.59 (medio), Shapiro p=0.26 | Wilcoxon p Holm=0.750
+  effect of training 2 (test 2 vs 3): test 2 51.48 [44.87-78.24] -> test 3 74.83 [70.76-83.81] | peggiorato | n=8 (cambiano 8), t(7)=1.82, p=0.111, p Bonf=0.444, significativo: no | d=0.64 (medio), Shapiro p=0.44 | Wilcoxon p Holm=0.594
+  effect of free exploration + robot run 1 (test 3 vs 4): test 3 74.83 [70.76-83.81] -> test 4 60.15 [59.04-83.91] | migliorato | n=8 (cambiano 8), t(7)=-0.53, p=0.612, p Bonf=1.000, significativo: no | d=-0.19 (trascurabile), Shapiro p=0.53 | Wilcoxon p Holm=0.750
+  effect of robot run 2 (test 4 vs 5): test 4 60.15 [59.04-83.91] -> test 5 61.96 [59.52-66.58] | peggiorato | n=8 (cambiano 8), t(7)=-1.42, p=0.198, p Bonf=0.793, significativo: no | d=-0.50 (medio), Shapiro p=0.04 | Wilcoxon p Holm=0.750  <- differenze NON normali: vale il controllo non parametrico
 
 Region accuracy [%]
 -------------------
-  per test, mediana [Q1-Q3]: test 1: 20.83 [16.67-25.00] | test 2: 29.17 [18.75-39.58] | test 3: 41.67 [29.17-47.92] | test 4: 33.33 [25.00-47.92] | test 5: 29.17 [4.17-41.67]
-  ANOVA sui 5 test (n=6): test F(4,20)=1.52, p=0.235, eps GG=0.53, p GG=0.264, eta2p=0.23 (grande), significativo: no
-  controllo: Friedman n=6, p=0.245, W=0.23
-  effect of training 1 (test 1 vs 2): test 1 20.83 [16.67-25.00] -> test 2 29.17 [18.75-39.58] | migliorato | n=6 (cambiano 5), t(5)=1.78, p=0.135, p Bonf=0.538, significativo: no | d=0.73 (medio), Shapiro p=0.42 | Wilcoxon p Holm=0.235
-  effect of training 2 (test 2 vs 3): test 2 29.17 [18.75-39.58] -> test 3 41.67 [29.17-47.92] | migliorato | n=6 (cambiano 5), t(5)=0.63, p=0.555, p Bonf=1.000, significativo: no | d=0.26 (piccolo), Shapiro p=0.18 | Wilcoxon p Holm=1.000
-  effect of free exploration + robot run 1 (test 3 vs 4): test 3 41.67 [29.17-47.92] -> test 4 33.33 [25.00-47.92] | peggiorato | n=6 (cambiano 5), t(5)=0.34, p=0.750, p Bonf=1.000, significativo: no | d=0.14 (trascurabile), Shapiro p=0.42 | Wilcoxon p Holm=1.000
-  effect of robot run 2 (test 4 vs 5): test 4 33.33 [25.00-47.92] -> test 5 29.17 [4.17-41.67] | peggiorato | n=6 (cambiano 5), t(5)=-3.50, p=0.017, p Bonf=0.069, significativo: no | d=-1.43 (grande), Shapiro p=0.82 | Wilcoxon p Holm=0.172
+  per test, mediana [Q1-Q3]: test 1: 20.83 [16.67-25.00] | test 2: 25.00 [22.92-35.42] | test 3: 37.50 [25.00-43.75] | test 4: 33.33 [25.00-43.75] | test 5: 33.33 [12.50-41.67]
+  ANOVA sui 5 test (n=8): test F(4,28)=1.99, p=0.124, eps GG=0.58, p GG=0.164, eta2p=0.22 (grande), significativo: no
+  controllo: Friedman n=8, p=0.143, W=0.21
+  effect of training 1 (test 1 vs 2): test 1 20.83 [16.67-25.00] -> test 2 25.00 [22.92-35.42] | migliorato | n=8 (cambiano 6), t(7)=2.00, p=0.086, p Bonf=0.342, significativo: no | d=0.71 (medio), Shapiro p=0.27 | Wilcoxon p Holm=0.231
+  effect of training 2 (test 2 vs 3): test 2 25.00 [22.92-35.42] -> test 3 37.50 [25.00-43.75] | migliorato | n=8 (cambiano 6), t(7)=0.80, p=0.448, p Bonf=1.000, significativo: no | d=0.28 (piccolo), Shapiro p=0.09 | Wilcoxon p Holm=0.688
+  effect of free exploration + robot run 1 (test 3 vs 4): test 3 37.50 [25.00-43.75] -> test 4 33.33 [25.00-43.75] | peggiorato | n=8 (cambiano 7), t(7)=0.48, p=0.644, p Bonf=1.000, significativo: no | d=0.17 (trascurabile), Shapiro p=0.31 | Wilcoxon p Holm=0.688
+  effect of robot run 2 (test 4 vs 5): test 4 33.33 [25.00-43.75] -> test 5 33.33 [12.50-41.67] | migliorato | n=8 (cambiano 7), t(7)=-2.55, p=0.038, p Bonf=0.152, significativo: no | d=-0.90 (grande), Shapiro p=0.79 | Wilcoxon p Holm=0.231
 
 Metriche esplorative
 --------------------
