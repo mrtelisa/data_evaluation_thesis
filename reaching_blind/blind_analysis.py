@@ -17,9 +17,10 @@ Analisi (vedi README.md):
 1. per ogni soggetto e test, un valore per metrica: la percentuale per le
    metriche si'/no (hit, region accuracy), la mediana per le altre;
 2. descrittive tra soggetti per ogni test: mediana [Q1-Q3], media, SD;
-3. Friedman sui 5 test (c'e' qualche differenza?) con W di Kendall;
-4. Wilcoxon sui 4 confronti fra test consecutivi, ognuno legato a una fase del
-   protocollo, con correzione di Holm sui 4 e rank-biserial r come effect size:
+3. ANOVA a misure ripetute sui 5 test (c'e' qualche differenza?), correzione di
+   Greenhouse-Geisser, eta^2 parziale;
+4. post hoc: t appaiati sui 4 confronti fra test consecutivi, ognuno legato a una
+   fase del protocollo, correzione di Bonferroni sui 4 e d di Cohen:
        1 vs 2  effetto del training 1
        2 vs 3  effetto del training 2 (plateau?)
        3 vs 4  effetto di free exploration + run 1 sul robot (fatica?)
@@ -31,7 +32,8 @@ Output in reaching_blind/statistics/:
     report.txt              il riassunto da leggere (italiano)
     blind_subjects.csv      soggetto x test: un valore per metrica
     blind_statistics.csv    metrica x test: descrittive tra soggetti
-    blind_tests.csv         Friedman + 4 Wilcoxon per metrica (p, p Holm, effetto)
+    blind_anova.csv         ANOVA sui 5 test per metrica
+    blind_tests.csv         4 t appaiati (Bonferroni) + controllo Friedman e 4 Wilcoxon (Holm)
     blind_per_target.csv    metrica x target x test: mediana tra soggetti
     blind_trials_all.csv    tutte le prove usate, con soggetto e test
     plots/blind_main.png                le 5 metriche principali (una linea per soggetto)
@@ -55,11 +57,12 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from common.data import aggregate, find_sessions   # noqa: E402
-from common.plots import (CATEGORICAL, INK2, MUTED, grid_axes, save_figure,   # noqa: E402
-                          setup_style, spaghetti)
+from common.plots import (ANOVA_TAG, BLUE, CATEGORICAL, INK2, MUTED, NONPARAM_TAG, STARS_NOTE,   # noqa: E402
+                          anova_caption, brackets, grid_axes, mean_se, save_figure, setup_style, spaghetti)
 from common.reach_metrics import onset_metrics, reach_metrics, region_of, session_metrics   # noqa: E402
 from common.report import Report   # noqa: E402
-from common.stats import describe, friedman, holm, wilcoxon_paired   # noqa: E402
+from common.stats import (bonferroni, describe, fmt_num, friedman, holm, paired_t, rm_anova,   # noqa: E402
+                          wilcoxon_paired)
 
 BASE_DIR = Path(__file__).resolve().parent
 TESTS = (1, 2, 3, 4, 5)
@@ -229,7 +232,7 @@ def wide(subjects: pd.DataFrame, metric: str) -> pd.DataFrame:
 
 
 def analyse(subjects: pd.DataFrame, report: Report) -> tuple:
-    stat_rows, test_rows = [], []
+    stat_rows, test_rows, anova_rows = [], [], []
     for m, (label, unit, better, _, main) in METRICS.items():
         if m not in subjects.columns:
             continue
@@ -237,34 +240,43 @@ def analyse(subjects: pd.DataFrame, report: Report) -> tuple:
         descr = {t: describe(w[t]) for t in TESTS}
         for t in TESTS:
             stat_rows.append({"metric": m, "label": label, "unit": unit, "main": main, "test": t, **descr[t]})
+        # analisi principale: ANOVA a misure ripetute sui 5 test + t appaiati fra test consecutivi
+        anova = rm_anova(subjects, m, ["test"])
+        for r in anova:
+            anova_rows.append({"metric": m, "label": label, "main": main, **r})
+        t_tests = [paired_t(w[a], w[b]) for a, b, _ in PAIRS]
+        p_bonf = bonferroni([t["p"] for t in t_tests])
+        # controllo non parametrico: Friedman + Wilcoxon (Holm)
         fr = friedman(w)
         test_rows.append({"metric": m, "label": label, "main": main, "comparison": "Friedman tests 1-5",
                           "test": "Friedman", "n": fr["n"], "statistic": fr["statistic"], "p": fr["p"],
-                          "p_holm": np.nan, "effect": fr["effect"], "effect_name": "Kendall W"})
-        pair_tests = [wilcoxon_paired(w[a], w[b]) for a, b, _ in PAIRS]
-        p_holm = holm([t["p"] for t in pair_tests])
-        for (a, b, what), t, ph in zip(PAIRS, pair_tests, p_holm):
+                          "p_corrected": np.nan, "effect": fr["effect"], "effect_name": "Kendall W"})
+        w_tests = [wilcoxon_paired(w[a], w[b]) for a, b, _ in PAIRS]
+        p_holm = holm([t["p"] for t in w_tests])
+        for (a, b, what), tt, pb, wt, ph in zip(PAIRS, t_tests, p_bonf, w_tests, p_holm):
             delta = descr[b].get("median", np.nan) - descr[a].get("median", np.nan) \
                 if descr[a].get("n") and descr[b].get("n") else np.nan
-            test_rows.append({"metric": m, "label": label, "main": main, "comparison": f"test {a} vs test {b}",
-                              "meaning": what, "test": "Wilcoxon", "n": t["n"], "statistic": t["statistic"],
-                              "p": t["p"], "p_holm": ph, "effect": t["effect"],
-                              "effect_name": "rank-biserial r", "median_first": descr[a].get("median"),
-                              "median_second": descr[b].get("median"), "delta_median": delta,
-                              "better": better})
+            for t, pc, name, corr, eff in ((tt, pb, "t", "Bonferroni", "Cohen dz"),
+                                           (wt, ph, "Wilcoxon", "Holm", "rank-biserial r")):
+                test_rows.append({"metric": m, "label": label, "main": main, "comparison": f"test {a} vs test {b}",
+                                  "meaning": what, "test": name, "n": t["n"], "statistic": t["statistic"],
+                                  "p": t["p"], "p_corrected": pc, "correction": corr, "effect": t["effect"],
+                                  "effect_name": eff, "shapiro_p": t.get("shapiro_p", np.nan),
+                                  "median_first": descr[a].get("median"), "median_second": descr[b].get("median"),
+                                  "delta_median": delta, "better": better})
         # report: solo le metriche principali per esteso
         if main:
             report.section(f"{label}{f' [{unit}]' if unit else ''}")
             report.text("  per test, mediana [Q1-Q3]: " + " | ".join(
                 f"test {t}: " + (f"{descr[t]['median']:.2f} [{descr[t]['q1']:.2f}-{descr[t]['q3']:.2f}]"
                                  if descr[t].get("n") else "-") for t in TESTS))
-            report.text(f"  Friedman (c'e' qualche differenza fra i 5 test?): n={fr['n']}, "
-                        f"p={fr['p']:.3f}, W={fr['effect']:.2f}" if fr["n"] >= 2 and not np.isnan(fr["p"])
-                        else "  Friedman: servono almeno 2 soggetti con tutti e 5 i test")
-            for (a, b, what), t, ph in zip(PAIRS, pair_tests, p_holm):
-                report.comparison(f"{what} (test {a} vs {b})", "", better, descr[a], descr[b], t, ph,
-                                  f"test {a}", f"test {b}")
-    return pd.DataFrame(stat_rows), pd.DataFrame(test_rows)
+            report.anova(anova, "ANOVA sui 5 test")
+            report.text(f"  controllo: Friedman n={fr['n']}, p={fmt_num(fr['p'], 3)}, W={fmt_num(fr['effect'])}"
+                        if fr["n"] >= 2 else "  controllo: Friedman non calcolabile")
+            for (a, b, what), tt, pb, ph in zip(PAIRS, t_tests, p_bonf, p_holm):
+                report.ttest(f"{what} (test {a} vs {b})", "", better, descr[a], descr[b], tt, pb,
+                             f"test {a}", f"test {b}", np_check=ph)
+    return pd.DataFrame(stat_rows), pd.DataFrame(test_rows), pd.DataFrame(anova_rows)
 
 
 def plot_metric(ax, subjects, m):
@@ -278,15 +290,46 @@ def plot_metric(ax, subjects, m):
                 ha="center", va="top", fontsize=6.5, color=MUTED)
 
 
-def plots(subjects, per_target, trials, out):
+def plot_metric_anova(ax, subjects, m, tests, anova):
+    """Versione ANOVA: media +- SE sui 5 test, parentesi sui test consecutivi significativi."""
+    label, unit, better, _, _ = METRICS[m]
+    mean_se(ax, wide(subjects, m), color=BLUE)
+    ax.set_xticks(range(len(TESTS)))
+    ax.set_xticklabels(TEST_LABELS)
+    ax.set_ylabel(f"{label}{f' [{unit}]' if unit else ''}")
+    ax.set_title(label + ("  (higher = better)" if better == "up" else "  (lower = better)" if better == "down" else ""),
+                 loc="left", pad=16)
+    t = tests[(tests.metric == m) & (tests.test == "t")].set_index("comparison")
+    pairs = []
+    for a, b, _ in PAIRS:
+        key = f"test {a} vs test {b}"
+        if key in t.index:
+            r = t.loc[key]
+            pairs.append((TESTS.index(a), TESTS.index(b), r["p_corrected"], r["shapiro_p"] < 0.05))
+    brackets(ax, pairs)
+    rows = anova[anova.metric == m].to_dict("records")
+    ax.text(0.0, -0.2, anova_caption(rows, {"test": "test"}), transform=ax.transAxes, fontsize=7, color=INK2,
+            va="top")
+
+
+def plots(subjects, per_target, trials, out, tests, anova):
     setup_style()
     fig, axes = grid_axes(len(MAIN), ncols=3, width=4.6, height=3.9)
     for ax, m in zip(axes, MAIN):
         plot_metric(ax, subjects, m)
-    fig.suptitle("Blind reaching test across the protocol (one line per subject)", x=0.01, ha="left",
-                 fontweight="bold")
-    fig.tight_layout(rect=(0, 0, 1, 0.97))
+    fig.suptitle("Blind reaching test across the protocol (one line per subject)\n" + NONPARAM_TAG, x=0.01,
+                 ha="left", fontweight="bold")
+    fig.tight_layout(rect=(0, 0, 1, 0.95))
     save_figure(fig, out, "blind_main")
+
+    fig, axes = grid_axes(len(MAIN), ncols=3, width=4.6, height=4.3)
+    for ax, m in zip(axes, MAIN):
+        plot_metric_anova(ax, subjects, m, tests, anova)
+    fig.suptitle("Blind reaching test across the protocol (grey = single subjects)\n" + ANOVA_TAG, x=0.01,
+                 ha="left", fontweight="bold")
+    fig.text(0.01, 0.005, STARS_NOTE, fontsize=8, color=INK2)
+    fig.tight_layout(rect=(0, 0.02, 1, 0.95))
+    save_figure(fig, out, "blind_main_anova")
     for m in METRICS:
         if m in subjects.columns and subjects[m].notna().any():
             fig, ax = plt.subplots(figsize=(5.5, 4.1))
@@ -368,10 +411,11 @@ def main():
     report.text("Tutte le metriche sono calcolate dai _raw.csv (cinematica con le funzioni del laboratorio).")
     if args.skip_first_trial:
         report.text("La prima prova di ogni test e' esclusa (--skip-first-trial).")
-    report.text("Confronti pianificati: 4 Wilcoxon fra test consecutivi, Holm sui 4, per ogni metrica.")
+    report.text("Analisi principale: ANOVA a misure ripetute sui 5 test (Greenhouse-Geisser); post hoc: 4 t")
+    report.text("appaiati fra test consecutivi, Bonferroni sui 4. Controllo: Friedman e Wilcoxon (Holm).")
 
     subjects = subject_table(trials)
-    stats_df, tests_df = analyse(subjects, report)
+    stats_df, tests_df, anova_df = analyse(subjects, report)
     per_target_subj = subject_table(trials, by=("subject", "test", "target"))
     per_target = []
     for m in METRICS:
@@ -383,9 +427,10 @@ def main():
     subjects.to_csv(args.out / "blind_subjects.csv", index=False)
     stats_df.to_csv(args.out / "blind_statistics.csv", index=False)
     tests_df.to_csv(args.out / "blind_tests.csv", index=False)
+    anova_df.to_csv(args.out / "blind_anova.csv", index=False)
     per_target.to_csv(args.out / "blind_per_target.csv", index=False)
     trials.drop(columns=["_x", "_y"]).to_csv(args.out / "blind_trials_all.csv", index=False)
-    plots(subjects, per_target, trials, args.out)
+    plots(subjects, per_target, trials, args.out, tests_df, anova_df)
     report.section("Metriche esplorative")
     report.text("  Tutte le altre metriche sono in blind_tests.csv e plots/metrics/, calcolate allo stesso modo.")
     report.write(args.out)

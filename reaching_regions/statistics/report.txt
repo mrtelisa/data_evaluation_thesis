@@ -4,13 +4,20 @@ TRAINING A 9 REGIONI – pre e post
 COME LEGGERE QUESTO REPORT
 - "mediana [Q1-Q3]": il valore tipico del gruppo e la fascia in cui sta la meta' centrale
   dei soggetti. Ogni soggetto pesa 1: prima un valore per soggetto, poi il gruppo.
-- p: probabilita' di vedere una differenza cosi' grande se in realta' non ci fosse nessun
-  effetto. p Holm: lo stesso p corretto perche' si fanno piu' confronti sulla stessa
-  domanda. Significativo = p Holm < 0.05 (per i confronti esplorativi si guarda p).
-- effetto: quanto e' grande la differenza (rank-biserial r per 2 momenti, W di Kendall per
-  Friedman, rho per le correlazioni). |0.1| piccolo, |0.3| medio, |0.5| grande.
-  Con pochi soggetti conta piu' l'effetto del p-value.
-- migliorato / peggiorato: in base a cosa e' meglio per quella metrica (es. tempo: meno
+- ANALISI PRINCIPALE (come il laboratorio): ANOVA a misure ripetute e post hoc con t di
+  Student appaiati.
+  ANOVA: F(gdl1, gdl2), p; "p GG" = p con la correzione di Greenhouse-Geisser (epsilon < 1
+  quando i livelli non hanno la stessa variabilita'), da leggere quando ci sono piu' di 2
+  livelli; eta2p = eta^2 parziale (0.01 piccolo, 0.06 medio, 0.14 grande).
+  Post hoc: t(gdl), p, "p Bonf" = p x numero di confronti; d = d di Cohen appaiato
+  (0.2 piccolo, 0.5 medio, 0.8 grande; segno + = il secondo momento e' piu' alto);
+  Shapiro = p del test di normalita' sulle differenze (< 0.05: non normali, guardare
+  anche il controllo non parametrico).
+  Significativo = p Bonf (o p GG) < 0.05; i confronti esplorativi non sono corretti.
+- CONTROLLO NON PARAMETRICO: Wilcoxon con p corretto con Holm (e r rank-biserial nei .csv).
+  Con 6 soggetti il p piu' piccolo possibile del Wilcoxon e' 0.031: dopo la correzione
+  non puo' uscire significativo, conta la direzione.
+- migliorato / peggiorato: in base a cosa e' meglio per la metrica (es. tempo: meno
   e' meglio; hit rate: piu' e' meglio).
 - "cambiano k": quanti soggetti hanno un valore diverso fra i due momenti. Se sono pochi
   (es. 1 su 9) l'effetto puo' risultare "grande" ma riguarda solo quei soggetti.
@@ -20,85 +27,105 @@ Soggetti: 6 (S001, S002, S003, S004, S005, S006)
   training post: 6 soggetti
 Metriche calcolate dai _raw.csv (webcam 29.4-30.4 Hz); cursore nascosto per 1.0 s dopo la comparsa del target: gli errori sono calcolati li'.
 Blocchi di 8 target: 12 per sessione, 24 in tutto.
-Confronti pianificati: 3 Wilcoxon fra blocchi, Holm sui 3, per ogni metrica.
+Analisi principale: ANOVA a misure ripetute sessione (2) x blocco (12), correzione di
+Greenhouse-Geisser; post hoc: 3 t appaiati pianificati fra blocchi, Bonferroni sui 3.
+Controllo non parametrico: Wilcoxon, Holm sui 3. In fondo il modello misto prova per prova.
 
 Euclidean error at 1 s [px]  (metrica principale)
 -------------------------------------------------
-  sessione intera: pre 269.99 [243.89-279.64] -> post 213.11 [200.95-254.88] (esplorativo: p=0.156, r=-0.71)
-  training 1: first vs last block: pre b1 295.40 [260.12-347.99] -> pre b12 246.31 [223.53-283.86] | migliorato | n=6 (cambiano 6), p=0.094, p Holm=0.281, significativo: no | effetto r=-0.81 (grande)
-  retention: last pre vs first post block: pre b12 246.31 [223.53-283.86] -> post b1 285.77 [271.57-300.81] | peggiorato | n=6 (cambiano 6), p=0.094, p Holm=0.281, significativo: no | effetto r=0.81 (grande)
-  training 2: last pre vs last post block: pre b12 246.31 [223.53-283.86] -> post b12 187.59 [181.00-233.90] | migliorato | n=6 (cambiano 6), p=0.156, p Holm=0.281, significativo: no | effetto r=-0.71 (grande)
+  ANOVA sessione x blocco (n=6): phase F(1,5)=4.15, p=0.097, eta2p=0.45 (grande), significativo: no | block F(11,55)=2.89, p=0.005, eps GG=0.28, p GG=0.067, eta2p=0.37 (grande), significativo: no | phase x block F(11,55)=1.45, p=0.177, eps GG=0.29, p GG=0.265, eta2p=0.23 (grande), significativo: no
+  training 1: first vs last block: pre b1 295.40 [260.12-347.99] -> pre b12 246.31 [223.53-283.86] | migliorato | n=6 (cambiano 6), t(5)=-2.26, p=0.074, p Bonf=0.221, significativo: no | d=-0.92 (grande), Shapiro p=0.49 | Wilcoxon p Holm=0.281
+  retention: last pre vs first post block: pre b12 246.31 [223.53-283.86] -> post b1 285.77 [271.57-300.81] | peggiorato | n=6 (cambiano 6), t(5)=2.73, p=0.041, p Bonf=0.124, significativo: no | d=1.11 (grande), Shapiro p=0.47 | Wilcoxon p Holm=0.281
+  training 2: last pre vs last post block: pre b12 246.31 [223.53-283.86] -> post b12 187.59 [181.00-233.90] | migliorato | n=6 (cambiano 6), t(5)=-1.97, p=0.106, p Bonf=0.317, significativo: no | d=-0.80 (grande), Shapiro p=0.60 | Wilcoxon p Holm=0.281
+  sessione intera (esplorativo): pre 269.99 -> post 213.11, t p=0.165, d=-0.66; Wilcoxon p=0.156
   curva di gruppo: fit esponenziale non riuscito (curva piatta o troppo rumorosa)
 
 Direction error at 1 s [deg]  (metrica principale)
 --------------------------------------------------
-  sessione intera: pre 33.43 [29.34-37.58] -> post 28.34 [25.42-29.39] (esplorativo: p=0.062, r=-0.90)
-  training 1: first vs last block: pre b1 51.64 [41.00-68.17] -> pre b12 31.89 [27.73-39.76] | migliorato | n=6 (cambiano 6), p=0.031, p Holm=0.094, significativo: no | effetto r=-1.00 (grande)
-  retention: last pre vs first post block: pre b12 31.89 [27.73-39.76] -> post b1 41.18 [27.92-45.29] | peggiorato | n=6 (cambiano 6), p=0.219, p Holm=0.219, significativo: no | effetto r=0.62 (grande)
-  training 2: last pre vs last post block: pre b12 31.89 [27.73-39.76] -> post b12 26.74 [21.05-27.39] | migliorato | n=6 (cambiano 6), p=0.094, p Holm=0.188, significativo: no | effetto r=-0.81 (grande)
+  ANOVA sessione x blocco (n=6): phase F(1,5)=7.68, p=0.039, eta2p=0.61 (grande), significativo: si' | block F(11,55)=4.68, p=0.000, eps GG=0.23, p GG=0.025, eta2p=0.48 (grande), significativo: si' | phase x block F(11,55)=1.49, p=0.161, eps GG=0.33, p GG=0.247, eta2p=0.23 (grande), significativo: no
+  training 1: first vs last block: pre b1 51.64 [41.00-68.17] -> pre b12 31.89 [27.73-39.76] | migliorato | n=6 (cambiano 6), t(5)=-2.77, p=0.039, p Bonf=0.118, significativo: no | d=-1.13 (grande), Shapiro p=0.47 | Wilcoxon p Holm=0.094
+  retention: last pre vs first post block: pre b12 31.89 [27.73-39.76] -> post b1 41.18 [27.92-45.29] | peggiorato | n=6 (cambiano 6), t(5)=1.15, p=0.301, p Bonf=0.902, significativo: no | d=0.47 (piccolo), Shapiro p=0.38 | Wilcoxon p Holm=0.219
+  training 2: last pre vs last post block: pre b12 31.89 [27.73-39.76] -> post b12 26.74 [21.05-27.39] | migliorato | n=6 (cambiano 6), t(5)=-2.05, p=0.096, p Bonf=0.287, significativo: no | d=-0.84 (grande), Shapiro p=0.95 | Wilcoxon p Holm=0.188
+  sessione intera (esplorativo): pre 33.43 -> post 28.34, t p=0.034, d=-1.18; Wilcoxon p=0.062
   curva di gruppo: plateau stimato 26.59, 95% del miglioramento al blocco 23.1 (nel training 2); R2 del fit 0.59
 
 Extent error at 1 s [px]  (metrica principale)
 ----------------------------------------------
-  sessione intera: pre -67.56 [-172.66--44.15] -> post -44.51 [-108.12--4.96] (esplorativo: p=0.312, r=0.52)
-  training 1: first vs last block: pre b1 -84.13 [-139.12--39.10] -> pre b12 -52.01 [-179.75-18.10] | - | n=6 (cambiano 6), p=0.844, p Holm=1.000, significativo: no | effetto r=0.14 (piccolo)
-  retention: last pre vs first post block: pre b12 -52.01 [-179.75-18.10] -> post b1 -106.00 [-168.54--64.88] | - | n=6 (cambiano 6), p=0.562, p Holm=1.000, significativo: no | effetto r=-0.33 (medio)
-  training 2: last pre vs last post block: pre b12 -52.01 [-179.75-18.10] -> post b12 -50.20 [-100.66--0.38] | - | n=6 (cambiano 6), p=0.312, p Holm=0.938, significativo: no | effetto r=0.52 (grande)
+  ANOVA sessione x blocco (n=6): phase F(1,5)=0.21, p=0.669, eta2p=0.04 (piccolo), significativo: no | block F(11,55)=1.73, p=0.091, eps GG=0.26, p GG=0.206, eta2p=0.26 (grande), significativo: no | phase x block F(11,55)=0.97, p=0.484, eps GG=0.24, p GG=0.426, eta2p=0.16 (grande), significativo: no
+  training 1: first vs last block: pre b1 -84.13 [-139.12--39.10] -> pre b12 -52.01 [-179.75-18.10] | - | n=6 (cambiano 6), t(5)=0.35, p=0.744, p Bonf=1.000, significativo: no | d=0.14 (trascurabile), Shapiro p=0.74 | Wilcoxon p Holm=1.000
+  retention: last pre vs first post block: pre b12 -52.01 [-179.75-18.10] -> post b1 -106.00 [-168.54--64.88] | - | n=6 (cambiano 6), t(5)=-1.08, p=0.328, p Bonf=0.985, significativo: no | d=-0.44 (piccolo), Shapiro p=0.53 | Wilcoxon p Holm=1.000
+  training 2: last pre vs last post block: pre b12 -52.01 [-179.75-18.10] -> post b12 -50.20 [-100.66--0.38] | - | n=6 (cambiano 6), t(5)=1.20, p=0.286, p Bonf=0.857, significativo: no | d=0.49 (piccolo), Shapiro p=0.35 | Wilcoxon p Holm=0.938
+  sessione intera (esplorativo): pre -67.56 -> post -44.51, t p=0.325, d=0.44; Wilcoxon p=0.312
   curva di gruppo: plateau stimato 16.75, 95% del miglioramento al blocco 111.0 (non ancora raggiunto a fine training 2); R2 del fit 0.25
   (< 0 = il cursore resta corto rispetto al target; meglio = piu' vicino a 0)
 
 Movement time [s]  (metrica principale)
 ---------------------------------------
-  sessione intera: pre 2.48 [2.19-2.64] -> post 2.03 [1.89-2.09] (esplorativo: p=0.031, r=-1.00)
-  training 1: first vs last block: pre b1 3.31 [2.96-3.82] -> pre b12 2.36 [2.08-2.54] | migliorato | n=6 (cambiano 6), p=0.031, p Holm=0.094, significativo: no | effetto r=-1.00 (grande)
-  retention: last pre vs first post block: pre b12 2.36 [2.08-2.54] -> post b1 2.20 [2.05-2.42] | migliorato | n=6 (cambiano 6), p=0.562, p Holm=0.562, significativo: no | effetto r=-0.33 (medio)
-  training 2: last pre vs last post block: pre b12 2.36 [2.08-2.54] -> post b12 1.76 [1.74-1.84] | migliorato | n=6 (cambiano 6), p=0.031, p Holm=0.094, significativo: no | effetto r=-1.00 (grande)
+  ANOVA sessione x blocco (n=6): phase F(1,5)=24.84, p=0.004, eta2p=0.83 (grande), significativo: si' | block F(11,55)=8.97, p=0.000, eps GG=0.30, p GG=0.001, eta2p=0.64 (grande), significativo: si' | phase x block F(11,55)=2.68, p=0.008, eps GG=0.21, p GG=0.105, eta2p=0.35 (grande), significativo: no
+  training 1: first vs last block: pre b1 3.31 [2.96-3.82] -> pre b12 2.36 [2.08-2.54] | migliorato | n=6 (cambiano 6), t(5)=-5.53, p=0.003, p Bonf=0.008, significativo: si' | d=-2.26 (grande), Shapiro p=0.71 | Wilcoxon p Holm=0.094
+  retention: last pre vs first post block: pre b12 2.36 [2.08-2.54] -> post b1 2.20 [2.05-2.42] | migliorato | n=6 (cambiano 6), t(5)=-0.83, p=0.445, p Bonf=1.000, significativo: no | d=-0.34 (piccolo), Shapiro p=0.68 | Wilcoxon p Holm=0.562
+  training 2: last pre vs last post block: pre b12 2.36 [2.08-2.54] -> post b12 1.76 [1.74-1.84] | migliorato | n=6 (cambiano 6), t(5)=-3.84, p=0.012, p Bonf=0.036, significativo: si' | d=-1.57 (grande), Shapiro p=0.58 | Wilcoxon p Holm=0.094
+  sessione intera (esplorativo): pre 2.48 -> post 2.03, t p=0.005, d=-1.94; Wilcoxon p=0.031
   curva di gruppo: plateau stimato 1.95, 95% del miglioramento al blocco 19.7 (nel training 2); R2 del fit 0.91
 
 Linearity index  (metrica principale)
 -------------------------------------
-  sessione intera: pre 1.14 [0.96-1.26] -> post 0.69 [0.67-0.78] (esplorativo: p=0.031, r=-1.00)
-  training 1: first vs last block: pre b1 1.74 [1.52-1.78] -> pre b12 0.95 [0.68-1.24] | migliorato | n=6 (cambiano 6), p=0.094, p Holm=0.188, significativo: no | effetto r=-0.81 (grande)
-  retention: last pre vs first post block: pre b12 0.95 [0.68-1.24] -> post b1 0.80 [0.65-1.11] | migliorato | n=6 (cambiano 6), p=0.438, p Holm=0.438, significativo: no | effetto r=-0.43 (medio)
-  training 2: last pre vs last post block: pre b12 0.95 [0.68-1.24] -> post b12 0.52 [0.45-0.63] | migliorato | n=6 (cambiano 6), p=0.031, p Holm=0.094, significativo: no | effetto r=-1.00 (grande)
+  ANOVA sessione x blocco (n=6): phase F(1,5)=64.60, p=0.000, eta2p=0.93 (grande), significativo: si' | block F(11,55)=1.95, p=0.052, eps GG=0.30, p GG=0.157, eta2p=0.28 (grande), significativo: no | phase x block F(11,55)=1.45, p=0.180, eps GG=0.20, p GG=0.279, eta2p=0.22 (grande), significativo: no
+  training 1: first vs last block: pre b1 1.74 [1.52-1.78] -> pre b12 0.95 [0.68-1.24] | migliorato | n=6 (cambiano 6), t(5)=-2.07, p=0.093, p Bonf=0.280, significativo: no | d=-0.84 (grande), Shapiro p=0.81 | Wilcoxon p Holm=0.188
+  retention: last pre vs first post block: pre b12 0.95 [0.68-1.24] -> post b1 0.80 [0.65-1.11] | migliorato | n=6 (cambiano 6), t(5)=-1.22, p=0.278, p Bonf=0.834, significativo: no | d=-0.50 (piccolo), Shapiro p=0.63 | Wilcoxon p Holm=0.438
+  training 2: last pre vs last post block: pre b12 0.95 [0.68-1.24] -> post b12 0.52 [0.45-0.63] | migliorato | n=6 (cambiano 6), t(5)=-2.24, p=0.075, p Bonf=0.226, significativo: no | d=-0.91 (grande), Shapiro p=0.20 | Wilcoxon p Holm=0.094
+  sessione intera (esplorativo): pre 1.14 -> post 0.69, t p=0.001, d=-2.71; Wilcoxon p=0.031
   curva di gruppo: plateau stimato 0.60, 95% del miglioramento al blocco 24.5 (non ancora raggiunto a fine training 2); R2 del fit 0.88
 
 Correct region at reveal [%]
 ----------------------------
-  sessione intera: pre 21.88 [15.10-27.08] -> post 32.29 [25.78-34.90] (esplorativo: p=0.094, r=0.81)
-  training 1: first vs last block: pre b1 18.75 [12.50-25.00] -> pre b12 25.00 [15.62-25.00] | migliorato | n=6 (cambiano 6), p=0.312, p Holm=0.557, significativo: no | effetto r=0.52 (grande)
-  retention: last pre vs first post block: pre b12 25.00 [15.62-25.00] -> post b1 12.50 [3.12-21.88] | peggiorato | n=6 (cambiano 5), p=0.025, p Holm=0.076, significativo: no | effetto r=-1.00 (grande)
-  training 2: last pre vs last post block: pre b12 25.00 [15.62-25.00] -> post b12 43.75 [28.12-59.38] | migliorato | n=6 (cambiano 5), p=0.279, p Holm=0.557, significativo: no | effetto r=0.53 (grande)
+  ANOVA sessione x blocco (n=6): phase F(1,5)=3.62, p=0.115, eta2p=0.42 (grande), significativo: no | block F(11,55)=2.66, p=0.008, eps GG=0.30, p GG=0.077, eta2p=0.35 (grande), significativo: no | phase x block F(11,55)=0.86, p=0.585, eps GG=0.27, p GG=0.483, eta2p=0.15 (grande), significativo: no
+  training 1: first vs last block: pre b1 18.75 [12.50-25.00] -> pre b12 25.00 [15.62-25.00] | migliorato | n=6 (cambiano 6), t(5)=1.27, p=0.259, p Bonf=0.776, significativo: no | d=0.52 (medio), Shapiro p=0.42 | Wilcoxon p Holm=0.557
+  retention: last pre vs first post block: pre b12 25.00 [15.62-25.00] -> post b1 12.50 [3.12-21.88] | peggiorato | n=6 (cambiano 5), t(5)=-5.00, p=0.004, p Bonf=0.012, significativo: si' | d=-2.04 (grande), Shapiro p=0.00 | Wilcoxon p Holm=0.076  <- differenze NON normali: vale il controllo non parametrico
+  training 2: last pre vs last post block: pre b12 25.00 [15.62-25.00] -> post b12 43.75 [28.12-59.38] | migliorato | n=6 (cambiano 5), t(5)=1.20, p=0.286, p Bonf=0.857, significativo: no | d=0.49 (piccolo), Shapiro p=0.98 | Wilcoxon p Holm=0.557
+  sessione intera (esplorativo): pre 21.88 -> post 32.29, t p=0.115, d=0.78; Wilcoxon p=0.094
   curva di gruppo: fit esponenziale non riuscito (curva piatta o troppo rumorosa)
 
 Reached while hidden [%]
 ------------------------
-  sessione intera: pre 0.00 [0.00-0.00] -> post 2.08 [0.52-2.08] (esplorativo: p=0.059, r=1.00)
-  training 1: first vs last block: pre b1 0.00 [0.00-0.00] -> pre b12 0.00 [0.00-0.00] | invariato | n=6 (cambiano 0), p=1.000, p Holm=1.000, significativo: no | effetto r=0.00 (trascurabile)
-  retention: last pre vs first post block: pre b12 0.00 [0.00-0.00] -> post b1 0.00 [0.00-0.00] | invariato | n=6 (cambiano 0), p=1.000, p Holm=1.000, significativo: no | effetto r=0.00 (trascurabile)
-  training 2: last pre vs last post block: pre b12 0.00 [0.00-0.00] -> post b12 0.00 [0.00-0.00] | migliorato | n=6 (cambiano 1), p=0.317, p Holm=0.952, significativo: no | effetto r=1.00 (grande)
+  ANOVA sessione x blocco (n=6): phase F(1,5)=8.45, p=0.034, eta2p=0.63 (grande), significativo: si' | block F(11,55)=1.17, p=0.329, eps GG=0.28, p GG=0.354, eta2p=0.19 (grande), significativo: no | phase x block F(11,55)=1.49, p=0.161, eps GG=0.28, p GG=0.256, eta2p=0.23 (grande), significativo: no
+  training 1: first vs last block: pre b1 0.00 [0.00-0.00] -> pre b12 0.00 [0.00-0.00] | invariato | n=6 (cambiano 0), t(5)=0.00, p=1.000, p Bonf=1.000, significativo: no | d=0.00 (trascurabile), Shapiro p=- | Wilcoxon p Holm=1.000
+  retention: last pre vs first post block: pre b12 0.00 [0.00-0.00] -> post b1 0.00 [0.00-0.00] | invariato | n=6 (cambiano 0), t(5)=0.00, p=1.000, p Bonf=1.000, significativo: no | d=0.00 (trascurabile), Shapiro p=- | Wilcoxon p Holm=1.000
+  training 2: last pre vs last post block: pre b12 0.00 [0.00-0.00] -> post b12 0.00 [0.00-0.00] | migliorato | n=6 (cambiano 1), t(5)=1.00, p=0.363, p Bonf=1.000, significativo: no | d=0.41 (piccolo), Shapiro p=0.00 | Wilcoxon p Holm=0.952  <- differenze NON normali: vale il controllo non parametrico
+  sessione intera (esplorativo): pre 0.00 -> post 2.08, t p=0.034, d=1.19; Wilcoxon p=0.059
   curva di gruppo: plateau stimato 0.41, 95% del miglioramento al blocco 18.0 (nel training 2); R2 del fit 0.02
 
 Speed peaks
 -----------
-  sessione intera: pre 2.00 [2.00-2.75] -> post 2.00 [2.00-2.00] (esplorativo: p=0.157, r=-1.00)
-  training 1: first vs last block: pre b1 3.00 [2.25-3.00] -> pre b12 2.00 [2.00-2.00] | migliorato | n=6 (cambiano 3), p=0.102, p Holm=0.307, significativo: no | effetto r=-1.00 (grande)
-  retention: last pre vs first post block: pre b12 2.00 [2.00-2.00] -> post b1 2.25 [2.00-2.50] | peggiorato | n=6 (cambiano 3), p=0.414, p Holm=0.635, significativo: no | effetto r=0.50 (grande)
-  training 2: last pre vs last post block: pre b12 2.00 [2.00-2.00] -> post b12 2.00 [2.00-2.00] | migliorato | n=6 (cambiano 1), p=0.317, p Holm=0.635, significativo: no | effetto r=-1.00 (grande)
+  ANOVA sessione x blocco (n=6): phase F(1,5)=14.03, p=0.013, eta2p=0.74 (grande), significativo: si' | block F(11,55)=4.30, p=0.000, eps GG=0.30, p GG=0.018, eta2p=0.46 (grande), significativo: si' | phase x block F(11,55)=2.13, p=0.033, eps GG=0.32, p GG=0.127, eta2p=0.30 (grande), significativo: no
+  training 1: first vs last block: pre b1 3.00 [2.25-3.00] -> pre b12 2.00 [2.00-2.00] | migliorato | n=6 (cambiano 3), t(5)=-2.15, p=0.084, p Bonf=0.253, significativo: no | d=-0.88 (grande), Shapiro p=0.07 | Wilcoxon p Holm=0.307
+  retention: last pre vs first post block: pre b12 2.00 [2.00-2.00] -> post b1 2.25 [2.00-2.50] | peggiorato | n=6 (cambiano 3), t(5)=0.79, p=0.465, p Bonf=1.000, significativo: no | d=0.32 (piccolo), Shapiro p=0.47 | Wilcoxon p Holm=0.635
+  training 2: last pre vs last post block: pre b12 2.00 [2.00-2.00] -> post b12 2.00 [2.00-2.00] | migliorato | n=6 (cambiano 1), t(5)=-1.00, p=0.363, p Bonf=1.000, significativo: no | d=-0.41 (piccolo), Shapiro p=0.00 | Wilcoxon p Holm=0.635  <- differenze NON normali: vale il controllo non parametrico
+  sessione intera (esplorativo): pre 2.00 -> post 2.00, t p=0.175, d=-0.65; Wilcoxon p=0.157
   curva di gruppo: plateau stimato 2.00, 95% del miglioramento al blocco 9.5 (gia' nel training 1); R2 del fit 0.87
 
-Sessione intera (tutti i frame, script del laboratorio)
--------------------------------------------------------
-  Session duration (log) (tt.m) [s]: pre 535 [486-564] -> post 436 [411-457] | migliorato | n=6 (cambiano 6), p=0.031, significativo: si' | effetto r=-1.00 (grande)
-  Cursor path length (cursor_distance.m) [px]: pre 162189 [159467-167815] -> post 130584 [126539-132531] | migliorato | n=6 (cambiano 6), p=0.031, significativo: si' | effetto r=-1.00 (grande)
-  Mean cursor speed (speed1.m) [px/s]: pre 309 [286-353] -> post 300 [278-328] | - | n=6 (cambiano 6), p=0.312, significativo: no | effetto r=-0.52 (grande)
-  SD of cursor speed (speed1.m) [px/s]: pre 380 [340-412] -> post 371 [345-401] | - | n=6 (cambiano 6), p=0.844, significativo: no | effetto r=0.14 (piccolo)
-  Peak cursor speed (speed1.m) [px/s]: pre 4695 [4451-6951] -> post 5693 [4886-7204] | - | n=6 (cambiano 6), p=0.688, significativo: no | effetto r=0.24 (piccolo)
-  Mean jerk (jerk1.m) [px/s^3]: pre 24186 [21470-31768] -> post 24084 [20529-28953] | migliorato | n=6 (cambiano 6), p=0.562, significativo: no | effetto r=-0.33 (medio)
-  Dimensionless jerk (segments, log10) (jerk1.m): pre 15.110 [15.082-15.229] -> post 14.773 [14.737-14.839] | migliorato | n=6 (cambiano 6), p=0.031, significativo: si' | effetto r=-1.00 (grande)
-  Speed peaks (smooth.m): pre 133 [82-154] -> post 82 [48-117] | migliorato | n=6 (cambiano 5), p=0.138, significativo: no | effetto r=-0.73 (grande)
-  Smoothness (1 / speed peaks) (smooth.m): pre 0.008 [0.006-0.013] -> post 0.012 [0.009-0.022] | migliorato | n=6 (cambiano 5), p=0.345, significativo: no | effetto r=0.47 (medio)
-  Region changes (movement_train.m): pre 462 [454-478] -> post 368 [352-394] | migliorato | n=6 (cambiano 6), p=0.031, significativo: si' | effetto r=-1.00 (grande)
+Sessione intera (tutti i frame, script del laboratorio; esplorativo)
+--------------------------------------------------------------------
+  Session duration (log) (tt.m) [s]: pre 535 [486-564] -> post 436 [411-457] | migliorato | n=6 (cambiano 6), t(5)=-8.78, p=0.000, significativo: si' | d=-3.59 (grande), Shapiro p=0.68 | Wilcoxon p Holm=0.031
+  Cursor path length (cursor_distance.m) [px]: pre 162189 [159467-167815] -> post 130584 [126539-132531] | migliorato | n=6 (cambiano 6), t(5)=-23.49, p=0.000, significativo: si' | d=-9.59 (grande), Shapiro p=0.50 | Wilcoxon p Holm=0.031
+  Mean cursor speed (speed1.m) [px/s]: pre 309 [286-353] -> post 300 [278-328] | - | n=6 (cambiano 6), t(5)=-1.40, p=0.219, significativo: no | d=-0.57 (medio), Shapiro p=0.83 | Wilcoxon p Holm=0.312
+  SD of cursor speed (speed1.m) [px/s]: pre 380 [340-412] -> post 371 [345-401] | - | n=6 (cambiano 6), t(5)=0.00, p=0.997, significativo: no | d=0.00 (trascurabile), Shapiro p=0.22 | Wilcoxon p Holm=0.844
+  Peak cursor speed (speed1.m) [px/s]: pre 4695 [4451-6951] -> post 5693 [4886-7204] | - | n=6 (cambiano 6), t(5)=0.66, p=0.541, significativo: no | d=0.27 (piccolo), Shapiro p=0.14 | Wilcoxon p Holm=0.688
+  Mean jerk (jerk1.m) [px/s^3]: pre 24186 [21470-31768] -> post 24084 [20529-28953] | migliorato | n=6 (cambiano 6), t(5)=-0.90, p=0.410, significativo: no | d=-0.37 (piccolo), Shapiro p=0.12 | Wilcoxon p Holm=0.562
+  Dimensionless jerk (segments, log10) (jerk1.m): pre 15.110 [15.082-15.229] -> post 14.773 [14.737-14.839] | migliorato | n=6 (cambiano 6), t(5)=-8.21, p=0.000, significativo: si' | d=-3.35 (grande), Shapiro p=0.72 | Wilcoxon p Holm=0.031
+  Speed peaks (smooth.m): pre 133 [82-154] -> post 82 [48-117] | migliorato | n=6 (cambiano 5), t(5)=-1.32, p=0.244, significativo: no | d=-0.54 (medio), Shapiro p=0.00 | Wilcoxon p Holm=0.138  <- differenze NON normali: vale il controllo non parametrico
+  Smoothness (1 / speed peaks) (smooth.m): pre 0.008 [0.006-0.013] -> post 0.012 [0.009-0.022] | migliorato | n=6 (cambiano 5), t(5)=0.88, p=0.418, significativo: no | d=0.36 (piccolo), Shapiro p=0.02 | Wilcoxon p Holm=0.345  <- differenze NON normali: vale il controllo non parametrico
+  Region changes (movement_train.m): pre 462 [454-478] -> post 368 [352-394] | migliorato | n=6 (cambiano 6), t(5)=-6.98, p=0.001, significativo: si' | d=-2.85 (grande), Shapiro p=0.19 | Wilcoxon p Holm=0.031
+
+Modello misto, prova per prova (96 prove per sessione, senza blocchi)
+---------------------------------------------------------------------
+  y ~ sessione * log(prova) + regione, soggetto casuale. log(prova): 'per ogni raddoppio
+  del numero di prova' = coefficiente x ln 2. Movement time e linearity index in scala log (%).
+  Euclidean error at 1 s: apprendimento nel training 1 (per raddoppio della prova) -11.05 [-18.11, -3.99] px, p=0.002 | training 2 vs 1 all'inizio -39.33 [-88.65, +9.99] px, p=0.118 | differenza di apprendimento nel training 2 -0.96 [-10.16, +8.25] px, p=0.838 | effetti casuali: intercetta + pendenza di log_trial (correlate)
+  Direction error at 1 s: apprendimento nel training 1 (per raddoppio della prova) -3.64 [-5.67, -1.62] deg, p=0.000 | training 2 vs 1 all'inizio -17.26 [-29.54, -4.98] deg, p=0.006 | differenza di apprendimento nel training 2 +1.84 [-0.45, +4.13] deg, p=0.116 | effetti casuali: intercetta + pendenza di log_trial (correlate)
+  Extent error at 1 s: apprendimento nel training 1 (per raddoppio della prova) +4.05 [-6.39, +14.49] px, p=0.448 | training 2 vs 1 all'inizio -29.44 [-79.90, +21.02] px, p=0.253 | differenza di apprendimento nel training 2 +6.97 [-2.45, +16.38] px, p=0.147 | effetti casuali: intercetta + pendenza di log_trial (correlate)
+  Movement time (log): apprendimento nel training 1 (per raddoppio della prova) -8.3% [-9.9, -6.7], p=0.000 | training 2 vs 1 all'inizio -39.7% [-47.1, -31.1], p=0.000 | differenza di apprendimento nel training 2 +5.4% [+2.9, +8.1], p=0.000 | effetti casuali: solo intercetta
+  Linearity index (log(1 + y)): apprendimento nel training 1 (per raddoppio della prova) -6.7% [-9.1, -4.2], p=0.000 | training 2 vs 1 all'inizio -41.0% [-49.8, -30.7], p=0.000 | differenza di apprendimento nel training 2 +6.0% [+2.9, +9.3], p=0.000 | effetti casuali: intercetta + pendenza di log_trial (correlate)
 
 Metriche esplorative
 --------------------

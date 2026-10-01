@@ -5,11 +5,8 @@ Input: i file di results_regions/ del repo reachy2_teleop_grasping_and_simulatio
 incollati ovunque dentro questa cartella (es. reaching_regions/results/):
     <soggetto>_regions_<pre|post>[_k]_raw.csv       ogni frame: tempo, cursore, eventi del task
                                                     -> TUTTE le metriche cinematiche
-    <soggetto>_regions_<pre|post>[_k]_trials.csv    una riga per goal: solo le metriche legate
-                                                    agli eventi del task (regione alla ricomparsa,
-                                                    dwell, ...), che non si ricavano dal raw
-    <soggetto>_regions_<pre|post>[_k]_summary.json  durata della sessione (time_total) e
-                                                    hidden_s (per quanto il cursore e' nascosto)
+    <soggetto>_regions_<pre|post>[_k]_summary.json  config del task (hidden_s, regioni, ...)
+    <soggetto>_regions_<pre|post>[_k]_trials.csv    solo per controllo (target e tempi uguali al raw)
 Se una sessione e' stata ripetuta (_1, _2, ...) si usa l'ultima ripetizione.
 Si analizzano i goal verso i target (centro -> regione); i ritorni al centro
 sono riportati a parte, solo come descrittive (il primo centro, che avvia la
@@ -29,11 +26,15 @@ Analisi (vedi README.md):
 2. blocchi di 8 target (ogni regione una volta): 12 per sessione, 24 in tutto.
    Per ogni soggetto e blocco un valore per metrica (mediana, o percentuale
    per le metriche si'/no) -> curva di apprendimento;
-3. 3 confronti pianificati (Wilcoxon, Holm sui 3, rank-biserial r):
+3. ANOVA a misure ripetute sessione (pre/post) x blocco (1-12), Greenhouse-Geisser,
+   eta^2 parziale; post hoc: 3 t appaiati pianificati (Bonferroni sui 3, d di Cohen):
        pre: primo blocco vs ultimo blocco    quanto insegna il training 1
        ultimo blocco pre vs primo blocco post  si mantiene dopo il blind test?
        ultimo blocco pre vs ultimo blocco post cosa aggiunge il training 2
-   piu' il confronto esplorativo fra le due sessioni intere (pre vs post);
+   con il controllo non parametrico (Wilcoxon, Holm) e il confronto esplorativo
+   fra le due sessioni intere;
+3b. modello lineare misto su tutte le prove (96 per sessione, senza blocchi):
+   y ~ sessione * log(prova) + regione, soggetto casuale;
 4. fit esponenziale y = a + b * exp(-k * (blocco - 1)) della curva di gruppo
    (e di ogni soggetto): a = plateau, k = velocita' di apprendimento, e il
    blocco in cui si arriva al 95% del miglioramento (<= 12: gia' nel training 1);
@@ -46,7 +47,9 @@ Output in reaching_regions/statistics/:
     training_blocks.csv           soggetto x blocco (1-24): un valore per metrica
     training_statistics.csv       metrica x sessione: descrittive tra soggetti
     training_block_statistics.csv metrica x blocco: descrittive tra soggetti
-    training_tests.csv            i 3 confronti + pre vs post per metrica
+    training_anova.csv            ANOVA sessione x blocco per metrica
+    training_tests.csv            i 3 post hoc (t e Wilcoxon) + pre vs post per metrica
+    training_mixed_models.csv     modello misto prova per prova (coefficienti, IC 95%, p)
     training_fits.csv             fit esponenziale (gruppo e soggetti)
     training_per_region.csv       metrica x regione x sessione: mediana tra soggetti
     training_homes.csv            ritorni al centro: descrittive per sessione
@@ -72,12 +75,14 @@ from scipy.optimize import curve_fit
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from common.data import aggregate, find_sessions   # noqa: E402
-from common.plots import (BLUE, CATEGORICAL, INK2, MUTED, grid_axes, heatmap3x3,   # noqa: E402
+from common.plots import (ANOVA_TAG, NONPARAM_TAG, STARS_NOTE, anova_caption, brackets, mean_se,   # noqa: E402
+                          BLUE, CATEGORICAL, INK2, MUTED, grid_axes, heatmap3x3,
                           save_figure, setup_style, spaghetti, SUBJECT_LINE)
 from common.reach_metrics import (blind_region_metrics, goals_from_raw, onset_metrics,   # noqa: E402
                                   reach_metrics, session_metrics)
 from common.report import Report   # noqa: E402
-from common.stats import describe, fmt_num, holm, wilcoxon_paired   # noqa: E402
+from common.stats import (bonferroni, describe, fmt_num, holm, mixed_model, paired_t, rm_anova,   # noqa: E402
+                          wilcoxon_paired)
 
 BASE_DIR = Path(__file__).resolve().parent
 PHASES = ("pre", "post")
@@ -91,6 +96,9 @@ HIDDEN_S_DEFAULT, MIN_VISIT_S_DEFAULT, ONSET_SPEED_DEFAULT = 1.0, 0.25, 40.0
 FIG4_WINDOW = 12
 FIG4_CENTER, FIG4_SPREAD = "median", "sd"   # "mean" / "sem" per rifare esattamente il paper
 FIG4_GAP = 12                               # prove di spazio fra training 1 e training 2 nel grafico
+# modello misto: trasformazione delle metriche asimmetriche (sempre > 0 / >= 0)
+MIXED_TRANSFORM = {"movement_time": "log", "linearity_index": "log1p"}
+ANOVA_NAMES = {"phase": "session", "block": "block", "phase x block": "session × block"}
 
 # metrica -> (etichetta, unita', meglio se, aggregazione, ruolo)
 # ruolo: "main" = le 5 della figura 4 del paper, "extra" = richieste in piu', "" = esplorative
@@ -246,12 +254,22 @@ def fit_curve(x, y) -> dict:
     return out
 
 
+def test_row(m, label, role, comparison, meaning, planned, t, p_corr, test, effect_name, da, db, better):
+    return {"metric": m, "label": label, "role": role, "comparison": comparison, "meaning": meaning,
+            "planned": planned, "test": test, "n": t["n"], "statistic": t["statistic"], "p": t["p"],
+            "p_corrected": p_corr, "correction": ("Bonferroni" if test == "t" else "Holm") if planned else "",
+            "effect": t["effect"], "effect_name": effect_name, "shapiro_p": t.get("shapiro_p", np.nan),
+            "median_first": da.get("median"), "median_second": db.get("median"), "better": better}
+
+
 def analyse(sessions, blocks, n_blocks, report):
-    stat_rows, test_rows, block_rows, fit_rows = [], [], [], []
+    stat_rows, test_rows, block_rows, fit_rows, anova_rows = [], [], [], [], []
     last = n_blocks
     contrasts = (("pre", 1, "pre", last, "training 1: first vs last block"),
                  ("pre", last, "post", 1, "retention: last pre vs first post block"),
                  ("pre", last, "post", last, "training 2: last pre vs last post block"))
+    long = blocks.assign(phase=np.where(blocks["gblock"] > n_blocks, "post", "pre"),
+                         block=(blocks["gblock"] - 1) % n_blocks + 1)
     for m, (label, unit, better, _, role) in METRICS.items():
         if m not in sessions.columns:
             continue
@@ -267,23 +285,27 @@ def analyse(sessions, blocks, n_blocks, report):
             gb = b + (n_blocks if ph == "post" else 0)
             return wb[gb] if gb in wb.columns else pd.Series(np.nan, index=wb.index)
 
-        tests = [wilcoxon_paired(col(a, ba), col(b, bb)) for a, ba, b, bb, _ in contrasts]
-        p_holm = holm([t["p"] for t in tests])
+        # ANOVA a misure ripetute: sessione (pre/post) x blocco (1-12)
+        anova = rm_anova(long, m, ["phase", "block"])
+        for r in anova:
+            anova_rows.append({"metric": m, "label": label, "role": role, **r})
+        # post hoc pianificati: t appaiati (Bonferroni sui 3) + controllo Wilcoxon (Holm sui 3)
+        t_tests = [paired_t(col(a, ba), col(b, bb)) for a, ba, b, bb, _ in contrasts]
+        p_bonf = bonferroni([t["p"] for t in t_tests])
+        w_tests = [wilcoxon_paired(col(a, ba), col(b, bb)) for a, ba, b, bb, _ in contrasts]
+        p_holm = holm([t["p"] for t in w_tests])
         descr = []
-        for (a, ba, b, bb, what), t, ph in zip(contrasts, tests, p_holm):
+        for (a, ba, b, bb, what), tt, pb, wt, ph in zip(contrasts, t_tests, p_bonf, w_tests, p_holm):
             da, db = describe(col(a, ba)), describe(col(b, bb))
             descr.append((da, db))
-            test_rows.append({"metric": m, "label": label, "role": role, "comparison": f"{a} block {ba} vs {b} block {bb}",
-                              "meaning": what, "planned": True, "n": t["n"], "statistic": t["statistic"], "p": t["p"],
-                              "p_holm": ph, "effect": t["effect"], "effect_name": "rank-biserial r",
-                              "median_first": da.get("median"), "median_second": db.get("median"), "better": better})
-        t_sess = wilcoxon_paired(ws["pre"], ws["post"])
-        test_rows.append({"metric": m, "label": label, "role": role, "comparison": "session pre vs post",
-                          "meaning": "whole sessions (exploratory)", "planned": False, "n": t_sess["n"],
-                          "statistic": t_sess["statistic"], "p": t_sess["p"], "p_holm": np.nan,
-                          "effect": t_sess["effect"], "effect_name": "rank-biserial r",
-                          "median_first": d_sess["pre"].get("median"), "median_second": d_sess["post"].get("median"),
-                          "better": better})
+            comp = f"{a} block {ba} vs {b} block {bb}"
+            test_rows.append(test_row(m, label, role, comp, what, True, tt, pb, "t", "Cohen dz", da, db, better))
+            test_rows.append(test_row(m, label, role, comp, what, True, wt, ph, "Wilcoxon", "rank-biserial r",
+                                      da, db, better))
+        t_sess, w_sess = paired_t(ws["pre"], ws["post"]), wilcoxon_paired(ws["pre"], ws["post"])
+        for tt, name, eff in ((t_sess, "t", "Cohen dz"), (w_sess, "Wilcoxon", "rank-biserial r")):
+            test_rows.append(test_row(m, label, role, "session pre vs post", "whole sessions (exploratory)", False,
+                                      tt, np.nan, name, eff, d_sess["pre"], d_sess["post"], better))
         # fit: curva di gruppo (mediana per blocco) e di ogni soggetto
         med = wb.median()
         fg = fit_curve(med.index.to_numpy(), med.to_numpy())
@@ -293,13 +315,12 @@ def analyse(sessions, blocks, n_blocks, report):
 
         if role in ("main", "extra"):
             report.section(f"{label}{f' [{unit}]' if unit else ''}" + ("  (metrica principale)" if role == "main" else ""))
-            report.text(f"  sessione intera: pre {fmt_num(d_sess['pre'].get('median'))} "
-                        f"[{fmt_num(d_sess['pre'].get('q1'))}-{fmt_num(d_sess['pre'].get('q3'))}] -> post "
-                        f"{fmt_num(d_sess['post'].get('median'))} [{fmt_num(d_sess['post'].get('q1'))}-"
-                        f"{fmt_num(d_sess['post'].get('q3'))}] (esplorativo: p={fmt_num(t_sess['p'], 3)}, "
-                        f"r={fmt_num(t_sess['effect'])})")
-            for (a, ba, b, bb, what), t, ph, (da, db) in zip(contrasts, tests, p_holm, descr):
-                report.comparison(what, "", better, da, db, t, ph, f"{a} b{ba}", f"{b} b{bb}")
+            report.anova(anova, "ANOVA sessione x blocco")
+            for (a, ba, b, bb, what), tt, pb, ph, (da, db) in zip(contrasts, t_tests, p_bonf, p_holm, descr):
+                report.ttest(what, "", better, da, db, tt, pb, f"{a} b{ba}", f"{b} b{bb}", np_check=ph)
+            report.text(f"  sessione intera (esplorativo): pre {fmt_num(d_sess['pre'].get('median'))} -> post "
+                        f"{fmt_num(d_sess['post'].get('median'))}, t p={fmt_num(t_sess['p'], 3)}, "
+                        f"d={fmt_num(t_sess['effect'])}; Wilcoxon p={fmt_num(w_sess['p'], 3)}")
             if not np.isnan(fg["k"]):
                 where = "gia' nel training 1" if fg["block95"] <= n_blocks else \
                     ("nel training 2" if fg["block95"] <= 2 * n_blocks else "non ancora raggiunto a fine training 2")
@@ -310,7 +331,7 @@ def analyse(sessions, blocks, n_blocks, report):
             if better is None and m == "extent_error_1s":
                 report.text("  (< 0 = il cursore resta corto rispetto al target; meglio = piu' vicino a 0)")
 
-    report.section("Sessione intera (tutti i frame, script del laboratorio)")
+    report.section("Sessione intera (tutti i frame, script del laboratorio; esplorativo)")
     for m, (label, unit, better, script) in SESSION_METRICS.items():
         if m not in sessions.columns:
             continue
@@ -318,15 +339,68 @@ def analyse(sessions, blocks, n_blocks, report):
         d = {ph: describe(ws[ph]) for ph in PHASES}
         for ph in PHASES:
             stat_rows.append({"metric": m, "label": label, "unit": unit, "role": "session", "phase": ph, **d[ph]})
-        t = wilcoxon_paired(ws["pre"], ws["post"])
-        test_rows.append({"metric": m, "label": label, "role": "session", "comparison": "session pre vs post",
-                          "meaning": f"whole session ({script}, exploratory)", "planned": False, "n": t["n"],
-                          "statistic": t["statistic"], "p": t["p"], "p_holm": np.nan, "effect": t["effect"],
-                          "effect_name": "rank-biserial r", "median_first": d["pre"].get("median"),
-                          "median_second": d["post"].get("median"), "better": better})
-        report.comparison(f"{label} ({script})", unit, better, d["pre"], d["post"], t, None, "pre", "post",
-                          digits=0 if unit in ("s", "px", "px/s", "px/s^3") or "changes" in m or "peaks" in m else 3)
-    return (pd.DataFrame(stat_rows), pd.DataFrame(test_rows), pd.DataFrame(block_rows), pd.DataFrame(fit_rows))
+        tt, wt = paired_t(ws["pre"], ws["post"]), wilcoxon_paired(ws["pre"], ws["post"])
+        for t, name, eff in ((tt, "t", "Cohen dz"), (wt, "Wilcoxon", "rank-biserial r")):
+            test_rows.append(test_row(m, label, "session", "session pre vs post",
+                                      f"whole session ({script}, exploratory)", False, t, np.nan, name, eff,
+                                      d["pre"], d["post"], better))
+        report.ttest(f"{label} ({script})", unit, better, d["pre"], d["post"], tt, None, "pre", "post",
+                     digits=0 if unit in ("s", "px", "px/s", "px/s^3") or "changes" in m or "peaks" in m else 3,
+                     np_check=wt["p"])
+    return (pd.DataFrame(stat_rows), pd.DataFrame(test_rows), pd.DataFrame(block_rows), pd.DataFrame(fit_rows),
+            pd.DataFrame(anova_rows))
+
+
+# ---------------------------------------------------- modello misto, prova per prova ---
+
+def mixed_models(targets: pd.DataFrame, report) -> pd.DataFrame:
+    """Per ogni metrica principale, tutte le prove (96 per sessione, niente blocchi):
+        y ~ sessione * log(prova) + regione,  soggetto casuale (intercetta + pendenza di log(prova))
+    log(prova): la curva di apprendimento (veloce all'inizio, poi piatta); la regione toglie
+    la differenza di difficolta' fra i target. Movement time e linearity index sono
+    asimmetrici: si modella log(y) e log(1 + y) e l'effetto si legge in %."""
+    report.section("Modello misto, prova per prova (96 prove per sessione, senza blocchi)")
+    report.text("  y ~ sessione * log(prova) + regione, soggetto casuale. log(prova): 'per ogni raddoppio")
+    report.text("  del numero di prova' = coefficiente x ln 2. Movement time e linearity index in scala log (%).")
+    rows = []
+    d = targets.assign(log_trial=np.log(targets["target_number"]),
+                       phase=pd.Categorical(targets["phase"], categories=list(PHASES)))
+    for m in MAIN:
+        label, unit = METRICS[m][0], METRICS[m][1]
+        tr = MIXED_TRANSFORM.get(m)
+        y = pd.to_numeric(d[m], errors="coerce")
+        y = np.log(y) if tr == "log" else np.log1p(y) if tr == "log1p" else y
+        dm = d.assign(y=y).dropna(subset=["y"])
+        dm = dm[np.isfinite(dm["y"])]
+        res = mixed_model(dm, "y ~ C(phase) * log_trial + C(region)", slope="log_trial")
+        terms = res["terms"]
+        for term, r in terms.iterrows():
+            rows.append({"metric": m, "label": label, "transform": tr or "", "term": term, "random_effects": res["re"],
+                         "converged": res["converged"], "n_obs": res["n_obs"], "n_subjects": res["n_groups"], **r})
+        if terms.empty:
+            report.text(f"  {label}: modello non stimabile")
+            continue
+
+        def effect(term, per_doubling=False):
+            if term not in terms.index:
+                return "-"
+            r = terms.loc[term]
+            k = math.log(2) if per_doubling else 1.0
+            c, lo, hi = r["coef"] * k, r["ci_low"] * k, r["ci_high"] * k
+            if tr:
+                c, lo, hi = [(math.exp(v) - 1) * 100 for v in (c, lo, hi)]
+                txt = f"{c:+.1f}% [{lo:+.1f}, {hi:+.1f}]"
+            else:
+                txt = f"{c:+.2f} [{lo:+.2f}, {hi:+.2f}]{f' {unit}' if unit else ''}"
+            return f"{txt}, p={fmt_num(r['p'], 3)}"
+
+        report.text(f"  {label}{' (' + ('log' if tr == 'log' else 'log(1 + y)') + ')' if tr else ''}: "
+                    f"apprendimento nel training 1 (per raddoppio della prova) {effect('log_trial', True)} | "
+                    f"training 2 vs 1 all'inizio {effect('C(phase)[T.post]')} | "
+                    f"differenza di apprendimento nel training 2 {effect('C(phase)[T.post]:log_trial', True)}"
+                    + f" | effetti casuali: {res['re']}"
+                    + ("" if res["converged"] else " | ATTENZIONE: nessun modello stimabile senza problemi"))
+    return pd.DataFrame(rows)
 
 
 # ---------------------------------------------------------------- figura 4 ---
@@ -347,9 +421,9 @@ def fig4_x(phase, trial, n_trials):
     return trial + (n_trials + FIG4_GAP if phase == "post" else 0)
 
 
-def fig4_axes(n_trials, title):
-    fig = plt.figure(figsize=(14, 7.2))
-    gs = fig.add_gridspec(2, 3, hspace=0.45, wspace=0.28)
+def fig4_axes(n_trials, title, hspace=0.45):
+    fig = plt.figure(figsize=(14, 7.6))
+    gs = fig.add_gridspec(2, 3, hspace=hspace, wspace=0.28)
     axes = [fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[0, 1]), fig.add_subplot(gs[0, 2]),
             fig.add_subplot(gs[1, 0]), fig.add_subplot(gs[1, 1])]
     fig.suptitle(title, x=0.01, ha="left", fontweight="bold")
@@ -377,9 +451,15 @@ def fig4_decorate(ax, m, n_trials, letter):
     ax.set_xlabel("trial (target)")
     ax.set_ylabel(f"{label}{f' [{unit}]' if unit else ''}")
     ax.set_title(f"({letter}) {label}", loc="left", fontsize=10)
+
+
+def fig4_phase_labels(ax, n_trials):
+    """'training 1 / 2' in alto, alla quota attuale dei dati (le parentesi dei post hoc,
+    aggiunte dopo, vanno sopra e non ci finiscono addosso)."""
+    x_post = n_trials + FIG4_GAP
+    top = ax.get_ylim()[1]
     for xc, txt in ((n_trials / 2, "training 1 (pre)"), (x_post + n_trials / 2, "training 2 (post)")):
-        ax.text(xc, 0.97, txt, transform=ax.get_xaxis_transform(), ha="center", va="top", fontsize=7.5,
-                color=MUTED, zorder=5)
+        ax.text(xc, top, txt, ha="center", va="top", fontsize=7.5, color=MUTED, zorder=5)
 
 
 def fig4_legend(ax, handles, text):
@@ -388,7 +468,7 @@ def fig4_legend(ax, handles, text):
     ax.text(0.0, 0.35, text, transform=ax.transAxes, fontsize=8, color=INK2, va="top", wrap=True)
 
 
-def plot_figure4(targets, out):
+def plot_figure4(targets, out, tests, anova):
     n_trials = int(targets["target_number"].max())
     smoothed = {m: moving_average(targets, m) for m in MAIN}
     note = (f"Moving average over each trial and the {FIG4_WINDOW - 1} preceding ones\n"
@@ -416,6 +496,8 @@ def plot_figure4(targets, out):
             if all_v:
                 v, x, c = np.concatenate(all_v), np.concatenate(all_x), np.concatenate(all_c)
                 fig4_clip(ax, v)
+            fig4_phase_labels(ax, n_trials)
+            if all_v:
                 for col in set(c):
                     lo, hi = ax.get_ylim()
                     sel = c == col
@@ -429,9 +511,30 @@ def plot_figure4(targets, out):
         fig4_legend(lax, handles, note)
         save_figure(fig, out, f"figure4/{subject}")
 
-    # gruppo: un soggetto per linea sottile, centro +- dispersione tra soggetti
-    fig, axes, lax = fig4_axes(n_trials, "Cursor control during the two trainings"
-                                         f"{FIG4_CENTER} ± {FIG4_SPREAD.upper()} across subjects")
+    # gruppo, due versioni:
+    #  figure4_group.png        [NON PARAMETRICO] mediana +- SD (FIG4_CENTER, FIG4_SPREAD)
+    #  figure4_group_anova.png  [ANOVA] media +- SE, parentesi sui post hoc significativi
+    plot_figure4_group(targets, smoothed, out, FIG4_CENTER, FIG4_SPREAD, "figure4_group",
+                       "[NON-PARAMETRIC version] no test on the figure; tests in report: Wilcoxon (Holm)", note)
+    plot_figure4_group(targets, smoothed, out, "mean", "sem", "figure4_group_anova", ANOVA_TAG, note, tests, anova)
+
+
+def contrast_pairs(tests, m, xpos):
+    """[(x1, x2, p Bonferroni, differenze non normali)] dei 3 post hoc (t) di una metrica;
+    xpos(fase, blocco) -> posizione sull'asse x."""
+    t = tests[(tests.metric == m) & (tests.test == "t") & tests.planned.astype(bool)]
+    pairs = []
+    for _, r in t.iterrows():
+        pa, _, na, pb, _, nb = r["comparison"].replace(" vs ", " ").split()
+        pairs.append((xpos(pa, int(na)), xpos(pb, int(nb)), r["p_corrected"], r["shapiro_p"] < 0.05))
+    return pairs
+
+
+def plot_figure4_group(targets, smoothed, out, center, spread, name, tag, note, tests=None, anova=None):
+    n_trials = int(targets["target_number"].max())
+    fig, axes, lax = fig4_axes(n_trials, "Cursor control during the two trainings – "
+                                         f"{center} ± {'SE' if spread == 'sem' else spread.upper()} across subjects\n{tag}",
+                               hspace=0.75 if anova is not None else 0.45)
     for ax, m, letter in zip(axes, MAIN, "ABCDE"):
         sm = smoothed[m]
         for ph, color in zip(PHASES, (CATEGORICAL[1], CATEGORICAL[0])):
@@ -439,21 +542,31 @@ def plot_figure4(targets, out):
             if wide.empty:
                 continue
             x = fig4_x(ph, wide.index.to_numpy(), n_trials)
-            for s in wide.columns:
-                ax.plot(x, wide[s], color=SUBJECT_LINE, lw=0.6, zorder=1)
-            center = wide.median(axis=1) if FIG4_CENTER == "median" else wide.mean(axis=1)
-            spread = wide.std(axis=1, ddof=1)
-            if FIG4_SPREAD == "sem":
-                spread = spread / np.sqrt(wide.notna().sum(axis=1))
-            ax.fill_between(x, center - spread, center + spread, color=color, alpha=0.2, lw=0, zorder=2)
-            ax.plot(x, center, color=color, lw=2, zorder=3)
+            for s_ in wide.columns:
+                ax.plot(x, wide[s_], color=SUBJECT_LINE, lw=0.6, zorder=1)
+            mid = wide.median(axis=1) if center == "median" else wide.mean(axis=1)
+            sp = wide.std(axis=1, ddof=1)
+            if spread == "sem":
+                sp = sp / np.sqrt(wide.notna().sum(axis=1))
+            ax.fill_between(x, mid - sp, mid + sp, color=color, alpha=0.2, lw=0, zorder=2)
+            ax.plot(x, mid, color=color, lw=2, zorder=3)
         fig4_decorate(ax, m, n_trials, letter)
+        fig4_phase_labels(ax, n_trials)
+        if tests is not None:
+            # blocco b = prove 8(b-1)+1 ... 8b: la parentesi va al centro del blocco
+            brackets(ax, contrast_pairs(tests, m, lambda ph, b: fig4_x(ph, (b - 1) * BLOCK_SIZE + 4.5, n_trials)))
+        if anova is not None:
+            ax.text(0.0, -0.24, anova_caption(anova[anova.metric == m].to_dict("records"), ANOVA_NAMES),
+                    transform=ax.transAxes, fontsize=7, color=INK2, va="top")
     n = targets["subject"].nunique()
-    handles = [plt.Line2D([], [], color=CATEGORICAL[1], lw=2, label=f"training 1 (pre): {FIG4_CENTER} ± {FIG4_SPREAD.upper()}"),
-               plt.Line2D([], [], color=CATEGORICAL[0], lw=2, label=f"training 2 (post): {FIG4_CENTER} ± {FIG4_SPREAD.upper()}"),
+    lab = f"{center} ± {'SE' if spread == 'sem' else spread.upper()}"
+    handles = [plt.Line2D([], [], color=CATEGORICAL[1], lw=2, label=f"training 1 (pre): {lab}"),
+               plt.Line2D([], [], color=CATEGORICAL[0], lw=2, label=f"training 2 (post): {lab}"),
                plt.Line2D([], [], color=SUBJECT_LINE, lw=1, label=f"single subjects (n = {n})")]
-    fig4_legend(lax, handles, note)
-    save_figure(fig, out, "figure4_group")
+    extra = ("\nBrackets: planned post hoc between blocks of 8\n(first vs last block of training 1, last pre vs\n"
+             "first post, last pre vs last post).\n" + STARS_NOTE.replace("; ", ";\n")) if tests is not None else ""
+    fig4_legend(lax, handles, note + extra)
+    save_figure(fig, out, name)
 
 
 # ----------------------------------------------------------- altri grafici ---
@@ -482,15 +595,95 @@ def plot_curve(ax, blocks, fits, m, n_blocks):
                  loc="left", pad=14)
 
 
-def plots(targets, sessions, blocks, fits, per_region, n_blocks, out):
+def plot_curve_anova(ax, blocks, m, n_blocks, tests, anova):
+    """Versione ANOVA della curva per blocchi: media +- SE di ogni blocco (training 1 e 2),
+    parentesi sui 3 post hoc significativi, risultato dell'ANOVA sotto il grafico."""
+    label, unit, better, _, _ = METRICS[m]
+    wb = blocks.pivot(index="subject", columns="gblock", values=m)
+    for ph, color in zip(PHASES, (CATEGORICAL[1], CATEGORICAL[0])):
+        cols = [c for c in wb.columns if (c > n_blocks) == (ph == "post")]
+        if cols:
+            mean_se(ax, wb[cols], x=cols, color=color, label=f"training {'1 (pre)' if ph == 'pre' else '2 (post)'}")
+    ax.axvline(n_blocks + 0.5, color=MUTED, ls=":", lw=1)
+    ax.set_xlabel("block of 8 targets (1-12 training 1, 13-24 training 2)")
+    ax.set_ylabel(f"{label}{f' [{unit}]' if unit else ''}")
+    ax.set_title(label + ("  (higher = better)" if better == "up" else "  (lower = better)" if better == "down" else ""),
+                 loc="left", pad=16)
+    brackets(ax, contrast_pairs(tests, m, lambda ph, b: b + (n_blocks if ph == "post" else 0)))
+    ax.text(1.0, -0.2, anova_caption(anova[anova.metric == m].to_dict("records"), ANOVA_NAMES),
+            transform=ax.transAxes, fontsize=7, color=INK2, va="top", ha="right")
+
+
+def plot_mixed_model(targets, mixed, out):
+    """Modello misto: punti = media tra soggetti di ogni prova (nella scala del modello,
+    riportata indietro: per movement time e linearity index e' la media geometrica),
+    linea = curva stimata dal modello (effetti fissi, media sulle regioni)."""
+    if mixed.empty:
+        return
+    n_trials = int(targets["target_number"].max())
+    fig, axes, lax = fig4_axes(n_trials, "Trial-by-trial learning – linear mixed model "
+                                         "(y ~ session × log(trial) + region, subject random)\n[ANOVA version – trial by trial, no blocks] "
+                                         "points = mean across subjects per trial, line = model fit",
+                               hspace=0.75)
+    trials = np.arange(1, n_trials + 1)
+    for ax, m, letter in zip(axes, MAIN, "ABCDE"):
+        tr = MIXED_TRANSFORM.get(m)
+        fwd = np.log if tr == "log" else np.log1p if tr == "log1p" else (lambda v: v)
+        back = np.exp if tr == "log" else np.expm1 if tr == "log1p" else (lambda v: v)
+        terms = mixed[mixed.metric == m].set_index("term")
+        if terms.empty:
+            continue
+        c = terms["coef"]
+        region_mean = c[[t for t in c.index if t.startswith("C(region)")]].sum() / max(targets["region"].nunique(), 1)
+        for ph, color in zip(PHASES, (CATEGORICAL[1], CATEGORICAL[0])):
+            g = targets[targets.phase == ph]
+            y = pd.to_numeric(g[m], errors="coerce")
+            with np.errstate(divide="ignore", invalid="ignore"):
+                g = g.assign(_y=fwd(y))
+            g = g[np.isfinite(g["_y"])]
+            pts = back(g.groupby("target_number")["_y"].mean())
+            ax.plot(fig4_x(ph, pts.index.to_numpy(), n_trials), pts.to_numpy(), "o", ms=2.2, color=color,
+                    alpha=0.45, zorder=2)
+            post = ph == "post"
+            eta = (c.get("Intercept", 0) + region_mean + post * c.get("C(phase)[T.post]", 0)
+                   + np.log(trials) * (c.get("log_trial", 0) + post * c.get("C(phase)[T.post]:log_trial", 0)))
+            ax.plot(fig4_x(ph, trials, n_trials), back(eta), color=color, lw=2.2, zorder=3)
+        fig4_decorate(ax, m, n_trials, letter)
+        fig4_phase_labels(ax, n_trials)
+        r = terms.iloc[0]
+        re_en = (str(r["random_effects"]).replace("solo intercetta", "intercept only")
+                 .replace("intercetta", "intercept").replace("pendenza di", "slope of")
+                 .replace("(correlate)", "(correlated)").replace("(indipendenti)", "(independent)"))
+        ax.text(0.0, -0.24, f"random effects per subject: {re_en}" + ("" if r["converged"] else " (check!)"),
+                transform=ax.transAxes, fontsize=6.8, color=INK2, va="top")
+    handles = [plt.Line2D([], [], color=INK2, marker="o", ls="", ms=3, alpha=0.6, label="mean across subjects, per trial"),
+               plt.Line2D([], [], color=INK2, lw=2.2, label="mixed-model fit (average region)")]
+    fig4_legend(lax, handles, "Every trial, no blocks. Movement time and\nlinearity index modelled on a log scale.\n"
+                              "Coefficients, 95% CI and p in\ntraining_mixed_models.csv and in report.txt.")
+    save_figure(fig, out, "training_mixed_model")
+
+
+def plots(targets, sessions, blocks, fits, per_region, n_blocks, out, tests, anova, mixed):
     setup_style()
-    plot_figure4(targets, out)
+    plot_figure4(targets, out, tests, anova)
+    plot_mixed_model(targets, mixed, out)
+
+    fig, axes = grid_axes(len(FOCUS), ncols=2, width=6.2, height=4.8)
+    for ax, m in zip(axes, FOCUS):
+        plot_curve_anova(ax, blocks, m, n_blocks, tests, anova)
+    axes[0].legend(fontsize=7.5, loc="upper right")
+    fig.suptitle("Reaching training – learning curves by block (grey = single subjects)\n" + ANOVA_TAG,
+                 x=0.01, ha="left", fontweight="bold")
+    fig.text(0.01, 0.003, STARS_NOTE, fontsize=8, color=INK2)
+    fig.tight_layout(rect=(0, 0.015, 1, 0.97))
+    save_figure(fig, out, "training_learning_curves_anova")
 
     fig, axes = grid_axes(len(FOCUS), ncols=2, width=6.2, height=3.6)
     for ax, m in zip(axes, FOCUS):
         plot_curve(ax, blocks, fits, m, n_blocks)
     axes[0].legend(fontsize=7.5, loc="best")
-    fig.suptitle("Reaching training – learning curves (one line per subject)", x=0.01, ha="left", fontweight="bold")
+    fig.suptitle("Reaching training – learning curves (one line per subject)\n" + NONPARAM_TAG
+                 + "; dashed = exponential fit", x=0.01, ha="left", fontweight="bold")
     fig.tight_layout(rect=(0, 0, 1, 0.97))
     save_figure(fig, out, "training_learning_curves")
     for m in METRICS:
@@ -576,13 +769,16 @@ def main():
     report.text(f"Metriche calcolate dai _raw.csv (webcam {min(fs):.1f}-{max(fs):.1f} Hz); cursore nascosto "
                 f"per {', '.join(map(str, hidden))} s dopo la comparsa del target: gli errori sono calcolati li'.")
     report.text(f"Blocchi di {BLOCK_SIZE} target: {n_blocks} per sessione, {2 * n_blocks} in tutto.")
-    report.text("Confronti pianificati: 3 Wilcoxon fra blocchi, Holm sui 3, per ogni metrica.")
+    report.text("Analisi principale: ANOVA a misure ripetute sessione (2) x blocco (12), correzione di")
+    report.text("Greenhouse-Geisser; post hoc: 3 t appaiati pianificati fra blocchi, Bonferroni sui 3.")
+    report.text("Controllo non parametrico: Wilcoxon, Holm sui 3. In fondo il modello misto prova per prova.")
 
     sessions = per_unit(targets, ["subject", "phase"])
     for m in list(SESSION_METRICS) + ["session_dimensionless_jerk", "fs"]:
         sessions[m] = [session_info.get((s, ph), {}).get(m) for s, ph in zip(sessions.subject, sessions.phase)]
     blocks = per_unit(targets, ["subject", "gblock"])
-    stats_df, tests_df, block_stats, fits = analyse(sessions, blocks, n_blocks, report)
+    stats_df, tests_df, block_stats, fits, anova_df = analyse(sessions, blocks, n_blocks, report)
+    mixed_df = mixed_models(targets, report)
 
     per_region = []
     reg_units = per_unit(targets, ["subject", "phase", "region"])
@@ -608,10 +804,12 @@ def main():
     stats_df.to_csv(args.out / "training_statistics.csv", index=False)
     block_stats.to_csv(args.out / "training_block_statistics.csv", index=False)
     tests_df.to_csv(args.out / "training_tests.csv", index=False)
+    anova_df.to_csv(args.out / "training_anova.csv", index=False)
+    mixed_df.to_csv(args.out / "training_mixed_models.csv", index=False)
     fits.to_csv(args.out / "training_fits.csv", index=False)
     per_region.to_csv(args.out / "training_per_region.csv", index=False)
     pd.DataFrame(home_rows).to_csv(args.out / "training_homes.csv", index=False)
-    plots(targets, sessions, blocks, fits, per_region, n_blocks, args.out)
+    plots(targets, sessions, blocks, fits, per_region, n_blocks, args.out, tests_df, anova_df, mixed_df)
     report.write(args.out)
 
 

@@ -29,9 +29,11 @@ python3 run_all.py
 
 Lancia tutto nell'ordine giusto: questionari → blind test → training → robot → calibrazioni → collegamenti. Ogni parte si può lanciare anche da sola (`python3 reaching_blind/blind_analysis.py`, ...). Un'analisi senza dati viene saltata.
 
-Serve Python 3 con `pandas`, `scipy`, `matplotlib`, `openpyxl` (il `python3` di sistema li ha già; altrimenti `pip install pandas scipy matplotlib openpyxl`).
+Serve Python 3 con `pandas`, `scipy`, `matplotlib`, `openpyxl`, `statsmodels` (`pip install --user pandas scipy matplotlib openpyxl statsmodels`; sul Python di sistema di Ubuntu serve anche `--break-system-packages`).
 
 ## 3. Cosa leggere
+
+**`summary/riepilogo_analisi.pdf`**: il riassunto di tutto in un unico PDF (dati usati, metriche con le formule, test, risultati, tutti i grafici). Lo rigenera `run_all.py` alla fine; da solo: `python3 summary/make_summary.py` (serve LaTeX: `pdflatex` + `latexmk`).
 
 Ogni analisi scrive in `<cartella>/statistics/`:
 
@@ -41,27 +43,41 @@ Ogni analisi scrive in `<cartella>/statistics/`:
 
 | Cartella | Report | Grafico principale |
 |---|---|---|
-| `reaching_blind/` | 5 metriche principali, Friedman + 4 confronti fra test consecutivi | `blind_main.png` |
-| `reaching_regions/` | le 5 metriche della figura 4 di Bellitto et al. 2025 + 3 richieste, curve di apprendimento, 3 confronti, plateau, sessione intera | `figure4_group.png`, `figure4/<soggetto>.png`, `training_learning_curves.png` |
+| `reaching_blind/` | 5 metriche principali, ANOVA sui 5 test + 4 confronti fra test consecutivi | `blind_main.png` |
+| `reaching_regions/` | le 5 metriche della figura 4 di Bellitto et al. 2025 + 3 richieste, ANOVA sessione × blocco, 3 confronti, modello misto prova per prova, plateau, sessione intera | `figure4_group.png`, `figure4/<soggetto>.png`, `training_learning_curves.png` |
 | `real_robot/` | 4 metriche primarie + le 13 metriche per fase, conteggi | `robot_primary.png`, `robot_transitions.png` |
 | `calibrations/` | customizzazione della mappa per soggetto (scala, offset, passi), solo descrittive; PCA della calibrazione condivisa | `calibration_customization.png`, `calibration_pca.png` |
 | `cross_analysis/` | trasferimento cursore → robot, questionari | `cross_transfer.png` |
 
+### Due versioni dei grafici principali
+
+Ogni grafico riassuntivo esiste in due versioni. Il titolo lo dice sempre nella seconda riga: **[NON-PARAMETRIC version]** o **[ANOVA version]**.
+
+| Versione | File | Cosa mostra | A quale analisi corrisponde |
+|---|---|---|---|
+| **Non parametrica** (quella di prima) | `blind_main.png`, `training_learning_curves.png`, `figure4_group.png`, `robot_primary.png` | mediana e fascia [Q1–Q3] (la figura 4: mediana ± SD), una linea per soggetto, nessun test sul grafico | Wilcoxon (Holm) / Friedman, i "Wilcoxon p Holm" del report |
+| **ANOVA** (nuova) | `blind_main_anova.png`, `training_learning_curves_anova.png`, `figure4_group_anova.png`, `robot_primary_anova.png` | media ± SE (errore standard), una linea grigia per soggetto, parentesi `*` / `**` sui confronti post hoc significativi, risultato dell'ANOVA sotto ogni pannello | ANOVA a misure ripetute + t appaiati con Bonferroni: l'analisi principale |
+| Modello misto | `training_mixed_model.png` | media fra soggetti di ogni prova (punti) e curva stimata dal modello (linea) | modello misto prova per prova |
+
+Nella tesi va la versione **ANOVA**, perché è quella dell'analisi principale. La non parametrica serve come confronto. `*` = p < 0.05, `**` = p < 0.001 (post hoc, Bonferroni); `†` = le differenze non sono normali, in quel caso vale il Wilcoxon. Le figure per singolo soggetto (`figure4/<soggetto>.png`, traiettorie) non hanno statistica e sono una sola.
+
 ## 4. Le scelte statistiche, in parole semplici
 
 - **Un valore per soggetto.** Ogni soggetto fa tante prove: le riassumiamo con la **mediana** (robusta alle prove anomale) o con la **percentuale** per le metriche sì/no (hit, regione corretta). Così ogni soggetto pesa 1.
-- **Descrittive: mediana [Q1–Q3].** La mediana è il valore tipico del gruppo, [Q1–Q3] la fascia della metà centrale dei soggetti. Più robuste di media ± SD con pochi soggetti e dati asimmetrici (tempi, percentuali vicine al 100%). Media e SD sono comunque nei .csv.
-- **Grafici con una linea per soggetto** (spaghetti plot): mostrano se tutti migliorano o solo alcuni. Sono la parte più importante con pochi soggetti.
-- **Wilcoxon** per confrontare due momenti (es. run 1 vs run 2): guarda, soggetto per soggetto, se migliora o peggiora e di quanto.
-- **Friedman** per i 5 blind test insieme: c'è qualche differenza fra i 5?
-- **Pochi confronti, decisi prima** di guardare i dati, e **correzione di Holm** dentro ogni famiglia (più confronti fai, più è facile trovare qualcosa per caso):
-  - blind test: 4 confronti fra test consecutivi (1–2, 2–3, 3–4, 4–5), per ogni metrica;
-  - training: 3 confronti (inizio vs fine training 1, fine training 1 vs inizio training 2, fine training 1 vs fine training 2), per ogni metrica;
-  - robot: run 1 vs run 2 sulle 4 metriche primarie (`PRIMARY` in `robot_analysis.py`).
-  Le altre metriche sono calcolate allo stesso modo ma sono **esplorative** (p non corretto).
-- **Effect size** per ogni confronto, significativo o no: rank-biserial r (Wilcoxon), W di Kendall (Friedman), rho (Spearman). 0.1 piccolo, 0.3 medio, 0.5 grande. Con pochi soggetti conta più del p-value.
-- **"cambiano k"** nel report: quanti soggetti cambiano davvero fra i due momenti. Con 1 soggetto su 9 l'effetto risulta "grande" ma riguarda solo lui.
-- **Con 9 soggetti** un confronto può risultare significativo dopo Holm solo se quasi tutti (8–9 su 9) vanno nella stessa direzione. Con 7 soggetti e 4 confronti non è possibile: in quel caso si discutono effect size e grafici.
+- **Descrittive: mediana [Q1–Q3].** La mediana è il valore tipico del gruppo, [Q1–Q3] la fascia della metà centrale dei soggetti. Media e SD sono comunque nei .csv.
+- **Grafici con una linea per soggetto**: mostrano se tutti migliorano o solo alcuni. Con pochi soggetti sono la parte più importante.
+- **Analisi principale: ANOVA a misure ripetute** (come il laboratorio, Bellitto et al. 2025), perché tutti i fattori sono entro soggetto:
+  - training: sessione (pre/post) × blocco (12 blocchi da 8 target);
+  - blind test: un fattore, i 5 test;
+  - robot: run 1 vs run 2 = t appaiato (è l'ANOVA con 2 livelli).
+  Con più livelli che soggetti il test di sfericità di Mauchly non si può calcolare: la **correzione di Greenhouse-Geisser** (p GG) si applica sempre. Effect size: **η² parziale** (0.01 piccolo, 0.06 medio, 0.14 grande).
+- **Post hoc: t di Student appaiati**, solo i confronti decisi prima, con **Bonferroni** dentro ogni famiglia, **d di Cohen** (0.2 piccolo, 0.5 medio, 0.8 grande) e **Shapiro-Wilk** sulle differenze:
+  - training: inizio vs fine training 1, fine training 1 vs inizio training 2, fine training 1 vs fine training 2;
+  - blind test: i 4 test consecutivi (1–2, 2–3, 3–4, 4–5);
+  - robot: le 4 metriche primarie (`PRIMARY` in `robot_analysis.py`).
+  Le altre metriche sono **esplorative** (p non corretto).
+- **Controllo non parametrico** accanto a ogni confronto: Wilcoxon (Holm) e Friedman. Se lo Shapiro dice che le differenze non sono normali il report lo segnala: in quel caso vale il controllo. Con 6 soggetti il p più piccolo del Wilcoxon è 0.031, quindi dopo la correzione non può uscire significativo: conta la direzione.
+- **Modello lineare misto, prova per prova** (training): tutte le 96 prove di ogni sessione, senza blocchi. `y ~ sessione × log(prova) + regione`, soggetto casuale (intercetta e, se stimabile, pendenza). log(prova) descrive la curva di apprendimento; la regione toglie la differenza di difficoltà fra i target. Movement time e linearity index in scala log (effetti in %). Serve `statsmodels` (`pip install --user statsmodels`).
 - **Correlazioni (Spearman)** in `cross_analysis`: solo esplorative, da leggere come tendenze.
 
 ## 5. Le metriche

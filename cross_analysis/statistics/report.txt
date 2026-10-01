@@ -4,13 +4,20 @@ COLLEGAMENTI FRA LE PARTI DEL PROTOCOLLO E QUESTIONARI
 COME LEGGERE QUESTO REPORT
 - "mediana [Q1-Q3]": il valore tipico del gruppo e la fascia in cui sta la meta' centrale
   dei soggetti. Ogni soggetto pesa 1: prima un valore per soggetto, poi il gruppo.
-- p: probabilita' di vedere una differenza cosi' grande se in realta' non ci fosse nessun
-  effetto. p Holm: lo stesso p corretto perche' si fanno piu' confronti sulla stessa
-  domanda. Significativo = p Holm < 0.05 (per i confronti esplorativi si guarda p).
-- effetto: quanto e' grande la differenza (rank-biserial r per 2 momenti, W di Kendall per
-  Friedman, rho per le correlazioni). |0.1| piccolo, |0.3| medio, |0.5| grande.
-  Con pochi soggetti conta piu' l'effetto del p-value.
-- migliorato / peggiorato: in base a cosa e' meglio per quella metrica (es. tempo: meno
+- ANALISI PRINCIPALE (come il laboratorio): ANOVA a misure ripetute e post hoc con t di
+  Student appaiati.
+  ANOVA: F(gdl1, gdl2), p; "p GG" = p con la correzione di Greenhouse-Geisser (epsilon < 1
+  quando i livelli non hanno la stessa variabilita'), da leggere quando ci sono piu' di 2
+  livelli; eta2p = eta^2 parziale (0.01 piccolo, 0.06 medio, 0.14 grande).
+  Post hoc: t(gdl), p, "p Bonf" = p x numero di confronti; d = d di Cohen appaiato
+  (0.2 piccolo, 0.5 medio, 0.8 grande; segno + = il secondo momento e' piu' alto);
+  Shapiro = p del test di normalita' sulle differenze (< 0.05: non normali, guardare
+  anche il controllo non parametrico).
+  Significativo = p Bonf (o p GG) < 0.05; i confronti esplorativi non sono corretti.
+- CONTROLLO NON PARAMETRICO: Wilcoxon con p corretto con Holm (e r rank-biserial nei .csv).
+  Con 6 soggetti il p piu' piccolo possibile del Wilcoxon e' 0.031: dopo la correzione
+  non puo' uscire significativo, conta la direzione.
+- migliorato / peggiorato: in base a cosa e' meglio per la metrica (es. tempo: meno
   e' meglio; hit rate: piu' e' meglio).
 - "cambiano k": quanti soggetti hanno un valore diverso fra i due momenti. Se sono pochi
   (es. 1 su 9) l'effetto puo' risultare "grande" ma riguarda solo quei soggetti.

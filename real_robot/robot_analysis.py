@@ -13,7 +13,8 @@ ritorno con ritorno): stessa velocita', stesso percorso, stesso carico.
 La durata di una fase conta solo se la fase e' stata completata.
 
 Analisi (vedi README.md):
-1. metriche PRIMARIE (4): Wilcoxon run 1 vs run 2, Holm sulle 4, rank-biserial r;
+1. metriche PRIMARIE (4): t appaiato run 1 vs run 2 (= ANOVA a misure ripetute con 2
+   livelli), Bonferroni sulle 4, d di Cohen; controllo Wilcoxon (Holm, rank-biserial r);
 2. tutte le altre metriche: stessi numeri, ma esplorative (p non corretto);
 3. conteggi (successo, collisioni, borracce cadute...): solo descrittivi;
 4. uso delle regioni, matrice dei cambi di comando e traiettorie: grafici.
@@ -22,7 +23,7 @@ Output in real_robot/statistics/:
     report.txt                 il riassunto da leggere (italiano)
     robot_subjects.csv         soggetto x run: tutte le metriche
     robot_statistics.csv       metrica x run: descrittive tra soggetti
-    robot_tests.csv            run 1 vs run 2 per metrica (primarie con Holm)
+    robot_tests.csv            run 1 vs run 2 per metrica: t (primarie con Bonferroni) e Wilcoxon
     robot_counts.csv           successi, collisioni, cadute, ... per run
     robot_regions.csv          uso delle regioni per fase e run
     plots/robot_primary.png, plots/robot_phases.png, plots/metrics/<metrica>.png,
@@ -45,11 +46,12 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from common.data import find_sessions   # noqa: E402
-from common.plots import (CATEGORICAL, FIRST_COLOR, INK, INK2, MUTED, SECOND_COLOR,   # noqa: E402
-                          SEQUENTIAL_CMAP, grid_axes, heatmap3x3, save_figure, setup_style, spaghetti)
+from common.plots import (ANOVA_TAG, BLUE, CATEGORICAL, FIRST_COLOR, INK, INK2, MUTED, NONPARAM_TAG,   # noqa: E402
+                          SECOND_COLOR, SEQUENTIAL_CMAP, STARS_NOTE, brackets, grid_axes, heatmap3x3,
+                          mean_se, save_figure, setup_style, spaghetti)
 from common.report import Report   # noqa: E402
 from robot_raw import raw_metrics   # noqa: E402
-from common.stats import describe, fmt_num, holm, wilcoxon_paired   # noqa: E402
+from common.stats import bonferroni, describe, fmt_num, holm, paired_t, wilcoxon_paired   # noqa: E402
 
 BASE_DIR = Path(__file__).resolve().parent
 RUNS = (1, 2)
@@ -59,7 +61,7 @@ DRIVING = ("outbound", "approach", "return")
 MODE_COLORS = {"max_speed": CATEGORICAL[0], "reduced_speed": CATEGORICAL[2],
                "repositioning": CATEGORICAL[3], "transport": CATEGORICAL[1]}
 
-# Le 4 metriche primarie (la famiglia della correzione di Holm): cambiale qui se servono altre
+# Le 4 metriche primarie (la famiglia della correzione di Bonferroni): cambiale qui se servono altre
 PRIMARY = ("phase_durations.outbound", "phase_durations.return",
            "raw.outbound.non_adjacent_percent", "raw.outbound.command_changes_per_min")
 
@@ -146,20 +148,26 @@ def analyse(df, report):
         d = {r: describe(w[r]) for r in RUNS}
         for r in RUNS:
             stat_rows.append({"metric": key, "label": label, "unit": unit, "primary": key in PRIMARY, "run": r, **d[r]})
-        results[key] = (w, d, wilcoxon_paired(w[1], w[2]))
-    p_holm = dict(zip(PRIMARY, holm([results[k][2]["p"] for k in PRIMARY])))
-    for key, (w, d, t) in results.items():
+        results[key] = (w, d, paired_t(w[1], w[2]), wilcoxon_paired(w[1], w[2]))
+    # primarie: t appaiato (= ANOVA a misure ripetute con 2 livelli), Bonferroni sulle 4;
+    # controllo non parametrico: Wilcoxon, Holm sulle 4
+    p_bonf = dict(zip(PRIMARY, bonferroni([results[k][2]["p"] for k in PRIMARY])))
+    p_holm = dict(zip(PRIMARY, holm([results[k][3]["p"] for k in PRIMARY])))
+    for key, (w, d, tt, wt) in results.items():
         label, unit, better = METRICS[key]
-        test_rows.append({"metric": key, "label": label, "unit": unit, "primary": key in PRIMARY,
-                          "comparison": "run 1 vs run 2", "n": t["n"], "statistic": t["statistic"], "p": t["p"],
-                          "p_holm": p_holm.get(key, np.nan), "effect": t["effect"], "effect_name": "rank-biserial r",
-                          "median_run1": d[1].get("median"), "median_run2": d[2].get("median"), "better": better})
+        for t, pc, name, corr, eff in ((tt, p_bonf.get(key, np.nan), "t", "Bonferroni", "Cohen dz"),
+                                       (wt, p_holm.get(key, np.nan), "Wilcoxon", "Holm", "rank-biserial r")):
+            test_rows.append({"metric": key, "label": label, "unit": unit, "primary": key in PRIMARY,
+                              "comparison": "run 1 vs run 2", "test": name, "n": t["n"], "statistic": t["statistic"],
+                              "p": t["p"], "p_corrected": pc, "correction": corr if key in PRIMARY else "",
+                              "effect": t["effect"], "effect_name": eff, "shapiro_p": t.get("shapiro_p", np.nan),
+                              "median_run1": d[1].get("median"), "median_run2": d[2].get("median"), "better": better})
 
-    report.section("Metriche primarie (Holm sulle 4)")
+    report.section("Metriche primarie (t appaiato, Bonferroni sulle 4; controllo Wilcoxon, Holm)")
     for key in PRIMARY:
         label, unit, better = METRICS[key]
-        w, d, t = results[key]
-        report.comparison(label, unit, better, d[1], d[2], t, p_holm[key], "run 1", "run 2")
+        w, d, tt, wt = results[key]
+        report.ttest(label, unit, better, d[1], d[2], tt, p_bonf[key], "run 1", "run 2", np_check=p_holm[key])
     report.section("Le 13 metriche, per fase (esplorative: p non corretto)")
     groups = [
         ("1. Successo e tempo per fase", ["test_duration"] + [f"phase_durations.{p}" for p in PHASES]),
@@ -185,8 +193,8 @@ def analyse(df, report):
         report.text(f"  {title}")
         for key in keys:
             label, unit, better = METRICS[key]
-            w, d, t = results[key]
-            report.comparison("  " + label, unit, better, d[1], d[2], t, None, "run 1", "run 2")
+            w, d, tt, wt = results[key]
+            report.ttest("  " + label, unit, better, d[1], d[2], tt, None, "run 1", "run 2", np_check=None)
     return pd.DataFrame(stat_rows), pd.DataFrame(test_rows)
 
 
@@ -242,17 +250,41 @@ def load_odometry(json_path: Path):
     return od
 
 
-def plots(df, sessions, regions, out):
+def plots(df, sessions, regions, out, tests):
     setup_style()
     fig, axes = grid_axes(len(PRIMARY), ncols=4, width=3.3, height=3.4)
     for ax, key in zip(axes, PRIMARY):
         label, unit, _ = METRICS[key]
         w = df.pivot(index="subject", columns="run", values=key).reindex(columns=list(RUNS))
         spaghetti(ax, w, ["run 1", "run 2"], ylabel=f"{label}{f' [{unit}]' if unit else ''}", title=label)
-    fig.suptitle("Real robot – primary metrics, run 1 vs run 2 (one line per subject)", x=0.01, ha="left",
-                 fontweight="bold")
-    fig.tight_layout(rect=(0, 0, 1, 0.95))
+    fig.suptitle("Real robot – primary metrics, run 1 vs run 2 (one line per subject)\n" + NONPARAM_TAG, x=0.01,
+                 ha="left", fontweight="bold")
+    fig.tight_layout(rect=(0, 0, 1, 0.9))
     save_figure(fig, out, "robot_primary")
+
+    # versione ANOVA (con 2 run = t appaiato): media +- SE, asterisco se significativo dopo Bonferroni
+    fig, axes = grid_axes(len(PRIMARY), ncols=4, width=3.3, height=3.8)
+    for ax, key in zip(axes, PRIMARY):
+        label, unit, _ = METRICS[key]
+        w = df.pivot(index="subject", columns="run", values=key).reindex(columns=list(RUNS))
+        mean_se(ax, w, color=BLUE)
+        ax.set_xticks(range(len(RUNS)))
+        ax.set_xticklabels([f"run {r}" for r in RUNS])
+        ax.set_xlim(-0.4, len(RUNS) - 0.6)
+        ax.set_ylabel(f"{label}{f' [{unit}]' if unit else ''}")
+        ax.set_title(label, loc="left", fontsize=9.5, pad=16)
+        t = tests[(tests.metric == key) & (tests.test == "t")]
+        if not t.empty:
+            r = t.iloc[0]
+            brackets(ax, [(0, 1, r["p_corrected"], r["shapiro_p"] < 0.05)])
+            ax.text(0.0, -0.16, f"paired t: t({int(r['n']) - 1})={r['statistic']:.2f}, p Bonf="
+                    f"{fmt_num(r['p_corrected'], 3)}, d={fmt_num(r['effect'])}", transform=ax.transAxes,
+                    fontsize=7, color=INK2, va="top")
+    fig.suptitle("Real robot – primary metrics, run 1 vs run 2 (grey = single subjects)\n" + ANOVA_TAG
+                 + " – with 2 runs the ANOVA is the paired t", x=0.01, ha="left", fontweight="bold")
+    fig.text(0.01, 0.005, STARS_NOTE, fontsize=8, color=INK2)
+    fig.tight_layout(rect=(0, 0.03, 1, 0.88))
+    save_figure(fig, out, "robot_primary_anova")
 
     fig, axes = grid_axes(len(PHASES), ncols=5, width=2.9, height=3.3)
     for ax, ph in zip(axes, PHASES):
@@ -379,7 +411,8 @@ def main():
         report.text("ATTENZIONE: " + msg)
     report.text("Metriche di guida ricalcolate dai file raw (_regions, _odometry, _cursor.csv); durate delle fasi,")
     report.text("dwell, repositioning e conteggi manuali dal _session.json (nel raw mancano gli istanti degli eventi).")
-    report.text("Confronti: Wilcoxon run 1 vs run 2; Holm sulle 4 metriche primarie, le altre sono esplorative.")
+    report.text("Confronti: t appaiato run 1 vs run 2, Bonferroni sulle 4 metriche primarie (controllo: Wilcoxon,")
+    report.text("Holm); le altre metriche sono esplorative (p non corretto).")
 
     stats_df, tests_df = analyse(df, report)
     counts_df = counts(df, report)
@@ -389,7 +422,7 @@ def main():
     tests_df.to_csv(args.out / "robot_tests.csv", index=False)
     counts_df.to_csv(args.out / "robot_counts.csv", index=False)
     regions.to_csv(args.out / "robot_regions.csv", index=False)
-    plots(df, sessions, regions, args.out)
+    plots(df, sessions, regions, args.out, tests_df)
     report.write(args.out)
 
 

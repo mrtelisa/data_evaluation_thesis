@@ -95,3 +95,70 @@ def grid_axes(n, ncols=3, width=4.0, height=3.2):
     for ax in axes[n:]:
         ax.set_visible(False)
     return fig, axes[:n]
+
+
+# ------------------------------------------------ grafici della versione ANOVA ---
+# Le figure "_anova" mostrano quello che l'ANOVA e i t appaiati confrontano: le MEDIE,
+# con l'errore standard (SE = SD / sqrt(n)), piu' una linea sottile per soggetto.
+# Parentesi con asterischi sui confronti post hoc significativi dopo Bonferroni
+# (come la figura 4 di Bellitto et al. 2025): * p < 0.05, ** p < 0.001;
+# "†" = differenze non normali (Shapiro p < 0.05): vale il controllo non parametrico.
+
+NONPARAM_TAG = "[NON-PARAMETRIC version] median [IQR]; tests in report: Wilcoxon (Holm) / Friedman"
+ANOVA_TAG = "[ANOVA version] mean ± SE; repeated-measures ANOVA + post hoc paired t (Bonferroni)"
+STARS_NOTE = "* p < 0.05, ** p < 0.001 (post hoc paired t, Bonferroni); † differences not normal: check Wilcoxon"
+
+
+def p_stars(p) -> str:
+    if p is None or p != p:
+        return ""
+    return "**" if p < 0.001 else "*" if p < 0.05 else ""
+
+
+def mean_se(ax, wide: pd.DataFrame, x=None, color=BLUE, label=None, subject_lines=True, band=False):
+    """Linee sottili per soggetto + media +- SE tra soggetti (barre, o fascia se band)."""
+    w = wide.apply(pd.to_numeric, errors="coerce")
+    x = np.arange(w.shape[1]) if x is None else np.asarray(x, float)
+    if subject_lines:
+        for _, row in w.iterrows():
+            ax.plot(x, row.to_numpy(float), color=SUBJECT_LINE, lw=0.8, zorder=1)
+    mean = w.mean().to_numpy(float)
+    se = (w.std(ddof=1) / np.sqrt(w.notna().sum())).to_numpy(float)
+    if band:
+        ax.fill_between(x, mean - se, mean + se, color=color, alpha=0.2, lw=0, zorder=2)
+        ax.plot(x, mean, color=color, lw=2, zorder=3, label=label)
+    else:
+        ax.errorbar(x, mean, yerr=se, color=color, lw=2, marker="o", ms=4, capsize=3, zorder=3, label=label)
+    return mean, se
+
+
+def brackets(ax, pairs):
+    """pairs: [(x1, x2, p, non_normale)]; disegna solo quelle significative, una sopra
+    l'altra sopra i dati (asterischi come nel paper)."""
+    sig = [(x1, x2, p, nn) for x1, x2, p, nn in pairs if p_stars(p)]
+    if not sig:
+        return
+    lo, hi = ax.get_ylim()
+    step = 0.07 * (hi - lo)
+    for i, (x1, x2, p, nn) in enumerate(sig):
+        y = hi + step * (i + 0.3)
+        ax.plot([x1, x1, x2, x2], [y - step * 0.25, y, y, y - step * 0.25], color=INK, lw=0.9, clip_on=False)
+        ax.text((x1 + x2) / 2, y, p_stars(p) + ("†" if nn else ""), ha="center", va="bottom", fontsize=10,
+                color=INK, clip_on=False)
+    ax.set_ylim(lo, hi + step * (len(sig) + 0.6))
+
+
+def anova_caption(rows, names=None) -> str:
+    """Testo breve con gli effetti dell'ANOVA (p GG quando ci sono piu' di 2 livelli)."""
+    parts = []
+    for r in rows:
+        if r.get("F") is None or r.get("F") != r.get("F"):
+            continue
+        p = r["p_gg"] if r.get("df1", 1) > 1 else r["p"]
+        name = (names or {}).get(r["effect"], r["effect"])
+        ptxt = "<0.001" if p < 0.001 else f"={p:.3f}"
+        parts.append(f"{name}: F({int(r['df1'])},{int(r['df2'])})={r['F']:.1f}, "
+                     f"p{' GG' if r.get('df1', 1) > 1 else ''}{ptxt}{p_stars(p)}")
+    if not parts:
+        return "ANOVA not computable"
+    return "ANOVA – " + parts[0] if len(parts) == 1 else "ANOVA:\n" + "\n".join(parts)

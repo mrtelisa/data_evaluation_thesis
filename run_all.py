@@ -2,6 +2,7 @@
     1. questionari (punteggi per soggetto)
     2. blind test, training, robot reale, calibrazioni BoMI
     3. collegamenti fra le parti e questionari (usa i risultati di 1 e 2)
+    4. il PDF riassuntivo summary/riepilogo_analisi.pdf (usa tutti i risultati)
 
     python3 run_all.py
 
@@ -21,6 +22,7 @@ STEPS = [
     ("real_robot", "robot_analysis.py"),
     ("calibrations", "calibration_analysis.py"),
     ("cross_analysis", "cross_analysis.py"),
+    ("summary", "make_summary.py"),   # il PDF riassuntivo, sempre per ultimo
 ]
 
 if __name__ == "__main__":
