@@ -1,4 +1,5 @@
-"""Test sul robot reale (reachy_control.py), fatto due volte: run 1 (Test1) e run 2 (Test2).
+"""Test sul robot reale (reachy_control.py), fatto due volte: test 1 e test 2
+(nei file run1 e run2).
 
 Input: <soggetto>_run<N>[_k]_session.json, _regions.csv, _odometry.csv, ovunque dentro
 questa cartella (es. real_robot/results/). Se una run e' stata ripetuta si usa l'ultima.
@@ -6,6 +7,7 @@ questa cartella (es. real_robot/results/). Se una run e' stata ripetuta si usa l
 Fasi del compito, delimitate dagli eventi del task (session_metrics.py): andata = dalla
 partenza alla selezione dell'oggetto (outbound + approach), grasp = selezione -> oggetto in
 mano, ritorno con la borraccia, posizionamento (placement); la loro somma e' il tempo totale.
+Andata + ritorno = tempo di guida senza la manipolazione (grasp e posizionamento).
 Metriche (come Najie et al.):
     CT  Completion time (s)       per fase e totale, dal _session.json (durate degli eventi
                                   del task; nel raw mancano gli istanti); solo fasi completate
@@ -15,17 +17,19 @@ Metriche (come Najie et al.):
     RT  Region transitions        andata e ritorno, cambi di regione del cursore
 
 Analisi, come il modello jamovi della dottoranda (una volta con le andate, una con i
-ritorni, e per ogni fase del completion time): ANOVA a misure ripetute run 1 vs run 2
+ritorni, e per ogni fase del completion time): ANOVA a misure ripetute test 1 vs test 2
 (con 2 livelli coincide con il t appaiato: F = t^2); controllo Wilcoxon.
 
 Output:
     statistics/report.txt, robot_subjects.csv, robot_descriptives/anova/posthoc.csv
-    statistics/plots/robot_boxplots.(png|pdf)  box plot come Najie (mediana, IQR) + t appaiato
-    statistics/plots/robot_mean_sd.(png|pdf)   media ± SD + t appaiato
-    statistics/plots/single/<metrica>_<versione>.(png|pdf)
+    statistics/plots/robot_boxplots.(png|pdf)  box plot come Najie (mediana, IQR) + t appaiato:
+        una riga per metrica (CT, PL, MS, JK, RT), andata a sinistra e ritorno a destra, stessa scala y per riga
+    statistics/plots/robot_manipulation_boxplot.(png|pdf)  completion time di grasp e posizionamento
+    statistics/plots/robot_total_time_boxplot.(png|pdf)    completion time andata + ritorno
+    statistics/plots/single/<metrica>_<outbound|return>_boxplot.(png|pdf)  i pannelli uno per uno
     ../jamovi/reachy/<sigla>_<metrica>.(omv|csv): un file per metrica come reachy_stats.omv, una riga
         per soggetto, colonne Test1_andata, Test2_andata, Test1_ritorno, Test2_ritorno
-        (completion time: anche Test1_grasp ... Test2_totale)
+        (completion time: anche Test1_grasp ... Test2_totale, Test1_andata_ritorno, Test2_andata_ritorno)
 
 Uso:
     python3 robot_analysis.py [--results DIR] [--out DIR]
@@ -43,8 +47,9 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from common.data import find_sessions   # noqa: E402
 from common.jamovi import write_tables   # noqa: E402
-from common.plots import (GREY_BOX, RED_BOX, axis_label, brackets, condition_plot, save_figure,   # noqa: E402
-                          setup_style, subject_colors, subject_legend)
+from common.plots import (BOX_NOTE, GREY_BOX, RED_BOX, axis_label, brackets, condition_plot,   # noqa: E402
+                          save_figure, setup_style, share_ylim, side_legend, subject_colors, subject_handles,
+                          subject_legend)
 from common.report import Report, analyse_metric, save_tables   # noqa: E402
 from robot_raw import navigation_metrics   # noqa: E402
 
@@ -55,7 +60,8 @@ PATTERN = r"(?P<subject>.+)_run(?P<run>\d)(?:_(?P<rep>\d+))?_session\.json"
 # fase (nome delle colonne jamovi, come il file della dottoranda) -> (etichetta, fasi del task)
 PHASES = {"andata": ("Outbound", ("outbound", "approach")), "grasp": ("Grasp", ("grasp",)),
           "ritorno": ("Return", ("return",)), "posizionamento": ("Placement", ("placement",)),
-          "totale": ("Total", None)}
+          "totale": ("Total", None),
+          "andata_ritorno": ("Outbound + return", ("outbound", "approach", "return"))}
 # metriche esplorative (robot_raw.py): solo report e .csv, per la discussione
 EXPLORATORY = {
     "stop_percent":        ("Stop time while driving", "%", ["andata", "ritorno"]),
@@ -108,51 +114,69 @@ def wide(df: pd.DataFrame, m: str, phase: str) -> pd.DataFrame:
     return d.pivot(index="subject", columns="run", values="value").reindex(columns=list(RUNS))
 
 
-def plot_panel(ax, df, m, posthocs, colors, kind):
-    _, label, unit, phases = METRICS[m]
+LEGS = ("andata", "ritorno")   # colonne della figura generale
+
+
+def plot_panel(ax, df, m, phases, posthocs, colors):
+    """Test 1 vs test 2 per ognuna delle `phases` (gruppi sull'asse x)."""
+    _, label, unit, _ = METRICS[m]
     groups = [PHASES[p][0] for p in phases]
     data = {}
     for p in phases:
         w = wide(df, m, p)
         for r in RUNS:
-            data[(PHASES[p][0], f"Run {r}")] = w[r]
-    xpos = condition_plot(ax, data, groups, ["Run 1", "Run 2"], {"Run 1": GREY_BOX, "Run 2": RED_BOX}, colors,
-                          kind=kind)
+            data[(PHASES[p][0], f"Test {r}")] = w[r]
+    xpos = condition_plot(ax, data, groups, ["Test 1", "Test 2"], {"Test 1": GREY_BOX, "Test 2": RED_BOX}, colors)
     ax.set_xticklabels(groups)
     ax.set_ylabel(axis_label(label, unit))
     col = "p_t_bonferroni"   # parentesi dal t appaiato, come i post hoc dell'ANOVA (un solo confronto: p non corretto)
-    brackets(ax, [(xpos[(PHASES[p][0], "Run 1")], xpos[(PHASES[p][0], "Run 2")], posthocs[(m, p)][col].iloc[0])
+    brackets(ax, [(xpos[(PHASES[p][0], "Test 1")], xpos[(PHASES[p][0], "Test 2")], posthocs[(m, p)][col].iloc[0])
                   for p in phases])
+
+
+def single_plot(df, m, phases, posthocs, colors, handles, out, name, ylim=None):
+    """Grafico singolo: senza titolo, legenda di run e soggetti a lato, nota sotto."""
+    fig, ax = plt.subplots(figsize=(1.9 + 1.2 * len(phases), 3.6))
+    plot_panel(ax, df, m, phases, posthocs, colors)
+    if ylim is not None:
+        ax.set_ylim(ylim)
+    side_legend(ax, handles)
+    save_figure(fig, out, name, note=BOX_NOTE)
 
 
 def plots(df: pd.DataFrame, posthocs: dict, out: Path):
     setup_style()
     colors = subject_colors(df["subject"].unique())
-    run_handles = [plt.Rectangle((0, 0), 1, 1, facecolor=f, edgecolor=e, lw=1.2, label=f"Run {r}")
+    run_handles = [plt.Rectangle((0, 0), 1, 1, facecolor=f, edgecolor=e, lw=1.2, label=f"Test {r}")
                    for r, (f, e) in zip(RUNS, (GREY_BOX, RED_BOX))]
-    for kind, name, what in (("box", "robot_boxplots", "median [IQR]"), ("mean", "robot_mean_sd", "mean ± SD")):
-        fig = plt.figure(figsize=(12, 7.6))
-        gs = fig.add_gridspec(2, 3)
-        axes = [fig.add_subplot(gs[0, :2]), fig.add_subplot(gs[0, 2]), fig.add_subplot(gs[1, 0]),
-                fig.add_subplot(gs[1, 1]), fig.add_subplot(gs[1, 2])]
-        for ax, m, letter in zip(axes, METRICS, "ABCDE"):
-            plot_panel(ax, df, m, posthocs, colors, kind)
-            ax.set_title(f"({letter})")
-        fig.suptitle(f"Real robot: run 1 vs run 2 ({what} across participants)", x=0.01, ha="left",
-                     fontweight="bold", fontsize=11)
-        fig.tight_layout(h_pad=1.6, rect=(0, 0.03, 1, 0.985))
-        subject_legend(fig, colors, y=0.035, extra=run_handles)
-        save_figure(fig, out, name)
-        for m in METRICS:
-            n = len(METRICS[m][3])
-            fig, ax = plt.subplots(figsize=(1.6 + 1.3 * n, 3.6))
-            plot_panel(ax, df, m, posthocs, colors, kind)
-            ax.legend(handles=run_handles, loc="best", ncol=2 if n > 2 else 1)
-            save_figure(fig, out, f"single/{m}_{'boxplot' if kind == 'box' else 'mean_sd'}")
+    handles = run_handles + subject_handles(colors)
+    # figura generale: andata a sinistra, ritorno a destra (lunghezze e velocita' del robot diverse);
+    # una riga per metrica, stessa scala y nella riga
+    fig, axes = plt.subplots(len(METRICS), 2, figsize=(7.6, 3.0 * len(METRICS)))
+    letters = iter("ABCDEFGHIJ")
+    for row, m in enumerate(METRICS):
+        for col, leg in enumerate(LEGS):
+            plot_panel(axes[row, col], df, m, [leg], posthocs, colors)
+            axes[row, col].set_title(f"({next(letters)})")
+    ylim = {m: share_ylim(axes[row]) for row, m in enumerate(METRICS)}
+    fig.suptitle("Real robot: test 1 vs test 2\noutbound (left) and return (right), median [IQR] across participants",
+                 x=0.01, ha="left", fontweight="bold", fontsize=11)
+    fig.tight_layout(h_pad=1.6, rect=(0, 0.035, 1, 0.975))
+    subject_legend(fig, colors, ncol=6, y=0.03, extra=run_handles)
+    save_figure(fig, out, "robot_boxplots")
+    for m in METRICS:
+        for leg in LEGS:
+            single_plot(df, m, [leg], posthocs, colors, handles, out,
+                        f"single/{m}_{'outbound' if leg == 'andata' else 'return'}_boxplot", ylim[m])
+    # a parte: manipolazione (selezione dell'oggetto e posizionamento) e tempo di guida andata + ritorno
+    single_plot(df, "completion_time", ["grasp", "posizionamento"], posthocs, colors, handles, out,
+                "robot_manipulation_boxplot")
+    single_plot(df, "completion_time", ["andata_ritorno"], posthocs, colors, handles, out,
+                "robot_total_time_boxplot")
 
 
 def main():
-    p = argparse.ArgumentParser(description="Real robot analysis (run 1 vs run 2)")
+    p = argparse.ArgumentParser(description="Real robot analysis (test 1 vs test 2)")
     p.add_argument("--results", type=Path, default=BASE_DIR)
     p.add_argument("--out", type=Path, default=BASE_DIR / "statistics")
     args = p.parse_args()
@@ -161,13 +185,13 @@ def main():
     if df.empty:
         print(f"No *_run<N>_session.json in {args.results}")
         return
-    report = Report("REAL ROBOT – run 1 vs run 2")
+    report = Report("REAL ROBOT – test 1 vs test 2")
     ids = sorted(df["subject"].unique())
     report.text(f"Participants: {len(ids)} ({', '.join(ids)})")
     for r in RUNS:
-        report.text(f"  run {r}: {df[df.run == r]['subject'].nunique()} participants")
+        report.text(f"  test {r}: {df[df.run == r]['subject'].nunique()} participants")
     if dropped:
-        report.text("Repeated runs discarded (the last one is used): " + ", ".join(p.name for p in dropped))
+        report.text("Repeated tests discarded (the last one is used): " + ", ".join(p.name for p in dropped))
     for msg in problems:
         report.text("WARNING: " + msg)
     report.text("Outbound = from the start to the object selection (outbound + approach phases); the four")
@@ -178,8 +202,8 @@ def main():
     results, posthocs = [], {}
     for m, (abbr, label, unit, phases) in METRICS.items():
         for ph in phases:
-            res = analyse_metric(report, m, f"{label} – {PHASES[ph][0].lower()}", unit, wide(df, m, ph), ["Run"],
-                                 [(r, f"run {r}") for r in RUNS], [(1, 2, "run 1 vs run 2")],
+            res = analyse_metric(report, m, f"{label} – {PHASES[ph][0].lower()}", unit, wide(df, m, ph), ["Test"],
+                                 [(r, f"test {r}") for r in RUNS], [(1, 2, "test 1 vs test 2")],
                                  digits=0 if m in ("completion_time", "region_transitions") else 2)
             for key in ("descriptives", "anova", "posthoc"):
                 res[key].insert(1, "phase", ph)
@@ -187,13 +211,13 @@ def main():
             posthocs[(m, ph)] = res["posthoc"]
 
     report.section("EXPLORATORY METRICS (not in the figures nor in the jamovi tables)")
-    report.text("Why is the base faster in run 2? Share of stops, rate of command changes and how far from")
+    report.text("Why is the base faster in test 2? Share of stops, rate of command changes and how far from")
     report.text("the centre the cursor is pushed (the commanded speed grows with that distance).")
     exploratory = []
     for m, (label, unit, phases) in EXPLORATORY.items():
         for ph in phases:
-            res = analyse_metric(report, m, f"{label} – {PHASES[ph][0].lower()}", unit, wide(df, m, ph), ["Run"],
-                                 [(r, f"run {r}") for r in RUNS], [(1, 2, "run 1 vs run 2")], digits=2)
+            res = analyse_metric(report, m, f"{label} – {PHASES[ph][0].lower()}", unit, wide(df, m, ph), ["Test"],
+                                 [(r, f"test {r}") for r in RUNS], [(1, 2, "test 1 vs test 2")], digits=2)
             for key in ("descriptives", "anova", "posthoc"):
                 res[key].insert(1, "phase", ph)
             exploratory.append(res)
@@ -215,7 +239,7 @@ def main():
             for r in RUNS:
                 name = f"Test{r}_{ph}"
                 cols[name] = w[r].reindex(ids).to_numpy()
-                desc[name] = f"{label}{f' ({unit})' if unit else ''}, {PHASES[ph][0].lower()}, run {r}"
+                desc[name] = f"{label}{f' ({unit})' if unit else ''}, {PHASES[ph][0].lower()}, test {r}"
         write_tables(pd.DataFrame(cols), ROOT / "jamovi" / "reachy" / f"{abbr}_{m}", desc, specs)
 
     plots(df, posthocs, args.out)

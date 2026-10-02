@@ -37,9 +37,10 @@ Analisi (per metrica), come il modello jamovi del training:
 Output:
     statistics/report.txt, blind_trials.csv, blind_subjects.csv (soggetto x test),
     blind_blocks.csv (soggetto x test x blocco), blind_descriptives/anova/friedman/posthoc.csv
-    statistics/plots/blind_boxplots.(png|pdf)  box plot (mediana, IQR) + t appaiati (Bonferroni)
-    statistics/plots/blind_mean_sd.(png|pdf)   media ± SD + t appaiati (Bonferroni)
-    statistics/plots/single/<metrica>_<versione>.(png|pdf)  i pannelli uno per uno
+    statistics/plots/blind_boxplots.(png|pdf)  box plot (mediana, IQR) + t appaiati (Bonferroni), senza TT e LI
+    statistics/plots/single/<metrica>_boxplot.(png|pdf)  i pannelli uno per uno (senza MD e TTR, che
+        restano nel report e nelle tabelle jamovi) e linearity_index_no_outlier_boxplot senza il valore
+        piu' alto del linearity index, per vedere gli altri soggetti
     ../jamovi/blind/<sigla>_<metrica>.(omv|csv): un file per metrica, una riga per soggetto,
         colonne <sigla>_T1_B1 ... <sigla>_T5_B3 (fattore Test, livelli T1-T5; fattore Blocco, B1-B3)
 
@@ -59,8 +60,8 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from common.data import find_sessions   # noqa: E402
 from common.jamovi import write_tables   # noqa: E402
-from common.plots import (GREY_BOX, axis_label, brackets, condition_plot, save_figure, setup_style,   # noqa: E402
-                          subject_colors, subject_legend)
+from common.plots import (BOX_NOTE, GREY_BOX, axis_label, brackets, condition_plot, save_figure, setup_style,   # noqa: E402
+                          share_ylim, side_legend, subject_colors, subject_handles, subject_legend)
 from common.reach_metrics import canvas_scale, canvas_to_cm, endpoint_errors, linearity_index, speed   # noqa: E402
 from common.report import Report, analyse_metric, save_tables   # noqa: E402
 
@@ -85,6 +86,12 @@ METRICS = {
     "linearity_index":   ("LI", "Linearity index", "-"),
     "movement_duration": ("MD", "Movement duration", "s"),
 }
+# metriche nei grafici (MD e TTR solo nel report e nelle tabelle jamovi)
+PLOTTED = [m for m in METRICS if m not in ("movement_duration", "time_to_reach")]
+# figura generale: senza time on target e linearity index (solo nei grafici singoli)
+OVERVIEW = [m for m in PLOTTED if m not in ("time_on_target", "linearity_index")]
+# stessa unita' e stessa grandezza (quota di prove): stessa scala y, anche nei grafici singoli
+SHARED_Y = [("hit", "crossed")]
 
 
 def trials_from_raw(raw: pd.DataFrame, cfg: dict, scale: float) -> pd.DataFrame:
@@ -165,12 +172,15 @@ def block_wide(blocks: pd.DataFrame, m: str, n_blocks: int) -> pd.DataFrame:
     return w.reindex(columns=pd.MultiIndex.from_product([list(TESTS), range(1, n_blocks + 1)]))
 
 
-def plot_panel(ax, subjects, m, ph, colors, kind):
+def plot_panel(ax, subjects, m, ph, colors, hide=()):
+    """`hide`: (soggetto, test) da non disegnare; le parentesi restano quelle dei post hoc su tutti i dati."""
     _, label, unit = METRICS[m]
     w = wide(subjects, m)
+    for subj, t in hide:
+        w.loc[subj, t] = np.nan
     groups = [f"Test {t}" for t in TESTS]
     data = {(f"Test {t}", "all"): w[t] for t in TESTS}
-    xpos = condition_plot(ax, data, groups, ["all"], {"all": GREY_BOX}, colors, kind=kind)
+    xpos = condition_plot(ax, data, groups, ["all"], {"all": GREY_BOX}, colors)
     ax.set_xticklabels(groups)
     ax.set_ylabel(axis_label(label, unit))
     if m == "extent_error":
@@ -183,23 +193,36 @@ def plot_panel(ax, subjects, m, ph, colors, kind):
 def plots(subjects: pd.DataFrame, posthocs: dict, out: Path):
     setup_style()
     colors = subject_colors(subjects["subject"].unique())
-    for kind, name, what in (("box", "blind_boxplots", "median [IQR]"), ("mean", "blind_mean_sd", "mean ± SD")):
-        fig, axes = plt.subplots(4, 3, figsize=(12, 13.5))
-        axes = axes.ravel()
-        for ax in axes[len(METRICS):]:
-            ax.set_visible(False)
-        for ax, m, letter in zip(axes, METRICS, "ABCDEFGHIJ"):
-            plot_panel(ax, subjects, m, posthocs[m], colors, kind)
-            ax.set_title(f"({letter})")
-        fig.suptitle(f"Blind reaching test ({what} across participants)", x=0.01, ha="left",
-                     fontweight="bold", fontsize=11)
-        fig.tight_layout(h_pad=1.6, rect=(0, 0, 1, 0.985))
-        subject_legend(fig, colors, ncol=6, y=0.2)
-        save_figure(fig, out, name)
-        for m in METRICS:
-            fig, ax = plt.subplots(figsize=(4.6, 3.6))
-            plot_panel(ax, subjects, m, posthocs[m], colors, kind)
-            save_figure(fig, out, f"single/{m}_{'boxplot' if kind == 'box' else 'mean_sd'}")
+    # valore piu' alto del linearity index: grafico in piu' senza di lui, per vedere gli altri soggetti
+    top = subjects.loc[subjects["linearity_index"].idxmax()]
+    hide = [(top["subject"], int(top["test"]))]
+    fig, axes = plt.subplots(2, 3, figsize=(12, 7.4))
+    by_metric = dict(zip(OVERVIEW, axes.ravel()))
+    for (m, ax), letter in zip(by_metric.items(), "ABCDEF"):
+        plot_panel(ax, subjects, m, posthocs[m], colors)
+        ax.set_title(f"({letter})")
+    ylim = {}
+    for group in SHARED_Y:
+        lim = share_ylim([by_metric[m] for m in group])
+        ylim.update({m: lim for m in group})
+    fig.suptitle("Blind reaching test (median [IQR] across participants)", x=0.01, ha="left",
+                 fontweight="bold", fontsize=11)
+    fig.tight_layout(h_pad=1.6, rect=(0, 0.03, 1, 0.985))
+    subject_legend(fig, colors, y=0.035)
+    save_figure(fig, out, "blind_boxplots")
+    for m in PLOTTED:
+        fig, ax = plt.subplots(figsize=(4.6, 3.6))
+        plot_panel(ax, subjects, m, posthocs[m], colors)
+        if m in ylim:
+            ax.set_ylim(ylim[m])
+        side_legend(ax, subject_handles(colors))
+        save_figure(fig, out, f"single/{m}_boxplot", note=BOX_NOTE)
+    fig, ax = plt.subplots(figsize=(4.6, 3.6))
+    plot_panel(ax, subjects, "linearity_index", posthocs["linearity_index"], colors, hide)
+    side_legend(ax, subject_handles(colors))
+    save_figure(fig, out, "single/linearity_index_no_outlier_boxplot",
+                note=f"{BOX_NOTE} {top['subject']} test {int(top['test'])} not shown "
+                     f"(LI = {top['linearity_index']:.1f}).")
 
 
 def main():

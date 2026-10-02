@@ -6,24 +6,24 @@ Correlazioni di Spearman ESPLORATIVE: nessuna correzione, da leggere come tenden
 
 Trasferimento: la stessa abilita' con il cursore e con il robot
 ---------------------------------------------------------------
-  Blind test 3 – hit rate (%)  vs  Run 1 – region transitions, outbound
+  Blind test 3 – hit rate (%)  vs  Robot test 1 – region transitions, outbound
       (reaching the target blind vs sweeping across the grid on the robot; atteso -) rho=0.12 (piccolo), p=0.747, n=10, nella direzione attesa: no
-  Training T2 B12 – linearity index  vs  Run 1 – path length, outbound (m)
+  Training T2 B12 – linearity index  vs  Robot test 1 – path length, outbound (m)
       (curved cursor paths (training) vs longer robot paths; atteso +) rho=0.04 (trascurabile), p=0.907, n=10, nella direzione attesa: si'
-  Blind test 3 – direction error (deg)  vs  Run 1 – region transitions, outbound
+  Blind test 3 – direction error (deg)  vs  Robot test 1 – region transitions, outbound
       (planning errors (blind) vs corrections (robot); atteso +) rho=-0.38 (medio), p=0.276, n=10, nella direzione attesa: no
-  Blind test 3 – Euclidean error (cm)  vs  Run 1 – completion time, outbound (s)
+  Blind test 3 – Euclidean error (cm)  vs  Robot test 1 – completion time, outbound (s)
       (map knowledge (blind) vs driving time (robot); atteso +) rho=-0.07 (trascurabile), p=0.855, n=10, nella direzione attesa: no
-  Training gain: movement duration T1 B1 – T2 B12 (s)  vs  Robot gain: outbound completion time run 1 – run 2 (s)
+  Training gain: movement duration T1 B1 – T2 B12 (s)  vs  Robot gain: outbound completion time robot test 1 – test 2 (s)
       (who improves in the training improves on the robot; atteso +) rho=0.28 (piccolo), p=0.425, n=10, nella direzione attesa: si'
 
 Questionari e prestazioni
 -------------------------
-  SUS score (0-100)  vs  Run 2 – total completion time (s)
+  SUS score (0-100)  vs  Robot test 2 – total completion time (s)
       (perceived usability vs time on the task; atteso -) rho=-0.01 (trascurabile), p=0.987, n=10, nella direzione attesa: si'
-  NASA-TLX raw (0-100)  vs  Run 2 – total completion time (s)
+  NASA-TLX raw (0-100)  vs  Robot test 2 – total completion time (s)
       (perceived workload vs time on the task; atteso +) rho=0.40 (medio), p=0.258, n=10, nella direzione attesa: si'
-  NASA-TLX physical demand (1-20)  vs  Blind Euclidean error: test 4 – test 3 (cm) (> 0 = worse after run 1)
+  NASA-TLX physical demand (1-20)  vs  Blind Euclidean error: test 4 – test 3 (cm) (> 0 = worse after robot test 1)
       (perceived physical demand vs fatigue in the blind test; atteso +) rho=0.04 (trascurabile), p=0.907, n=10, nella direzione attesa: si'
 
 Questionari: descrittive

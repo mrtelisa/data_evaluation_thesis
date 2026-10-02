@@ -4,10 +4,12 @@
 - box plot come la figura 4 di Najie et al. (box pieno chiaro con bordo colorato, linea
   della mediana, baffi tratteggiati fino a 1.5 IQR, un punto per soggetto con il colore
   del soggetto, lo stesso in tutti i grafici);
-- versione media +- SD con lo stesso stile: box da media - SD a media + SD con la linea
-  della media (senza baffi), per l'analisi parametrica;
 - parentesi grigie con gli asterischi sui confronti significativi:
-  * p < 0.05, ** p < 0.01, *** p < 0.001.
+  * p < 0.05, ** p < 0.01, *** p < 0.001; se una figura ha degli asterischi, save_figure
+  scrive la loro legenda;
+- figure con piu' pannelli: titolo e legenda degli asterischi in alto a destra; grafici
+  singoli: niente titolo, sotto il grafico una legenda scarna (save_figure(..., note=...)):
+  cosa si vede (es. BOX_NOTE) piu' gli asterischi.
 """
 
 from pathlib import Path
@@ -29,6 +31,8 @@ TRAINING_COLORS = {"T1": "#d95319", "T2": "#0072bd"}
 SUBJECT_PALETTE = ["#0072bd", "#d95319", "#edb120", "#7e2f8e", "#77ac30", "#4dbeee", "#a2142f",
                    "#e377c2", "#17becf", "#8c564b", "#bcbd22", "#7f7f7f", "#1f3a93", "#2ca02c"]
 BLUE, CATEGORICAL = SUBJECT_PALETTE[0], SUBJECT_PALETTE   # per i grafici delle calibrazioni
+BOX_NOTE = "Box: median [IQR], whiskers 1.5 IQR; dots: participants."
+STARS_NOTE = "* p < 0.05, ** p < 0.01, *** p < 0.001"
 
 
 def setup_style():
@@ -45,8 +49,21 @@ def setup_style():
     })
 
 
-def save_figure(fig, out_dir, name):
-    """plots/<name>.png (300 dpi) e plots/<name>.pdf (vettoriale, per la tesi)."""
+def save_figure(fig, out_dir, name, note=None):
+    """plots/<name>.png (300 dpi) e plots/<name>.pdf (vettoriale, per la tesi). Se brackets ha
+    disegnato degli asterischi aggiunge la loro legenda: in alto a destra nelle figure con titolo,
+    sotto il grafico insieme a `note` (cosa si vede) nei grafici singoli."""
+    star_text = STARS_NOTE if getattr(fig, "_has_stars", False) else None
+    if note is not None:
+        fig.canvas.draw()   # posizione delle etichette dell'asse x, per scrivere la nota sotto
+        bottom = min(ax.get_tightbbox().transformed(fig.transFigure.inverted()).y0 for ax in fig.axes
+                     if ax.get_visible())
+        text = "\n".join(t for t in (note, star_text) if t)
+        fig.text(0.01, bottom - 0.02, text, ha="left", va="top", fontsize=7, color=INK2, wrap=True)
+    elif star_text:
+        title = fig._suptitle
+        y, va = (title.get_position()[1], "top") if title is not None else (1.0, "bottom")
+        fig.text(0.995, y, star_text, ha="right", va=va, fontsize=7.5, color=SIG_COLOR)
     path = Path(out_dir) / "plots" / f"{name}.png"
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path)
@@ -76,10 +93,8 @@ def _jitter(subjects, colors, width):
     return {s: (order.index(s) / n - 0.5) * width for s in subjects}
 
 
-def condition_plot(ax, data: dict, groups: list, conditions: list, styles: dict, colors: dict,
-                   kind="box", width=None):
-    """Box plot (kind="box": mediana, IQR, baffi a 1.5 IQR) o box media +- SD (kind="mean")
-    con un punto per soggetto.
+def condition_plot(ax, data: dict, groups: list, conditions: list, styles: dict, colors: dict, width=None):
+    """Box plot (mediana, IQR, baffi a 1.5 IQR) con un punto per soggetto.
     data: {(gruppo, condizione): Series indicizzata per soggetto}; i gruppi vanno
     sull'asse x (etichette), le condizioni affiancate dentro ogni gruppo con lo stile
     styles[condizione] = (riempimento, bordo). Restituisce {(gruppo, condizione): x}."""
@@ -96,21 +111,12 @@ def condition_plot(ax, data: dict, groups: list, conditions: list, styles: dict,
                 continue
             face, edge = styles[c]
             tops[x] = float(v.max())
-            if kind == "box":
-                ax.boxplot([v.to_numpy()], positions=[x], widths=width, patch_artist=True, showfliers=False,
-                           whis=1.5, manage_ticks=False, zorder=2,
-                           boxprops=dict(facecolor=face, edgecolor=edge, linewidth=1.2),
-                           medianprops=dict(color=edge, linewidth=1.6),
-                           whiskerprops=dict(color=edge, linewidth=1.0, linestyle=(0, (4, 3))),
-                           capprops=dict(color=edge, linewidth=1.0))
-            else:
-                m, sd = v.mean(), v.std(ddof=1) if len(v) > 1 else 0.0
-                tops[x] = max(tops[x], float(m + sd))
-                ax.add_patch(plt.Rectangle((x - width / 2, m - sd), width, 2 * sd, facecolor=face,
-                                           edgecolor=edge, linewidth=1.2, zorder=2))
-                ax.plot([x - width / 2, x + width / 2], [m, m], color=edge, lw=1.6, zorder=2,
-                        solid_capstyle="butt")
-                ax.update_datalim([(x, m - sd), (x, m + sd)])
+            ax.boxplot([v.to_numpy()], positions=[x], widths=width, patch_artist=True, showfliers=False,
+                       whis=1.5, manage_ticks=False, zorder=2,
+                       boxprops=dict(facecolor=face, edgecolor=edge, linewidth=1.2),
+                       medianprops=dict(color=edge, linewidth=1.6),
+                       whiskerprops=dict(color=edge, linewidth=1.0, linestyle=(0, (4, 3))),
+                       capprops=dict(color=edge, linewidth=1.0))
             jit = _jitter(v.index, colors, width * 0.55)
             ax.scatter([x + jit[s] for s in v.index], v.to_numpy(), s=14, c=[colors[s] for s in v.index],
                        linewidths=0, zorder=3)
@@ -130,6 +136,7 @@ def brackets(ax, items: list):
     sig = [(min(x1, x2), max(x1, x2), stars(p)) for x1, x2, p in items if stars(p)]
     if not sig:
         return
+    ax.figure._has_stars = True   # save_figure aggiunge la legenda degli asterischi
     lo, hi = ax.get_ylim()
     step = 0.075 * (hi - lo)
     tops = getattr(ax, "_data_tops", None)
@@ -148,10 +155,19 @@ def brackets(ax, items: list):
     ax.set_ylim(lo, max(hi, max(y for _, _, y in placed) + step * 0.9))
 
 
+def subject_handles(colors: dict) -> list:
+    return [plt.Line2D([], [], ls="", marker="o", ms=4.5, color=c, label=s) for s, c in sorted(colors.items())]
+
+
+def side_legend(ax, handles: list):
+    """Legenda a destra del grafico, fuori dagli assi (grafici singoli)."""
+    ax.legend(handles=handles, loc="upper left", bbox_to_anchor=(1.02, 1.0), ncol=1, fontsize=7,
+              handletextpad=0.3, borderaxespad=0)
+
+
 def subject_legend(fig, colors: dict, ncol=None, y=0.0, extra=()):
     """Legenda dei colori dei soggetti (piu' eventuali `extra` handle), in una riga sotto la figura."""
-    handles = list(extra) + [plt.Line2D([], [], ls="", marker="o", ms=4.5, color=c, label=s)
-                             for s, c in sorted(colors.items())]
+    handles = list(extra) + subject_handles(colors)
     fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, y), ncol=ncol or len(handles),
                handletextpad=0.3, columnspacing=1.0, fontsize=7.5)
 
@@ -164,3 +180,13 @@ def grid_axes(n, ncols=3, width=4.0, height=3.2):
     for ax in axes[n:]:
         ax.set_visible(False)
     return fig, axes[:n]
+
+
+def share_ylim(axes) -> tuple:
+    """Stessa scala y (stessi limiti) per pannelli con la stessa unita' e grandezze simili, es. le
+    percentuali del blind; da chiamare dopo aver disegnato dati e parentesi. Restituisce i limiti."""
+    lims = [ax.get_ylim() for ax in axes]
+    lim = (min(lo for lo, _ in lims), max(hi for _, hi in lims))
+    for ax in axes:
+        ax.set_ylim(lim)
+    return lim

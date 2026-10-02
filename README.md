@@ -1,6 +1,6 @@
 # data_evaluation_thesis
 
-Analysis of the experimental protocol: blind reaching test (5 repetitions), reaching training (2 sessions), real robot (2 runs), plus questionnaires and BoMI calibrations.
+Analysis of the experimental protocol: blind reaching test (5 repetitions), reaching training (2 sessions), real robot (2 tests), plus questionnaires and BoMI calibrations.
 
 Reference papers: Bellitto et al. 2025, J. Neural Eng. 22 046036 (metric definitions, Fig. 4) and Najie et al. (box plots).
 
@@ -27,7 +27,7 @@ Copy the result files of `reachy2_teleop_grasping_and_simulation` into the `resu
 - `jamovi/`: one file per metric (`.omv` with column descriptions, and `.csv`), in the layout of the jamovi models. One row per participant.
   - `jamovi/training/<abbr>_<metric>`: `EE_T1_B1 ... EE_T2_B12` (as `training_reaching_out.omv`; block = mean of 8 targets) for EE, DE, XE, MD, LI. Model: repeated-measures ANOVA Training (T1, T2) × Block (B1–B12).
   - `jamovi/blind/<abbr>_<metric>`: `HR_T1_B1 ... HR_T5_B3` (block = mean of 4 trials) for HR, TC, TT, EE, XE, DE, MinD, TTR, LI, MD. Model: repeated-measures ANOVA Test (T1–T5) × Block (B1–B3).
-  - `jamovi/reachy/<abbr>_<metric>`: `Test1_andata`, `Test2_andata`, `Test1_ritorno`, `Test2_ritorno` (as `reachy_stats.omv`) for CT, PL, MS, JK, RT; the CT file also has grasp, posizionamento and totale. Model: repeated-measures ANOVA run 1 vs run 2, once on the outbound and once on the return columns.
+  - `jamovi/reachy/<abbr>_<metric>`: `Test1_andata`, `Test2_andata`, `Test1_ritorno`, `Test2_ritorno` (as `reachy_stats.omv`) for CT, PL, MS, JK, RT; the CT file also has grasp, posizionamento and totale. the CT file also has `andata_ritorno` (outbound + return, without manipulation). Model: repeated-measures ANOVA test 1 vs test 2, once on the outbound and once on the return columns.
   - Every `.omv` already contains the repeated-measures ANOVA(s), set up as the supervisor's models (`common/jamovi_template/`): factors and cells, η² and partial η², sphericity tests with Greenhouse-Geisser, post hoc tests only in the robot files (training and blind: no post hoc terms, the tables would be too long for jamovi). The results are saved empty and marked stale (as jamovi does for templates), because jamovi does not recompute saved analyses when opening a file: after opening, change the plot theme or the decimal symbol once in the jamovi settings (⋮ menu, top right) and every analysis is computed.
 - `cross_analysis/statistics/`: exploratory Spearman correlations (no correction) between the tasks (blind/training vs robot) and between questionnaires and performance, plus questionnaire descriptives; uses only the metrics below. Runs last in `run_all.py`.
 - `<task>/statistics/`: `report.txt` (descriptives, ANOVA, post hoc for every metric), `.csv` tables, `plots/` (`.png` 300 dpi and `.pdf`; `plots/single/` has every panel on its own).
@@ -45,7 +45,7 @@ Definitions as Bellitto et al. 2025 (par. 2.4.2) and the lab script `computereac
 - Euclidean, extent and direction error at the end of the 4 s, minimum distance from the target;
 - time to reach (hits only), linearity index (to target entry or end of trial), movement duration (movement onset at 40 px/s to target entry, or to the last sample above 40 px/s).
 
-**Real robot** (run 1 vs run 2):
+**Real robot** (test 1 vs test 2; input files `run1`/`run2`):
 - completion time per phase and total: outbound = from the start to the object selection (task phases outbound + approach), grasp = object selection to object in hand, return, placement;
 - outbound and return: path length, mean speed, mean jerk (base odometry), region transitions of the cursor in the 3 × 3 interface.
 
@@ -55,11 +55,13 @@ Definitions as Bellitto et al. 2025 (par. 2.4.2) and the lab script `computereac
 
 ## Statistics
 
-Every participant counts once: one value per participant and condition, then statistics across participants. Every analysis has two versions:
+Every participant counts once: one value per participant and condition, then statistics across participants. Every analysis has two versions of the tests (mean ± SD and median [IQR] are both in `report.txt`):
 
-| Version | Figures | Tests |
-|---|---|---|
-| Parametric | `*_mean_sd`: mean ± SD | repeated-measures ANOVA (Greenhouse-Geisser, η², partial η²), post hoc paired t-tests (Bonferroni) |
-| Non-parametric | `*_boxplots`, `figure4_median_iqr`: median [IQR] | Friedman, Wilcoxon signed-rank (Holm) |
+| Version | Tests |
+|---|---|
+| Parametric | repeated-measures ANOVA (Greenhouse-Geisser, η², partial η²), post hoc paired t-tests (Bonferroni) |
+| Non-parametric | Friedman, Wilcoxon signed-rank (Holm) |
 
-Planned post hoc comparisons: training T1 B1 vs T1 B12, T1 B12 vs T2 B1, T1 B12 vs T2 B12; blind consecutive tests (1–2, 2–3, 3–4, 4–5); robot run 1 vs run 2. In the figures: `*` p < 0.05, `**` p < 0.01, `***` p < 0.001 (corrected p). The brackets of every figure, box plots included, come from the paired t-tests (Bonferroni), as the post hoc of the ANOVA; the Wilcoxon tests are only reported in `report.txt`.
+Figures show only medians: box plots with whiskers at 1.5 IQR (`*_boxplots`, blind and robot) and median [IQR] curves for the training (`figure4_median_iqr`). The training also has `return_median_iqr` (return to the centre: movement duration and linearity index, plots only, no statistics; data in `training_return_trials.csv`). Every panel is also saved on its own in `plots/single/`: the overview figures have a title, the single plots have no title and a note under the plot saying what is shown (median [IQR], whiskers, dots) and what the asterisks mean. In the blind test, movement duration and time to reach are not plotted, and time on target and linearity index are only in their single plots (`plots/single/`); `plots/single/linearity_index_no_outlier_boxplot` repeats the linearity index without its highest value, to show the other participants.
+
+Planned post hoc comparisons: training T1 B1 vs T1 B12, T1 B12 vs T2 B1, T1 B12 vs T2 B12; blind consecutive tests (1–2, 2–3, 3–4, 4–5); robot test 1 vs test 2. In the figures: `*` p < 0.05, `**` p < 0.01, `***` p < 0.001 (corrected p). The brackets of every figure, box plots included, come from the paired t-tests (Bonferroni), as the post hoc of the ANOVA; the Wilcoxon tests are only reported in `report.txt`.

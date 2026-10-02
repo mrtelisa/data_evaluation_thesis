@@ -4,6 +4,7 @@ S001,1,completion_time,grasp,28.18629813194275
 S001,1,completion_time,ritorno,226.68204045295715
 S001,1,completion_time,posizionamento,27.465511798858643
 S001,1,completion_time,totale,567.0991702079773
+S001,1,completion_time,andata_ritorno,511.44735407829285
 S001,1,path_length,andata,23.56045742672233
 S001,1,mean_speed,andata,0.09137264087529655
 S001,1,jerk,andata,1.7069696841256319
@@ -23,6 +24,7 @@ S001,2,completion_time,grasp,518.8722927570343
 S001,2,completion_time,ritorno,193.92998790740967
 S001,2,completion_time,posizionamento,29.08165216445923
 S001,2,completion_time,totale,1004.4422528743744
+S001,2,completion_time,andata_ritorno,456.48830366134644
 S001,2,path_length,andata,24.18691092813488
 S001,2,mean_speed,andata,0.10610328199445847
 S001,2,jerk,andata,1.8645300279217742
@@ -42,6 +44,7 @@ S002,1,completion_time,grasp,29.14646291732788
 S002,1,completion_time,ritorno,250.95774841308594
 S002,1,completion_time,posizionamento,29.384132623672485
 S002,1,completion_time,totale,571.3363289833069
+S002,1,completion_time,andata_ritorno,512.8057298660278
 S002,1,path_length,andata,23.46265951018092
 S002,1,mean_speed,andata,0.09931308960364651
 S002,1,jerk,andata,2.305051056264833
@@ -61,6 +64,7 @@ S002,2,completion_time,grasp,26.746104955673218
 S002,2,completion_time,ritorno,252.86924815177917
 S002,2,completion_time,posizionamento,25.914786100387573
 S002,2,completion_time,totale,545.267126083374
+S002,2,completion_time,andata_ritorno,492.60622811317444
 S002,2,path_length,andata,23.105490517324228
 S002,2,mean_speed,andata,0.10888080922775112
 S002,2,jerk,andata,2.0823425525225296
@@ -80,6 +84,7 @@ S003,1,completion_time,grasp,27.447858333587646
 S003,1,completion_time,ritorno,442.1817293167114
 S003,1,completion_time,posizionamento,27.91676664352417
 S003,1,completion_time,totale,879.419599533081
+S003,1,completion_time,andata_ritorno,824.0549712181091
 S003,1,path_length,andata,23.5256998588197
 S003,1,mean_speed,andata,0.06566075817663371
 S003,1,jerk,andata,1.437798233953047
@@ -99,6 +104,7 @@ S003,2,completion_time,grasp,26.420913696289062
 S003,2,completion_time,ritorno,340.2557451725006
 S003,2,completion_time,posizionamento,26.975236892700195
 S003,2,completion_time,totale,797.8635075092316
+S003,2,completion_time,andata_ritorno,744.4673500061035
 S003,2,path_length,andata,25.57272736327058
 S003,2,mean_speed,andata,0.06611396767999175
 S003,2,jerk,andata,1.676647532244916
@@ -118,6 +124,7 @@ S004,1,completion_time,grasp,34.96948981285095
 S004,1,completion_time,ritorno,313.7315492630005
 S004,1,completion_time,posizionamento,31.614482879638672
 S004,1,completion_time,totale,674.2951393127441
+S004,1,completion_time,andata_ritorno,607.7111597061157
 S004,1,path_length,andata,23.697753148459032
 S004,1,mean_speed,andata,0.09099708379351246
 S004,1,jerk,andata,1.5710787955814947
@@ -137,6 +144,7 @@ S004,2,completion_time,grasp,60.242631673812866
 S004,2,completion_time,ritorno,217.42494177818298
 S004,2,completion_time,posizionamento,30.545056104660034
 S004,2,completion_time,totale,494.51110768318176
+S004,2,completion_time,andata_ritorno,403.72341322898865
 S004,2,path_length,andata,22.995661345721185
 S004,2,mean_speed,andata,0.1377957765085101
 S004,2,jerk,andata,2.251527805532375
@@ -156,6 +164,7 @@ S005,1,completion_time,grasp,28.683841705322266
 S005,1,completion_time,ritorno,297.0628855228424
 S005,1,completion_time,posizionamento,30.765331268310547
 S005,1,completion_time,totale,752.806325674057
+S005,1,completion_time,andata_ritorno,693.3571472167969
 S005,1,path_length,andata,26.19316735406143
 S005,1,mean_speed,andata,0.07686339969940463
 S005,1,jerk,andata,1.4591071037550856
@@ -175,6 +184,7 @@ S005,2,completion_time,grasp,28.715009689331055
 S005,2,completion_time,ritorno,249.43326592445374
 S005,2,completion_time,posizionamento,32.58678150177002
 S005,2,completion_time,totale,555.5061976909637
+S005,2,completion_time,andata_ritorno,494.2044003009796
 S005,2,path_length,andata,24.519295227821672
 S005,2,mean_speed,andata,0.11108647611199958
 S005,2,jerk,andata,2.0161786045596584
@@ -194,6 +204,7 @@ S006,1,completion_time,grasp,93.47221088409424
 S006,1,completion_time,ritorno,239.96720504760742
 S006,1,completion_time,posizionamento,25.087303161621094
 S006,1,completion_time,totale,601.1107773780823
+S006,1,completion_time,andata_ritorno,482.55125999450684
 S006,1,path_length,andata,23.05437597912825
 S006,1,mean_speed,andata,0.1038653463857036
 S006,1,jerk,andata,2.0461511404952466
@@ -213,6 +224,7 @@ S006,2,completion_time,grasp,28.926886081695557
 S006,2,completion_time,ritorno,211.17996859550476
 S006,2,completion_time,posizionamento,25.939332008361816
 S006,2,completion_time,totale,458.5608148574829
+S006,2,completion_time,andata_ritorno,403.6945888996124
 S006,2,path_length,andata,22.528233779999173
 S006,2,mean_speed,andata,0.12938383447385937
 S006,2,jerk,andata,2.3536415660635748
@@ -232,6 +244,7 @@ S007,1,completion_time,grasp,28.759522199630737
 S007,1,completion_time,ritorno,192.74481010437012
 S007,1,completion_time,posizionamento,27.02003502845764
 S007,1,completion_time,totale,447.41686487197876
+S007,1,completion_time,andata_ritorno,391.63730478286743
 S007,1,path_length,andata,22.845961367465137
 S007,1,mean_speed,andata,0.1304808394682321
 S007,1,jerk,andata,2.4213841321876215
@@ -251,6 +264,7 @@ S007,2,completion_time,grasp,27.59545588493347
 S007,2,completion_time,ritorno,155.22503423690796
 S007,2,completion_time,posizionamento,26.291087865829468
 S007,2,completion_time,totale,363.10510063171387
+S007,2,completion_time,andata_ritorno,309.21855187416077
 S007,2,path_length,andata,22.492164620649703
 S007,2,mean_speed,andata,0.1706446189098854
 S007,2,jerk,andata,3.2209176337136816
@@ -270,6 +284,7 @@ S008,1,completion_time,grasp,40.72787070274353
 S008,1,completion_time,ritorno,486.44293904304504
 S008,1,completion_time,posizionamento,51.38716387748718
 S008,1,completion_time,totale,1024.4802033901215
+S008,1,completion_time,andata_ritorno,932.3651628494263
 S008,1,path_length,andata,25.097892546583267
 S008,1,mean_speed,andata,0.06481977995323604
 S008,1,jerk,andata,1.2249162432764278
@@ -289,6 +304,7 @@ S008,2,completion_time,grasp,77.20561909675598
 S008,2,completion_time,ritorno,295.3523144721985
 S008,2,completion_time,posizionamento,34.79264783859253
 S008,2,completion_time,totale,677.7873177528381
+S008,2,completion_time,andata_ritorno,565.7890448570251
 S008,2,path_length,andata,23.21357281935484
 S008,2,mean_speed,andata,0.09488458304024953
 S008,2,jerk,andata,1.8953622191444794
@@ -308,6 +324,7 @@ S009,1,completion_time,grasp,29.972435474395752
 S009,1,completion_time,ritorno,242.184317111969
 S009,1,completion_time,posizionamento,27.301995038986206
 S009,1,completion_time,totale,625.8125236034393
+S009,1,completion_time,andata_ritorno,568.5380859375
 S009,1,path_length,andata,23.23109886593817
 S009,1,mean_speed,andata,0.0765659700050209
 S009,1,jerk,andata,1.7574036370653146
@@ -327,6 +344,7 @@ S009,2,completion_time,grasp,29.91162133216858
 S009,2,completion_time,ritorno,225.48280143737793
 S009,2,completion_time,posizionamento,31.49048399925232
 S009,2,completion_time,totale,479.5063190460205
+S009,2,completion_time,andata_ritorno,418.1042082309723
 S009,2,path_length,andata,22.56637818519745
 S009,2,mean_speed,andata,0.13164999788727003
 S009,2,jerk,andata,2.605830913638849
@@ -346,6 +364,7 @@ S010,1,completion_time,grasp,30.976939916610718
 S010,1,completion_time,ritorno,261.34540128707886
 S010,1,completion_time,posizionamento,29.52815318107605
 S010,1,completion_time,totale,595.2039320468903
+S010,1,completion_time,andata_ritorno,534.6988322734833
 S010,1,path_length,andata,23.29907100458711
 S010,1,mean_speed,andata,0.10413425245391666
 S010,1,jerk,andata,3.1690773279625146
@@ -365,6 +384,7 @@ S010,2,completion_time,grasp,28.332609176635742
 S010,2,completion_time,ritorno,208.57710003852844
 S010,2,completion_time,posizionamento,33.803120613098145
 S010,2,completion_time,totale,462.83202171325684
+S010,2,completion_time,andata_ritorno,400.69628739356995
 S010,2,path_length,andata,22.843324346235793
 S010,2,mean_speed,andata,0.14936830858188482
 S010,2,jerk,andata,4.474783114852947

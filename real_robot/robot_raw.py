@@ -17,7 +17,7 @@ Per ognuna:
     jerk                jerk medio della base (m/s^3), jerk1.m sull'odometria
     region_transitions  numero di cambi di regione del cursore nell'interfaccia
                         (movement_train.m sui tick, come Najie et al.: ogni cambio)
-Metriche esplorative (per la discussione: perche' la base va piu' veloce nella run 2?):
+Metriche esplorative (per la discussione: perche' la base va piu' veloce nel test 2?):
     stop_percent        % del tempo di guida con il cursore nella regione di stop (5)
     transitions_per_min region_transitions / tempo di guida: i cambi calano solo perche' si
                         guida per meno tempo, o il comando cambia davvero meno spesso?

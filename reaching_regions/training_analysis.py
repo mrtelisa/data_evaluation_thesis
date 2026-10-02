@@ -1,5 +1,6 @@
 """Training a 9 regioni (reaching_regions.py), fatto due volte: training 1 (pre) e
-training 2 (post). Si analizzano solo le ANDATE (centro -> target), 96 per training.
+training 2 (post). Statistica solo sulle ANDATE (centro -> target), 96 per training; dei
+RITORNI al centro (home) ci sono solo i grafici di movement duration e linearity index.
 
 Input: <soggetto>_regions_<pre|post>[_k]_raw.csv (+ _summary.json per hidden_s), ovunque
 dentro questa cartella (es. reaching_regions/results/). Se una sessione e' stata
@@ -14,6 +15,8 @@ cursore quando compare il target:
     MD  Movement duration (s)        comparsa del target -> entrata nel target
     LI  Linearity index (-)          sullo stesso tratto
 Blocchi di 8 target: 12 per training. Valore di un blocco = media degli 8 target.
+Ritorno: il goal home che segue ogni target (il primo home di ogni blocco non e' un ritorno);
+MD dalla comparsa della home all'entrata, LI sullo stesso tratto. Nessuna statistica.
 
 Analisi (per metrica), come il modello jamovi della dottoranda:
     ANOVA a misure ripetute Training (T1, T2) x Blocco (B1-B12), Greenhouse-Geisser;
@@ -25,9 +28,12 @@ Analisi (per metrica), come il modello jamovi della dottoranda:
 
 Output:
     statistics/report.txt, training_trials.csv (ogni andata), training_blocks.csv (soggetto x
-    training x blocco), training_descriptives/anova/friedman/posthoc.csv
-    statistics/plots/figure4_mean_sd.(png|pdf), figure4_median_iqr.(png|pdf)
-        come la figura 4 di Bellitto: media mobile su 12 prove, media ± SD o mediana [IQR]
+    training x blocco), training_descriptives/anova/friedman/posthoc.csv,
+    training_return_trials.csv (ogni ritorno)
+    statistics/plots/figure4_median_iqr.(png|pdf)
+        come la figura 4 di Bellitto: media mobile su 12 prove, mediana [IQR]
+    statistics/plots/return_median_iqr.(png|pdf)  ritorni (MD, LI), stesso stile, senza statistica
+    statistics/plots/single/<metrica>.(png|pdf), single/return_<metrica>.(png|pdf)  i pannelli uno per uno
     ../jamovi/training/<sigla>_<metrica>.(omv|csv): un file per metrica come training_reaching_out.omv,
         una riga per soggetto, colonne <sigla>_T1_B1 ... <sigla>_T2_B12 (es. EE_T1_B1)
 
@@ -68,12 +74,18 @@ METRICS = {
     "movement_duration": ("MD", "Movement duration", "s"),
     "linearity_index":   ("LI", "Linearity index", "-"),
 }
+# ritorno al centro: solo grafici
+RETURN_METRICS = {
+    "movement_duration": ("MD", "Return movement duration", "s"),
+    "linearity_index":   ("LI", "Return linearity index", "-"),
+}
 
 
 def load(root: Path) -> tuple:
-    """Una riga per andata: soggetto, training, numero del target (1-96), blocco, metriche."""
+    """Una riga per andata (soggetto, training, numero del target 1-96, blocco, metriche) e una
+    per ritorno (stesso numero del target da cui parte; solo movement duration e linearity index)."""
     chosen, dropped = find_sessions(root, PATTERN, ("phase",))
-    rows, problems = [], []
+    rows, returns, problems = [], [], []
     for (subject, phase), path in sorted(chosen.items()):
         raw = pd.read_csv(path)
         summary = Path(str(path)[:-len("_raw.csv")] + "_summary.json")
@@ -81,7 +93,8 @@ def load(root: Path) -> tuple:
         cfg = info.get("config", {})
         hidden_s = float(cfg.get("hidden_s", HIDDEN_S_DEFAULT))
         scale = canvas_scale(info)
-        goals = [g for g in goals_from_raw(raw) if g["kind"] == "region"]
+        all_goals = goals_from_raw(raw)
+        goals = [g for g in all_goals if g["kind"] == "region"]
         if len(goals) % BLOCK_SIZE:
             problems.append(f"{subject} {TRAININGS[phase]}: {len(goals)} targets (not a multiple of {BLOCK_SIZE})")
         for n, g in enumerate(goals, start=1):
@@ -90,7 +103,17 @@ def load(root: Path) -> tuple:
             row.update(training_metrics(g["t"], canvas_to_cm(g["xy"], scale), canvas_to_cm(g["goal"], scale),
                                         g["t_enter"], hidden_s))
             rows.append(row)
-    return pd.DataFrame(rows), dropped, problems
+        n = 0
+        for prev, g in zip([None] + all_goals[:-1], all_goals):
+            if g["kind"] == "region":
+                n += 1
+            elif prev is not None and prev["kind"] == "region":   # ritorno dopo il target n
+                m = training_metrics(g["t"], canvas_to_cm(g["xy"], scale), canvas_to_cm(g["goal"], scale),
+                                     g["t_enter"], hidden_s)
+                returns.append({"subject": subject, "training": TRAININGS[phase], "target_number": n,
+                                "block": (n - 1) // BLOCK_SIZE + 1,
+                                **{k: m[k] for k in RETURN_METRICS}})
+    return pd.DataFrame(rows), pd.DataFrame(returns), dropped, problems
 
 
 def block_wide(blocks: pd.DataFrame, m: str) -> pd.DataFrame:
@@ -154,47 +177,57 @@ def trial_x(tr, trial, n_trials):
     return np.asarray(trial, float) + (n_trials + GAP if tr == "T2" else 0)
 
 
-def plot_figure4(trials: pd.DataFrame, posthocs: dict, out: Path, version: str):
-    """version 'mean_sd' (media +- SD) o 'median_iqr' (mediana, IQR); parentesi sempre dai t appaiati (Bonferroni)."""
+def figure4_panel(ax, trials: pd.DataFrame, m: str, label: str, unit: str, posthoc=None):
+    """Un pannello: media mobile per soggetto, poi mediana [IQR] tra soggetti, T1 e T2 affiancati.
+    posthoc = (tabella, confronti): parentesi dai t appaiati (Bonferroni); None = senza statistica."""
     n_trials = int(trials["target_number"].max())
-    fig, axes = plt.subplots(2, 3, figsize=(12.5, 6.6))
-    axes = axes.ravel()
-    axes[5].set_visible(False)
-    for ax, (m, (_, label, unit)), letter in zip(axes, METRICS.items(), "ABCDE"):
-        for tr, w in moving_average(trials, m).items():
-            x = trial_x(tr, w.index, n_trials)
-            if version == "mean_sd":
-                mid, sd = w.mean(axis=1), w.std(axis=1, ddof=1)
-                lo, hi = mid - sd, mid + sd
-            else:
-                mid, lo, hi = w.median(axis=1), w.quantile(0.25, axis=1), w.quantile(0.75, axis=1)
-            ax.fill_between(x, lo, hi, color=TRAINING_COLORS[tr], alpha=0.22, lw=0)
-            ax.plot(x, mid, color=TRAINING_COLORS[tr], lw=1.6)
-        if m == "extent_error":
-            ax.axhline(0, color=MUTED, lw=0.8, ls=":")
-        ticks = [1, n_trials // 2, n_trials]
-        ax.set_xticks(list(trial_x("T1", ticks, n_trials)) + list(trial_x("T2", ticks, n_trials)))
-        ax.set_xticklabels([str(t) for t in ticks] + [str(t + n_trials) for t in ticks])
-        ax.set_xlim(0, 2 * n_trials + GAP + 1)
-        ax.set_xlabel("Trial")
-        ax.set_ylabel(axis_label(label, unit))
-        ax.set_title(f"({letter})")
-        # etichette dei training sopra i dati, le parentesi dei post hoc sopra le etichette
-        lo, top = ax.get_ylim()
-        top += 0.1 * (top - lo)
-        ax.set_ylim(lo, top)
-        for tr, name in (("T1", "Training 1"), ("T2", "Training 2")):
-            ax.text(trial_x(tr, n_trials / 2, n_trials), top, name, ha="center", va="top", fontsize=8,
-                    color=TRAINING_COLORS[tr], fontweight="bold")
-        ph, pairs = posthocs[m]
+    for tr, w in moving_average(trials, m).items():
+        x = trial_x(tr, w.index, n_trials)
+        mid, lo, hi = w.median(axis=1), w.quantile(0.25, axis=1), w.quantile(0.75, axis=1)
+        ax.fill_between(x, lo, hi, color=TRAINING_COLORS[tr], alpha=0.22, lw=0)
+        ax.plot(x, mid, color=TRAINING_COLORS[tr], lw=1.6)
+    if m == "extent_error":
+        ax.axhline(0, color=MUTED, lw=0.8, ls=":")
+    ticks = [1, n_trials // 2, n_trials]
+    ax.set_xticks(list(trial_x("T1", ticks, n_trials)) + list(trial_x("T2", ticks, n_trials)))
+    ax.set_xticklabels([str(t) for t in ticks] + [str(t + n_trials) for t in ticks])
+    ax.set_xlim(0, 2 * n_trials + GAP + 1)
+    ax.set_xlabel("Trial")
+    ax.set_ylabel(axis_label(label, unit))
+    # etichette dei training sopra i dati, le parentesi dei post hoc sopra le etichette
+    lo, top = ax.get_ylim()
+    top += 0.1 * (top - lo)
+    ax.set_ylim(lo, top)
+    for tr, name in (("T1", "Training 1"), ("T2", "Training 2")):
+        ax.text(trial_x(tr, n_trials / 2, n_trials), top, name, ha="center", va="top", fontsize=8,
+                color=TRAINING_COLORS[tr], fontweight="bold")
+    if posthoc is not None:
+        ph, pairs = posthoc
         col = "p_t_bonferroni"   # parentesi sempre dai t appaiati (Bonferroni), come i post hoc dell'ANOVA
         centre = lambda tr, b: float(trial_x(tr, (b - 1) * BLOCK_SIZE + (BLOCK_SIZE + 1) / 2, n_trials))
         brackets(ax, [(centre(*a), centre(*b), p) for (a, b, _), p in zip(pairs, ph[col])])
-    what = "mean ± SD" if version == "mean_sd" else "median [IQR]"
-    fig.suptitle(f"Reaching training: cursor control across trials ({what} across participants)",
-                 x=0.01, ha="left", fontweight="bold", fontsize=11)
+
+
+def plot_training(trials: pd.DataFrame, metrics: dict, posthocs: dict, out: Path, name: str, title: str,
+                  note: str, single_prefix: str = ""):
+    """Figura con un pannello per metrica (3 per riga) e i pannelli uno per uno in single/,
+    senza titolo e con `note` (cosa si vede) sotto il grafico."""
+    ncols = min(3, len(metrics))
+    nrows = int(np.ceil(len(metrics) / ncols))
+    fig, axes = plt.subplots(nrows, ncols, figsize=(4.15 * ncols + 0.05, 3.3 * nrows), squeeze=False)
+    axes = axes.ravel()
+    for ax in axes[len(metrics):]:
+        ax.set_visible(False)
+    for ax, (m, (_, label, unit)), letter in zip(axes, metrics.items(), "ABCDEFGH"):
+        figure4_panel(ax, trials, m, label, unit, posthocs.get(m))
+        ax.set_title(f"({letter})")
+    fig.suptitle(title, x=0.01, ha="left", fontweight="bold", fontsize=11)
     fig.tight_layout()
-    save_figure(fig, out, f"figure4_{version}")
+    save_figure(fig, out, name)
+    for m, (_, label, unit) in metrics.items():
+        fig, ax = plt.subplots(figsize=(5.2, 3.6))
+        figure4_panel(ax, trials, m, label, unit, posthocs.get(m))
+        save_figure(fig, out, f"single/{single_prefix}{m}", note=note)
 
 
 def main():
@@ -203,7 +236,7 @@ def main():
     p.add_argument("--out", type=Path, default=BASE_DIR / "statistics")
     args = p.parse_args()
 
-    trials, dropped, problems = load(args.results)
+    trials, returns, dropped, problems = load(args.results)
     if trials.empty:
         print(f"No *_regions_<pre|post>_raw.csv in {args.results}")
         return
@@ -226,13 +259,18 @@ def main():
 
     args.out.mkdir(parents=True, exist_ok=True)
     trials.to_csv(args.out / "training_trials.csv", index=False)
+    returns.to_csv(args.out / "training_return_trials.csv", index=False)
     blocks.to_csv(args.out / "training_blocks.csv", index=False)
     save_tables(results, args.out, "training")
     jamovi_tables(blocks, ROOT / "jamovi" / "training")
 
     setup_style()
-    for version in ("mean_sd", "median_iqr"):
-        plot_figure4(trials, posthocs, args.out, version)
+    curve = "Line: median; band: IQR."
+    plot_training(trials, METRICS, posthocs, args.out, "figure4_median_iqr",
+                  "Reaching training: cursor control across trials (median [IQR] across participants)", curve)
+    plot_training(returns, RETURN_METRICS, {}, args.out, "return_median_iqr",
+                  "Reaching training: return to the centre (median [IQR] across participants, no statistics)",
+                  curve, single_prefix="return_")
     report.save(args.out)
 
 
