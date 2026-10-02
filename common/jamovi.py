@@ -113,6 +113,7 @@ def _anova(spec: dict, analysis_id: int, index: int) -> bytes:
         "effectSize": ["eta", "partEta"],
         "depLabel": spec["dep_label"],
         "rmTerms": terms,
+        "contrasts": [{"var": f, "type": "none"} for f in names],   # uno per fattore, come jamovi
         "spherTests": True,
         "spherCorr": ["none", "GG"],
         "postHoc": [list(t) for t in spec["post_hoc"]] or None,   # None = nessun termine, come il modello

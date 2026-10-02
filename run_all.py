@@ -19,6 +19,7 @@ STEPS = [
     ("questionari", "run_all.py"),
     ("reaching_blind", "blind_analysis.py"),
     ("reaching_regions", "training_analysis.py"),
+    ("reaching_regions_3blocks", "training_3blocks_analysis.py"),
     ("real_robot", "robot_analysis.py"),
     ("calibrations", "calibration_analysis.py"),
     ("cross_analysis", "cross_analysis.py"),

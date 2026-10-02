@@ -1,0 +1,237 @@
+REACHING TRAINING – first vs last 3 blocks (outward movements)
+==============================================================
+
+HOW TO READ THIS REPORT
+- One value per participant and condition (the mean of their trials), then statistics
+  across participants: mean ± SD (parametric) and median [Q1, Q3] (non-parametric).
+- Parametric analysis (as Bellitto et al. 2025 and the jamovi models): repeated-measures
+  ANOVA with the same tables and numbers as jamovi (jmv::anovaRM, type 3 sums of squares,
+  checked against jamovi output):
+    Within-subjects effects: SS, df, MS, F, p for every effect and its residual, with
+      sphericity assumed (None) and with the Greenhouse-Geisser and Huynh-Feldt corrections
+      (read the Greenhouse-Geisser row when a factor has more than 2 levels);
+      eta2G = generalised eta2, eta2 = SS effect / SS total, eta2p = partial eta2.
+    Between-subjects effects: residual (differences between participants).
+    Sphericity tests: Mauchly's W and p (p < 0.05: sphericity violated, use the corrected
+      rows), Greenhouse-Geisser and Huynh-Feldt epsilon. Not computable with 2 levels or
+      with more levels than participants (e.g. 12 blocks, 11 participants).
+    No Levene test: there are no between-subjects groups.
+  Robot (2 levels): jamovi post hoc test1 - test2 (mean difference, SE, df, t, p; with a
+  single comparison the Tukey, Scheffe, Bonferroni and Holm p are all equal to p).
+  Planned comparisons (not in jamovi): paired t-tests, Bonferroni-corrected within each
+  metric; dz = Cohen's d for paired data; Shapiro = normality of the differences
+  (p < 0.05: check the Wilcoxon).
+- Non-parametric control: Friedman (Kendall's W) and Wilcoxon signed-rank (Holm-corrected,
+  r = rank-biserial correlation).
+- Significance in the figures: * p < 0.05, ** p < 0.01, *** p < 0.001 (corrected p).
+
+Participants: 10 (S001, S002, S003, S004, S005, S006, S007, S008, S009, S010)
+Blocks of 8 targets (block value = mean of its targets); per training,
+start = mean of blocks 1-3, end = mean of blocks 10-12.
+Errors at 1 s after the target onset; movement duration and linearity index from target onset
+to target entry (same metrics as reaching_regions).
+
+Euclidean error at 1 s (cm)
+---------------------------
+  T1 start (blocks 1-3)  mean ± SD 8.64 ± 1.11            median [IQR] 8.81 [7.96, 9.20]   (n=10)
+  T1 end (blocks 10-12)  mean ± SD 6.84 ± 1.33            median [IQR] 6.82 [5.81, 7.46]   (n=10)
+  T2 start (blocks 1-3)  mean ± SD 7.08 ± 1.34            median [IQR] 7.23 [6.23, 7.81]   (n=10)
+  T2 end (blocks 10-12)  mean ± SD 5.63 ± 1.12            median [IQR] 5.43 [4.71, 5.99]   (n=10)
+  Repeated-measures ANOVA (n=10 participants with all cells, 0 excluded)
+    Within-subjects effects
+                          Correction                   SS       df         MS        F       p   eta2G    eta2   eta2p
+      Training            None                     19.161        1     19.161   28.052  <0.001   0.261   0.192   0.757
+                          Greenhouse-Geisser       19.161    1.000     19.161   28.052  <0.001   0.261   0.192   0.757
+                          Huynh-Feldt              19.161    1.000     19.161   28.052  <0.001   0.261   0.192   0.757
+      Residual            None                      6.147        9      0.683
+                          Greenhouse-Geisser        6.147    9.000      0.683
+                          Huynh-Feldt               6.147    9.000      0.683
+      Block               None                     26.273        1     26.273   23.478  <0.001   0.326   0.263   0.723
+                          Greenhouse-Geisser       26.273    1.000     26.273   23.478  <0.001   0.326   0.263   0.723
+                          Huynh-Feldt              26.273    1.000     26.273   23.478  <0.001   0.326   0.263   0.723
+      Residual            None                     10.071        9      1.119
+                          Greenhouse-Geisser       10.071    9.000      1.119
+                          Huynh-Feldt              10.071    9.000      1.119
+      Training × Block    None                      0.295        1      0.295    0.418   0.534   0.005   0.003   0.044
+                          Greenhouse-Geisser        0.295    1.000      0.295    0.418   0.534   0.005   0.003   0.044
+                          Huynh-Feldt               0.295    1.000      0.295    0.418   0.534   0.005   0.003   0.044
+      Residual            None                      6.347        9      0.705
+                          Greenhouse-Geisser        6.347    9.000      0.705
+                          Huynh-Feldt               6.347    9.000      0.705
+    Between-subjects effects
+      Residual                                     31.708        9      3.523
+    Sphericity tests
+                            Mauchly W       p   GG eps   HF eps
+      Training                  1.000       -    1.000    1.000
+      Block                     1.000       -    1.000    1.000
+      Training × Block          1.000       -    1.000    1.000
+  Friedman (all): chi2(3)=14.76, p=0.002, W=0.49 (n=10)
+  Post hoc (planned comparisons)
+    T1 start vs T1 end: t(9)=-4.17, p Bonf=0.010, dz=-1.32, Shapiro p=0.781 | Wilcoxon p Holm=0.023, r=-0.93
+    T2 start vs T2 end: t(9)=-3.42, p Bonf=0.031, dz=-1.08, Shapiro p=0.420 | Wilcoxon p Holm=0.041, r=-0.82
+    T1 end vs T2 start: t(9)=0.87, p Bonf=1.000, dz=0.28, Shapiro p=0.529 | Wilcoxon p Holm=0.625, r=0.20
+    T1 end vs T2 end: t(9)=-3.42, p Bonf=0.031, dz=-1.08, Shapiro p=0.297 | Wilcoxon p Holm=0.041, r=-0.85
+
+Direction error at 1 s (deg)
+----------------------------
+  T1 start (blocks 1-3)  mean ± SD 51.8 ± 9.9             median [IQR] 50.2 [46.7, 57.7]   (n=10)
+  T1 end (blocks 10-12)  mean ± SD 35.4 ± 7.7             median [IQR] 34.0 [31.9, 39.0]   (n=10)
+  T2 start (blocks 1-3)  mean ± SD 35.6 ± 8.9             median [IQR] 37.1 [29.1, 43.0]   (n=10)
+  T2 end (blocks 10-12)  mean ± SD 29.5 ± 8.1             median [IQR] 27.7 [25.6, 32.4]   (n=10)
+  Repeated-measures ANOVA (n=10 participants with all cells, 0 excluded)
+    Within-subjects effects
+                          Correction                   SS       df         MS        F       p   eta2G    eta2   eta2p
+      Training            None                     1224.0        1     1224.0   17.980   0.002   0.309   0.223   0.666
+                          Greenhouse-Geisser       1224.0    1.000     1224.0   17.980   0.002   0.309   0.223   0.666
+                          Huynh-Feldt              1224.0    1.000     1224.0   17.980   0.002   0.309   0.223   0.666
+      Residual            None                    612.666        9     68.074
+                          Greenhouse-Geisser      612.666    9.000     68.074
+                          Huynh-Feldt             612.666    9.000     68.074
+      Block               None                     1256.9        1     1256.9   24.464  <0.001   0.315   0.229   0.731
+                          Greenhouse-Geisser       1256.9    1.000     1256.9   24.464  <0.001   0.315   0.229   0.731
+                          Huynh-Feldt              1256.9    1.000     1256.9   24.464  <0.001   0.315   0.229   0.731
+      Residual            None                    462.394        9     51.377
+                          Greenhouse-Geisser      462.394    9.000     51.377
+                          Huynh-Feldt             462.394    9.000     51.377
+      Training × Block    None                    263.393        1    263.393    5.240   0.048   0.088   0.048   0.368
+                          Greenhouse-Geisser      263.393    1.000    263.393    5.240   0.048   0.088   0.048   0.368
+                          Huynh-Feldt             263.393    1.000    263.393    5.240   0.048   0.088   0.048   0.368
+      Residual            None                    452.391        9     50.266
+                          Greenhouse-Geisser      452.391    9.000     50.266
+                          Huynh-Feldt             452.391    9.000     50.266
+    Between-subjects effects
+      Residual                                     1208.8        9    134.314
+    Sphericity tests
+                            Mauchly W       p   GG eps   HF eps
+      Training                  1.000       -    1.000    1.000
+      Block                     1.000       -    1.000    1.000
+      Training × Block          1.000       -    1.000    1.000
+  Friedman (all): chi2(3)=15.48, p=0.001, W=0.52 (n=10)
+  Post hoc (planned comparisons)
+    T1 start vs T1 end: t(9)=-4.93, p Bonf=0.003, dz=-1.56, Shapiro p=0.849 | Wilcoxon p Holm=0.008, r=-1.00
+    T2 start vs T2 end: t(9)=-1.99, p Bonf=0.311, dz=-0.63, Shapiro p=0.061 | Wilcoxon p Holm=0.146, r=-0.67
+    T1 end vs T2 start: t(9)=0.08, p Bonf=1.000, dz=0.03, Shapiro p=0.813 | Wilcoxon p Holm=0.770, r=0.13
+    T1 end vs T2 end: t(9)=-2.36, p Bonf=0.171, dz=-0.75, Shapiro p=0.047 | Wilcoxon p Holm=0.146, r=-0.71
+
+Extent error at 1 s (cm)
+------------------------
+  T1 start (blocks 1-3)  mean ± SD -2.31 ± 2.34           median [IQR] -1.55 [-3.21, -0.60]   (n=10)
+  T1 end (blocks 10-12)  mean ± SD -1.10 ± 2.51           median [IQR] -0.59 [-1.39, 0.67]   (n=10)
+  T2 start (blocks 1-3)  mean ± SD -1.70 ± 2.73           median [IQR] -1.17 [-2.88, 0.18]   (n=10)
+  T2 end (blocks 10-12)  mean ± SD -0.90 ± 2.34           median [IQR] -0.42 [-1.13, 0.52]   (n=10)
+  Repeated-measures ANOVA (n=10 participants with all cells, 0 excluded)
+    Within-subjects effects
+                          Correction                   SS       df         MS        F       p   eta2G    eta2   eta2p
+      Training            None                      1.625        1      1.625    0.865   0.377   0.007   0.007   0.088
+                          Greenhouse-Geisser        1.625    1.000      1.625    0.865   0.377   0.007   0.007   0.088
+                          Huynh-Feldt               1.625    1.000      1.625    0.865   0.377   0.007   0.007   0.088
+      Residual            None                     16.917        9      1.880
+                          Greenhouse-Geisser       16.917    9.000      1.880
+                          Huynh-Feldt              16.917    9.000      1.880
+      Block               None                     10.198        1     10.198    4.773   0.057   0.044   0.044   0.347
+                          Greenhouse-Geisser       10.198    1.000     10.198    4.773   0.057   0.044   0.044   0.347
+                          Huynh-Feldt              10.198    1.000     10.198    4.773   0.057   0.044   0.044   0.347
+      Residual            None                     19.227        9      2.136
+                          Greenhouse-Geisser       19.227    9.000      2.136
+                          Huynh-Feldt              19.227    9.000      2.136
+      Training × Block    None                      0.424        1      0.424    0.368   0.559   0.002   0.002   0.039
+                          Greenhouse-Geisser        0.424    1.000      0.424    0.368   0.559   0.002   0.002   0.039
+                          Huynh-Feldt               0.424    1.000      0.424    0.368   0.559   0.002   0.002   0.039
+      Residual            None                     10.373        9      1.153
+                          Greenhouse-Geisser       10.373    9.000      1.153
+                          Huynh-Feldt              10.373    9.000      1.153
+    Between-subjects effects
+      Residual                                    175.543        9     19.505
+    Sphericity tests
+                            Mauchly W       p   GG eps   HF eps
+      Training                  1.000       -    1.000    1.000
+      Block                     1.000       -    1.000    1.000
+      Training × Block          1.000       -    1.000    1.000
+  Friedman (all): chi2(3)=6.48, p=0.090, W=0.22 (n=10)
+  Post hoc (planned comparisons)
+    T1 start vs T1 end: t(9)=1.64, p Bonf=0.544, dz=0.52, Shapiro p=0.910 | Wilcoxon p Holm=0.480, r=0.53
+    T2 start vs T2 end: t(9)=2.46, p Bonf=0.144, dz=0.78, Shapiro p=0.613 | Wilcoxon p Holm=0.258, r=0.67
+    T1 end vs T2 start: t(9)=-1.19, p Bonf=1.000, dz=-0.38, Shapiro p=0.005 | Wilcoxon p Holm=0.480, r=-0.49
+    T1 end vs T2 end: t(9)=0.43, p Bonf=1.000, dz=0.14, Shapiro p=0.660 | Wilcoxon p Holm=0.922, r=0.05
+
+Movement duration (s)
+---------------------
+  T1 start (blocks 1-3)  mean ± SD 3.41 ± 0.68            median [IQR] 3.42 [2.92, 3.62]   (n=10)
+  T1 end (blocks 10-12)  mean ± SD 2.27 ± 0.32            median [IQR] 2.29 [2.01, 2.39]   (n=10)
+  T2 start (blocks 1-3)  mean ± SD 2.23 ± 0.24            median [IQR] 2.23 [2.08, 2.32]   (n=10)
+  T2 end (blocks 10-12)  mean ± SD 2.02 ± 0.25            median [IQR] 1.98 [1.84, 2.22]   (n=10)
+  Repeated-measures ANOVA (n=10 participants with all cells, 0 excluded)
+    Within-subjects effects
+                          Correction                   SS       df         MS        F       p   eta2G    eta2   eta2p
+      Training            None                      5.064        1      5.064   68.994  <0.001   0.455   0.284   0.885
+                          Greenhouse-Geisser        5.064    1.000      5.064   68.994  <0.001   0.455   0.284   0.885
+                          Huynh-Feldt               5.064    1.000      5.064   68.994  <0.001   0.455   0.284   0.885
+      Residual            None                      0.661        9      0.073
+                          Greenhouse-Geisser        0.661    9.000      0.073
+                          Huynh-Feldt               0.661    9.000      0.073
+      Block               None                      4.577        1      4.577   63.507  <0.001   0.430   0.257   0.876
+                          Greenhouse-Geisser        4.577    1.000      4.577   63.507  <0.001   0.430   0.257   0.876
+                          Huynh-Feldt               4.577    1.000      4.577   63.507  <0.001   0.430   0.257   0.876
+      Residual            None                      0.649        9      0.072
+                          Greenhouse-Geisser        0.649    9.000      0.072
+                          Huynh-Feldt               0.649    9.000      0.072
+      Training × Block    None                      2.130        1      2.130   13.209   0.005   0.260   0.119   0.595
+                          Greenhouse-Geisser        2.130    1.000      2.130   13.209   0.005   0.260   0.119   0.595
+                          Huynh-Feldt               2.130    1.000      2.130   13.209   0.005   0.260   0.119   0.595
+      Residual            None                      1.451        9      0.161
+                          Greenhouse-Geisser        1.451    9.000      0.161
+                          Huynh-Feldt               1.451    9.000      0.161
+    Between-subjects effects
+      Residual                                      3.309        9      0.368
+    Sphericity tests
+                            Mauchly W       p   GG eps   HF eps
+      Training                  1.000       -    1.000    1.000
+      Block                     1.000       -    1.000    1.000
+      Training × Block          1.000       -    1.000    1.000
+  Friedman (all): chi2(3)=24.24, p=<0.001, W=0.81 (n=10)
+  Post hoc (planned comparisons)
+    T1 start vs T1 end: t(9)=-5.67, p Bonf=0.001, dz=-1.79, Shapiro p=0.759 | Wilcoxon p Holm=0.008, r=-1.00
+    T2 start vs T2 end: t(9)=-2.68, p Bonf=0.101, dz=-0.85, Shapiro p=0.111 | Wilcoxon p Holm=0.129, r=-0.67
+    T1 end vs T2 start: t(9)=-0.69, p Bonf=1.000, dz=-0.22, Shapiro p=0.047 | Wilcoxon p Holm=0.232, r=-0.45
+    T1 end vs T2 end: t(9)=-3.55, p Bonf=0.025, dz=-1.12, Shapiro p=0.003 | Wilcoxon p Holm=0.082, r=-0.78
+
+Linearity index
+---------------
+  T1 start (blocks 1-3)  mean ± SD 2.31 ± 0.50            median [IQR] 2.32 [2.10, 2.56]   (n=10)
+  T1 end (blocks 10-12)  mean ± SD 1.43 ± 0.33            median [IQR] 1.41 [1.21, 1.70]   (n=10)
+  T2 start (blocks 1-3)  mean ± SD 1.21 ± 0.42            median [IQR] 1.18 [1.00, 1.51]   (n=10)
+  T2 end (blocks 10-12)  mean ± SD 1.16 ± 0.25            median [IQR] 1.10 [1.00, 1.32]   (n=10)
+  Repeated-measures ANOVA (n=10 participants with all cells, 0 excluded)
+    Within-subjects effects
+                          Correction                   SS       df         MS        F       p   eta2G    eta2   eta2p
+      Training            None                      4.649        1      4.649   44.214  <0.001   0.463   0.335   0.831
+                          Greenhouse-Geisser        4.649    1.000      4.649   44.214  <0.001   0.463   0.335   0.831
+                          Huynh-Feldt               4.649    1.000      4.649   44.214  <0.001   0.463   0.335   0.831
+      Residual            None                      0.946        9      0.105
+                          Greenhouse-Geisser        0.946    9.000      0.105
+                          Huynh-Feldt               0.946    9.000      0.105
+      Block               None                      2.158        1      2.158   18.751   0.002   0.286   0.155   0.676
+                          Greenhouse-Geisser        2.158    1.000      2.158   18.751   0.002   0.286   0.155   0.676
+                          Huynh-Feldt               2.158    1.000      2.158   18.751   0.002   0.286   0.155   0.676
+      Residual            None                      1.036        9      0.115
+                          Greenhouse-Geisser        1.036    9.000      0.115
+                          Huynh-Feldt               1.036    9.000      0.115
+      Training × Block    None                      1.691        1      1.691   12.055   0.007   0.239   0.122   0.573
+                          Greenhouse-Geisser        1.691    1.000      1.691   12.055   0.007   0.239   0.122   0.573
+                          Huynh-Feldt               1.691    1.000      1.691   12.055   0.007   0.239   0.122   0.573
+      Residual            None                      1.262        9      0.140
+                          Greenhouse-Geisser        1.262    9.000      0.140
+                          Huynh-Feldt               1.262    9.000      0.140
+    Between-subjects effects
+      Residual                                      2.138        9      0.238
+    Sphericity tests
+                            Mauchly W       p   GG eps   HF eps
+      Training                  1.000       -    1.000    1.000
+      Block                     1.000       -    1.000    1.000
+      Training × Block          1.000       -    1.000    1.000
+  Friedman (all): chi2(3)=18.84, p=<0.001, W=0.63 (n=10)
+  Post hoc (planned comparisons)
+    T1 start vs T1 end: t(9)=-4.39, p Bonf=0.007, dz=-1.39, Shapiro p=0.399 | Wilcoxon p Holm=0.023, r=-0.93
+    T2 start vs T2 end: t(9)=-0.50, p Bonf=1.000, dz=-0.16, Shapiro p=0.816 | Wilcoxon p Holm=0.695, r=-0.16
+    T1 end vs T2 start: t(9)=-2.40, p Bonf=0.159, dz=-0.76, Shapiro p=0.522 | Wilcoxon p Holm=0.111, r=-0.71
+    T1 end vs T2 end: t(9)=-2.60, p Bonf=0.115, dz=-0.82, Shapiro p=0.470 | Wilcoxon p Holm=0.111, r=-0.75
