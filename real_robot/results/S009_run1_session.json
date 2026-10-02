@@ -3,17 +3,17 @@
   "task": "reachy2_bomi_pick_and_place",
   "protocol_step": "run1",
   "run": 1,
-  "timestamp": "2026-10-01 14:41:16",
-  "session_start": "2026-10-01T14:41:16",
-  "session_end": "2026-10-01T14:58:46",
-  "test_start": "2026-10-01T14:41:26",
-  "test_end": "2026-10-01T14:58:30",
+  "timestamp": "2026-10-01 16:03:16",
+  "session_start": "2026-10-01T16:03:16",
+  "session_end": "2026-10-01T16:14:16",
+  "test_start": "2026-10-01T16:03:29",
+  "test_end": "2026-10-01T16:13:55",
   "files": {
     "session": "S009_run1_session.json",
     "odometry_csv": "S009_run1_odometry.csv",
     "regions_csv": "S009_run1_regions.csv",
     "cursor_csv": "S009_run1_cursor.csv",
-    "calibration_map": "S009_20261001_140806.npz"
+    "calibration_map": "S009_20261001_153134.npz"
   },
   "screen": {
     "canvas_width": 2550,
@@ -47,7 +47,7 @@
   },
   "mapping": {
     "type": "autoencoder (markerlessBoMI), 42 hand features (21 landmarks x, y, mirrored image) -> 2D cursor",
-    "map_file": "S009_20261001_140806.npz",
+    "map_file": "S009_20261001_153134.npz",
     "shared_map": "shared",
     "calibration_samples": "shared_calib.npy",
     "ae": {
@@ -81,38 +81,59 @@
         "gain_y": 1.1,
         "off_x": 0.0,
         "off_y": 0.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.1,
+        "gain_y": 1.1,
+        "off_x": 0.0,
+        "off_y": 0.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.1,
+        "gain_y": 1.1,
+        "off_x": 0.0,
+        "off_y": 0.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.1,
+        "gain_y": 1.1,
+        "off_x": 0.0,
+        "off_y": 0.0
       }
     ],
     "affine": {
       "A": [
         [
-          1080.2131518566503,
+          1437.7637051212018,
           0.0
         ],
         [
           0.0,
-          543.5629907252024
+          723.4823406552447
         ]
       ],
       "b": [
-        1403.2562782473046,
-        879.8625756010102
+        1445.7091063471626,
+        922.8470881249448
       ]
     },
     "vs_shared": {
       "M": [
         [
-          1.1,
+          1.4641000000000006,
           0.0
         ],
         [
           0.0,
-          1.1
+          1.4641000000000006
         ]
       ],
       "t": [
-        -127.50000000000023,
-        -75.00000000000011
+        -591.7275000000009,
+        -348.0750000000005
       ]
     },
     "filter": {
@@ -162,25 +183,25 @@
   "n_trials_planned": 1,
   "n_trials_completed": 1,
   "frames": {
-    "n_frames": 9535,
-    "n_frames_lost": 16063,
+    "n_frames": 8499,
+    "n_frames_lost": 8966,
     "n_frames_read_failed": 0,
-    "n_frames_skipped": 16063,
+    "n_frames_skipped": 8966,
     "n_frames_no_hand": 0,
     "no_hand_percent": 0.0,
-    "fps_mean": 11.090669005254993,
-    "tracking_time": 850.6249709129333
+    "fps_mean": 14.523364736596195,
+    "tracking_time": 584.9195523262024
   },
   "end_reason": "finished",
   "success": true,
-  "test_duration": 1024.4802033901215,
-  "navigation_duration": 445.92222690582275,
+  "test_duration": 625.8125236034393,
+  "navigation_duration": 326.35377073287964,
   "phase_durations": {
-    "outbound": 391.63798093795776,
-    "approach": 54.28424286842346,
-    "grasp": 40.72787070274353,
-    "return": 486.44293904304504,
-    "placement": 51.38716387748718
+    "outbound": 265.6834464073181,
+    "approach": 60.67032241821289,
+    "grasp": 29.972435474395752,
+    "return": 242.184317111969,
+    "placement": 27.301995038986206
   },
   "phase_completed": {
     "outbound": true,
@@ -195,73 +216,71 @@
     "grasp": 0,
     "placement": 0
   },
-  "n_dwell": 4,
-  "n_dwell_declined": 1,
+  "n_dwell": 3,
+  "n_dwell_declined": 0,
   "n_dwell_per_phase": {
-    "outbound": 2,
+    "outbound": 1,
     "approach": 1,
     "return": 1
   },
-  "n_dwell_declined_per_phase": {
-    "outbound": 1
-  },
+  "n_dwell_declined_per_phase": {},
   "n_objects_moved": 1,
   "objects_moved": [
     "bottle"
   ],
   "manual": {
-    "n_collisions": null,
-    "n_drops_grasp": null,
-    "n_drops_transport": null,
-    "notes": null
+    "n_collisions": 0,
+    "n_drops_grasp": 0,
+    "n_drops_transport": 0,
+    "notes": ""
   },
-  "experimenter_notes": null,
-  "path_length_outbound": 23.60829512603006,
-  "path_length_return": 26.91773857323782,
-  "cumulative_rotation_outbound": 23.32217157050036,
-  "cumulative_rotation_return": 34.100888313807616,
+  "experimenter_notes": "",
+  "path_length_outbound": 21.671320774844066,
+  "path_length_return": 24.673019870629133,
+  "cumulative_rotation_outbound": 20.364972202136414,
+  "cumulative_rotation_return": 20.874787052446088,
   "driving": {
     "outbound": {
-      "driving_time": 332.5700469017029,
-      "path_length": 23.60829512603006,
-      "cumulative_rotation": 23.32217157050036,
-      "log_dimensionless_jerk": -16.155273169139427,
-      "stop_time": 150.41380620002747,
-      "stop_percent": 45.2277069451432,
+      "driving_time": 250.56664943695068,
+      "path_length": 21.671320774844066,
+      "cumulative_rotation": 20.364972202136414,
+      "log_dimensionless_jerk": -14.962638609419496,
+      "stop_time": 77.54948258399963,
+      "stop_percent": 30.949642643289273,
       "region_time_seconds": {
-        "region1": 0.0,
-        "region2": 148.78,
-        "region3": 0.97,
-        "region4": 14.53,
-        "region5": 150.41,
-        "region6": 11.67,
+        "region1": 5.65,
+        "region2": 152.81,
+        "region3": 0.87,
+        "region4": 4.22,
+        "region5": 77.55,
+        "region6": 9.46,
         "region7": 0.0,
-        "region8": 6.2,
+        "region8": 0.0,
         "region9": 0.0
       },
       "region_time_percent": {
-        "region1": 0.0,
-        "region2": 44.7,
+        "region1": 2.3,
+        "region2": 61.0,
         "region3": 0.3,
-        "region4": 4.4,
-        "region5": 45.2,
-        "region6": 3.5,
+        "region4": 1.7,
+        "region5": 30.9,
+        "region6": 3.8,
         "region7": 0.0,
-        "region8": 1.9,
+        "region8": 0.0,
         "region9": 0.0
       },
-      "n_commands": 144,
-      "n_command_changes": 124,
-      "command_changes_per_min": 22.371226961997053,
-      "mean_command_duration": 2.390026745043303,
-      "median_command_duration": 1.6572270393371582,
-      "non_adjacent_percent": 0.8064516129032258,
-      "n_non_adjacent": 1,
-      "n_motion_changes": 58,
-      "n_reversals": 14,
-      "reversal_percent": 24.137931034482758,
-      "stop_passage_percent": 94.82758620689656,
-      "sequence_entropy": 0.8424520843336374,
+      "n_commands": 101,
+      "n_command_changes": 100,
+      "command_changes_per_min": 23.945724674383538,
+      "mean_command_duration": 2.854115891456604,
+      "median_command_duration": 1.1458007097244263,
+      "non_adjacent_percent": 0.0,
+      "n_non_adjacent": 0,
+      "n_motion_changes": 59,
+      "n_reversals": 13,
+      "reversal_percent": 22.033898305084747,
+      "stop_passage_percent": 67.79661016949153,
+      "sequence_entropy": 1.0768695062932667,
       "command_sequences": [
         [
           5,
@@ -269,9 +288,18 @@
           5,
           2,
           5,
-          2
-        ],
-        [
+          2,
+          5,
+          6,
+          5,
+          4,
+          5,
+          2,
+          5,
+          6,
+          5,
+          4,
+          5,
           2,
           5,
           2,
@@ -282,193 +310,96 @@
           5,
           2,
           5,
-          6,
-          5,
-          4,
-          5,
-          2
-        ],
-        [
-          2
-        ],
-        [
           2,
           5,
           2,
           5,
-          6,
-          5,
-          4,
-          5,
-          6,
-          5,
-          4,
-          5,
-          2,
-          5,
-          2,
-          5,
-          4,
-          5,
-          2,
-          5,
-          4,
-          5,
-          2
-        ],
-        [
-          2
-        ],
-        [
-          2,
           3,
+          5,
+          4,
+          5,
+          2,
+          5,
+          2,
+          5,
+          2,
+          5,
+          2,
+          4,
+          2,
+          5,
+          2,
+          5,
+          6,
+          2,
+          5,
+          2,
+          5,
+          2,
+          1,
+          2,
+          1,
+          2,
+          5,
+          2,
+          5,
+          2,
+          6,
+          2,
+          1,
+          2,
+          5,
+          2,
+          5,
+          6,
+          5,
+          6,
+          5,
+          2,
+          5,
+          6,
+          5,
+          2,
+          5,
+          6,
+          5,
+          2,
+          4,
+          5,
+          2,
+          5,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          5,
+          2,
+          5,
+          6,
           2,
           5,
           4,
           5,
           2
-        ],
-        [],
-        [
-          2,
-          5,
-          4,
-          5,
-          2,
-          5,
-          4,
-          5,
-          2,
-          5,
-          6,
-          5,
-          2,
-          5,
-          2,
-          5,
-          6,
-          5,
-          2,
-          5
-        ],
-        [
-          6
-        ],
-        [],
-        [
-          4,
-          5,
-          6,
-          5,
-          4,
-          5,
-          6,
-          5,
-          2
-        ],
-        [],
-        [
-          2,
-          5,
-          2,
-          5,
-          2,
-          5,
-          4,
-          5,
-          2,
-          5,
-          6,
-          5,
-          2
-        ],
-        [],
-        [],
-        [
-          5,
-          2,
-          5,
-          2,
-          5,
-          4,
-          5,
-          2,
-          5,
-          4,
-          5,
-          2,
-          5,
-          4,
-          5
-        ],
-        [
-          5,
-          2
-        ],
-        [
-          2,
-          5,
-          4,
-          5,
-          4,
-          5,
-          2
-        ],
-        [
-          5,
-          2,
-          5
-        ],
-        [
-          5
-        ],
-        [
-          5
-        ],
-        [
-          8,
-          5,
-          2
-        ],
-        [
-          5,
-          6,
-          4,
-          5,
-          6,
-          5,
-          2,
-          5
-        ],
-        [],
-        [
-          5,
-          8
-        ],
-        [
-          8,
-          5,
-          4,
-          5,
-          2,
-          5
-        ],
-        []
+        ]
       ]
     },
     "approach": {
-      "driving_time": 29.60940670967102,
-      "path_length": 1.4895974205532907,
-      "cumulative_rotation": 0.6013987511396408,
-      "log_dimensionless_jerk": -11.31481697903391,
-      "stop_time": 18.108732223510742,
-      "stop_percent": 61.15871351652605,
+      "driving_time": 37.64482498168945,
+      "path_length": 1.5597780910940362,
+      "cumulative_rotation": 1.1571471691131592,
+      "log_dimensionless_jerk": -11.712996903184239,
+      "stop_time": 21.032997846603394,
+      "stop_percent": 55.872215787519,
       "region_time_seconds": {
         "region1": 0.0,
-        "region2": 11.5,
+        "region2": 15.88,
         "region3": 0.0,
-        "region4": 0.0,
-        "region5": 18.11,
+        "region4": 0.73,
+        "region5": 21.03,
         "region6": 0.0,
         "region7": 0.0,
         "region8": 0.0,
@@ -476,50 +407,40 @@
       },
       "region_time_percent": {
         "region1": 0.0,
-        "region2": 38.8,
+        "region2": 42.2,
         "region3": 0.0,
-        "region4": 0.0,
-        "region5": 61.2,
+        "region4": 1.9,
+        "region5": 55.9,
         "region6": 0.0,
         "region7": 0.0,
         "region8": 0.0,
         "region9": 0.0
       },
-      "n_commands": 11,
-      "n_command_changes": 7,
-      "command_changes_per_min": 14.184681379070646,
-      "mean_command_duration": 2.3001348972320557,
-      "median_command_duration": 1.7915422916412354,
+      "n_commands": 10,
+      "n_command_changes": 9,
+      "command_changes_per_min": 14.344601157334573,
+      "mean_command_duration": 3.322365427017212,
+      "median_command_duration": 2.2757582664489746,
       "non_adjacent_percent": 0.0,
       "n_non_adjacent": 0,
-      "n_motion_changes": 1,
+      "n_motion_changes": 4,
       "n_reversals": 0,
       "reversal_percent": 0.0,
       "stop_passage_percent": 100.0,
-      "sequence_entropy": 0.0,
+      "sequence_entropy": 0.40107116382631236,
       "command_sequences": [
         [
           5,
+          2,
+          5,
+          2,
+          5,
+          2,
+          5,
+          4,
+          5,
           2
-        ],
-        [
-          2
-        ],
-        [],
-        [
-          5,
-          2,
-          5,
-          2,
-          5
-        ],
-        [],
-        [
-          5,
-          2,
-          5
-        ],
-        []
+        ]
       ]
     },
     "repositioning": {
@@ -566,222 +487,104 @@
       "command_sequences": []
     },
     "return": {
-      "driving_time": 405.11530017852783,
-      "path_length": 26.91773857323782,
-      "cumulative_rotation": 34.100888313807616,
-      "log_dimensionless_jerk": -16.666424051377845,
-      "stop_time": 172.84319639205933,
-      "stop_percent": 42.66518601392988,
+      "driving_time": 219.64574313163757,
+      "path_length": 24.673019870629133,
+      "cumulative_rotation": 20.874787052446088,
+      "log_dimensionless_jerk": -14.68668372055721,
+      "stop_time": 20.3833646774292,
+      "stop_percent": 9.28010913701755,
       "region_time_seconds": {
-        "region1": 0.64,
-        "region2": 181.46,
-        "region3": 0.92,
-        "region4": 18.86,
-        "region5": 172.84,
-        "region6": 24.83,
-        "region7": 0.47,
-        "region8": 5.09,
+        "region1": 8.36,
+        "region2": 178.17,
+        "region3": 3.67,
+        "region4": 5.29,
+        "region5": 20.38,
+        "region6": 3.77,
+        "region7": 0.0,
+        "region8": 0.0,
         "region9": 0.0
       },
       "region_time_percent": {
-        "region1": 0.2,
-        "region2": 44.8,
-        "region3": 0.2,
-        "region4": 4.7,
-        "region5": 42.7,
-        "region6": 6.1,
-        "region7": 0.1,
-        "region8": 1.3,
+        "region1": 3.8,
+        "region2": 81.1,
+        "region3": 1.7,
+        "region4": 2.4,
+        "region5": 9.3,
+        "region6": 1.7,
+        "region7": 0.0,
+        "region8": 0.0,
         "region9": 0.0
       },
-      "n_commands": 206,
-      "n_command_changes": 169,
-      "command_changes_per_min": 25.02991122658528,
-      "mean_command_duration": 2.1332828557049788,
-      "median_command_duration": 1.0001261234283447,
-      "non_adjacent_percent": 1.7751479289940828,
-      "n_non_adjacent": 3,
-      "n_motion_changes": 76,
-      "n_reversals": 22,
-      "reversal_percent": 28.94736842105263,
-      "stop_passage_percent": 84.21052631578948,
-      "sequence_entropy": 1.0159880413841298,
+      "n_commands": 67,
+      "n_command_changes": 66,
+      "command_changes_per_min": 18.02903140092591,
+      "mean_command_duration": 3.7985383501419654,
+      "median_command_duration": 1.192296028137207,
+      "non_adjacent_percent": 0.0,
+      "n_non_adjacent": 0,
+      "n_motion_changes": 51,
+      "n_reversals": 13,
+      "reversal_percent": 25.49019607843137,
+      "stop_passage_percent": 27.45098039215686,
+      "sequence_entropy": 1.2483518767125232,
       "command_sequences": [
         [
-          5
-        ],
-        [],
-        [],
-        [
-          5,
-          8
-        ],
-        [
-          8,
-          5,
-          6,
-          5,
-          6,
-          5,
-          6,
-          5,
-          2
-        ],
-        [
-          2,
-          5,
-          2
-        ],
-        [],
-        [
-          2,
-          5,
-          6,
-          5,
-          2
-        ],
-        [],
-        [
-          2,
-          5,
-          6,
-          5,
-          2
-        ],
-        [
-          5
-        ],
-        [],
-        [
-          5,
-          6,
-          5,
-          2,
-          5,
-          6,
-          5,
-          2
-        ],
-        [],
-        [
-          2
-        ],
-        [
-          5,
-          2,
-          5,
-          6,
-          5,
-          6,
-          5,
-          2,
-          5
-        ],
-        [],
-        [
           5,
           4,
           5,
           2,
-          5,
           4,
-          5
-        ],
-        [
-          2
-        ],
-        [],
-        [
           2,
-          3,
-          2,
-          7,
-          8,
           5,
+          2,
+          5,
+          2,
           6,
-          5,
-          2,
-          5,
-          4,
-          5,
-          2,
-          3,
-          2,
-          1,
-          2
-        ],
-        [
           2,
           1,
           2,
           5,
-          4,
-          5,
-          2,
-          5,
-          2,
-          5,
           6,
-          5,
-          4,
-          5,
-          6,
-          5,
-          2
-        ],
-        [
           2,
-          5,
-          8,
-          5,
+          3,
           6,
+          2,
+          6,
+          2,
+          1,
+          2,
+          1,
+          2,
           5,
           2,
           5,
-          4
-        ],
-        [],
-        [
-          5,
-          6,
-          5,
           2,
-          5
-        ],
-        [
-          2,
-          5
-        ],
-        [
-          5,
-          4,
-          5,
-          6,
-          5
-        ],
-        [
-          5
-        ],
-        [],
-        [
-          4,
-          6,
           5,
           2,
           5,
-          4,
-          5
-        ],
-        [
+          2,
           5,
-          4,
-          5
-        ],
-        [
-          5
-        ],
-        [],
-        [
+          3,
+          2,
+          1,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          3,
           2,
           5,
           2,
@@ -789,170 +592,54 @@
           2,
           5,
           4,
-          5
-        ],
-        [
-          5,
-          4,
-          5,
-          6,
-          5,
-          2
-        ],
-        [],
-        [
-          2,
           5,
           2,
-          5
-        ],
-        [],
-        [
-          5,
-          2,
-          5,
-          2
-        ],
-        [
-          5,
-          4,
-          5,
-          4
-        ],
-        [
-          5
-        ],
-        [],
-        [
-          5,
-          6,
-          5,
-          6,
-          5,
-          2
-        ],
-        [],
-        [
-          2,
-          5,
-          6,
-          5,
-          2
-        ],
-        [],
-        [
-          2,
-          5,
-          4,
-          5
-        ],
-        [],
-        [
-          2,
-          5,
-          4,
-          5,
-          2,
-          5,
-          2,
-          5,
-          6,
-          4,
-          5,
-          6,
-          5
-        ],
-        [],
-        [
-          5,
-          2,
-          5,
-          2,
-          5,
-          2,
-          5
-        ],
-        [],
-        [
-          5,
-          6,
-          5,
-          2,
-          5,
-          2,
-          5,
-          4,
-          5
-        ],
-        [
           5,
           6
-        ],
-        [],
-        [
-          6,
-          5,
-          2,
-          5,
-          4,
-          5,
-          4,
-          5,
-          2
-        ],
-        [],
-        [],
-        [
-          5,
-          2,
-          5,
-          2,
-          5
-        ],
-        []
+        ]
       ]
     },
     "all": {
-      "driving_time": 767.2947537899017,
-      "path_length": 52.01563111982117,
-      "cumulative_rotation": 58.024458635447616,
+      "driving_time": 507.8572175502777,
+      "path_length": 47.904118736567234,
+      "cumulative_rotation": 42.39690642369566,
       "log_dimensionless_jerk": null,
-      "stop_time": 341.36573481559753,
-      "stop_percent": 44.4895176370604,
+      "stop_time": 118.96584510803223,
+      "stop_percent": 23.425057476170384,
       "region_time_seconds": {
-        "region1": 0.64,
-        "region2": 341.74,
-        "region3": 1.89,
-        "region4": 33.39,
-        "region5": 341.37,
-        "region6": 36.5,
-        "region7": 0.47,
-        "region8": 11.29,
+        "region1": 14.01,
+        "region2": 346.85,
+        "region3": 4.55,
+        "region4": 10.25,
+        "region5": 118.97,
+        "region6": 13.23,
+        "region7": 0.0,
+        "region8": 0.0,
         "region9": 0.0
       },
       "region_time_percent": {
-        "region1": 0.1,
-        "region2": 44.5,
-        "region3": 0.2,
-        "region4": 4.4,
-        "region5": 44.5,
-        "region6": 4.8,
-        "region7": 0.1,
-        "region8": 1.5,
+        "region1": 2.8,
+        "region2": 68.3,
+        "region3": 0.9,
+        "region4": 2.0,
+        "region5": 23.4,
+        "region6": 2.6,
+        "region7": 0.0,
+        "region8": 0.0,
         "region9": 0.0
       },
-      "n_commands": 361,
-      "n_command_changes": 300,
-      "command_changes_per_min": 23.459042188275802,
-      "mean_command_duration": 2.240937859923751,
-      "median_command_duration": 1.1551847457885742,
-      "non_adjacent_percent": 1.3333333333333333,
-      "n_non_adjacent": 4,
-      "n_motion_changes": 135,
-      "n_reversals": 36,
-      "reversal_percent": 26.666666666666668,
-      "stop_passage_percent": 88.88888888888889,
-      "sequence_entropy": 0.9545304305490506,
+      "n_commands": 178,
+      "n_command_changes": 175,
+      "command_changes_per_min": 20.67510244443952,
+      "mean_command_duration": 3.293869870340722,
+      "median_command_duration": 1.1925034523010254,
+      "non_adjacent_percent": 0.0,
+      "n_non_adjacent": 0,
+      "n_motion_changes": 114,
+      "n_reversals": 26,
+      "reversal_percent": 22.80701754385965,
+      "stop_passage_percent": 50.87719298245614,
+      "sequence_entropy": 1.240568774512971,
       "command_sequences": [
         [
           5,
@@ -960,9 +647,18 @@
           5,
           2,
           5,
-          2
-        ],
-        [
+          2,
+          5,
+          6,
+          5,
+          4,
+          5,
+          2,
+          5,
+          6,
+          5,
+          4,
+          5,
           2,
           5,
           2,
@@ -973,375 +669,83 @@
           5,
           2,
           5,
-          6,
-          5,
-          4,
-          5,
-          2
-        ],
-        [
-          2
-        ],
-        [
           2,
           5,
           2,
           5,
-          6,
-          5,
-          4,
-          5,
-          6,
-          5,
-          4,
-          5,
-          2,
-          5,
-          2,
-          5,
-          4,
-          5,
-          2,
-          5,
-          4,
-          5,
-          2
-        ],
-        [
-          2
-        ],
-        [
-          2,
           3,
-          2,
-          5,
-          4,
-          5,
-          2
-        ],
-        [],
-        [
-          2,
           5,
           4,
           5,
           2,
           5,
+          2,
+          5,
+          2,
+          5,
+          2,
           4,
-          5,
-          2,
-          5,
-          6,
-          5,
           2,
           5,
           2,
           5,
           6,
-          5,
-          2,
-          5
-        ],
-        [
-          6
-        ],
-        [],
-        [
-          4,
-          5,
-          6,
-          5,
-          4,
-          5,
-          6,
-          5,
-          2
-        ],
-        [],
-        [
           2,
           5,
           2,
           5,
-          2,
-          5,
-          4,
-          5,
-          2,
-          5,
-          6,
-          5,
-          2
-        ],
-        [],
-        [],
-        [
-          5,
-          2,
-          5,
-          2,
-          5,
-          4,
-          5,
-          2,
-          5,
-          4,
-          5,
-          2,
-          5,
-          4,
-          5
-        ],
-        [
-          5,
-          2
-        ],
-        [
-          2,
-          5,
-          4,
-          5,
-          4,
-          5,
-          2
-        ],
-        [
-          5,
-          2,
-          5
-        ],
-        [
-          5
-        ],
-        [
-          5
-        ],
-        [
-          8,
-          5,
-          2
-        ],
-        [
-          5,
-          6,
-          4,
-          5,
-          6,
-          5,
-          2,
-          5
-        ],
-        [],
-        [
-          5,
-          8
-        ],
-        [
-          8,
-          5,
-          4,
-          5,
-          2,
-          5
-        ],
-        [],
-        [
-          5,
-          2
-        ],
-        [
-          2
-        ],
-        [],
-        [
-          5,
-          2,
-          5,
-          2,
-          5
-        ],
-        [],
-        [
-          5,
-          2,
-          5
-        ],
-        [],
-        [
-          5
-        ],
-        [],
-        [],
-        [
-          5,
-          8
-        ],
-        [
-          8,
-          5,
-          6,
-          5,
-          6,
-          5,
-          6,
-          5,
-          2
-        ],
-        [
-          2,
-          5,
-          2
-        ],
-        [],
-        [
-          2,
-          5,
-          6,
-          5,
-          2
-        ],
-        [],
-        [
-          2,
-          5,
-          6,
-          5,
-          2
-        ],
-        [
-          5
-        ],
-        [],
-        [
-          5,
-          6,
-          5,
-          2,
-          5,
-          6,
-          5,
-          2
-        ],
-        [],
-        [
-          2
-        ],
-        [
-          5,
-          2,
-          5,
-          6,
-          5,
-          6,
-          5,
-          2,
-          5
-        ],
-        [],
-        [
-          5,
-          4,
-          5,
-          2,
-          5,
-          4,
-          5
-        ],
-        [
-          2
-        ],
-        [],
-        [
-          2,
-          3,
-          2,
-          7,
-          8,
-          5,
-          6,
-          5,
-          2,
-          5,
-          4,
-          5,
-          2,
-          3,
           2,
           1,
-          2
-        ],
-        [
           2,
           1,
           2,
           5,
-          4,
+          2,
           5,
+          2,
+          6,
+          2,
+          1,
           2,
           5,
           2,
           5,
           6,
           5,
-          4,
+          6,
+          5,
+          2,
           5,
           6,
+          5,
+          2,
+          5,
+          6,
+          5,
+          2,
+          4,
+          5,
+          2,
+          5,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          5,
+          2,
+          5,
+          6,
+          2,
+          5,
+          4,
           5,
           2
         ],
         [
-          2,
           5,
-          8,
-          5,
-          6,
-          5,
-          2,
-          5,
-          4
-        ],
-        [],
-        [
-          5,
-          6,
-          5,
-          2,
-          5
-        ],
-        [
-          2,
-          5
-        ],
-        [
-          5,
-          4,
-          5,
-          6,
-          5
-        ],
-        [
-          5
-        ],
-        [],
-        [
-          4,
-          6,
-          5,
-          2,
-          5,
-          4,
-          5
-        ],
-        [
-          5,
-          4,
-          5
-        ],
-        [
-          5
-        ],
-        [],
-        [
           2,
           5,
           2,
@@ -1349,27 +753,6 @@
           2,
           5,
           4,
-          5
-        ],
-        [
-          5,
-          4,
-          5,
-          6,
-          5,
-          2
-        ],
-        [],
-        [
-          2,
-          5,
-          2,
-          5
-        ],
-        [],
-        [
-          5,
-          2,
           5,
           2
         ],
@@ -1377,137 +760,109 @@
           5,
           4,
           5,
-          4
-        ],
-        [
-          5
-        ],
-        [],
-        [
-          5,
-          6,
-          5,
-          6,
-          5,
-          2
-        ],
-        [],
-        [
           2,
-          5,
-          6,
-          5,
-          2
-        ],
-        [],
-        [
-          2,
-          5,
           4,
-          5
-        ],
-        [],
-        [
           2,
-          5,
-          4,
           5,
           2,
           5,
+          2,
+          6,
+          2,
+          1,
           2,
           5,
           6,
-          4,
-          5,
+          2,
+          3,
           6,
-          5
-        ],
-        [],
-        [
-          5,
           2,
-          5,
-          2,
-          5,
-          2,
-          5
-        ],
-        [],
-        [
-          5,
           6,
+          2,
+          1,
+          2,
+          1,
+          2,
+          5,
+          2,
+          5,
+          2,
+          5,
+          2,
+          5,
+          2,
+          5,
+          3,
+          2,
+          1,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          3,
+          2,
           5,
           2,
           5,
           2,
           5,
           4,
-          5
-        ],
-        [
+          5,
+          2,
           5,
           6
-        ],
-        [],
-        [
-          6,
-          5,
-          2,
-          5,
-          4,
-          5,
-          4,
-          5,
-          2
-        ],
-        [],
-        [],
-        [
-          5,
-          2,
-          5,
-          2,
-          5
-        ],
-        []
+        ]
       ]
     }
   },
-  "path_length_max_speed": 23.60829512603006,
-  "path_length_reduced_speed": 1.4895974205532907,
+  "path_length_max_speed": 21.671320774844066,
+  "path_length_reduced_speed": 1.5597780910940362,
   "path_length_repositioning": 0.0,
-  "path_length_transport": 26.91773857323782,
-  "path_length_navigation": 25.097892546583353,
-  "path_length_total": 52.01563111982117,
-  "log_dimensionless_jerk": -16.477609994348747,
+  "path_length_transport": 24.673019870629133,
+  "path_length_navigation": 23.2310988659381,
+  "path_length_total": 47.904118736567234,
+  "log_dimensionless_jerk": -15.488882817835277,
   "region_time_percent": {
-    "region1": 0.1,
-    "region2": 44.5,
-    "region3": 0.2,
-    "region4": 4.4,
-    "region5": 44.5,
-    "region6": 4.8,
-    "region7": 0.1,
-    "region8": 1.5,
+    "region1": 2.8,
+    "region2": 68.3,
+    "region3": 0.9,
+    "region4": 2.0,
+    "region5": 23.4,
+    "region6": 2.6,
+    "region7": 0.0,
+    "region8": 0.0,
     "region9": 0.0
   },
   "region_time_seconds": {
-    "region1": 0.64,
-    "region2": 341.74,
-    "region3": 1.89,
-    "region4": 33.39,
-    "region5": 341.37,
-    "region6": 36.5,
-    "region7": 0.47,
-    "region8": 11.29,
+    "region1": 14.01,
+    "region2": 346.85,
+    "region3": 4.55,
+    "region4": 10.25,
+    "region5": 118.97,
+    "region6": 13.23,
+    "region7": 0.0,
+    "region8": 0.0,
     "region9": 0.0
   },
-  "region5_dwell_time_removed": 20.17,
+  "region5_dwell_time_removed": 30.0,
   "n_odometry_samples": {
-    "max_speed": 3851,
-    "reduced_speed": 298,
+    "max_speed": 3715,
+    "reduced_speed": 682,
     "repositioning": 0,
-    "transport": 4486
+    "transport": 3310
   },
   "odometry_file": "S009_run1_odometry.csv",
   "regions_file": "S009_run1_regions.csv",

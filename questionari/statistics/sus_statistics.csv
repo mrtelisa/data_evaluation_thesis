@@ -1,27 +1,27 @@
 section,item,n,percent,mean,sd,var,sem,median,min,max
-Sample,Subjects,11,,,,,,,,
-SUS score,SUS (0-100),11,,70.23,11.26,126.82,3.4,70.0,55.0,92.5
-SUS score,Subjects >= 68,7,63.6,,,,,,,
-Grade,A,1,9.1,,,,,,,
-Grade,B,1,9.1,,,,,,,
-Grade,C,5,45.5,,,,,,,
-Grade,D,2,18.2,,,,,,,
-Grade,F,2,18.2,,,,,,,
-Grade,Total,11,100.0,,,,,,,
+Sample,Subjects,10,,,,,,,,
+SUS score,SUS (0-100),10,,70.0,11.84,140.28,3.75,70.0,55.0,92.5
+SUS score,Subjects >= 68,6,60.0,,,,,,,
+Grade,A,1,10.0,,,,,,,
+Grade,B,1,10.0,,,,,,,
+Grade,C,4,40.0,,,,,,,
+Grade,D,2,20.0,,,,,,,
+Grade,F,2,20.0,,,,,,,
+Grade,Total,10,100.0,,,,,,,
 Adjective rating,Worst imaginable,0,0.0,,,,,,,
 Adjective rating,Poor,0,0.0,,,,,,,
 Adjective rating,OK,0,0.0,,,,,,,
-Adjective rating,Good,8,72.7,,,,,,,
-Adjective rating,Excellent,2,18.2,,,,,,,
-Adjective rating,Best imaginable,1,9.1,,,,,,,
-Adjective rating,Total,11,100.0,,,,,,,
-Item (raw answer 1-5),Q1,11,,3.45,0.93,0.87,0.28,4.0,2.0,5.0
-Item (raw answer 1-5),Q2,11,,2.0,0.45,0.2,0.13,2.0,1.0,3.0
-Item (raw answer 1-5),Q3,11,,3.91,0.3,0.09,0.09,4.0,3.0,4.0
-Item (raw answer 1-5),Q4,11,,2.36,0.81,0.65,0.24,2.0,1.0,4.0
-Item (raw answer 1-5),Q5,11,,4.36,0.5,0.25,0.15,4.0,4.0,5.0
-Item (raw answer 1-5),Q6,11,,1.91,0.54,0.29,0.16,2.0,1.0,3.0
-Item (raw answer 1-5),Q7,11,,3.91,0.7,0.49,0.21,4.0,3.0,5.0
-Item (raw answer 1-5),Q8,11,,2.82,1.17,1.36,0.35,3.0,1.0,4.0
-Item (raw answer 1-5),Q9,11,,3.55,1.13,1.27,0.34,4.0,2.0,5.0
-Item (raw answer 1-5),Q10,11,,2.0,0.77,0.6,0.23,2.0,1.0,3.0
+Adjective rating,Good,7,70.0,,,,,,,
+Adjective rating,Excellent,2,20.0,,,,,,,
+Adjective rating,Best imaginable,1,10.0,,,,,,,
+Adjective rating,Total,10,100.0,,,,,,,
+Item (raw answer 1-5),Q1,10,,3.4,0.97,0.93,0.31,3.5,2.0,5.0
+Item (raw answer 1-5),Q2,10,,2.0,0.47,0.22,0.15,2.0,1.0,3.0
+Item (raw answer 1-5),Q3,10,,3.9,0.32,0.1,0.1,4.0,3.0,4.0
+Item (raw answer 1-5),Q4,10,,2.4,0.84,0.71,0.27,2.0,1.0,4.0
+Item (raw answer 1-5),Q5,10,,4.4,0.52,0.27,0.16,4.0,4.0,5.0
+Item (raw answer 1-5),Q6,10,,1.9,0.57,0.32,0.18,2.0,1.0,3.0
+Item (raw answer 1-5),Q7,10,,4.0,0.67,0.44,0.21,4.0,3.0,5.0
+Item (raw answer 1-5),Q8,10,,2.9,1.2,1.43,0.38,3.0,1.0,4.0
+Item (raw answer 1-5),Q9,10,,3.5,1.18,1.39,0.37,4.0,2.0,5.0
+Item (raw answer 1-5),Q10,10,,2.0,0.82,0.67,0.26,2.0,1.0,3.0

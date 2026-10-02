@@ -20,7 +20,7 @@ ritorni, e per ogni fase del completion time): ANOVA a misure ripetute run 1 vs 
 
 Output:
     statistics/report.txt, robot_subjects.csv, robot_descriptives/anova/posthoc.csv
-    statistics/plots/robot_boxplots.(png|pdf)  box plot come Najie (mediana, IQR) + Wilcoxon
+    statistics/plots/robot_boxplots.(png|pdf)  box plot come Najie (mediana, IQR) + t appaiato
     statistics/plots/robot_mean_sd.(png|pdf)   media ± SD + t appaiato
     statistics/plots/single/<metrica>_<versione>.(png|pdf)
     ../jamovi/reachy/<sigla>_<metrica>.(omv|csv): un file per metrica come reachy_stats.omv, una riga
@@ -56,6 +56,12 @@ PATTERN = r"(?P<subject>.+)_run(?P<run>\d)(?:_(?P<rep>\d+))?_session\.json"
 PHASES = {"andata": ("Outbound", ("outbound", "approach")), "grasp": ("Grasp", ("grasp",)),
           "ritorno": ("Return", ("return",)), "posizionamento": ("Placement", ("placement",)),
           "totale": ("Total", None)}
+# metriche esplorative (robot_raw.py): solo report e .csv, per la discussione
+EXPLORATORY = {
+    "stop_percent":        ("Stop time while driving", "%", ["andata", "ritorno"]),
+    "transitions_per_min": ("Region transitions per minute of driving", "/min", ["andata", "ritorno"]),
+    "cursor_eccentricity": ("Cursor distance from the centre while moving (0 = centre, 1 = border)", "", ["andata", "ritorno"]),
+}
 # metrica -> (sigla jamovi, etichetta, unita', fasi)
 METRICS = {
     "completion_time":    ("CT", "Completion time", "s", list(PHASES)),
@@ -114,7 +120,7 @@ def plot_panel(ax, df, m, posthocs, colors, kind):
                           kind=kind)
     ax.set_xticklabels(groups)
     ax.set_ylabel(axis_label(label, unit))
-    col = "p_wilcoxon_holm" if kind == "box" else "p_t_bonferroni"   # un solo confronto: p non corretto
+    col = "p_t_bonferroni"   # parentesi dal t appaiato, come i post hoc dell'ANOVA (un solo confronto: p non corretto)
     brackets(ax, [(xpos[(PHASES[p][0], "Run 1")], xpos[(PHASES[p][0], "Run 2")], posthocs[(m, p)][col].iloc[0])
                   for p in phases])
 
@@ -180,9 +186,22 @@ def main():
             results.append(res)
             posthocs[(m, ph)] = res["posthoc"]
 
+    report.section("EXPLORATORY METRICS (not in the figures nor in the jamovi tables)")
+    report.text("Why is the base faster in run 2? Share of stops, rate of command changes and how far from")
+    report.text("the centre the cursor is pushed (the commanded speed grows with that distance).")
+    exploratory = []
+    for m, (label, unit, phases) in EXPLORATORY.items():
+        for ph in phases:
+            res = analyse_metric(report, m, f"{label} – {PHASES[ph][0].lower()}", unit, wide(df, m, ph), ["Run"],
+                                 [(r, f"run {r}") for r in RUNS], [(1, 2, "run 1 vs run 2")], digits=2)
+            for key in ("descriptives", "anova", "posthoc"):
+                res[key].insert(1, "phase", ph)
+            exploratory.append(res)
+
     args.out.mkdir(parents=True, exist_ok=True)
     df.to_csv(args.out / "robot_subjects.csv", index=False)
     save_tables(results, args.out, "robot")
+    save_tables(exploratory, args.out, "robot_exploratory")
     # un file per metrica, come reachy_stats.omv: Test1_andata, Test2_andata, Test1_ritorno, Test2_ritorno
     # (per il completion time seguono grasp, posizionamento e totale)
     for m, (abbr, label, unit, phases) in METRICS.items():

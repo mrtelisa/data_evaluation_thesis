@@ -155,7 +155,7 @@ def trial_x(tr, trial, n_trials):
 
 
 def plot_figure4(trials: pd.DataFrame, posthocs: dict, out: Path, version: str):
-    """version 'mean_sd' (t Bonferroni) o 'median_iqr' (Wilcoxon Holm)."""
+    """version 'mean_sd' (media +- SD) o 'median_iqr' (mediana, IQR); parentesi sempre dai t appaiati (Bonferroni)."""
     n_trials = int(trials["target_number"].max())
     fig, axes = plt.subplots(2, 3, figsize=(12.5, 6.6))
     axes = axes.ravel()
@@ -187,7 +187,7 @@ def plot_figure4(trials: pd.DataFrame, posthocs: dict, out: Path, version: str):
             ax.text(trial_x(tr, n_trials / 2, n_trials), top, name, ha="center", va="top", fontsize=8,
                     color=TRAINING_COLORS[tr], fontweight="bold")
         ph, pairs = posthocs[m]
-        col = "p_t_bonferroni" if version == "mean_sd" else "p_wilcoxon_holm"
+        col = "p_t_bonferroni"   # parentesi sempre dai t appaiati (Bonferroni), come i post hoc dell'ANOVA
         centre = lambda tr, b: float(trial_x(tr, (b - 1) * BLOCK_SIZE + (BLOCK_SIZE + 1) / 2, n_trials))
         brackets(ax, [(centre(*a), centre(*b), p) for (a, b, _), p in zip(pairs, ph[col])])
     what = "mean ± SD" if version == "mean_sd" else "median [IQR]"

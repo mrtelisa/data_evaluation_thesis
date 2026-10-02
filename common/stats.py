@@ -157,10 +157,15 @@ def rm_anova(wide: pd.DataFrame, factors: list) -> list:
     """ANOVA a misure ripetute come jmv::anovaRM di jamovi (afex, tipo 3; con il disegno
     bilanciato coincide con questa). `wide`: soggetti x condizioni; con 2 fattori le
     colonne sono un MultiIndex (livello del primo, livello del secondo), in ordine
-    prodotto (il primo fattore esterno). Si tengono solo
-    i soggetti con tutte le celle (come jamovi). Una riga per effetto: SS, gdl, F, p
-    con sfericita' assunta e con Greenhouse-Geisser (epsilon), eta^2 (SS effetto / SS
-    totale, l'"eta" di jamovi) ed eta^2 parziale."""
+    prodotto (il primo fattore esterno). Si tengono solo i soggetti con tutte le celle
+    (come jamovi). Una riga per effetto, con tutto quello che mostra jamovi:
+      ss, df1, ms, F, p; residuo ss_error, df2, ms_error  (sfericita' assunta)
+      eps_gg, df1_gg, df2_gg, p_gg                        (Greenhouse-Geisser)
+      eps_hf, df1_hf, df2_hf, p_hf                        (Huynh-Feldt, come car/afex, al massimo 1)
+      ges = eta^2 generalizzato, eta2 = SS effetto / SS totale, partial_eta2
+      mauchly_w, mauchly_p                                (test di sfericita'; NaN con 2 livelli
+                                                           o con piu' livelli che soggetti)
+      ss_subjects, df_subjects, ms_subjects               (effetti tra i soggetti: residuo)."""
     w = wide.apply(pd.to_numeric, errors="coerce").dropna()
     n = len(w)
     sizes = [w.columns.get_level_values(i).unique().size for i in range(w.columns.nlevels)]
@@ -168,6 +173,7 @@ def rm_anova(wide: pd.DataFrame, factors: list) -> list:
     if n < 2:
         return [{"effect": " × ".join(names), "n": n}]
     y = w.to_numpy(float)
+    k = y.shape[1]
     if len(sizes) == 1:
         effects = {names[0]: _contrasts(sizes[0])}
     else:
@@ -176,26 +182,66 @@ def rm_anova(wide: pd.DataFrame, factors: list) -> list:
         effects = {names[0]: np.kron(ca, ub), names[1]: np.kron(ua, cb),
                    f"{names[0]} × {names[1]}": np.kron(ca, cb)}
     ss_total = float(np.sum((y - y.mean()) ** 2))
-    out = []
+    ss_subjects = float(k * np.sum((y.mean(axis=1) - y.mean()) ** 2))
+    parts = {}
     for name, c in effects.items():
         z = y @ c
-        q = c.shape[1]
         zm = z.mean(axis=0)
-        ss_eff = n * float(zm @ zm)
-        ss_err = float(np.sum((z - zm) ** 2))
+        parts[name] = (z, n * float(zm @ zm), float(np.sum((z - zm) ** 2)))
+    ss_errors = sum(e for _, _, e in parts.values())
+    out = []
+    for name, (z, ss_eff, ss_err) in parts.items():
+        q = z.shape[1]
         df1, df2 = q, q * (n - 1)
-        row = {"effect": name, "n": n, "ss": ss_eff, "df1": df1, "ss_error": ss_err, "df2": df2,
-               "F": np.nan, "p": np.nan, "eps_gg": np.nan, "df1_gg": np.nan, "df2_gg": np.nan, "p_gg": np.nan,
-               "eta2": ss_eff / ss_total if ss_total > 0 else np.nan, "partial_eta2": np.nan}
+        row = {"effect": name, "n": n, "ss": ss_eff, "df1": df1, "ms": ss_eff / df1,
+               "ss_error": ss_err, "df2": df2, "ms_error": ss_err / df2 if df2 else np.nan,
+               "F": np.nan, "p": np.nan,
+               "eps_gg": np.nan, "df1_gg": np.nan, "df2_gg": np.nan, "p_gg": np.nan,
+               "eps_hf": np.nan, "df1_hf": np.nan, "df2_hf": np.nan, "p_hf": np.nan,
+               "ges": ss_eff / (ss_eff + ss_subjects + ss_errors),
+               "eta2": ss_eff / ss_total if ss_total > 0 else np.nan, "partial_eta2": np.nan,
+               "mauchly_w": np.nan, "mauchly_p": np.nan,
+               "ss_subjects": ss_subjects, "df_subjects": n - 1, "ms_subjects": ss_subjects / (n - 1)}
         if ss_err > 0:
             f = (ss_eff / df1) / (ss_err / df2)
             s_cov = np.cov(z, rowvar=False).reshape(q, q)
-            eps = float(np.trace(s_cov) ** 2 / (q * np.trace(s_cov @ s_cov))) if q > 1 else 1.0
-            eps = min(1.0, max(eps, 1.0 / q))
-            row.update(F=f, p=float(stats.f.sf(f, df1, df2)), eps_gg=eps, df1_gg=df1 * eps, df2_gg=df2 * eps,
-                       p_gg=float(stats.f.sf(f, df1 * eps, df2 * eps)), partial_eta2=ss_eff / (ss_eff + ss_err))
+            gg = float(np.trace(s_cov) ** 2 / (q * np.trace(s_cov @ s_cov))) if q > 1 else 1.0
+            gg = min(1.0, max(gg, 1.0 / q))
+            # Huynh-Feldt come car::Anova (usato da afex/jamovi), al massimo 1
+            hf = min(1.0, (n * q * gg - 2) / (q * (n - 1 - q * gg))) if q > 1 else 1.0
+            row.update(F=f, p=float(stats.f.sf(f, df1, df2)), partial_eta2=ss_eff / (ss_eff + ss_err),
+                       eps_gg=gg, df1_gg=df1 * gg, df2_gg=df2 * gg, p_gg=float(stats.f.sf(f, df1 * gg, df2 * gg)),
+                       eps_hf=hf, df1_hf=df1 * hf, df2_hf=df2 * hf, p_hf=float(stats.f.sf(f, df1 * hf, df2 * hf)))
+            if 1 < q <= n - 1:   # Mauchly: serve almeno un soggetto in piu' dei livelli - 1
+                det = float(np.linalg.det(s_cov))
+                if det > 0:
+                    # come car::Anova (usato da afex/jamovi): chi^2 con la correzione w2; nel
+                    # termine "3 * p" car usa il numero di celle k, non i contrasti q (lo replichiamo
+                    # per avere gli stessi numeri di jamovi)
+                    wm = det / (np.trace(s_cov) / q) ** q
+                    nd = n - 1
+                    rho = 1 - (2 * q * q + q + 2) / (6 * q * nd)
+                    w2 = ((q + 2) * (q - 1) * (q - 2) * (2 * q ** 3 + 6 * q * q + 3 * k + 2)
+                          / (288 * (nd * q * rho) ** 2))
+                    chi2, dfm = -nd * rho * math.log(wm), q * (q + 1) / 2 - 1
+                    pr1, pr2 = stats.chi2.sf(chi2, dfm), stats.chi2.sf(chi2, dfm + 4)
+                    row.update(mauchly_w=wm, mauchly_p=float(pr1 + w2 * (pr2 - pr1)))
         out.append(row)
     return out
+
+
+def posthoc_jamovi(wide: pd.DataFrame, a, b) -> dict:
+    """Post hoc di jamovi con 2 livelli (es. test1 - test2): differenza media (primo - secondo),
+    SE, gdl, t, p; con un solo confronto p non corretto = Tukey = Scheffe' = Bonferroni = Holm."""
+    x, y = _pair(wide[a], wide[b])
+    d = x - y
+    n = len(d)
+    if n < 2:
+        return {"md": np.nan, "se": np.nan, "df": np.nan, "t": np.nan, "p": np.nan}
+    se = d.std(ddof=1) / math.sqrt(n)
+    t = d.mean() / se if se > 0 else np.nan
+    return {"md": float(d.mean()), "se": float(se), "df": n - 1, "t": float(t),
+            "p": float(2 * stats.t.sf(abs(t), n - 1)) if t == t else np.nan}
 
 
 def posthoc(wide: pd.DataFrame, pairs: list) -> pd.DataFrame:
@@ -213,3 +259,31 @@ def posthoc(wide: pd.DataFrame, pairs: list) -> pd.DataFrame:
         df.insert(df.columns.get_loc("cohen_dz"), "p_t_bonferroni", bonferroni(df["p_t"]))
         df.insert(df.columns.get_loc("rank_biserial_r"), "p_wilcoxon_holm", holm(df["p_wilcoxon"]))
     return df
+
+
+def magnitude(effect) -> str:
+    """Soglie indicative di Cohen per r, W e rho: 0.1 piccolo, 0.3 medio, 0.5 grande."""
+    if effect is None or (isinstance(effect, float) and math.isnan(effect)):
+        return "-"
+    a = abs(effect)
+    if a < 0.1:
+        return "trascurabile"
+    if a < 0.3:
+        return "piccolo"
+    if a < 0.5:
+        return "medio"
+    return "grande"
+
+
+def spearman(x, y) -> dict:
+    """Correlazione di Spearman sulle coppie complete."""
+    a = pd.to_numeric(pd.Series(x), errors="coerce").to_numpy(dtype=float)
+    b = pd.to_numeric(pd.Series(y), errors="coerce").to_numpy(dtype=float)
+    keep = ~(np.isnan(a) | np.isnan(b))
+    a, b = a[keep], b[keep]
+    out = {"n": int(len(a)), "rho": np.nan, "p": np.nan}
+    if len(a) < 3 or np.all(a == a[0]) or np.all(b == b[0]):
+        return out
+    res = stats.spearmanr(a, b)
+    out.update(rho=float(res.statistic), p=float(res.pvalue))
+    return out

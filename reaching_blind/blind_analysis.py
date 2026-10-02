@@ -23,6 +23,9 @@ cursore quando compare il target):
     MD   Movement duration (s)        inizio del movimento (velocita' > soglia del task,
                                       40 px/s) -> entrata nel target (hit) o ultimo istante
                                       sopra la soglia (prove senza hit)
+Metrica esplorativa (solo report e .csv, per la discussione):
+    region_correct  % di prove che finiscono nella regione del target (la regione e' il comando
+                    sul robot: senza feedback il cursore arriva almeno nella regione giusta?)
 Blocchi di 4 prove: 3 per test. Valore di un blocco = media delle sue 4 prove; valore di
 un test = media delle 12 prove (TTR: media delle prove con hit, mancante se non ci sono hit).
 
@@ -34,7 +37,7 @@ Analisi (per metrica), come il modello jamovi del training:
 Output:
     statistics/report.txt, blind_trials.csv, blind_subjects.csv (soggetto x test),
     blind_blocks.csv (soggetto x test x blocco), blind_descriptives/anova/friedman/posthoc.csv
-    statistics/plots/blind_boxplots.(png|pdf)  box plot (mediana, IQR) + Wilcoxon (Holm)
+    statistics/plots/blind_boxplots.(png|pdf)  box plot (mediana, IQR) + t appaiati (Bonferroni)
     statistics/plots/blind_mean_sd.(png|pdf)   media ± SD + t appaiati (Bonferroni)
     statistics/plots/single/<metrica>_<versione>.(png|pdf)  i pannelli uno per uno
     ../jamovi/blind/<sigla>_<metrica>.(omv|csv): un file per metrica, una riga per soggetto,
@@ -88,6 +91,9 @@ def trials_from_raw(raw: pd.DataFrame, cfg: dict, scale: float) -> pd.DataFrame:
     """Una riga per prova, tutto dal _raw.csv. Hit e ingresso nel target in px del canvas
     (come il task), errori e distanze in cm."""
     c = {k: float(cfg.get(k, v)) for k, v in DEFAULTS.items()}
+    x_edges, y_edges = cfg.get("region_x_edges", [0, 400, 800, 1200]), cfg.get("region_y_edges", [0, 650 / 3, 1300 / 3, 650])
+    region = lambda x, y: (min(max(int(np.searchsorted(y_edges, y, "right")) - 1, 0), 2) * 3
+                           + min(max(int(np.searchsorted(x_edges, x, "right")) - 1, 0), 2) + 1)
     fs = 1.0 / float(raw["time"].diff().median())
     rows = []
     for k, g in raw.groupby("trial"):
@@ -117,6 +123,7 @@ def trials_from_raw(raw: pd.DataFrame, cfg: dict, scale: float) -> pd.DataFrame:
         row.update(endpoint_errors(xy_cm[0], xy_cm[-1], goal_cm))
         reach = t <= (t_enter if t_enter is not None else t[-1]) + 1e-9
         row["linearity_index"] = linearity_index(xy_cm[reach])
+        row["region_correct"] = 100.0 if region(*xy[-1]) == region(*goal) else 0.0
         v = speed(t, xy) if len(t) >= 3 else np.zeros(len(t))
         moving = np.flatnonzero(v > c["motion_onset_speed"])
         row["movement_duration"] = np.nan
@@ -168,7 +175,7 @@ def plot_panel(ax, subjects, m, ph, colors, kind):
     ax.set_ylabel(axis_label(label, unit))
     if m == "extent_error":
         ax.axhline(0, color="#8c8c8c", lw=0.8, ls=":", zorder=0)
-    col = "p_wilcoxon_holm" if kind == "box" else "p_t_bonferroni"
+    col = "p_t_bonferroni"   # parentesi sempre dai t appaiati (Bonferroni), come i post hoc dell'ANOVA
     brackets(ax, [(xpos[(f"Test {a}", "all")], xpos[(f"Test {b}", "all")], p)
                   for (a, b), p in zip(zip(TESTS, TESTS[1:]), ph[col])])
 
@@ -240,7 +247,15 @@ def main():
         results.append(res)
         posthocs[m] = res["posthoc"]
 
+    report.section("EXPLORATORY METRIC (not in the figures nor in the jamovi tables)")
+    report.text("Does the cursor end at least in the region of the target, which is the command on the robot?")
+    rc = trials.groupby(["subject", "test"], as_index=False)["region_correct"].mean()
+    exploratory = [analyse_metric(report, "region_correct", "Trials ending in the region of the target", "%",
+                                  wide(rc, "region_correct"), ["Test"], [(t, f"test {t}") for t in TESTS],
+                                  [(a, b, f"test {a} vs test {b}") for a, b in zip(TESTS, TESTS[1:])], digits=1)]
+
     args.out.mkdir(parents=True, exist_ok=True)
+    save_tables(exploratory, args.out, "blind_exploratory")
     trials.drop(columns=["_x", "_y"]).to_csv(args.out / "blind_trials.csv", index=False)
     subjects.to_csv(args.out / "blind_subjects.csv", index=False)
     blocks.to_csv(args.out / "blind_blocks.csv", index=False)

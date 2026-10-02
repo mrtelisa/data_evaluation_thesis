@@ -2,6 +2,7 @@
     1. questionari (punteggi per soggetto)
     2. blind test, training, robot reale (statistiche, grafici, tabelle jamovi in jamovi/)
     3. calibrazioni BoMI
+    4. collegamenti fra le parti del protocollo e questionari (usa i risultati dei punti 1-2)
 
     python3 run_all.py
 
@@ -20,6 +21,7 @@ STEPS = [
     ("reaching_regions", "training_analysis.py"),
     ("real_robot", "robot_analysis.py"),
     ("calibrations", "calibration_analysis.py"),
+    ("cross_analysis", "cross_analysis.py"),
 ]
 
 if __name__ == "__main__":

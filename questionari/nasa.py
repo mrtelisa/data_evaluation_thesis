@@ -2,8 +2,9 @@
 
 Score complessivo per soggetto = Raw TLX, cioè la media delle 6 dimensioni
 senza pesatura. Riportato sia sulla scala 1-20 sia riscalato 0-100 con
-(x - 1) / 19 * 100. Nessuna dimensione viene invertita (Performance è usata
-così com'è).
+(x - 1) / 19 * 100. Nel form la scala di Performance va al contrario delle altre
+(20 = prestazione percepita migliore, quindi meno carico): nel Raw TLX entra invertita,
+21 - valore; le statistiche della singola dimensione restano sulla scala del form.
 
 Output:
 - statistics/nasa_statistics.csv : per ogni dimensione media/SD/mediana/
@@ -26,6 +27,7 @@ DIMENSIONS = ["Mental demand", "Physical demand", "Temporal demand",
               "Performance", "Effort", "Frustration"]
 BAND_EDGES = [1, 7, 13, 20]
 BAND_LABELS = ["Low (1-7)", "Medium (8-13)", "High (14-20)"]
+REVERSED = ["Performance"]   # 20 = buona prestazione: invertita nel Raw TLX
 
 
 def main():
@@ -44,7 +46,9 @@ def main():
     scores = df[["ID"]].copy()
     for dim, col in zip(DIMENSIONS, item_cols):
         scores[dim] = pd.to_numeric(df[col], errors="coerce")
-    scores["Raw TLX (1-20)"] = scores[DIMENSIONS].mean(axis=1).round(2)
+    workload = scores[DIMENSIONS].copy()
+    workload[REVERSED] = 21 - workload[REVERSED]   # tutte le dimensioni: alto = piu' carico
+    scores["Raw TLX (1-20)"] = workload.mean(axis=1).round(2)
     scores["Raw TLX (0-100)"] = ((scores["Raw TLX (1-20)"] - 1) / 19 * 100).round(1)
     save_scores("nasa", scores, args.out)
 

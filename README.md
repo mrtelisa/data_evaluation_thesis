@@ -29,6 +29,7 @@ Copy the result files of `reachy2_teleop_grasping_and_simulation` into the `resu
   - `jamovi/blind/<abbr>_<metric>`: `HR_T1_B1 ... HR_T5_B3` (block = mean of 4 trials) for HR, TC, TT, EE, XE, DE, MinD, TTR, LI, MD. Model: repeated-measures ANOVA Test (T1–T5) × Block (B1–B3).
   - `jamovi/reachy/<abbr>_<metric>`: `Test1_andata`, `Test2_andata`, `Test1_ritorno`, `Test2_ritorno` (as `reachy_stats.omv`) for CT, PL, MS, JK, RT; the CT file also has grasp, posizionamento and totale. Model: repeated-measures ANOVA run 1 vs run 2, once on the outbound and once on the return columns.
   - Every `.omv` already contains the repeated-measures ANOVA(s), set up as the supervisor's models (`common/jamovi_template/`): factors and cells, η² and partial η², sphericity tests with Greenhouse-Geisser, post hoc tests only in the robot files (training and blind: no post hoc terms, the tables would be too long for jamovi). The results are saved empty and marked stale (as jamovi does for templates), because jamovi does not recompute saved analyses when opening a file: after opening, change the plot theme or the decimal symbol once in the jamovi settings (⋮ menu, top right) and every analysis is computed.
+- `cross_analysis/statistics/`: exploratory Spearman correlations (no correction) between the tasks (blind/training vs robot) and between questionnaires and performance, plus questionnaire descriptives; uses only the metrics below. Runs last in `run_all.py`.
 - `<task>/statistics/`: `report.txt` (descriptives, ANOVA, post hoc for every metric), `.csv` tables, `plots/` (`.png` 300 dpi and `.pdf`; `plots/single/` has every panel on its own).
 
 ## Metrics
@@ -48,6 +49,10 @@ Definitions as Bellitto et al. 2025 (par. 2.4.2) and the lab script `computereac
 - completion time per phase and total: outbound = from the start to the object selection (task phases outbound + approach), grasp = object selection to object in hand, return, placement;
 - outbound and return: path length, mean speed, mean jerk (base odometry), region transitions of the cursor in the 3 × 3 interface.
 
+**Exploratory metrics** (report and `*_exploratory_*.csv` only, not in figures or jamovi tables; used in the thesis discussion, p not corrected):
+- blind test: share of trials ending in the region of the target;
+- robot, per driving leg: share of driving time in the stop region, region transitions per minute of driving, mean distance of the cursor from the centre while moving (0 = centre, 1 = border).
+
 ## Statistics
 
 Every participant counts once: one value per participant and condition, then statistics across participants. Every analysis has two versions:
@@ -57,4 +62,4 @@ Every participant counts once: one value per participant and condition, then sta
 | Parametric | `*_mean_sd`: mean ± SD | repeated-measures ANOVA (Greenhouse-Geisser, η², partial η²), post hoc paired t-tests (Bonferroni) |
 | Non-parametric | `*_boxplots`, `figure4_median_iqr`: median [IQR] | Friedman, Wilcoxon signed-rank (Holm) |
 
-Planned post hoc comparisons: training T1 B1 vs T1 B12, T1 B12 vs T2 B1, T1 B12 vs T2 B12; blind consecutive tests (1–2, 2–3, 3–4, 4–5); robot run 1 vs run 2. In the figures: `*` p < 0.05, `**` p < 0.01, `***` p < 0.001 (corrected p).
+Planned post hoc comparisons: training T1 B1 vs T1 B12, T1 B12 vs T2 B1, T1 B12 vs T2 B12; blind consecutive tests (1–2, 2–3, 3–4, 4–5); robot run 1 vs run 2. In the figures: `*` p < 0.05, `**` p < 0.01, `***` p < 0.001 (corrected p). The brackets of every figure, box plots included, come from the paired t-tests (Bonferroni), as the post hoc of the ANOVA; the Wilcoxon tests are only reported in `report.txt`.

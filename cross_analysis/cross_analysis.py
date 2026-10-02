@@ -3,7 +3,7 @@
 Va lanciato DOPO le altre analisi (run_all.py lo fa nell'ordine giusto): legge
 le tabelle per soggetto che producono.
     reaching_blind/statistics/blind_subjects.csv
-    reaching_regions/statistics/training_subjects.csv, training_blocks.csv
+    reaching_regions/statistics/training_blocks.csv
     real_robot/statistics/robot_subjects.csv
     questionari/statistics/nasa_scores.csv, sus_scores.csv, edinburgh_scores.csv
 Gli ID dei questionari vengono normalizzati (' s1 ', 'S01' -> 'S001') per
@@ -42,32 +42,29 @@ from common.stats import describe, fmt_median_iqr, fmt_num, magnitude, spearman 
 ROOT = Path(__file__).resolve().parents[1]
 SUS_BENCHMARK = 68
 
-# variabile per soggetto -> (etichetta, come ricavarla)
-# ("blind", test, metrica) | ("training_block", blocco globale o "last", metrica) |
-# ("training", fase, metrica) | ("robot", run, metrica) | ("q", file, colonna) |
+# variabile per soggetto -> (etichetta, come ricavarla); solo le metriche dei task (README):
+# ("blind", test, metrica) | ("training_block", training, blocco, metrica) |
+# ("robot", run, metrica, fase) | ("q", file, colonna) |
 # ("delta", var_a, var_b) = var_a - var_b (miglioramento)
 VARIABLES = {
-    "blind3_region_acc":   ("Blind test 3 – region accuracy [%]", ("blind", 3, "region_at_end_correct")),
-    "blind3_end_error":    ("Blind test 3 – end-point error [px]", ("blind", 3, "end_error")),
-    "blind3_dir_error":    ("Blind test 3 – initial direction error [deg]", ("blind", 3, "initial_direction_error")),
-    "blind_fatigue":       ("Blind end error: test 4 – test 3 [px] (> 0 = worse after run 1)",
-                            ("delta", "blind4_end_error", "blind3_end_error")),
-    "blind4_end_error":    ("Blind test 4 – end-point error [px]", ("blind", 4, "end_error")),
-    "train_last_dwell":    ("Training, last block – dwell time [s]", ("training_block", "last", "dwell_time")),
-    "train_first_rt":      ("Training, first block – movement time [s]", ("training_block", 1, "movement_time")),
-    "train_last_rt":       ("Training, last block – movement time [s]", ("training_block", "last", "movement_time")),
-    "train_gain":          ("Training gain: movement time first – last block [s]",
-                            ("delta", "train_first_rt", "train_last_rt")),
-    "run1_nonadj":         ("Run 1 – non-adjacent changes, outbound [%]",
-                            ("robot", 1, "raw.outbound.non_adjacent_percent")),
-    "run1_cmd_dur":        ("Run 1 – mean command duration, outbound [s]",
-                            ("robot", 1, "raw.outbound.mean_command_duration")),
-    "run1_reversals":      ("Run 1 – reversals, outbound [%]", ("robot", 1, "raw.outbound.reversal_percent")),
-    "run1_outbound":       ("Run 1 – outbound time [s]", ("robot", 1, "phase_durations.outbound")),
-    "run2_outbound":       ("Run 2 – outbound time [s]", ("robot", 2, "phase_durations.outbound")),
-    "robot_gain":          ("Robot gain: outbound time run 1 – run 2 [s]", ("delta", "run1_outbound", "run2_outbound")),
-    "run2_test_duration":  ("Run 2 – test duration [s]", ("robot", 2, "test_duration")),
-    "robot_collisions":    ("Collisions, run 1 + run 2", ("robot", "sum", "manual.n_collisions")),
+    "blind3_hit":          ("Blind test 3 – hit rate (%)", ("blind", 3, "hit")),
+    "blind3_ee":           ("Blind test 3 – Euclidean error (cm)", ("blind", 3, "euclidean_error")),
+    "blind3_de":           ("Blind test 3 – direction error (deg)", ("blind", 3, "direction_error")),
+    "blind4_ee":           ("Blind test 4 – Euclidean error (cm)", ("blind", 4, "euclidean_error")),
+    "blind_fatigue":       ("Blind Euclidean error: test 4 – test 3 (cm) (> 0 = worse after run 1)",
+                            ("delta", "blind4_ee", "blind3_ee")),
+    "train_first_md":      ("Training T1 B1 – movement duration (s)", ("training_block", "T1", 1, "movement_duration")),
+    "train_last_md":       ("Training T2 B12 – movement duration (s)", ("training_block", "T2", 12, "movement_duration")),
+    "train_last_li":       ("Training T2 B12 – linearity index", ("training_block", "T2", 12, "linearity_index")),
+    "train_gain":          ("Training gain: movement duration T1 B1 – T2 B12 (s)",
+                            ("delta", "train_first_md", "train_last_md")),
+    "run1_rt":             ("Run 1 – region transitions, outbound", ("robot", 1, "region_transitions", "andata")),
+    "run1_pl":             ("Run 1 – path length, outbound (m)", ("robot", 1, "path_length", "andata")),
+    "run1_outbound":       ("Run 1 – completion time, outbound (s)", ("robot", 1, "completion_time", "andata")),
+    "run2_outbound":       ("Run 2 – completion time, outbound (s)", ("robot", 2, "completion_time", "andata")),
+    "robot_gain":          ("Robot gain: outbound completion time run 1 – run 2 (s)",
+                            ("delta", "run1_outbound", "run2_outbound")),
+    "run2_total":          ("Run 2 – total completion time (s)", ("robot", 2, "completion_time", "totale")),
     "sus":                 ("SUS score (0-100)", ("q", "sus_scores.csv", "SUS")),
     "tlx":                 ("NASA-TLX raw (0-100)", ("q", "nasa_scores.csv", "Raw TLX (0-100)")),
     "tlx_physical":        ("NASA-TLX physical demand (1-20)", ("q", "nasa_scores.csv", "Physical demand")),
@@ -75,17 +72,16 @@ VARIABLES = {
 }
 # (x, y, segno atteso, perche')
 TRANSFER = [
-    ("blind3_region_acc", "run1_nonadj", "-", "going to the right region blind vs sweeping across the grid on the robot"),
-    ("train_last_dwell", "run1_cmd_dur", "-", "holding the cursor still (training) vs holding a command (robot)"),
-    ("blind3_dir_error", "run1_reversals", "+", "planning errors (blind) vs overcorrections (robot)"),
-    ("blind3_end_error", "run1_outbound", "+", "map knowledge (blind) vs driving time (robot)"),
+    ("blind3_hit", "run1_rt", "-", "reaching the target blind vs sweeping across the grid on the robot"),
+    ("train_last_li", "run1_pl", "+", "curved cursor paths (training) vs longer robot paths"),
+    ("blind3_de", "run1_rt", "+", "planning errors (blind) vs corrections (robot)"),
+    ("blind3_ee", "run1_outbound", "+", "map knowledge (blind) vs driving time (robot)"),
     ("train_gain", "robot_gain", "+", "who improves in the training improves on the robot"),
 ]
 QUESTIONNAIRE = [
-    ("sus", "run2_test_duration", "-", "perceived usability vs time on the task"),
-    ("tlx", "run2_test_duration", "+", "perceived workload vs time on the task"),
+    ("sus", "run2_total", "-", "perceived usability vs time on the task"),
+    ("tlx", "run2_total", "+", "perceived workload vs time on the task"),
     ("tlx_physical", "blind_fatigue", "+", "perceived physical demand vs fatigue in the blind test"),
-    ("sus", "robot_collisions", "-", "perceived usability vs collisions"),
 ]
 
 
@@ -112,13 +108,12 @@ def build(root: Path) -> tuple:
         kind = spec[0]
         if kind == "blind" and blind is not None and spec[2] in blind.columns:
             return blind[blind.test == spec[1]].set_index("subject")[spec[2]]
-        if kind == "training_block" and tr_blocks is not None and spec[2] in tr_blocks.columns:
-            block = tr_blocks["gblock"].max() if spec[1] == "last" else spec[1]
-            return tr_blocks[tr_blocks.gblock == block].set_index("subject")[spec[2]]
-        if kind == "robot" and robot is not None and spec[2] in robot.columns:
-            if spec[1] == "sum":
-                return pd.to_numeric(robot[spec[2]], errors="coerce").groupby(robot["subject"]).sum(min_count=1)
-            return pd.to_numeric(robot[robot.run == spec[1]].set_index("subject")[spec[2]], errors="coerce")
+        if kind == "training_block" and tr_blocks is not None and spec[3] in tr_blocks.columns:
+            sel = tr_blocks[(tr_blocks.training == spec[1]) & (tr_blocks.block == spec[2])]
+            return sel.set_index("subject")[spec[3]]
+        if kind == "robot" and robot is not None:
+            sel = robot[(robot.run == spec[1]) & (robot.metric == spec[2]) & (robot.phase == spec[3])]
+            return pd.to_numeric(sel.set_index("subject")["value"], errors="coerce")
         if kind == "q" and spec[1] in q and spec[2] in q[spec[1]].columns:
             return pd.to_numeric(q[spec[1]][spec[2]], errors="coerce")
         if kind == "delta":
@@ -180,7 +175,7 @@ def main():
 
     table, q, missing = build(args.root)
     args.out.mkdir(parents=True, exist_ok=True)
-    report = Report("COLLEGAMENTI FRA LE PARTI DEL PROTOCOLLO E QUESTIONARI")
+    report = Report("COLLEGAMENTI FRA LE PARTI DEL PROTOCOLLO E QUESTIONARI", legend=False)
     report.text(f"Soggetti con almeno un dato: {len(table)}")
     if missing:
         report.text("Mancano (lancia prima le altre analisi / i questionari): " + ", ".join(missing))
@@ -220,7 +215,7 @@ def main():
     scatter(table, TRANSFER, args.out, "cross_transfer",
             "Transfer: the same ability with the cursor and with the robot (one dot per subject)")
     scatter(table, QUESTIONNAIRE, args.out, "cross_questionnaires", "Questionnaires vs performance")
-    report.write(args.out)
+    report.save(args.out)
 
 
 if __name__ == "__main__":

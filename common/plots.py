@@ -4,8 +4,8 @@
 - box plot come la figura 4 di Najie et al. (box pieno chiaro con bordo colorato, linea
   della mediana, baffi tratteggiati fino a 1.5 IQR, un punto per soggetto con il colore
   del soggetto, lo stesso in tutti i grafici);
-- versione media +- SD con la stessa impaginazione (linea della media al posto del box,
-  barra della SD al posto dei baffi), per l'analisi parametrica;
+- versione media +- SD con lo stesso stile: box da media - SD a media + SD con la linea
+  della media (senza baffi), per l'analisi parametrica;
 - parentesi grigie con gli asterischi sui confronti significativi:
   * p < 0.05, ** p < 0.01, *** p < 0.001.
 """
@@ -78,7 +78,7 @@ def _jitter(subjects, colors, width):
 
 def condition_plot(ax, data: dict, groups: list, conditions: list, styles: dict, colors: dict,
                    kind="box", width=None):
-    """Box plot (kind="box": mediana, IQR, baffi a 1.5 IQR) o media +- SD (kind="mean")
+    """Box plot (kind="box": mediana, IQR, baffi a 1.5 IQR) o box media +- SD (kind="mean")
     con un punto per soggetto.
     data: {(gruppo, condizione): Series indicizzata per soggetto}; i gruppi vanno
     sull'asse x (etichette), le condizioni affiancate dentro ogni gruppo con lo stile
@@ -106,11 +106,11 @@ def condition_plot(ax, data: dict, groups: list, conditions: list, styles: dict,
             else:
                 m, sd = v.mean(), v.std(ddof=1) if len(v) > 1 else 0.0
                 tops[x] = max(tops[x], float(m + sd))
-                ax.plot([x, x], [m - sd, m + sd], color=edge, lw=1.2, zorder=2)
-                ax.plot([x - width * 0.18, x + width * 0.18], [m - sd] * 2, color=edge, lw=1.2, zorder=2)
-                ax.plot([x - width * 0.18, x + width * 0.18], [m + sd] * 2, color=edge, lw=1.2, zorder=2)
-                ax.plot([x - width / 2, x + width / 2], [m, m], color=edge, lw=2.2, zorder=4,
+                ax.add_patch(plt.Rectangle((x - width / 2, m - sd), width, 2 * sd, facecolor=face,
+                                           edgecolor=edge, linewidth=1.2, zorder=2))
+                ax.plot([x - width / 2, x + width / 2], [m, m], color=edge, lw=1.6, zorder=2,
                         solid_capstyle="butt")
+                ax.update_datalim([(x, m - sd), (x, m + sd)])
             jit = _jitter(v.index, colors, width * 0.55)
             ax.scatter([x + jit[s] for s in v.index], v.to_numpy(), s=14, c=[colors[s] for s in v.index],
                        linewidths=0, zorder=3)
@@ -154,3 +154,13 @@ def subject_legend(fig, colors: dict, ncol=None, y=0.0, extra=()):
                              for s, c in sorted(colors.items())]
     fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, y), ncol=ncol or len(handles),
                handletextpad=0.3, columnspacing=1.0, fontsize=7.5)
+
+
+def grid_axes(n, ncols=3, width=4.0, height=3.2):
+    """Figura con n pannelli su ncols colonne; i pannelli vuoti vengono nascosti."""
+    nrows = int(np.ceil(n / ncols))
+    fig, axes = plt.subplots(nrows, ncols, figsize=(width * ncols, height * nrows), squeeze=False)
+    axes = axes.ravel()
+    for ax in axes[n:]:
+        ax.set_visible(False)
+    return fig, axes[:n]
