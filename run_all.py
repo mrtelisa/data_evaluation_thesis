@@ -22,6 +22,7 @@ STEPS = [
     ("reaching_regions", "training_analysis.py"),
     ("reaching_regions_3blocks", "training_3blocks_analysis.py"),
     ("real_robot", "robot_analysis.py"),
+    ("new_stats", "new_stats_analysis.py"),   # analisi della dottoranda (newStats_*): usa i file delle tre sopra
     ("calibrations", "calibration_analysis.py"),
     ("cross_analysis", "cross_analysis.py"),
     (".", "thesis_tables.py"),   # tabelle dell'appendice della tesi, dai .csv delle analisi

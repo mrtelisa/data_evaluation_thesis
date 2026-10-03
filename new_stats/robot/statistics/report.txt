@@ -1,0 +1,55 @@
+SECOND ANALYSIS (newStats of the PhD student): real robot
+=========================================================
+
+Same data as the task analyses. GG = Greenhouse-Geisser (when Mauchly p < 0.05); p of the
+planned comparisons Holm-corrected within each metric; log only for the tests.
+
+REAL ROBOT – test 1 vs test 2, outbound and return (Holm x2 per metric)
+-----------------------------------------------------------------------
+CT – Completion time (s) (tests on log-transformed data)
+  andata          test 1 310.587 ± 76.591, test 2 233.926 ± 70.811 | F(1, 9) = 20.27, p = 0.001, p Holm = 0.003 **, eta2p = 0.69 | Wilcoxon p = 0.010
+  ritorno         test 1 295.330 ± 95.848, test 2 234.973 ± 52.667 | F(1, 9) = 20.90, p = 0.001, p Holm = 0.003 **, eta2p = 0.70 | Wilcoxon p = 0.004
+
+PL – Path length (m)
+  andata          test 1 23.797 ± 1.039, test 2 23.402 ± 1.026 | F(1, 9) = 1.27, p = 0.289, p Holm = 0.289, eta2p = 0.12 | Wilcoxon p = 0.232
+  ritorno         test 1 25.660 ± 0.875, test 2 25.262 ± 0.625 | F(1, 9) = 5.13, p = 0.050, p Holm = 0.099, eta2p = 0.36 | Wilcoxon p = 0.049
+
+MS – Mean speed (m/s)
+  andata          test 1 0.090 ± 0.020, test 2 0.121 ± 0.030 | F(1, 9) = 29.20, p < .001, p Holm < .001 ***, eta2p = 0.76 | Wilcoxon p = 0.002
+  ritorno         test 1 0.101 ± 0.025, test 2 0.120 ± 0.025 | F(1, 9) = 39.99, p < .001, p Holm < .001 ***, eta2p = 0.82 | Wilcoxon p = 0.002
+
+JK – Jerk (m/s³) – Shapiro on the differences: 0.964, 0.893
+  andata          test 1 1.910 ± 0.587, test 2 2.444 ± 0.839 | F(1, 9) = 15.49, p = 0.003, p Holm = 0.007 **, eta2p = 0.63 | Wilcoxon p = 0.006
+  ritorno         test 1 2.071 ± 0.637, test 2 2.355 ± 0.611 | F(1, 9) = 6.10, p = 0.036, p Holm = 0.036 *, eta2p = 0.40 | Wilcoxon p = 0.037
+
+RT – Region transitions
+  andata          test 1 109.900 ± 38.986, test 2 101.600 ± 35.040 | F(1, 9) = 0.40, p = 0.542, p Holm = 0.542, eta2p = 0.04 | Wilcoxon p = 0.432
+  ritorno         test 1 121.900 ± 43.059, test 2 103.000 ± 28.674 | F(1, 9) = 3.98, p = 0.077, p Holm = 0.154, eta2p = 0.31 | Wilcoxon p = 0.131
+
+
+COMPLETION TIME OF THE OTHER PHASES (log, Holm x2 within each pair)
+-------------------------------------------------------------------
+Grasp and Placement (tests on log-transformed data)
+  grasp           test 1 37.234 ± 20.166, test 2 85.297 ± 153.332 | F(1, 9) = 0.65, p = 0.441, p Holm = 0.883, eta2p = 0.07 | Wilcoxon p = 0.922
+  posizionamento  test 1 30.747 ± 7.503, test 2 29.742 ± 3.381 | F(1, 9) = 0.15, p = 0.712, p Holm = 0.883, eta2p = 0.02 | Wilcoxon p = 0.846
+
+Total and Outbound + return (tests on log-transformed data)
+  totale          test 1 673.898 ± 169.442, test 2 583.938 ± 191.994 | F(1, 9) = 3.31, p = 0.102, p Holm = 0.102, eta2p = 0.27 | Wilcoxon p = 0.084
+  andata_ritorno  test 1 605.917 ± 165.664, test 2 468.899 ± 119.216 | F(1, 9) = 29.90, p < .001, p Holm < .001 ***, eta2p = 0.77 | Wilcoxon p = 0.002
+
+Grasp without S001 (single check, log, not corrected): test 1 38.2 ± 21.1, test 2 37.1 ± 18.4 | F(1, 8) = 0.03, p = 0.877, eta2p = 0.00 | Wilcoxon p = 0.496
+
+EXPLORATORY METRICS OF THE THESIS (Holm x2, outbound and return)
+----------------------------------------------------------------
+Stop time while driving (%) – Shapiro on the differences: 0.901, 0.078
+  andata          test 1 39.830 ± 5.726, test 2 30.520 ± 6.697 | F(1, 9) = 30.58, p < .001, p Holm < .001 ***, eta2p = 0.77 | Wilcoxon p = 0.004
+  ritorno         test 1 26.087 ± 9.624, test 2 19.958 ± 6.477 | F(1, 9) = 10.09, p = 0.011, p Holm = 0.011 *, eta2p = 0.53 | Wilcoxon p = 0.006
+
+Region transitions per minute of driving (/min) – Shapiro on the differences: 0.175, 0.887
+  andata          test 1 23.111 ± 5.318, test 2 28.802 ± 5.461 | F(1, 9) = 13.02, p = 0.006, p Holm = 0.011 *, eta2p = 0.59 | Wilcoxon p = 0.020
+  ritorno         test 1 26.330 ± 3.047, test 2 27.886 ± 5.438 | F(1, 9) = 1.06, p = 0.330, p Holm = 0.330, eta2p = 0.11 | Wilcoxon p = 0.432
+
+Cursor distance from the centre while moving (tests on log-transformed data) – Shapiro on the differences: 0.448, 0.002
+  andata          test 1 0.507 ± 0.065, test 2 0.542 ± 0.065 | F(1, 9) = 9.39, p = 0.013, p Holm = 0.013 *, eta2p = 0.51 | Wilcoxon p = 0.006
+  ritorno         test 1 0.543 ± 0.075, test 2 0.588 ± 0.095 | F(1, 9) = 23.62, p < .001, p Holm = 0.002 **, eta2p = 0.72 | Wilcoxon p = 0.002
+

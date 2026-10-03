@@ -1,0 +1,89 @@
+SECOND ANALYSIS (newStats of the PhD student): reaching training
+================================================================
+
+Same data as the task analyses. GG = Greenhouse-Geisser (when Mauchly p < 0.05); p of the
+planned comparisons Holm-corrected within each metric; log only for the tests.
+
+REACHING TRAINING – Training (T1, T2) x Block (3 blocks of 32 outward movements)
+--------------------------------------------------------------------------------
+EE – Euclidean error at 1 s (cm)
+  T1 B1: 8.243 ± 1.062
+  T1 B2: 7.283 ± 1.364
+  T1 B3: 6.841 ± 1.311
+  T2 B1: 6.950 ± 1.221
+  T2 B2: 6.139 ± 1.079
+  T2 B3: 5.716 ± 1.096
+  Training             F(1, 9) = 18.34, p = 0.002, eta2p = 0.67
+  Block                F(1.21, 10.90) = 12.03, p = 0.004 (GG), eta2p = 0.57, Mauchly p = 0.015
+  Training × Block     F(2, 18) = 0.09, p = 0.913, eta2p = 0.01, Mauchly p = 0.504
+  Friedman (6 blocks): chi2(5) = 22.74, p < .001
+  T1 B1 vs T1 B3     F(1, 9) = 9.16, p = 0.014, p Holm = 0.031 * | Wilcoxon p Holm = 0.041
+  T1 B3 vs T2 B1     F(1, 9) = 0.12, p = 0.735, p Holm = 0.735 | Wilcoxon p Holm = 0.922
+  T2 B1 vs T2 B3     F(1, 9) = 10.41, p = 0.010, p Holm = 0.031 * | Wilcoxon p Holm = 0.041
+  T1 B1 vs T2 B3     F(1, 9) = 23.36, p < .001, p Holm = 0.004 ** | Wilcoxon p Holm = 0.023
+
+DE – Direction error at 1 s (deg)
+  T1 B1: 48.548 ± 8.496
+  T1 B2: 38.376 ± 9.316
+  T1 B3: 35.126 ± 7.091
+  T2 B1: 35.248 ± 8.425
+  T2 B2: 31.247 ± 6.664
+  T2 B3: 30.078 ± 8.379
+  Training             F(1, 9) = 16.11, p = 0.003, eta2p = 0.64
+  Block                F(2, 18) = 13.53, p < .001, eta2p = 0.60, Mauchly p = 0.059
+  Training × Block     F(2, 18) = 2.31, p = 0.128, eta2p = 0.20, Mauchly p = 0.156
+  Friedman (6 blocks): chi2(5) = 21.37, p < .001
+  T1 B1 vs T1 B3     F(1, 9) = 21.12, p = 0.001, p Holm = 0.005 ** | Wilcoxon p Holm = 0.016
+  T1 B3 vs T2 B1     F(1, 9) = 0.00, p = 0.952, p Holm = 0.952 | Wilcoxon p Holm = 1.000
+  T2 B1 vs T2 B3     F(1, 9) = 2.64, p = 0.139, p Holm = 0.278 | Wilcoxon p Holm = 0.320
+  T1 B1 vs T2 B3     F(1, 9) = 18.58, p = 0.002, p Holm = 0.006 ** | Wilcoxon p Holm = 0.018
+
+XE – Extent error at 1 s (cm)
+  T1 B1: -2.247 ± 2.011
+  T1 B2: -1.863 ± 2.612
+  T1 B3: -1.230 ± 2.501
+  T2 B1: -1.749 ± 2.573
+  T2 B2: -1.063 ± 2.414
+  T2 B3: -0.925 ± 2.394
+  Training             F(1, 9) = 2.01, p = 0.190, eta2p = 0.18
+  Block                F(2, 18) = 3.95, p = 0.038, eta2p = 0.31, Mauchly p = 0.066
+  Training × Block     F(2, 18) = 0.39, p = 0.681, eta2p = 0.04, Mauchly p = 0.243
+  Friedman (6 blocks): chi2(5) = 11.60, p = 0.041
+  T1 B1 vs T1 B3     F(1, 9) = 2.39, p = 0.156, p Holm = 0.313 | Wilcoxon p Holm = 0.252
+  T1 B3 vs T2 B1     F(1, 9) = 1.30, p = 0.284, p Holm = 0.313 | Wilcoxon p Holm = 0.252
+  T2 B1 vs T2 B3     F(1, 9) = 9.18, p = 0.014, p Holm = 0.057 | Wilcoxon p Holm = 0.148
+  T1 B1 vs T2 B3     F(1, 9) = 3.62, p = 0.089, p Holm = 0.268 | Wilcoxon p Holm = 0.252
+
+MD – Movement duration (s)
+  T1 B1: 3.276 ± 0.615
+  T1 B2: 2.468 ± 0.395
+  T1 B3: 2.297 ± 0.301
+  T2 B1: 2.186 ± 0.220
+  T2 B2: 1.981 ± 0.228
+  T2 B3: 2.012 ± 0.213
+  Training             F(1, 9) = 227.92, p < .001, eta2p = 0.96
+  Block                F(2, 18) = 55.11, p < .001, eta2p = 0.86, Mauchly p = 0.246
+  Training × Block     F(1.12, 10.11) = 10.44, p = 0.008 (GG), eta2p = 0.54, Mauchly p = 0.002
+  (log-transformed data)
+  Friedman (6 blocks): chi2(5) = 41.20, p < .001
+  T1 B1 vs T1 B3     F(1, 9) = 35.14, p < .001, p Holm < .001 *** | Wilcoxon p Holm = 0.008
+  T1 B3 vs T2 B1     F(1, 9) = 6.92, p = 0.027, p Holm = 0.033 * | Wilcoxon p Holm = 0.074
+  T2 B1 vs T2 B3     F(1, 9) = 8.68, p = 0.016, p Holm = 0.033 * | Wilcoxon p Holm = 0.074
+  T1 B1 vs T2 B3     F(1, 9) = 156.02, p < .001, p Holm < .001 *** | Wilcoxon p Holm = 0.008
+
+LI – Linearity index
+  T1 B1: 2.188 ± 0.422
+  T1 B2: 1.560 ± 0.384
+  T1 B3: 1.415 ± 0.323
+  T2 B1: 1.179 ± 0.359
+  T2 B2: 1.112 ± 0.294
+  T2 B3: 1.157 ± 0.254
+  Training             F(1, 9) = 87.66, p < .001, eta2p = 0.91
+  Block                F(2, 18) = 12.72, p < .001, eta2p = 0.59, Mauchly p = 0.532
+  Training × Block     F(1.13, 10.15) = 9.97, p = 0.009 (GG), eta2p = 0.53, Mauchly p = 0.003
+  Friedman (6 blocks): chi2(5) = 32.80, p < .001
+  T1 B1 vs T1 B3     F(1, 9) = 18.05, p = 0.002, p Holm = 0.006 ** | Wilcoxon p Holm = 0.029
+  T1 B3 vs T2 B1     F(1, 9) = 8.82, p = 0.016, p Holm = 0.031 * | Wilcoxon p Holm = 0.039
+  T2 B1 vs T2 B3     F(1, 9) = 0.11, p = 0.753, p Holm = 0.753 | Wilcoxon p Holm = 0.695
+  T1 B1 vs T2 B3     F(1, 9) = 47.49, p < .001, p Holm < .001 *** | Wilcoxon p Holm = 0.008
+
