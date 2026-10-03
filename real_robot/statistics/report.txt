@@ -341,6 +341,32 @@ Region transitions – return
   Post hoc (planned comparisons)
     test 1 vs test 2: t(9)=-2.00, p Bonf=0.077, dz=-0.63, Shapiro p=0.395 | Wilcoxon p Holm=0.131, r=-0.56
 
+SENSITIVITY: WITHOUT OUTLIERS (figure robot_manipulation_boxplot_without_outliers only)
+---------------------------------------------------------------------------------------
+Without S001: test 2: 5 repositionings of the base during the grasp (519 s)
+
+Completion time – grasp, without S001 (s)
+-----------------------------------------
+  test 1                 mean ± SD 38 ± 21                median [IQR] 30 [29, 35]   (n=9)
+  test 2                 mean ± SD 37 ± 18                median [IQR] 29 [28, 30]   (n=9)
+  Repeated-measures ANOVA (n=9 participants with all cells, 0 excluded)
+    Within-subjects effects
+                          Correction                   SS       df         MS        F       p   eta2G    eta2   eta2p
+      Test                None                      5.622        1      5.622    0.015   0.9078.93e-048.93e-04   0.002
+                          Greenhouse-Geisser        5.622    1.000      5.622    0.015   0.9078.93e-048.93e-04   0.002
+                          Huynh-Feldt               5.622    1.000      5.622    0.015   0.9078.93e-048.93e-04   0.002
+      Residual            None                     3069.7        8    383.711
+                          Greenhouse-Geisser       3069.7    8.000    383.711
+                          Huynh-Feldt              3069.7    8.000    383.711
+    Between-subjects effects
+      Residual                                     3220.5        8    402.566
+    Sphericity tests
+                            Mauchly W       p   GG eps   HF eps
+      Test                      1.000       -    1.000    1.000
+  Post hoc (jamovi) test 1 - test 2: mean difference 1.118, SE 9.234, df 8, t 0.121, p 0.907 (= Tukey = Scheffe = Bonferroni = Holm)
+  Post hoc (planned comparisons)
+    test 1 vs test 2: t(8)=-0.12, p Bonf=0.907, dz=-0.04, Shapiro p=0.011 | Wilcoxon p Holm=0.496, r=-0.29
+
 EXPLORATORY METRICS (not in the figures nor in the jamovi tables)
 -----------------------------------------------------------------
 Why is the base faster in test 2? Share of stops, rate of command changes and how far from

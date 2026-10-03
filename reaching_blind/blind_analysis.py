@@ -41,6 +41,8 @@ Output:
     statistics/plots/single/<metrica>_boxplot.(png|pdf)  i pannelli uno per uno (senza MD e TTR, che
         restano nel report e nelle tabelle jamovi) e linearity_index_no_outlier_boxplot senza il valore
         piu' alto del linearity index, per vedere gli altri soggetti
+    Tesi_latex/Chapters/Figures/results/blind_boxplots.pdf  figura della tesi (THESIS: le metriche della
+        figura generale senza target crossing rate e minimum distance), senza titolo e note
     ../jamovi/blind/<sigla>_<metrica>.(omv|csv): un file per metrica, una riga per soggetto,
         colonne <sigla>_T1_B1 ... <sigla>_T5_B3 (fattore Test, livelli T1-T5; fattore Blocco, B1-B3)
 
@@ -61,7 +63,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from common.data import find_sessions   # noqa: E402
 from common.jamovi import write_tables   # noqa: E402
 from common.plots import (BOX_NOTE, GREY_BOX, axis_label, brackets, condition_plot, save_figure, setup_style,   # noqa: E402
-                          share_ylim, side_legend, subject_colors, subject_handles, subject_legend)
+                          save_thesis_figure, share_ylim, side_legend, subject_colors, subject_handles,
+                          subject_legend)
 from common.reach_metrics import canvas_scale, canvas_to_cm, endpoint_errors, linearity_index, speed   # noqa: E402
 from common.report import Report, analyse_metric, save_tables   # noqa: E402
 
@@ -92,6 +95,8 @@ PLOTTED = [m for m in METRICS if m not in ("movement_duration", "time_to_reach")
 OVERVIEW = [m for m in PLOTTED if m not in ("time_on_target", "linearity_index")]
 # stessa unita' e stessa grandezza (quota di prove): stessa scala y, anche nei grafici singoli
 SHARED_Y = [("hit", "crossed")]
+# figura della tesi: le metriche della figura generale, senza target crossing rate e minimum distance
+THESIS = ["hit", "euclidean_error", "extent_error", "direction_error"]
 
 
 def trials_from_raw(raw: pd.DataFrame, cfg: dict, scale: float) -> pd.DataFrame:
@@ -217,6 +222,17 @@ def plots(subjects: pd.DataFrame, posthocs: dict, out: Path):
             ax.set_ylim(ylim[m])
         side_legend(ax, subject_handles(colors))
         save_figure(fig, out, f"single/{m}_boxplot", note=BOX_NOTE)
+    # tesi: i pannelli dei grafici singoli, senza titolo e note, una sola legenda dei soggetti
+    # (sull'asse x solo il numero del test: con le scritte grandi "Test 1 ... Test 5" non ci stanno)
+    fig, axes = plt.subplots(2, 2, figsize=(7.6, 6.4))
+    for m, ax, letter in zip(THESIS, axes.ravel(), "ABCD"):
+        plot_panel(ax, subjects, m, posthocs[m], colors)
+        ax.set_xticklabels([str(t) for t in TESTS])
+        ax.set_xlabel("Test")
+        ax.set_title(f"({letter})")
+    fig.tight_layout(h_pad=1.4, rect=(0, 0.08, 1, 1))
+    subject_legend(fig, colors, ncol=5, y=0.075)
+    save_thesis_figure(fig, "blind_boxplots", note=BOX_NOTE)
     fig, ax = plt.subplots(figsize=(4.6, 3.6))
     plot_panel(ax, subjects, "linearity_index", posthocs["linearity_index"], colors, hide)
     side_legend(ax, subject_handles(colors))

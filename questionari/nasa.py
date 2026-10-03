@@ -12,22 +12,34 @@ Output:
   cosa per il Raw TLX.
 - statistics/nasa_scores.csv : ID, 6 dimensioni, Raw TLX (1-20), Raw TLX
   (0-100).
-- statistics/plots/nasa_dimensions.png (media ± SD), nasa_boxplot.png
+- statistics/plots/nasa_dimensions.png (media ± SD)
+- statistics/plots/nasa_boxplot.(png|pdf): box plot come quelli dei test e del robot (common/plots.py:
+  mediana [IQR], baffi 1.5 IQR, un pallino per soggetto, legenda dei soggetti a lato, senza titolo);
+  il pdf e' copiato anche nelle figure della tesi
 """
+
+import shutil
+import sys
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from utils import (BLUE, INK, MUTED, band_series, count_rows, describe_row,
+from utils import (BLUE, band_series, count_rows, describe_row,
                    load_responses, parse_args, save_figure, save_scores,
                    save_statistics, setup_style)
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from common import plots as cp   # noqa: E402
 
 DIMENSIONS = ["Mental demand", "Physical demand", "Temporal demand",
               "Performance", "Effort", "Frustration"]
 BAND_EDGES = [1, 7, 13, 20]
 BAND_LABELS = ["Low (1-7)", "Medium (8-13)", "High (14-20)"]
 REVERSED = ["Performance"]   # 20 = buona prestazione: invertita nel Raw TLX
+THESIS_FIG = (Path(__file__).resolve().parents[3]
+              / "Tesi_latex/Chapters/Figures/results/nasa_boxplot.pdf")
 
 
 def main():
@@ -81,20 +93,23 @@ def main():
     ax.set_title("NASA-TLX – mean ± SD per dimension", loc="left")
     save_figure(fig, "nasa_dimensions", args.out)
 
-    fig, ax = plt.subplots(figsize=(7, 4))
-    data = [scores[d].dropna().values for d in DIMENSIONS]
-    ax.boxplot(data, widths=0.5, patch_artist=True, showmeans=True,
-               boxprops={"facecolor": "#cde2fb", "edgecolor": BLUE},
-               medianprops={"color": BLUE, "linewidth": 2},
-               whiskerprops={"color": MUTED}, capprops={"color": MUTED},
-               flierprops={"marker": "o", "markersize": 4,
-                           "markerfacecolor": MUTED, "markeredgecolor": "none"},
-               meanprops={"marker": "D", "markersize": 4,
-                          "markerfacecolor": INK, "markeredgecolor": "none"})
-    ax.set_xticks(range(1, 7)); ax.set_xticklabels(DIMENSIONS, rotation=20, ha="right")
-    ax.set_ylim(0, 21); ax.set_ylabel("Score (1-20)")
-    ax.set_title("NASA-TLX – distribution per dimension", loc="left")
-    save_figure(fig, "nasa_boxplot", args.out)
+    # box plot come i test e il robot (box blu, baffi grigio scuro), senza titolo
+    cp.setup_style()
+    by_subject = scores.set_index("ID")
+    colors = cp.subject_colors(by_subject.index)
+    fig, ax = plt.subplots(figsize=(7, 3.8))
+    cp.condition_plot(ax, {(d, "NASA"): by_subject[d] for d in DIMENSIONS}, DIMENSIONS, ["NASA"],
+                      {"NASA": ("#cde2fb", BLUE)}, colors, width=0.5, whisker_color=cp.INK2)
+    ax.set_xticklabels(DIMENSIONS, rotation=20, ha="right")
+    ax.set_ylim(0, 21)
+    ax.set_yticks(range(0, 21, 5))
+    ax.set_ylabel("Score (1-20)")
+    cp.side_legend(ax, cp.subject_handles(colors))
+    png = cp.save_figure(fig, args.out, "nasa_boxplot", note=cp.BOX_NOTE)
+    print(f"[nasa_boxplot] grafico -> {png} (+ .pdf)")
+    if THESIS_FIG.parent.exists():
+        shutil.copy(png.with_suffix(".pdf"), THESIS_FIG)
+        print(f"[nasa_boxplot] figura tesi -> {THESIS_FIG}")
 
 
 if __name__ == "__main__":

@@ -33,6 +33,8 @@ SUBJECT_PALETTE = ["#0072bd", "#d95319", "#edb120", "#7e2f8e", "#77ac30", "#4dbe
 BLUE, CATEGORICAL = SUBJECT_PALETTE[0], SUBJECT_PALETTE   # per i grafici delle calibrazioni
 BOX_NOTE = "Box: median [IQR], whiskers 1.5 IQR; dots: participants."
 STARS_NOTE = "* p < 0.05, ** p < 0.01, *** p < 0.001"
+# figure della tesi: scritte direttamente fra le figure di LaTeX, cosi' si aggiornano a ogni analisi
+THESIS_DIR = Path(__file__).resolve().parents[3] / "Tesi_latex" / "Chapters" / "Figures" / "results"
 
 
 def setup_style():
@@ -41,35 +43,80 @@ def setup_style():
         "axes.spines.top": False, "axes.spines.right": False,
         "axes.edgecolor": INK, "axes.linewidth": 0.8, "axes.labelcolor": INK,
         "axes.grid": False, "grid.color": GRID, "grid.linewidth": 0.8,
-        "xtick.color": INK, "ytick.color": INK, "xtick.direction": "out", "ytick.direction": "out",
-        "axes.titlesize": 10, "axes.titleweight": "bold", "axes.titlelocation": "left",
-        "axes.labelsize": 9.5, "axes.labelweight": "bold", "font.size": 9,
-        "legend.frameon": False, "legend.fontsize": 8,
+        "xtick.color": INK, "ytick.color": INK, "xtick.labelcolor": "inherit", "ytick.labelcolor": "inherit",
+        "xtick.direction": "out", "ytick.direction": "out",
+        # tutte le scritte a 11 pt e in grassetto (si devono leggere bene nella tesi), tranne i numeri
+        # sugli assi, non in grassetto (_style_ticks)
+        "axes.titlesize": 11, "axes.titleweight": "bold", "axes.titlelocation": "left",
+        "axes.labelsize": 11, "axes.labelweight": "bold", "font.size": 11, "font.weight": "bold",
+        "xtick.labelsize": 11, "ytick.labelsize": 11,
+        "legend.frameon": False, "legend.fontsize": 11,
         "savefig.dpi": 300, "savefig.bbox": "tight",
     })
+
+
+def _is_number(text: str) -> bool:
+    try:
+        float(text.replace("\u2212", "-"))
+        return True
+    except ValueError:
+        return False
+
+
+def _style_ticks(fig):
+    """Etichette degli assi: i numeri non in grassetto, le etichette di testo (Outbound, Test 1, ...)
+    in grassetto."""
+    fig.canvas.draw()
+    for ax in fig.axes:
+        for lab in ax.get_xticklabels() + ax.get_yticklabels():
+            if not lab.get_text():
+                continue
+            lab.set_fontweight("normal" if _is_number(lab.get_text()) else "bold")
 
 
 def save_figure(fig, out_dir, name, note=None):
     """plots/<name>.png (300 dpi) e plots/<name>.pdf (vettoriale, per la tesi). Se brackets ha
     disegnato degli asterischi aggiunge la loro legenda: in alto a destra nelle figure con titolo,
     sotto il grafico insieme a `note` (cosa si vede) nei grafici singoli."""
+    _style_ticks(fig)
     star_text = STARS_NOTE if getattr(fig, "_has_stars", False) else None
     if note is not None:
         fig.canvas.draw()   # posizione delle etichette dell'asse x, per scrivere la nota sotto
         bottom = min(ax.get_tightbbox().transformed(fig.transFigure.inverted()).y0 for ax in fig.axes
                      if ax.get_visible())
         text = "\n".join(t for t in (note, star_text) if t)
-        fig.text(0.01, bottom - 0.02, text, ha="left", va="top", fontsize=7, color=INK2, wrap=True)
+        fig.text(0.01, bottom - 0.02, text, ha="left", va="top", fontsize=11, color=INK2, wrap=True)
     elif star_text:
         title = fig._suptitle
         y, va = (title.get_position()[1], "top") if title is not None else (1.0, "bottom")
-        fig.text(0.995, y, star_text, ha="right", va=va, fontsize=7.5, color=SIG_COLOR)
+        fig.text(0.995, y, star_text, ha="right", va=va, fontsize=11, color=SIG_COLOR)
     path = Path(out_dir) / "plots" / f"{name}.png"
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path)
     fig.savefig(path.with_suffix(".pdf"))
     plt.close(fig)
     return path
+
+
+def save_thesis_figure(fig, name, note=None):
+    """<THESIS_DIR>/<name>.pdf, senza titolo. Sotto tutta la figura (anche sotto la legenda dei
+    soggetti) una sola nota per la figura intera: `note` (cosa si vede, es. BOX_NOTE) e, se ci sono
+    parentesi, la legenda degli asterischi. Se la cartella della tesi non c'e' la figura non viene
+    scritta."""
+    _style_ticks(fig)
+    star_text = STARS_NOTE if getattr(fig, "_has_stars", False) else None
+    text = "\n".join(t for t in (note, star_text) if t)
+    if text:
+        fig.canvas.draw()
+        to_fig = fig.transFigure.inverted()
+        artists = [ax for ax in fig.axes if ax.get_visible()] + list(fig.legends)
+        bottom = min(a.get_tightbbox().transformed(to_fig).y0 for a in artists)
+        fig.text(0.01, bottom - 0.01, text, ha="left", va="top", fontsize=11, color=INK2)
+    if THESIS_DIR.parent.is_dir():
+        THESIS_DIR.mkdir(exist_ok=True)
+        fig.savefig(THESIS_DIR / f"{name}.pdf")
+        print(f"[{name}] figura tesi -> {THESIS_DIR / f'{name}.pdf'}")
+    plt.close(fig)
 
 
 def subject_colors(subjects) -> dict:
@@ -93,11 +140,13 @@ def _jitter(subjects, colors, width):
     return {s: (order.index(s) / n - 0.5) * width for s in subjects}
 
 
-def condition_plot(ax, data: dict, groups: list, conditions: list, styles: dict, colors: dict, width=None):
+def condition_plot(ax, data: dict, groups: list, conditions: list, styles: dict, colors: dict, width=None,
+                   whisker_color=None):
     """Box plot (mediana, IQR, baffi a 1.5 IQR) con un punto per soggetto.
     data: {(gruppo, condizione): Series indicizzata per soggetto}; i gruppi vanno
     sull'asse x (etichette), le condizioni affiancate dentro ogni gruppo con lo stile
-    styles[condizione] = (riempimento, bordo). Restituisce {(gruppo, condizione): x}."""
+    styles[condizione] = (riempimento, bordo); baffi del colore del bordo o di whisker_color.
+    Restituisce {(gruppo, condizione): x}."""
     nc = len(conditions)
     width = width or (0.32 if nc > 1 else 0.42)
     offsets = (np.arange(nc) - (nc - 1) / 2) * (width * 1.35)
@@ -115,8 +164,8 @@ def condition_plot(ax, data: dict, groups: list, conditions: list, styles: dict,
                        whis=1.5, manage_ticks=False, zorder=2,
                        boxprops=dict(facecolor=face, edgecolor=edge, linewidth=1.2),
                        medianprops=dict(color=edge, linewidth=1.6),
-                       whiskerprops=dict(color=edge, linewidth=1.0, linestyle=(0, (4, 3))),
-                       capprops=dict(color=edge, linewidth=1.0))
+                       whiskerprops=dict(color=whisker_color or edge, linewidth=1.0, linestyle=(0, (4, 3))),
+                       capprops=dict(color=whisker_color or edge, linewidth=1.0))
             jit = _jitter(v.index, colors, width * 0.55)
             ax.scatter([x + jit[s] for s in v.index], v.to_numpy(), s=14, c=[colors[s] for s in v.index],
                        linewidths=0, zorder=3)
@@ -150,7 +199,7 @@ def brackets(ax, items: list):
                 y = py + step * 1.1
         placed.append((a, b, y))
         ax.plot([a, a, b, b], [y - step * 0.3, y, y, y - step * 0.3], color=SIG_COLOR, lw=0.9, clip_on=False)
-        ax.text((a + b) / 2, y - step * 0.05, txt, ha="center", va="bottom", color=SIG_COLOR, fontsize=10,
+        ax.text((a + b) / 2, y - step * 0.05, txt, ha="center", va="bottom", color=SIG_COLOR, fontsize=11,
                 clip_on=False)
     ax.set_ylim(lo, max(hi, max(y for _, _, y in placed) + step * 0.9))
 
@@ -161,7 +210,7 @@ def subject_handles(colors: dict) -> list:
 
 def side_legend(ax, handles: list):
     """Legenda a destra del grafico, fuori dagli assi (grafici singoli)."""
-    ax.legend(handles=handles, loc="upper left", bbox_to_anchor=(1.02, 1.0), ncol=1, fontsize=7,
+    ax.legend(handles=handles, loc="upper left", bbox_to_anchor=(1.02, 1.0), ncol=1, fontsize=11,
               handletextpad=0.3, borderaxespad=0)
 
 
@@ -169,7 +218,7 @@ def subject_legend(fig, colors: dict, ncol=None, y=0.0, extra=()):
     """Legenda dei colori dei soggetti (piu' eventuali `extra` handle), in una riga sotto la figura."""
     handles = list(extra) + subject_handles(colors)
     fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, y), ncol=ncol or len(handles),
-               handletextpad=0.3, columnspacing=1.0, fontsize=7.5)
+               handletextpad=0.3, columnspacing=1.0, fontsize=11)
 
 
 def grid_axes(n, ncols=3, width=4.0, height=3.2):

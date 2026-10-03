@@ -34,6 +34,8 @@ Output:
         come la figura 4 di Bellitto: media mobile su 12 prove, mediana [IQR]
     statistics/plots/return_median_iqr.(png|pdf)  ritorni (MD, LI), stesso stile, senza statistica
     statistics/plots/single/<metrica>.(png|pdf), single/return_<metrica>.(png|pdf)  i pannelli uno per uno
+    Tesi_latex/Chapters/Figures/results/training_curves.pdf, training_return_curves.pdf  figure della tesi:
+        gli stessi pannelli, due per riga, senza titolo e note
     ../jamovi/training/<sigla>_<metrica>.(omv|csv): un file per metrica come training_reaching_out.omv,
         una riga per soggetto, colonne <sigla>_T1_B1 ... <sigla>_T2_B12 (es. EE_T1_B1)
 
@@ -53,7 +55,8 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from common.data import find_sessions   # noqa: E402
 from common.jamovi import write_tables   # noqa: E402
-from common.plots import TRAINING_COLORS, MUTED, axis_label, brackets, save_figure, setup_style   # noqa: E402
+from common.plots import (TRAINING_COLORS, MUTED, axis_label, brackets, save_figure, save_thesis_figure,   # noqa: E402
+                          setup_style)
 from common.reach_metrics import canvas_scale, canvas_to_cm, goals_from_raw, training_metrics   # noqa: E402
 from common.report import Report, analyse_metric, save_tables   # noqa: E402
 
@@ -190,7 +193,10 @@ def figure4_panel(ax, trials: pd.DataFrame, m: str, label: str, unit: str, posth
         ax.axhline(0, color=MUTED, lw=0.8, ls=":")
     ticks = [1, n_trials // 2, n_trials]
     ax.set_xticks(list(trial_x("T1", ticks, n_trials)) + list(trial_x("T2", ticks, n_trials)))
-    ax.set_xticklabels([str(t) for t in ticks] + [str(t + n_trials) for t in ticks])
+    labels = ax.set_xticklabels([str(t) for t in ticks] + [str(t + n_trials) for t in ticks])
+    # fine del training 1 e inizio del 2 sono vicini: etichette allineate verso l'esterno per non toccarsi
+    labels[len(ticks) - 1].set_ha("right")
+    labels[len(ticks)].set_ha("left")
     ax.set_xlim(0, 2 * n_trials + GAP + 1)
     ax.set_xlabel("Trial")
     ax.set_ylabel(axis_label(label, unit))
@@ -199,7 +205,7 @@ def figure4_panel(ax, trials: pd.DataFrame, m: str, label: str, unit: str, posth
     top += 0.1 * (top - lo)
     ax.set_ylim(lo, top)
     for tr, name in (("T1", "Training 1"), ("T2", "Training 2")):
-        ax.text(trial_x(tr, n_trials / 2, n_trials), top, name, ha="center", va="top", fontsize=8,
+        ax.text(trial_x(tr, n_trials / 2, n_trials), top, name, ha="center", va="top", fontsize=11,
                 color=TRAINING_COLORS[tr], fontweight="bold")
     if posthoc is not None:
         ph, pairs = posthoc
@@ -209,9 +215,10 @@ def figure4_panel(ax, trials: pd.DataFrame, m: str, label: str, unit: str, posth
 
 
 def plot_training(trials: pd.DataFrame, metrics: dict, posthocs: dict, out: Path, name: str, title: str,
-                  note: str, single_prefix: str = ""):
+                  note: str, single_prefix: str = "", thesis_name: str = None):
     """Figura con un pannello per metrica (3 per riga) e i pannelli uno per uno in single/,
-    senza titolo e con `note` (cosa si vede) sotto il grafico."""
+    senza titolo e con `note` (cosa si vede) sotto il grafico. Con `thesis_name` anche la figura
+    della tesi: gli stessi pannelli, due per riga, senza titolo."""
     ncols = min(3, len(metrics))
     nrows = int(np.ceil(len(metrics) / ncols))
     fig, axes = plt.subplots(nrows, ncols, figsize=(4.15 * ncols + 0.05, 3.3 * nrows), squeeze=False)
@@ -228,6 +235,22 @@ def plot_training(trials: pd.DataFrame, metrics: dict, posthocs: dict, out: Path
         fig, ax = plt.subplots(figsize=(5.2, 3.6))
         figure4_panel(ax, trials, m, label, unit, posthocs.get(m))
         save_figure(fig, out, f"single/{single_prefix}{m}", note=note)
+    if thesis_name:
+        nrows = int(np.ceil(len(metrics) / 2))
+        fig, axes = plt.subplots(nrows, 2, figsize=(7.6, 2.9 * nrows), squeeze=False)
+        axes = axes.ravel()
+        for ax in axes[len(metrics):]:
+            ax.set_visible(False)
+        for ax, (m, (_, label, unit)), letter in zip(axes, metrics.items(), "ABCDEFGH"):
+            figure4_panel(ax, trials, m, label, unit, posthocs.get(m))
+            ax.set_title(f"({letter})")
+            # etichette lunghe (es. "Return movement duration (s)") su due righe, se no escono dal pannello
+            if len(ax.get_ylabel()) > 24:
+                words = ax.get_ylabel().split()
+                half = len(words) // 2
+                ax.set_ylabel(" ".join(words[:half]) + "\n" + " ".join(words[half:]))
+        fig.tight_layout(h_pad=1.4)
+        save_thesis_figure(fig, thesis_name, note=note)
 
 
 def main():
@@ -267,10 +290,11 @@ def main():
     setup_style()
     curve = "Line: median; band: IQR."
     plot_training(trials, METRICS, posthocs, args.out, "figure4_median_iqr",
-                  "Reaching training: cursor control across trials (median [IQR] across participants)", curve)
+                  "Reaching training: cursor control across trials (median [IQR] across participants)", curve,
+                  thesis_name="training_curves")
     plot_training(returns, RETURN_METRICS, {}, args.out, "return_median_iqr",
                   "Reaching training: return to the centre (median [IQR] across participants, no statistics)",
-                  curve, single_prefix="return_")
+                  curve, single_prefix="return_", thesis_name="training_return_curves")
     report.save(args.out)
 
 

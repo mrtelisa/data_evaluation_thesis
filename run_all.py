@@ -3,6 +3,7 @@
     2. blind test, training, robot reale (statistiche, grafici, tabelle jamovi in jamovi/)
     3. calibrazioni BoMI
     4. collegamenti fra le parti del protocollo e questionari (usa i risultati dei punti 1-2)
+    5. tabelle statistiche dell'appendice della tesi (thesis_tables.py)
 
     python3 run_all.py
 
@@ -23,6 +24,7 @@ STEPS = [
     ("real_robot", "robot_analysis.py"),
     ("calibrations", "calibration_analysis.py"),
     ("cross_analysis", "cross_analysis.py"),
+    (".", "thesis_tables.py"),   # tabelle dell'appendice della tesi, dai .csv delle analisi
 ]
 
 if __name__ == "__main__":

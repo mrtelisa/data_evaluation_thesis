@@ -25,8 +25,12 @@ Output:
     statistics/plots/robot_boxplots.(png|pdf)  box plot come Najie (mediana, IQR) + t appaiato:
         una riga per metrica (CT, PL, MS, JK, RT), andata a sinistra e ritorno a destra, stessa scala y per riga
     statistics/plots/robot_manipulation_boxplot.(png|pdf)  completion time di grasp e posizionamento
+    statistics/plots/robot_manipulation_boxplot_without_outliers.(png|pdf)  lo stesso senza i soggetti di
+        WITHOUT (grasp senza S001), con le p ricalcolate
     statistics/plots/robot_total_time_boxplot.(png|pdf)    completion time andata + ritorno
     statistics/plots/single/<metrica>_<outbound|return>_boxplot.(png|pdf)  i pannelli uno per uno
+    Tesi_latex/Chapters/Figures/results/robot_boxplots_1.pdf, robot_boxplots_2.pdf  figura della tesi in due
+        parti: come robot_boxplots con in testa il completion time andata + ritorno, senza titolo e note
     ../jamovi/reachy/<sigla>_<metrica>.(omv|csv): un file per metrica come reachy_stats.omv, una riga
         per soggetto, colonne Test1_andata, Test2_andata, Test1_ritorno, Test2_ritorno
         (completion time: anche Test1_grasp ... Test2_totale, Test1_andata_ritorno, Test2_andata_ritorno)
@@ -48,8 +52,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from common.data import find_sessions   # noqa: E402
 from common.jamovi import write_tables   # noqa: E402
 from common.plots import (BOX_NOTE, GREY_BOX, RED_BOX, axis_label, brackets, condition_plot,   # noqa: E402
-                          save_figure, setup_style, share_ylim, side_legend, subject_colors, subject_handles,
-                          subject_legend)
+                          save_figure, save_thesis_figure, setup_style, share_ylim, side_legend, subject_colors,
+                          subject_handles, subject_legend)
 from common.report import Report, analyse_metric, save_tables   # noqa: E402
 from robot_raw import navigation_metrics   # noqa: E402
 
@@ -62,6 +66,9 @@ PHASES = {"andata": ("Outbound", ("outbound", "approach")), "grasp": ("Grasp", (
           "ritorno": ("Return", ("return",)), "posizionamento": ("Placement", ("placement",)),
           "totale": ("Total", None),
           "andata_ritorno": ("Outbound + return", ("outbound", "approach", "return"))}
+# analisi di sensibilita': soggetti tolti da una fase (entrambi i test, il confronto e' appaiato) -> motivo;
+# l'analisi principale, le tabelle jamovi e gli altri grafici li tengono
+WITHOUT = {("completion_time", "grasp"): {"S001": "test 2: 5 repositionings of the base during the grasp (519 s)"}}
 # metriche esplorative (robot_raw.py): solo report e .csv, per la discussione
 EXPLORATORY = {
     "stop_percent":        ("Stop time while driving", "%", ["andata", "ritorno"]),
@@ -134,17 +141,61 @@ def plot_panel(ax, df, m, phases, posthocs, colors):
                   for p in phases])
 
 
-def single_plot(df, m, phases, posthocs, colors, handles, out, name, ylim=None):
+def single_plot(df, m, phases, posthocs, colors, handles, out, name, ylim=None, note=""):
     """Grafico singolo: senza titolo, legenda di run e soggetti a lato, nota sotto."""
     fig, ax = plt.subplots(figsize=(1.9 + 1.2 * len(phases), 3.6))
     plot_panel(ax, df, m, phases, posthocs, colors)
     if ylim is not None:
         ax.set_ylim(ylim)
     side_legend(ax, handles)
-    save_figure(fig, out, name, note=BOX_NOTE)
+    save_figure(fig, out, name, note=BOX_NOTE + note)
 
 
-def plots(df: pd.DataFrame, posthocs: dict, out: Path):
+def without_outliers(df: pd.DataFrame) -> pd.DataFrame:
+    drop = pd.Series(False, index=df.index)
+    for (m, ph), subjects in WITHOUT.items():
+        drop |= (df.metric == m) & (df.phase == ph) & df.subject.isin(list(subjects))
+    return df[~drop]
+
+
+# parte 1: tempo di guida (andata + ritorno) in un pannello centrato in alto, poi completion time e path
+# length; parte 2 (nuova pagina): mean speed, jerk e region transitions
+THESIS_PARTS = [["completion_time", "path_length"],
+                ["mean_speed", "jerk", "region_transitions"]]
+
+
+def thesis_figure(df, posthocs, colors, run_handles):
+    """Figura della tesi: come robot_boxplots (una riga per metrica, andata a sinistra e ritorno a
+    destra, stessa scala y nella riga), con in testa il completion time andata + ritorno e quello di
+    grasp e posizionamento; senza titolo e note. Divisa in due parti (THESIS_PARTS) per stare in una
+    pagina: robot_boxplots_1.pdf e robot_boxplots_2.pdf."""
+    letters = iter("ABCDEFGHIJKLMN")
+    for part, metrics in enumerate(THESIS_PARTS, 1):
+        first = part == 1
+        n = len(metrics) + first
+        fig = plt.figure(figsize=(7.6, 2.45 * n + 0.4))
+        gs = fig.add_gridspec(n, 4)
+        if first:
+            # prima riga: tempo di guida (andata + ritorno) e tempi delle fasi autonome (grasp, posizionamento)
+            driving = fig.add_subplot(gs[0, 0:2])
+            plot_panel(driving, df, "completion_time", ["andata_ritorno"], posthocs, colors)
+            driving.set_title(f"({next(letters)})")
+            manip = fig.add_subplot(gs[0, 2:4])
+            plot_panel(manip, df, "completion_time", ["grasp", "posizionamento"], posthocs, colors)
+            manip.set_title(f"({next(letters)})")
+        axes = [[fig.add_subplot(gs[row + first, 0:2]), fig.add_subplot(gs[row + first, 2:4])]
+                for row in range(len(metrics))]
+        for row, m in enumerate(metrics):
+            for col, leg in enumerate(LEGS):
+                plot_panel(axes[row][col], df, m, [leg], posthocs, colors)
+                axes[row][col].set_title(f"({next(letters)})")
+            share_ylim(axes[row])
+        fig.tight_layout(h_pad=1.2, rect=(0, 0.4 / (2.45 * n + 0.4), 1, 1))
+        subject_legend(fig, colors, ncol=6, y=0.3 / (2.45 * n + 0.4), extra=run_handles)
+        save_thesis_figure(fig, f"robot_boxplots_{part}", note=BOX_NOTE)
+
+
+def plots(df: pd.DataFrame, posthocs: dict, posthocs_without: dict, out: Path):
     setup_style()
     colors = subject_colors(df["subject"].unique())
     run_handles = [plt.Rectangle((0, 0), 1, 1, facecolor=f, edgecolor=e, lw=1.2, label=f"Test {r}")
@@ -164,6 +215,7 @@ def plots(df: pd.DataFrame, posthocs: dict, out: Path):
     fig.tight_layout(h_pad=1.6, rect=(0, 0.035, 1, 0.975))
     subject_legend(fig, colors, ncol=6, y=0.03, extra=run_handles)
     save_figure(fig, out, "robot_boxplots")
+    thesis_figure(df, posthocs, colors, run_handles)
     for m in METRICS:
         for leg in LEGS:
             single_plot(df, m, [leg], posthocs, colors, handles, out,
@@ -171,6 +223,9 @@ def plots(df: pd.DataFrame, posthocs: dict, out: Path):
     # a parte: manipolazione (selezione dell'oggetto e posizionamento) e tempo di guida andata + ritorno
     single_plot(df, "completion_time", ["grasp", "posizionamento"], posthocs, colors, handles, out,
                 "robot_manipulation_boxplot")
+    single_plot(without_outliers(df), "completion_time", ["grasp", "posizionamento"], {**posthocs, **posthocs_without},
+                colors, handles, out, "robot_manipulation_boxplot_without_outliers",
+                note="".join(f" {PHASES[ph][0]} without {', '.join(subj)}." for (_, ph), subj in WITHOUT.items()))
     single_plot(df, "completion_time", ["andata_ritorno"], posthocs, colors, handles, out,
                 "robot_total_time_boxplot")
 
@@ -210,6 +265,16 @@ def main():
             results.append(res)
             posthocs[(m, ph)] = res["posthoc"]
 
+    report.section("SENSITIVITY: WITHOUT OUTLIERS (figure robot_manipulation_boxplot_without_outliers only)")
+    posthocs_without = {}
+    for (m, ph), subjects in WITHOUT.items():
+        for subj, why in subjects.items():
+            report.text(f"Without {subj}: {why}")
+        res = analyse_metric(report, m, f"{METRICS[m][1]} – {PHASES[ph][0].lower()}, without {', '.join(subjects)}",
+                             METRICS[m][2], wide(without_outliers(df), m, ph), ["Test"],
+                             [(r, f"test {r}") for r in RUNS], [(1, 2, "test 1 vs test 2")], digits=0)
+        posthocs_without[(m, ph)] = res["posthoc"]
+
     report.section("EXPLORATORY METRICS (not in the figures nor in the jamovi tables)")
     report.text("Why is the base faster in test 2? Share of stops, rate of command changes and how far from")
     report.text("the centre the cursor is pushed (the commanded speed grows with that distance).")
@@ -242,7 +307,7 @@ def main():
                 desc[name] = f"{label}{f' ({unit})' if unit else ''}, {PHASES[ph][0].lower()}, test {r}"
         write_tables(pd.DataFrame(cols), ROOT / "jamovi" / "reachy" / f"{abbr}_{m}", desc, specs)
 
-    plots(df, posthocs, args.out)
+    plots(df, posthocs, posthocs_without, args.out)
     report.save(args.out)
 
 
