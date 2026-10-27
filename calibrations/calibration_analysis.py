@@ -282,7 +282,7 @@ def main():
     subjects = pd.DataFrame(rows)
     args.out.mkdir(parents=True, exist_ok=True)
 
-    report = Report("CALIBRAZIONE BoMI – customizzazione per soggetto", legend=False)
+    report = Report("CALIBRAZIONE BoMI – customizzazione per soggetto")
     report.text(f"Soggetti: {len(subjects)} ({', '.join(subjects.subject)})")
     if dropped:
         report.text("Mappe scartate (si usa l'ultima): " + ", ".join(p.name for p in dropped))

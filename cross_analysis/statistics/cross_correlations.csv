@@ -1,9 +1,0 @@
-family,x,x_label,y,y_label,expected_sign,meaning,n,rho,p,magnitude,as_expected
-transfer,blind3_hit,Blind test 3 – hit rate (%),run1_rt,"Robot test 1 – region transitions, outbound",-,reaching the target blind vs sweeping across the grid on the robot,10,0.11718243393372539,0.747154462446695,piccolo,no
-transfer,train_last_li,Training T2 B12 – linearity index,run1_pl,"Robot test 1 – path length, outbound (m)",+,curved cursor paths (training) vs longer robot paths,10,0.04242424242424241,0.907363817812816,trascurabile,si'
-transfer,blind3_de,Blind test 3 – direction error (deg),run1_rt,"Robot test 1 – region transitions, outbound",+,planning errors (blind) vs corrections (robot),10,-0.38181818181818183,0.27625533338543595,medio,no
-transfer,blind3_ee,Blind test 3 – Euclidean error (cm),run1_outbound,"Robot test 1 – completion time, outbound (s)",+,map knowledge (blind) vs driving time (robot),10,-0.06666666666666665,0.8548130882487426,trascurabile,no
-transfer,train_gain,Training gain: movement duration T1 B1 – T2 B12 (s),robot_gain,Robot gain: outbound completion time robot test 1 – test 2 (s),+,who improves in the training improves on the robot,10,0.28484848484848485,0.42503815489214547,piccolo,si'
-questionnaire,sus,SUS score (0-100),run2_total,Robot test 2 – total completion time (s),-,perceived usability vs time on the task,10,-0.006079055436800647,0.9867025576451145,trascurabile,si'
-questionnaire,tlx,NASA-TLX raw (0-100),run2_total,Robot test 2 – total completion time (s),+,perceived workload vs time on the task,10,0.395138603392042,0.25841872523187825,medio,si'
-questionnaire,tlx_physical,NASA-TLX physical demand (1-20),blind_fatigue,Blind Euclidean error: test 4 – test 3 (cm) (> 0 = worse after robot test 1),+,perceived physical demand vs fatigue in the blind test,10,0.042683720332337284,0.9067992878615369,trascurabile,si'

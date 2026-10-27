@@ -1,14 +1,13 @@
-"""Stile e grafici comuni a blind test, training e robot.
+"""Stile e grafici comuni (new_stats, ritorni del training, questionari, calibrazioni).
 
 - box off (solo assi sinistro e inferiore), unita' di misura fra parentesi tonde;
 - box plot come la figura 4 di Najie et al. (box pieno chiaro con bordo colorato, linea
   della mediana, baffi tratteggiati fino a 1.5 IQR, un punto per soggetto con il colore
   del soggetto, lo stesso in tutti i grafici);
-- parentesi grigie con gli asterischi sui confronti significativi:
+- parentesi grigie con gli asterischi sui confronti significativi, a livelli sopra l'asse:
   * p < 0.05, ** p < 0.01, *** p < 0.001; se una figura ha degli asterischi, save_figure
   scrive la loro legenda;
-- figure con piu' pannelli: titolo e legenda degli asterischi in alto a destra; grafici
-  singoli: niente titolo, sotto il grafico una legenda scarna (save_figure(..., note=...)):
+- grafici singoli: niente titolo, sotto il grafico una legenda scarna (save_figure(..., note=...)):
   cosa si vede (es. BOX_NOTE) piu' gli asterischi.
 """
 
@@ -159,7 +158,7 @@ def condition_plot(ax, data: dict, groups: list, conditions: list, styles: dict,
     nc = len(conditions)
     width = width or (0.32 if nc > 1 else 0.42)
     offsets = (np.arange(nc) - (nc - 1) / 2) * (width * 1.35)
-    xpos, tops = {}, {}
+    xpos = {}
     for gi, g in enumerate(groups):
         for ci, c in enumerate(conditions):
             v = pd.to_numeric(data.get((g, c), pd.Series(dtype=float)), errors="coerce").dropna()
@@ -168,7 +167,6 @@ def condition_plot(ax, data: dict, groups: list, conditions: list, styles: dict,
             if v.empty:
                 continue
             face, edge = styles[c]
-            tops[x] = float(v.max())
             ax.boxplot([v.to_numpy()], positions=[x], widths=width, patch_artist=True, showfliers=False,
                        whis=1.5, manage_ticks=False, zorder=2,
                        boxprops=dict(facecolor=face, edgecolor=edge, linewidth=1.2),
@@ -182,7 +180,6 @@ def condition_plot(ax, data: dict, groups: list, conditions: list, styles: dict,
     ax.set_xlim(-0.6, len(groups) - 0.4)
     for gi in range(len(groups)):
         ax.axvline(gi, color=GRID, lw=0.8, zorder=0)
-    ax._data_tops = tops   # per le parentesi: altezza dei dati in ogni posizione
     return xpos
 
 
@@ -215,11 +212,16 @@ def bracket_space_pt(n_levels: int) -> float:
     return BRACKET_GAP_PT + n_levels * BRACKET_STEP_PT if n_levels else 0.0
 
 
-def _brackets_outside(ax, sig):
-    """Parentesi a livelli sopra il bordo superiore dell'asse, a distanza fissa in punti, senza cambiare
-    la scala y: tante parentesi non schiacciano i dati e non si sovrappongono. Salva in ax._title_pad lo
-    spazio da lasciare per il titolo del pannello."""
+def brackets(ax, items: list):
+    """items = [(x1, x2, p)]: parentesi grigie con gli asterischi, solo per i confronti significativi,
+    a livelli sopra il bordo superiore dell'asse, a distanza fissa in punti, senza cambiare la scala y:
+    tante parentesi non schiacciano i dati e non si sovrappongono. Salva in ax._title_pad lo spazio
+    da lasciare per il titolo del pannello."""
     from matplotlib.transforms import ScaledTranslation
+    sig = [(min(x1, x2), max(x1, x2), stars(p)) for x1, x2, p in items if stars(p)]
+    if not sig:
+        return
+    ax.figure._has_stars = True   # save_figure aggiunge la legenda degli asterischi
     placed, n = _assign_levels(sig)
     tick = 3.0 / 72   # dentini di 3 pt verso il basso
     for a, b, txt, k in placed:
@@ -233,38 +235,6 @@ def _brackets_outside(ax, sig):
         ax.text((a + b) / 2, 1, txt, ha="center", va="bottom", color=SIG_COLOR, fontsize=11, clip_on=False,
                 transform=top)
     ax._title_pad = max(6.0, bracket_space_pt(n) + 4)
-
-
-def brackets(ax, items: list, outside: bool = False):
-    """items = [(x1, x2, p)]: parentesi grigie con gli asterischi, solo per i confronti
-    significativi. Ogni parentesi sta appena sopra i dati fra x1 e x2 (se condition_plot
-    li ha registrati, altrimenti sopra tutto il grafico); quelle che si sovrappongono
-    vengono impilate (come Najie). outside=True: a livelli fissi sopra tutti i dati, anche fuori
-    dall'asse, senza sovrapposizioni (per i pannelli con tanti confronti)."""
-    sig = [(min(x1, x2), max(x1, x2), stars(p)) for x1, x2, p in items if stars(p)]
-    if not sig:
-        return
-    if outside:
-        ax.figure._has_stars = True
-        _brackets_outside(ax, sig)
-        return
-    ax.figure._has_stars = True   # save_figure aggiunge la legenda degli asterischi
-    lo, hi = ax.get_ylim()
-    step = 0.075 * (hi - lo)
-    tops = getattr(ax, "_data_tops", None)
-    sig.sort(key=lambda s_: s_[1] - s_[0])        # prima le corte, poi le lunghe sopra
-    placed = []                                    # (a, b, y)
-    for a, b, txt in sig:
-        base = max((v for x, v in tops.items() if a - 1e-9 <= x <= b + 1e-9), default=hi) if tops else hi
-        y = base + step * 0.6
-        for pa, pb, py in placed:
-            if not (b < pa - 0.05 or a > pb + 0.05) and y < py + step * 1.1:
-                y = py + step * 1.1
-        placed.append((a, b, y))
-        ax.plot([a, a, b, b], [y - step * 0.3, y, y, y - step * 0.3], color=SIG_COLOR, lw=0.9, clip_on=False)
-        ax.text((a + b) / 2, y - step * 0.05, txt, ha="center", va="bottom", color=SIG_COLOR, fontsize=11,
-                clip_on=False)
-    ax.set_ylim(lo, max(hi, max(y for _, _, y in placed) + step * 0.9))
 
 
 def subject_handles(colors: dict) -> list:
@@ -289,16 +259,6 @@ def subject_legend(fig, colors: dict, ncol=None, y=0.0, extra=()):
     handles = list(extra) + subject_handles(colors)
     fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, y), ncol=ncol or len(handles),
                handletextpad=0.3, columnspacing=1.0, fontsize=11)
-
-
-def grid_axes(n, ncols=3, width=4.0, height=3.2):
-    """Figura con n pannelli su ncols colonne; i pannelli vuoti vengono nascosti."""
-    nrows = int(np.ceil(n / ncols))
-    fig, axes = plt.subplots(nrows, ncols, figsize=(width * ncols, height * nrows), squeeze=False)
-    axes = axes.ravel()
-    for ax in axes[n:]:
-        ax.set_visible(False)
-    return fig, axes[:n]
 
 
 def share_ylim(axes) -> tuple:

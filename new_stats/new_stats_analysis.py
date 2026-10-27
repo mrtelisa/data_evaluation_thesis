@@ -1,8 +1,7 @@
-"""Seconda analisi statistica dei tre task, quella della dottoranda (Aurora: cartelle newStats_blind,
-newStats_reachy, newStats_training con i suoi file jamovi e i riassunti). Le analisi di ogni task
-(reaching_regions, reaching_blind, real_robot) restano come sono: questa e' un'analisi in piu', con
-grafici e tabelle propri. Stessi dati: legge i file prodotti da quelle analisi, quindi va lanciata
-dopo (run_all.py lo fa).
+"""Analisi statistica dei tre task, quella della dottoranda (Aurora: cartelle newStats_blind,
+newStats_reachy, newStats_training con i suoi file jamovi e i riassunti), usata nella tesi. Legge le
+metriche calcolate dagli script dei task (reaching_regions, reaching_blind, real_robot), quindi va
+lanciata dopo (run_all.py lo fa).
 
 Training (andate, reaching_regions/statistics/training_trials.csv):
     3 blocchi da 32 andate per training (B1-B3, ognuno con 4 ripetizioni di ogni target), valore di
@@ -10,10 +9,12 @@ Training (andate, reaching_regions/statistics/training_trials.csv):
     movement duration su log. Post hoc su TUTTE le 15 coppie dei 6 blocchi (ANOVA a un fattore con 2
     livelli, F = t^2), p corretti con Holm x15 (scelta di Elisa: tutti gli asterischi, come il post hoc di
     jamovi; la dottoranda faceva solo 4 confronti pianificati).
-Blind (jamovi/blind/*.csv): un valore per test (media dei 3 blocchi = delle 12 prove); ANOVA a un
+Blind (reaching_blind/statistics/blind_trials.csv): un valore per test (media dei 3 blocchi da 4
+    prove); ANOVA a un
     fattore Test (5 livelli); Euclidean error su log; post hoc su tutte le 10 coppie di test, Holm x10.
     Linearity index escluso (va rifatto dopo la correzione del trial anomalo).
-Robot (jamovi/reachy/*.csv): test 1 vs test 2, andata e ritorno, ANOVA a misure ripetute (2 livelli);
+Robot (real_robot/statistics/robot_subjects.csv): test 1 vs test 2, andata e ritorno, ANOVA a misure
+    ripetute (2 livelli);
     completion time su log; Holm x2 (andata e ritorno) per ogni metrica. Quello che la dottoranda non
     analizza e la tesi riporta e' trattato come lei ha trattato il resto ("le stesse cose"): Shapiro-Wilk
     sulle differenze fra i test, log solo se una delle due fasi non e' normale (il completion time resta
@@ -21,8 +22,8 @@ Robot (jamovi/reachy/*.csv): test 1 vs test 2, andata e ritorno, ANOVA a misure 
         jerk e metriche esplorative (soste, cambi al minuto, distanza del cursore dal centro): andata e ritorno
         completion time: grasp e posizionamento; totale e andata + ritorno
     Il grasp senza S001 e' un confronto singolo di controllo, non corretto.
-Blind, metrica esplorativa della tesi: % di prove che finiscono nella regione del target
-    (reaching_blind/statistics/blind_trials.csv), stessa analisi delle altre.
+Blind, metrica esplorativa della tesi: % di prove che finiscono nella regione del target, stessa
+    analisi delle altre.
 In tutte: Greenhouse-Geisser quando il test di Mauchly e' significativo (p < 0.05); medie, SD e
 grafici sui dati originali, la trasformazione log serve solo per i test. Controllo non parametrico:
 Friedman e Wilcoxon (Holm), utile per le metriche con residui non normali (XE, HR).
@@ -88,7 +89,7 @@ BLOCK = 32
 BLOCKS = (1, 2, 3)
 CELLS = [(tr, b) for tr in ("T1", "T2") for b in BLOCKS]
 TRAINING_PAIRS = [(a, b, f"{a[0]} B{a[1]} vs {b[0]} B{b[1]}") for a, b in itertools.combinations(CELLS, 2)]
-# blind: file jamovi -> (sigla, etichetta, unita', log, cifre); nei grafici come la figura della tesi
+# blind: metrica -> (sigla, etichetta, unita', log, cifre); nei grafici come la figura della tesi
 BLIND = {
     "hit":             ("HR", "Hit rate", "%", False, 1),
     "euclidean_error": ("EE", "Euclidean error at 4 s", "cm", True, 2),
@@ -203,10 +204,14 @@ def training_wide(blocks: pd.DataFrame, m: str) -> pd.DataFrame:
     return w[[(tr, b) for tr in ("T1", "T2") for b in BLOCKS]]
 
 
-def blind_wide(m: str) -> pd.DataFrame:
-    abbr = BLIND[m][0]
-    d = pd.read_csv(ROOT / "jamovi" / "blind" / f"{abbr}_{m}.csv").set_index("subject")
-    return pd.DataFrame({t: d[[f"{abbr}_T{t}_B{b}" for b in (1, 2, 3)]].mean(axis=1) for t in TESTS})
+def blind_trials() -> pd.DataFrame:
+    return pd.read_csv(ROOT / "reaching_blind" / "statistics" / "blind_trials.csv")
+
+
+def blind_wide(trials: pd.DataFrame, m: str) -> pd.DataFrame:
+    """soggetti x test: media dei 3 blocchi (valore di un blocco = media delle sue 4 prove)."""
+    blocks = trials.groupby(["subject", "test", "block"])[m].mean().unstack(["test", "block"])
+    return pd.DataFrame({t: blocks[[(t, b) for b in (1, 2, 3)]].mean(axis=1) for t in TESTS})
 
 
 def needs_log(wides: list) -> tuple:
@@ -216,9 +221,12 @@ def needs_log(wides: list) -> tuple:
     return (min(ps) < 0.05 and all((w > 0).all().all() for w in wides)), ps
 
 
-def exploratory_wide(m: str, leg: str) -> pd.DataFrame:
-    d = pd.read_csv(ROOT / "real_robot" / "statistics" / "robot_subjects.csv")
-    d = d[(d.metric == m) & (d.phase == leg)]
+def robot_subjects() -> pd.DataFrame:
+    return pd.read_csv(ROOT / "real_robot" / "statistics" / "robot_subjects.csv")
+
+
+def exploratory_wide(subjects: pd.DataFrame, m: str, leg: str) -> pd.DataFrame:
+    d = subjects[(subjects.metric == m) & (subjects.phase == leg)]
     return d.pivot(index="subject", columns="run", values="value")[[1, 2]]
 
 
@@ -246,9 +254,11 @@ def robot_pair(report: Report, label: str, wides: dict, log, desc: list, tests: 
     return out
 
 
-def robot_wide(m: str, leg: str) -> pd.DataFrame:
-    d = pd.read_csv(ROOT / "jamovi" / "reachy" / f"{ROBOT[m][0]}_{m}.csv").set_index("subject")
-    return d[[f"Test1_{leg}", f"Test2_{leg}"]].set_axis([1, 2], axis=1)
+def robot_wide(subjects: pd.DataFrame, m: str, leg: str) -> pd.DataFrame:
+    """soggetti x test (1, 2) di una fase; tutti i soggetti, anche senza valore (NaN)."""
+    d = subjects[(subjects.metric == m) & (subjects.phase == leg)]
+    return (d.pivot(index="subject", columns="run", values="value")
+            .reindex(index=sorted(subjects["subject"].unique()), columns=[1, 2]))
 
 
 # ------------------------------------------------------------------ grafici ---
@@ -261,13 +271,11 @@ def block_x(tr, b):
 def training_box_panel(ax, wide: pd.DataFrame, m: str, ph: pd.DataFrame, colors: dict):
     _, label, unit, _, _ = TRAINING[m]
     width = 0.55
-    tops = {}
     for tr in ("T1", "T2"):
         face, edge = TRAINING_BOX[tr]
         for b in BLOCKS:
             v = wide[(tr, b)].dropna()
             x = block_x(tr, b)
-            tops[x] = float(v.max())
             ax.boxplot([v.to_numpy()], positions=[x], widths=width, patch_artist=True, showfliers=False,
                        whis=1.5, manage_ticks=False, zorder=2,
                        boxprops=dict(facecolor=face, edgecolor=edge, linewidth=1.2),
@@ -288,19 +296,18 @@ def training_box_panel(ax, wide: pd.DataFrame, m: str, ph: pd.DataFrame, colors:
                     textcoords="offset points", ha="center", va="top", color=TRAINING_COLORS[tr],
                     fontweight="bold")
     ax.set_ylabel(axis_label(label, "" if unit == "-" else unit))
-    ax._data_tops = tops
     brackets_out(ax, [(block_x(*r["a"]), block_x(*r["b"]), r["p_holm"]) for _, r in ph.iterrows()])
 
 
 def training_curve_panel(ax, trials: pd.DataFrame, m: str):
     """Curva di apprendimento senza parentesi: gli asterischi dei confronti fra blocchi sono nei box plot."""
     _, label, unit, _, _ = TRAINING[m]
-    ta.figure4_panel(ax, trials, m, label, unit, None)
+    ta.figure4_panel(ax, trials, m, label, unit)
 
 
 def brackets_out(ax, items):
     """Parentesi senza sovrapposizioni, a livelli sopra i dati (anche fuori dall'asse)."""
-    brackets(ax, items, outside=True)
+    brackets(ax, items)
 
 
 def panel_title(ax, text):
@@ -620,7 +627,7 @@ def main():
     setup_style()
 
     def new_report(task: str) -> Report:
-        r = Report(f"SECOND ANALYSIS (newStats of the PhD student): {task}", legend=False)
+        r = Report(f"SECOND ANALYSIS (newStats of the PhD student): {task}")
         r.text("Same data as the task analyses. GG = Greenhouse-Geisser (when Mauchly p < 0.05); p of the")
         r.text("post hoc comparisons between all pairs, Holm-corrected within each metric; log only for the tests.")
         return r
@@ -658,8 +665,9 @@ def main():
     report.section("BLIND TEST – one value per test (mean of the 12 trials), Test 1-5")
     report.text("Linearity index left out until the anomalous trial is corrected.")
     bw, ba, bp, desc, tests = {}, {}, {}, [], []
+    trials = blind_trials()
     for m, (abbr, label, unit, log, _) in BLIND.items():
-        w = blind_wide(m)
+        w = blind_wide(trials, m)
         bw[m], ba[m], bp[m] = w, anova(w, ["Test"], log), pairwise(w, BLIND_PAIRS, log)
         report.text(f"{abbr} – {label} ({unit})")
         report.text("  " + "  ".join(f"T{t}: {describe(w[t])['mean']:.2f} ± {describe(w[t])['sd']:.2f}" for t in TESTS))
@@ -671,7 +679,6 @@ def main():
         desc += describe_rows("blind", m, w, {t: f"Test {t}" for t in TESTS})
         tests += test_rows("blind", m, ba[m], bp[m])
     report.section("EXPLORATORY (in the thesis): trials ending in the region of the target (%)")
-    trials = pd.read_csv(ROOT / "reaching_blind" / "statistics" / "blind_trials.csv")
     w = trials.groupby(["subject", "test"])["region_correct"].mean().unstack("test")[list(TESTS)]
     report.text("  " + "  ".join(f"T{t}: {describe(w[t])['mean']:.1f} ± {describe(w[t])['sd']:.1f}" for t in TESTS))
     write_anova(report, anova(w, ["Test"], False), False)
@@ -688,15 +695,16 @@ def main():
     report = new_report("real robot")
     report.section("REAL ROBOT – test 1 vs test 2, outbound and return (Holm x2 per metric)")
     rw, ra, pholm, desc, tests = {}, {}, {}, [], []
+    subjects = robot_subjects()
     for m, (abbr, label, unit, log, _) in ROBOT.items():
-        wides = {leg: robot_wide(m, leg) for leg in LEGS}
+        wides = {leg: robot_wide(subjects, m, leg) for leg in LEGS}
         res = robot_pair(report, f"{abbr} – {label}{f' ({unit})' if unit else ''}", wides, log, desc, tests, m)
         for leg in LEGS:
             rw[(m, leg)], (ra[(m, leg)], pholm[(m, leg)]) = wides[leg], res[leg]
     report.section("COMPLETION TIME OF THE OTHER PHASES (log, Holm x2 within each pair)")
     ct_other, p_other, a_other = {}, {}, {}
     for pair in CT_PAIRS:
-        wides = {ph: robot_wide("completion_time", ph) for ph in pair}
+        wides = {ph: robot_wide(subjects, "completion_time", ph) for ph in pair}
         res = robot_pair(report, " and ".join(CT_OTHER[ph] for ph in pair), wides, True, desc, tests,
                          "completion_time")
         for ph in pair:
@@ -709,7 +717,7 @@ def main():
                 f"Wilcoxon p {p_text(wx['p'])}")
     report.section("EXPLORATORY METRICS OF THE THESIS (Holm x2, outbound and return)")
     for m, (label, unit) in ROBOT_EXPLORATORY.items():
-        robot_pair(report, f"{label}{f' ({unit})' if unit else ''}", {leg: exploratory_wide(m, leg) for leg in LEGS},
+        robot_pair(report, f"{label}{f' ({unit})' if unit else ''}", {leg: exploratory_wide(subjects, m, leg) for leg in LEGS},
                    None, desc, tests, m)
     pd.DataFrame(desc).to_csv(OUT["robot"] / "robot_descriptives.csv", index=False)
     pd.DataFrame(tests).to_csv(OUT["robot"] / "robot_tests.csv", index=False)

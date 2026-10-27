@@ -1,13 +1,6 @@
-"""Statistica usata in tutte le analisi (scipy).
-
-Due versioni di ogni analisi (vedi README.md):
-- PARAMETRICA (come il laboratorio, Bellitto et al. 2025, e i modelli jamovi della
-  dottoranda): media +- SD tra soggetti; ANOVA a misure ripetute (1 o 2 fattori entro
-  soggetto, somme dei quadrati di tipo 3, correzione di Greenhouse-Geisser, eta^2 ed
-  eta^2 parziale); post hoc t di Student appaiati con correzione di Bonferroni,
-  d di Cohen (dz) e Shapiro-Wilk sulle differenze;
-- NON PARAMETRICA: mediana [Q1-Q3] tra soggetti; Friedman (W di Kendall) al posto
-  dell'ANOVA; post hoc Wilcoxon signed-rank (rank-biserial r) con correzione di Holm.
+"""Statistica usata da new_stats/new_stats_analysis.py e dalle calibrazioni (scipy):
+descrittive, ANOVA a misure ripetute come jamovi (1 o 2 fattori entro soggetto, tipo 3,
+Greenhouse-Geisser, Mauchly, eta^2 parziale), t appaiato, Wilcoxon, Friedman, Holm.
 Ogni soggetto pesa 1: prima un valore per soggetto, poi la statistica tra soggetti.
 """
 
@@ -40,29 +33,10 @@ def fmt_num(x, digits=2) -> str:
     return f"{x:.{digits}f}"
 
 
-def fmt_p(p) -> str:
-    if p is None or (isinstance(p, float) and math.isnan(p)):
-        return "-"
-    return "<0.001" if p < 0.001 else f"{p:.3f}"
-
-
-def fmt_mean_sd(d: dict, digits=2) -> str:
-    if not d or d.get("n", 0) == 0:
-        return "-"
-    return f"{d['mean']:.{digits}f} ± {d['sd']:.{digits}f}"
-
-
 def fmt_median_iqr(d: dict, digits=2) -> str:
     if not d or d.get("n", 0) == 0:
         return "-"
     return f"{d['median']:.{digits}f} [{d['q1']:.{digits}f}, {d['q3']:.{digits}f}]"
-
-
-def bonferroni(pvalues) -> list:
-    """p-value x numero di confronti (massimo 1); NaN restano NaN."""
-    p = np.asarray([np.nan if v is None else v for v in pvalues], dtype=float)
-    m = int(np.sum(~np.isnan(p)))
-    return [float(min(1.0, v * m)) if not np.isnan(v) else np.nan for v in p]
 
 
 def holm(pvalues) -> list:
@@ -227,63 +201,4 @@ def rm_anova(wide: pd.DataFrame, factors: list) -> list:
                     pr1, pr2 = stats.chi2.sf(chi2, dfm), stats.chi2.sf(chi2, dfm + 4)
                     row.update(mauchly_w=wm, mauchly_p=float(pr1 + w2 * (pr2 - pr1)))
         out.append(row)
-    return out
-
-
-def posthoc_jamovi(wide: pd.DataFrame, a, b) -> dict:
-    """Post hoc di jamovi con 2 livelli (es. test1 - test2): differenza media (primo - secondo),
-    SE, gdl, t, p; con un solo confronto p non corretto = Tukey = Scheffe' = Bonferroni = Holm."""
-    x, y = _pair(wide[a], wide[b])
-    d = x - y
-    n = len(d)
-    if n < 2:
-        return {"md": np.nan, "se": np.nan, "df": np.nan, "t": np.nan, "p": np.nan}
-    se = d.std(ddof=1) / math.sqrt(n)
-    t = d.mean() / se if se > 0 else np.nan
-    return {"md": float(d.mean()), "se": float(se), "df": n - 1, "t": float(t),
-            "p": float(2 * stats.t.sf(abs(t), n - 1)) if t == t else np.nan}
-
-
-def posthoc(wide: pd.DataFrame, pairs: list) -> pd.DataFrame:
-    """Confronti pianificati fra colonne di `wide` (pairs = [(colonna a, colonna b, nome)]):
-    t appaiato (Bonferroni sulla famiglia) e Wilcoxon (Holm sulla famiglia)."""
-    rows = []
-    for a, b, name in pairs:
-        t = paired_t(wide[a], wide[b])
-        wx = wilcoxon_paired(wide[a], wide[b])
-        rows.append({"comparison": name, "n": t["n"], "mean_diff": t["mean_diff"], "t": t["statistic"],
-                     "df": t["df"], "p_t": t["p"], "cohen_dz": t["effect"], "shapiro_p": t["shapiro_p"],
-                     "W": wx["statistic"], "p_wilcoxon": wx["p"], "rank_biserial_r": wx["effect"]})
-    df = pd.DataFrame(rows)
-    if not df.empty:
-        df.insert(df.columns.get_loc("cohen_dz"), "p_t_bonferroni", bonferroni(df["p_t"]))
-        df.insert(df.columns.get_loc("rank_biserial_r"), "p_wilcoxon_holm", holm(df["p_wilcoxon"]))
-    return df
-
-
-def magnitude(effect) -> str:
-    """Soglie indicative di Cohen per r, W e rho: 0.1 piccolo, 0.3 medio, 0.5 grande."""
-    if effect is None or (isinstance(effect, float) and math.isnan(effect)):
-        return "-"
-    a = abs(effect)
-    if a < 0.1:
-        return "trascurabile"
-    if a < 0.3:
-        return "piccolo"
-    if a < 0.5:
-        return "medio"
-    return "grande"
-
-
-def spearman(x, y) -> dict:
-    """Correlazione di Spearman sulle coppie complete."""
-    a = pd.to_numeric(pd.Series(x), errors="coerce").to_numpy(dtype=float)
-    b = pd.to_numeric(pd.Series(y), errors="coerce").to_numpy(dtype=float)
-    keep = ~(np.isnan(a) | np.isnan(b))
-    a, b = a[keep], b[keep]
-    out = {"n": int(len(a)), "rho": np.nan, "p": np.nan}
-    if len(a) < 3 or np.all(a == a[0]) or np.all(b == b[0]):
-        return out
-    res = stats.spearmanr(a, b)
-    out.update(rho=float(res.statistic), p=float(res.pvalue))
     return out

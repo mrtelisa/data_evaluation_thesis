@@ -1,14 +1,12 @@
 """Lancia tutte le analisi:
-    1. questionari (punteggi per soggetto)
-    2. blind test, training, robot reale (statistiche, grafici, tabelle jamovi in jamovi/)
-    3. calibrazioni BoMI
-    4. collegamenti fra le parti del protocollo e questionari (usa i risultati dei punti 1-2)
-    5. tabelle statistiche dell'appendice della tesi (thesis_tables.py)
+    1. questionari (punteggi per soggetto e grafici)
+    2. blind test, training, robot reale: metriche di ogni prova/soggetto (e figura dei ritorni del training)
+    3. new_stats: statistica, grafici e tabelle della tesi (usa le metriche del punto 2)
+    4. calibrazioni BoMI
 
     python3 run_all.py
 
-Ogni analisi scrive in <cartella>/statistics/ un report.txt da leggere, le
-tabelle .csv e i grafici in plots/. Un'analisi senza dati viene saltata.
+Ogni analisi scrive in <cartella>/statistics/. Un'analisi senza dati viene saltata.
 """
 
 import subprocess
@@ -20,12 +18,9 @@ STEPS = [
     ("questionari", "run_all.py"),
     ("reaching_blind", "blind_analysis.py"),
     ("reaching_regions", "training_analysis.py"),
-    ("reaching_regions_3blocks", "training_3blocks_analysis.py"),
     ("real_robot", "robot_analysis.py"),
     ("new_stats", "new_stats_analysis.py"),   # analisi della dottoranda (newStats_*): usa i file delle tre sopra
     ("calibrations", "calibration_analysis.py"),
-    ("cross_analysis", "cross_analysis.py"),
-    (".", "thesis_tables.py"),   # tabelle dell'appendice della tesi, dai .csv delle analisi
 ]
 
 if __name__ == "__main__":

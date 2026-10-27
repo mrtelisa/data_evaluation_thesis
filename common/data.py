@@ -12,9 +12,6 @@ il numero piu' alto), e le altre vengono elencate come scartate.
 import re
 from pathlib import Path
 
-import numpy as np
-import pandas as pd
-
 
 def normalize_id(raw) -> str:
     """ID del soggetto in forma unica, per unire file e questionari:
@@ -48,20 +45,3 @@ def find_sessions(root, pattern: str, key_groups: tuple) -> tuple:
         dropped += [p for _, p in items[:-1]]
     return chosen, dropped
 
-
-def to_bool(series: pd.Series) -> pd.Series:
-    """True/False anche quando nel csv sono stringhe ('True', 'False')."""
-    return series.map(lambda v: str(v).strip().lower() in ("true", "1", "1.0"))
-
-
-def aggregate(values: pd.Series, how: str):
-    """Un valore per soggetto da tutte le sue prove:
-    'rate'   -> media di valori 0/100 = percentuale di prove riuscite
-    'median' -> mediana (robusta alle prove anomale)
-    'mean'   -> media (per i conteggi piccoli, spesso a 0)"""
-    v = pd.to_numeric(values, errors="coerce").dropna()
-    if v.empty:
-        return np.nan
-    if how == "median":
-        return float(v.median())
-    return float(v.mean())
