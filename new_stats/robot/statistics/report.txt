@@ -2,7 +2,7 @@ SECOND ANALYSIS (newStats of the PhD student): real robot
 =========================================================
 
 Same data as the task analyses. GG = Greenhouse-Geisser (when Mauchly p < 0.05); p of the
-planned comparisons Holm-corrected within each metric; log only for the tests.
+post hoc comparisons between all pairs, Holm-corrected within each metric; log only for the tests.
 
 REAL ROBOT – test 1 vs test 2, outbound and return (Holm x2 per metric)
 -----------------------------------------------------------------------

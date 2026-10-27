@@ -7,14 +7,11 @@ dopo (run_all.py lo fa).
 Training (andate, reaching_regions/statistics/training_trials.csv):
     3 blocchi da 32 andate per training (B1-B3, ognuno con 4 ripetizioni di ogni target), valore di
     un blocco = media delle sue 32 andate; ANOVA a misure ripetute Training (T1, T2) x Blocco (B1-B3);
-    movement duration su log. 4 confronti pianificati (ANOVA a un fattore con 2 livelli, F = t^2),
-    p corretti con Holm x4:
-        T1 B1 vs T1 B3   apprendimento nel training 1
-        T1 B3 vs T2 B1   mantenimento fra le due sessioni
-        T2 B1 vs T2 B3   apprendimento nel training 2
-        T1 B1 vs T2 B3   effetto complessivo del training
+    movement duration su log. Post hoc su TUTTE le 15 coppie dei 6 blocchi (ANOVA a un fattore con 2
+    livelli, F = t^2), p corretti con Holm x15 (scelta di Elisa: tutti gli asterischi, come il post hoc di
+    jamovi; la dottoranda faceva solo 4 confronti pianificati).
 Blind (jamovi/blind/*.csv): un valore per test (media dei 3 blocchi = delle 12 prove); ANOVA a un
-    fattore Test (5 livelli); Euclidean error su log; confronti fra test consecutivi, Holm x4.
+    fattore Test (5 livelli); Euclidean error su log; post hoc su tutte le 10 coppie di test, Holm x10.
     Linearity index escluso (va rifatto dopo la correzione del trial anomalo).
 Robot (jamovi/reachy/*.csv): test 1 vs test 2, andata e ritorno, ANOVA a misure ripetute (2 livelli);
     completion time su log; Holm x2 (andata e ritorno) per ogni metrica. Quello che la dottoranda non
@@ -29,21 +26,29 @@ Blind, metrica esplorativa della tesi: % di prove che finiscono nella regione de
 In tutte: Greenhouse-Geisser quando il test di Mauchly e' significativo (p < 0.05); medie, SD e
 grafici sui dati originali, la trasformazione log serve solo per i test. Controllo non parametrico:
 Friedman e Wilcoxon (Holm), utile per le metriche con residui non normali (XE, HR).
-Le parentesi dei grafici sono i confronti pianificati significativi (p di Holm).
+Le parentesi dei grafici sono tutti i confronti significativi (p di Holm); le tabelle della tesi
+riportano solo le ANOVA, i p dei confronti sono nel report.
 
 Output:
   una sottocartella per task, <task> = training, blind, robot:
     <task>/statistics/report.txt                 tutti i numeri (F, gdl, p, eta^2 parziale, confronti)
     <task>/statistics/<task>_descriptives.csv    media, SD, mediana, IQR per cella
-    <task>/statistics/<task>_tests.csv           ANOVA e confronti pianificati
+    <task>/statistics/<task>_tests.csv           ANOVA e confronti a coppie
     <task>/statistics/plots/single/...           i pannelli uno per uno
-    Tesi_latex/Chapters/Figures/results/*_newstats.pdf   figure della tesi
-    Tesi_latex/Chapters/Tables/*_newstats.tex            tabelle della tesi (da includere con \\input)
+    plot_ppt/                                    copie per la presentazione (PPT_PLOTS): EE, XE, DE del
+                                                 blind e le curve di movement duration e direction error
+    thesis/figures/*_newstats.pdf        figure per la tesi
+    thesis/tables/*_newstats.tex         tabelle per la tesi (da includere con \\input)
+    Con --thesis le stesse vanno direttamente in Tesi_latex/Chapters/Figures/results e Chapters/Tables
+    (sovrascrivono quelle della tesi: di default NO, Elisa non vuole che la tesi cambi da sola).
 
 Uso:
-    python3 new_stats_analysis.py
+    python3 new_stats_analysis.py [--thesis]
 """
 
+import argparse
+import itertools
+import shutil
 import sys
 from pathlib import Path
 
@@ -64,7 +69,9 @@ from scipy.stats import shapiro   # noqa: E402
 import training_analysis as ta   # noqa: E402  (curve della figura 4: media mobile, asse delle prove)
 
 OUT = {task: BASE_DIR / task / "statistics" for task in ("training", "blind", "robot")}   # una cartella per task
-TABLES_DIR = THESIS_DIR.parent.parent / "Tables"
+import common.plots as _plots   # noqa: E402  (per scegliere dove scrive save_thesis_figure)
+LOCAL_THESIS = BASE_DIR / "thesis"
+TABLES_DIR = LOCAL_THESIS / "tables"   # con --thesis: THESIS_DIR.parent.parent / "Tables"
 SUFFIX = "_newstats"
 CURVE_NOTE = "Line: median; band: IQR."
 TRAINING_BOX = {"T1": ("#f7d9c9", TRAINING_COLORS["T1"]), "T2": ("#cfe3f3", TRAINING_COLORS["T2"])}
@@ -79,8 +86,8 @@ TRAINING = {
 }
 BLOCK = 32
 BLOCKS = (1, 2, 3)
-TRAINING_PAIRS = [(("T1", 1), ("T1", 3), "T1 B1 vs T1 B3"), (("T1", 3), ("T2", 1), "T1 B3 vs T2 B1"),
-                  (("T2", 1), ("T2", 3), "T2 B1 vs T2 B3"), (("T1", 1), ("T2", 3), "T1 B1 vs T2 B3")]
+CELLS = [(tr, b) for tr in ("T1", "T2") for b in BLOCKS]
+TRAINING_PAIRS = [(a, b, f"{a[0]} B{a[1]} vs {b[0]} B{b[1]}") for a, b in itertools.combinations(CELLS, 2)]
 # blind: file jamovi -> (sigla, etichetta, unita', log, cifre); nei grafici come la figura della tesi
 BLIND = {
     "hit":             ("HR", "Hit rate", "%", False, 1),
@@ -91,7 +98,7 @@ BLIND = {
 }
 BLIND_PLOTTED = ["hit", "euclidean_error", "extent_error", "direction_error"]
 TESTS = (1, 2, 3, 4, 5)
-BLIND_PAIRS = [(a, b, f"Test {a} vs {b}") for a, b in zip(TESTS, TESTS[1:])]
+BLIND_PAIRS = [(a, b, f"Test {a} vs {b}") for a, b in itertools.combinations(TESTS, 2)]
 ROBOT = {
     "completion_time":    ("CT", "Completion time", "s", True, 0),
     "path_length":        ("PL", "Path length", "m", False, 2),
@@ -125,8 +132,8 @@ def anova(wide: pd.DataFrame, factors: list, log: bool) -> list:
     return rows
 
 
-def planned(wide: pd.DataFrame, pairs: list, log: bool) -> pd.DataFrame:
-    """Confronti pianificati come ANOVA a un fattore con 2 livelli (F = t^2, gdl 1 e n-1), Holm sulla
+def pairwise(wide: pd.DataFrame, pairs: list, log: bool) -> pd.DataFrame:
+    """Confronti a coppie come ANOVA a un fattore con 2 livelli (F = t^2, gdl 1 e n-1), Holm sulla
     famiglia; controllo Wilcoxon (Holm) sui dati originali."""
     data = np.log(wide) if log else wide
     rows = []
@@ -152,7 +159,7 @@ def write_anova(report: Report, rows: list, log: bool):
         report.text("  (log-transformed data)")
 
 
-def write_planned(report: Report, ph: pd.DataFrame):
+def write_pairwise(report: Report, ph: pd.DataFrame):
     for _, r in ph.iterrows():
         report.text(f"  {r['comparison']:<18} F(1, {r['df2']:.0f}) = {r['F']:.2f}, p {p_text(r['p'])}, "
                     f"p Holm {p_text(r['p_holm'])}{stars_text(r['p_holm'])} | Wilcoxon p Holm "
@@ -282,52 +289,81 @@ def training_box_panel(ax, wide: pd.DataFrame, m: str, ph: pd.DataFrame, colors:
                     fontweight="bold")
     ax.set_ylabel(axis_label(label, "" if unit == "-" else unit))
     ax._data_tops = tops
-    brackets(ax, [(block_x(*r["a"]), block_x(*r["b"]), r["p_holm"]) for _, r in ph.iterrows()])
+    brackets_out(ax, [(block_x(*r["a"]), block_x(*r["b"]), r["p_holm"]) for _, r in ph.iterrows()])
 
 
-def training_curve_panel(ax, trials: pd.DataFrame, m: str, ph: pd.DataFrame):
+def training_curve_panel(ax, trials: pd.DataFrame, m: str):
+    """Curva di apprendimento senza parentesi: gli asterischi dei confronti fra blocchi sono nei box plot."""
     _, label, unit, _, _ = TRAINING[m]
     ta.figure4_panel(ax, trials, m, label, unit, None)
-    lo, hi = ax.get_ylim()   # le parentesi sopra le etichette "Training 1/2", non sopra le curve
-    ax.set_ylim(lo, hi + 0.08 * (hi - lo))
-    n_trials = int(trials["target_number"].max())
-    centre = lambda tr, b: float(ta.trial_x(tr, (b - 1) * BLOCK + (BLOCK + 1) / 2, n_trials))
-    brackets(ax, [(centre(*r["a"]), centre(*r["b"]), r["p_holm"]) for _, r in ph.iterrows()])
+
+
+def brackets_out(ax, items):
+    """Parentesi senza sovrapposizioni, a livelli sopra i dati (anche fuori dall'asse)."""
+    brackets(ax, items, outside=True)
+
+
+def panel_title(ax, text):
+    """Titolo (A), (B)... sopra le eventuali parentesi uscite dall'asse."""
+    ax.set_title(text, pad=getattr(ax, "_title_pad", 6.0))
 
 
 def two_line_ylabel(ax):
-    """Etichette lunghe su due righe nelle figure della tesi (pannelli stretti)."""
-    if len(ax.get_ylabel()) > 24:
-        words = ax.get_ylabel().split()
-        half = len(words) // 2
-        ax.set_ylabel(" ".join(words[:half]) + "\n" + " ".join(words[half:]))
+    """Etichette lunghe nelle figure della tesi (pannelli stretti): a capo solo l'unita' di misura."""
+    _plots.wrap_unit(ax)
 
 
-def panel_grid(n, ncols=2, width=7.6, height=2.9):
-    nrows = int(np.ceil(n / ncols))
-    fig, axes = plt.subplots(nrows, ncols, figsize=(width, height * nrows), squeeze=False)
-    axes = axes.ravel()
-    for ax in axes[n:]:
-        ax.set_visible(False)
-    return fig, axes[:n]
+def stacked_figure(row_levels: list, ncols=2, width=7.6, axes_h=1.9, below=0.62, bottom=0.5, left=0.9,
+                   right=0.12, wgap=1.0):
+    """Figura della tesi impaginata a mano, riga per riga: sopra ogni riga lo spazio per le parentesi
+    (row_levels = livelli di parentesi della riga, il massimo fra i suoi pannelli) e per il titolo,
+    sotto ogni riga `below` pollici per etichette e nome dell'asse x, in fondo `bottom` per la legenda.
+    Cosi' tante parentesi allungano la figura invece di schiacciare i dati. Restituisce (fig, righe di
+    assi, frazione dell'altezza occupata dal fondo)."""
+    tops = [(_plots.bracket_space_pt(lv) + 18) / 72 for lv in row_levels]   # + titolo (A), (B)...
+    height = sum(tops) + len(row_levels) * (axes_h + below) + bottom
+    fig = plt.figure(figsize=(width, height))
+    axw = (width - left - right - (ncols - 1) * wgap) / ncols
+    y, rows = height, []
+    for t in tops:
+        y -= t + axes_h
+        rows.append([fig.add_axes([(left + c * (axw + wgap)) / width, y / height, axw / width, axes_h / height])
+                     for c in range(ncols)])
+        y -= below
+    return fig, rows, bottom / height
+
+
+def plot_training_effect_curves(trials, anovas):
+    """Curve singole per le slide (movement duration e direction error): senza asterischi e senza note sotto.
+    (Prima avevano la parentesi dell'effetto Training dell'ANOVA, tolta su richiesta di Elisa.)"""
+    for m in ("movement_duration", "direction_error"):   # le due che servono alla presentazione
+        fig, ax = plt.subplots(figsize=(5.2, 3.6))
+        training_curve_panel(ax, trials, m)
+        save_figure(fig, OUT["training"], f"single/{m}_curve_training_effect")
 
 
 def plot_training(trials, wides, posthocs, colors):
     handles = subject_handles(colors)
     metrics = list(TRAINING)
     for kind in ("boxplots", "curves"):
-        fig, axes = panel_grid(len(metrics), height=3.1 if kind == "boxplots" else 2.9)
+        lv = [_plots.bracket_levels([(block_x(*r["a"]), block_x(*r["b"]), r["p_holm"])
+                                     for _, r in posthocs[m].iterrows()]) if kind == "boxplots" else 0
+              for m in metrics]
+        row_levels = [max(lv[i:i + 2]) for i in range(0, len(lv), 2)]
+        fig, rows, bottom = stacked_figure(row_levels, below=0.75 if kind == "boxplots" else 0.6,
+                                           bottom=0.55 if kind == "boxplots" else 0.05)
+        axes = [ax for row in rows for ax in row]
+        for ax in axes[len(metrics):]:
+            ax.set_visible(False)
         for ax, m, letter in zip(axes, metrics, "ABCDE"):
             if kind == "boxplots":
                 training_box_panel(ax, wides[m], m, posthocs[m], colors)
             else:
-                training_curve_panel(ax, trials, m, posthocs[m])
-            ax.set_title(f"({letter})")
+                training_curve_panel(ax, trials, m)
+            panel_title(ax, f"({letter})")
             two_line_ylabel(ax)
-        fig.tight_layout(h_pad=1.4)
         if kind == "boxplots":
-            fig.subplots_adjust(bottom=0.11)
-            subject_legend(fig, colors, ncol=5, y=0.06)
+            subject_legend(fig, colors, ncol=5, y=bottom * 0.9)
         save_thesis_figure(fig, f"training_{kind}{SUFFIX}", note=BOX_NOTE if kind == "boxplots" else CURVE_NOTE)
     for m in metrics:
         fig, ax = plt.subplots(figsize=(5.6, 3.8))
@@ -335,7 +371,7 @@ def plot_training(trials, wides, posthocs, colors):
         side_legend(ax, handles)
         save_figure(fig, OUT["training"], f"single/{m}_boxplot", note=BOX_NOTE)
         fig, ax = plt.subplots(figsize=(5.2, 3.6))
-        training_curve_panel(ax, trials, m, posthocs[m])
+        training_curve_panel(ax, trials, m)
         save_figure(fig, OUT["training"], f"single/{m}_curve", note=CURVE_NOTE)
 
 
@@ -352,18 +388,19 @@ def blind_panel(ax, wide, m, ph, colors, numbers=False):
     ax.set_ylabel(axis_label(label, unit))
     if m == "extent_error":
         ax.axhline(0, color="#8c8c8c", lw=0.8, ls=":", zorder=0)
-    brackets(ax, [(xpos[(f"Test {r['a']}", "all")], xpos[(f"Test {r['b']}", "all")], r["p_holm"])
+    brackets_out(ax, [(xpos[(f"Test {r['a']}", "all")], xpos[(f"Test {r['b']}", "all")], r["p_holm"])
                   for _, r in ph.iterrows()])
 
 
 def plot_blind(wides, posthocs, colors):
-    fig, axes = panel_grid(len(BLIND_PLOTTED), height=3.2)
-    for ax, m, letter in zip(axes, BLIND_PLOTTED, "ABCD"):
+    lv = [_plots.bracket_levels([(a - 1, b - 1, p) for (_, r), (a, b, _) in zip(posthocs[m].iterrows(), BLIND_PAIRS)
+                                 for p in [r["p_holm"]]]) for m in BLIND_PLOTTED]
+    fig, rows, bottom = stacked_figure([max(lv[0:2]), max(lv[2:4])], below=0.6, bottom=0.55)
+    for ax, m, letter in zip([ax for row in rows for ax in row], BLIND_PLOTTED, "ABCD"):
         blind_panel(ax, wides[m], m, posthocs[m], colors, numbers=True)
-        ax.set_title(f"({letter})")
+        panel_title(ax, f"({letter})")
         two_line_ylabel(ax)
-    fig.tight_layout(h_pad=1.4, rect=(0, 0.08, 1, 1))
-    subject_legend(fig, colors, ncol=5, y=0.075)
+    subject_legend(fig, colors, ncol=5, y=bottom * 0.9)
     save_thesis_figure(fig, f"blind_boxplots{SUFFIX}", note=BOX_NOTE)
     for m in BLIND:
         fig, ax = plt.subplots(figsize=(4.6, 3.6))
@@ -372,13 +409,20 @@ def plot_blind(wides, posthocs, colors):
         save_figure(fig, OUT["blind"], f"single/{m}_boxplot", note=BOX_NOTE)
 
 
-def robot_panel(ax, wide, m, leg, p, colors):
+def robot_panel(ax, wide, m, leg, p, colors, ylim=None, draw=True):
+    """Test 1 vs test 2 in una fase. ylim: scala y da fissare prima delle parentesi (che si posizionano sui
+    dati). draw=False: le parentesi non vengono disegnate, restituisce gli elementi per brackets_out."""
     _, label, unit, _, _ = ROBOT[m]
     xpos = condition_plot(ax, {(LEGS[leg], "Test 1"): wide[1], (LEGS[leg], "Test 2"): wide[2]}, [LEGS[leg]],
                           ["Test 1", "Test 2"], {"Test 1": GREY_BOX, "Test 2": RED_BOX}, colors)
     ax.set_xticklabels([LEGS[leg]])
     ax.set_ylabel(axis_label(label, unit))
-    brackets(ax, [(xpos[(LEGS[leg], "Test 1")], xpos[(LEGS[leg], "Test 2")], p)])
+    if ylim is not None:
+        ax.set_ylim(ylim)
+    items = [(xpos[(LEGS[leg], "Test 1")], xpos[(LEGS[leg], "Test 2")], p)]
+    if draw:
+        brackets_out(ax, items)
+    return items
 
 
 def phases_panel(ax, wides, phases, p, colors):
@@ -390,7 +434,7 @@ def phases_panel(ax, wides, phases, p, colors):
     xpos = condition_plot(ax, data, groups, ["Test 1", "Test 2"], {"Test 1": GREY_BOX, "Test 2": RED_BOX}, colors)
     ax.set_xticklabels(groups)
     ax.set_ylabel(axis_label("Completion time", "s"))
-    brackets(ax, [(xpos[(g, "Test 1")], xpos[(g, "Test 2")], p[ph]) for g, ph in zip(groups, phases)])
+    brackets_out(ax, [(xpos[(g, "Test 1")], xpos[(g, "Test 2")], p[ph]) for g, ph in zip(groups, phases)])
 
 
 def plot_robot(wides, pholm, ct_other, p_other, colors):
@@ -403,29 +447,38 @@ def plot_robot(wides, pholm, ct_other, p_other, colors):
     letters = iter("ABCDEFGHIJKL")
     for part, metrics in enumerate(ROBOT_PARTS, 1):
         n = len(metrics) + (part == 1)
-        fig, axes = plt.subplots(n, 2, figsize=(7.6, 2.45 * n + 0.4), squeeze=False)
+        row_levels = ([1] if part == 1 else []) + [1] * len(metrics)   # al massimo una parentesi per pannello
+        fig, axes, bottom = stacked_figure(row_levels, axes_h=1.75, below=0.4, bottom=0.55)
         rows = axes[1:] if part == 1 else axes
         if part == 1:
-            phases_panel(axes[0, 0], ct_other, ["andata_ritorno"], p_other, colors)
-            axes[0, 0].set_title(f"({next(letters)})")
-            phases_panel(axes[0, 1], ct_other, ["grasp", "posizionamento"], p_other, colors)
-            axes[0, 1].set_title(f"({next(letters)})")
+            phases_panel(axes[0][0], ct_other, ["andata_ritorno"], p_other, colors)
+            panel_title(axes[0][0], f"({next(letters)})")
+            phases_panel(axes[0][1], ct_other, ["grasp", "posizionamento"], p_other, colors)
+            panel_title(axes[0][1], f"({next(letters)})")
         for row, m in zip(rows, metrics):
-            for col, leg in enumerate(LEGS):
-                robot_panel(row[col], wides[(m, leg)], m, leg, pholm[(m, leg)], colors)
-                row[col].set_title(f"({next(letters)})")
+            # prima la scala y comune ad andata e ritorno, poi parentesi e titoli
+            items = [robot_panel(row[col], wides[(m, leg)], m, leg, pholm[(m, leg)], colors, draw=False)
+                     for col, leg in enumerate(LEGS)]
             ylim[m] = share_ylim(row)
-        fig.tight_layout(h_pad=1.2, rect=(0, 0.45 / (2.45 * n + 0.4), 1, 1))
-        subject_legend(fig, colors, ncol=6, y=0.35 / (2.45 * n + 0.4), extra=run_handles)
+            for ax, it in zip(row, items):
+                brackets_out(ax, it)
+                panel_title(ax, f"({next(letters)})")
+        subject_legend(fig, colors, ncol=6, y=bottom * 0.9, extra=run_handles)
         save_thesis_figure(fig, f"robot_boxplots{SUFFIX}_{part}", note=BOX_NOTE)
     for m in ROBOT:
         for leg in LEGS:
             fig, ax = plt.subplots(figsize=(3.1, 3.6))
-            robot_panel(ax, wides[(m, leg)], m, leg, pholm[(m, leg)], colors)
-            ax.set_ylim(ylim[m])
+            robot_panel(ax, wides[(m, leg)], m, leg, pholm[(m, leg)], colors, ylim=ylim[m])
             side_legend(ax, run_handles + subject_handles(colors))
             save_figure(fig, OUT["robot"], f"single/{m}_{'outbound' if leg == 'andata' else 'return'}_boxplot",
                         note=BOX_NOTE)
+    # i due pannelli del completion time con piu' fasi
+    for phases, name in ((["andata_ritorno"], "completion_time_outbound_return"),
+                         (["grasp", "posizionamento"], "completion_time_grasp_placement")):
+        fig, ax = plt.subplots(figsize=(1.9 + 1.2 * len(phases), 3.6))
+        phases_panel(ax, ct_other, phases, p_other, colors)
+        side_legend(ax, run_handles + subject_handles(colors))
+        save_figure(fig, OUT["robot"], f"single/{name}_boxplot", note=BOX_NOTE)
 
 
 # ------------------------------------------------------------------ tabelle LaTeX ---
@@ -462,7 +515,7 @@ def write_table(name: str, cols: list, body: list, caption: str, short: str, lab
     lines += [f"        {row}" for row in body]
     lines += ["        \\bottomrule", "    \\end{tabular}}", f"    \\caption[{short}]{{{caption}}}",
               f"    \\label{{{label}}}", "\\end{table}", ""]
-    path = TABLES_DIR / f"{name}{SUFFIX}.tex"
+    path = TABLES_DIR / f"{name}{SUFFIX}.tex"   # TABLES_DIR scelto in main
     path.write_text("\n".join(lines), encoding="utf-8")
     print(f"[{name}] tabella tesi -> {path}")
 
@@ -492,14 +545,11 @@ def training_table(wides, anovas, posthocs):
     for i, eff in enumerate(("Training", "Block", "Interaction")):
         body.append(row(eff, [tex_p(anovas[m][i]["p_rep"], anovas[m][i]["partial_eta2"], anovas[m][i]["gg"])
                               for m in ms]))
-    body += ["\\midrule", section("Planned comparisons, $p$ (Holm)", len(ms))]
-    for k, (_, _, name) in enumerate(TRAINING_PAIRS):
-        body.append(row(name.replace(" vs ", " -- "), [tex_p(posthocs[m]["p_holm"].iloc[k]) for m in ms]))
     write_table("training", cols, body,
                 "Metrics of the reaching training in the three blocks of $32$ outward movements (B1--B3) of "
                 "training 1 (T1) and training 2 (T2), errors at $1$~s (mean $\\pm$ SD across participants); "
                 "$p$-values of the repeated-measures ANOVA Training $\\times$ Block, with the partial eta squared "
-                "in brackets, and of the planned comparisons (Holm-corrected). " + NOTES,
+                "in brackets. " + NOTES,
                 "Reaching training: results", "tab:results_training")
 
 
@@ -509,15 +559,11 @@ def blind_table(wides, anovas, posthocs):
     body = [row(f"Test {t}", [tex_ms(wides[m][t], BLIND[m][4]) for m in ms]) for t in TESTS]
     body += ["\\midrule", section("ANOVA, $p$ ($\\eta^2_p$)", len(ms)),
              row("Test", [tex_p(anovas[m][0]["p_rep"], anovas[m][0]["partial_eta2"], anovas[m][0]["gg"])
-                          for m in ms]),
-             "\\midrule", section("Planned comparisons, $p$ (Holm)", len(ms))]
-    for k, (a, b, _) in enumerate(BLIND_PAIRS):
-        body.append(row(f"Test {a} -- {b}", [tex_p(posthocs[m]["p_holm"].iloc[k]) for m in ms]))
+                          for m in ms])]
     write_table("blind", cols, body,
                 "Metrics of the blind reaching test in its five repetitions, errors at the end of the trial "
                 "(mean $\\pm$ SD across participants); $p$-values of the repeated-measures ANOVA on the effect "
-                "of Test, with the partial eta squared in brackets, and of the planned comparisons between "
-                "consecutive tests (Holm-corrected). " + NOTES,
+                "of Test, with the partial eta squared in brackets. " + NOTES,
                 "Blind reaching test: results", "tab:results_blind", colsep=4)
 
 
@@ -558,6 +604,17 @@ def robot_table(wides, anovas, pholm, ct_other, p_other, a_other):
 # ------------------------------------------------------------------ main ---
 
 def main():
+    global TABLES_DIR
+    parser = argparse.ArgumentParser(description="Second analysis (newStats of the PhD student)")
+    parser.add_argument("--thesis", action="store_true",
+                        help="scrive figure e tabelle direttamente nella cartella della tesi (di default no)")
+    args = parser.parse_args()
+    if args.thesis:
+        TABLES_DIR = THESIS_DIR.parent.parent / "Tables"
+    else:
+        LOCAL_THESIS.mkdir(exist_ok=True)
+        _plots.THESIS_DIR = LOCAL_THESIS / "figures"
+        TABLES_DIR = LOCAL_THESIS / "tables"
     for out in OUT.values():
         out.mkdir(parents=True, exist_ok=True)
     setup_style()
@@ -565,7 +622,7 @@ def main():
     def new_report(task: str) -> Report:
         r = Report(f"SECOND ANALYSIS (newStats of the PhD student): {task}", legend=False)
         r.text("Same data as the task analyses. GG = Greenhouse-Geisser (when Mauchly p < 0.05); p of the")
-        r.text("planned comparisons Holm-corrected within each metric; log only for the tests.")
+        r.text("post hoc comparisons between all pairs, Holm-corrected within each metric; log only for the tests.")
         return r
 
     report = new_report("reaching training")
@@ -577,7 +634,7 @@ def main():
     wides, anovas, posthocs, desc, tests = {}, {}, {}, [], []
     for m, (abbr, label, unit, log, _) in TRAINING.items():
         w = training_wide(blocks, m)
-        wides[m], anovas[m], posthocs[m] = w, anova(w, ["Training", "Block"], log), planned(w, TRAINING_PAIRS, log)
+        wides[m], anovas[m], posthocs[m] = w, anova(w, ["Training", "Block"], log), pairwise(w, TRAINING_PAIRS, log)
         report.text(f"{abbr} – {label}{f' ({unit})' if unit != '-' else ''}")
         for (tr, b) in w.columns:
             d = describe(w[(tr, b)])
@@ -585,13 +642,14 @@ def main():
         write_anova(report, anovas[m], log)
         fr = friedman(w)
         report.text(f"  Friedman (6 blocks): chi2({fr['df']}) = {fr['statistic']:.2f}, p {p_text(fr['p'])}")
-        write_planned(report, posthocs[m])
+        write_pairwise(report, posthocs[m])
         report.text()
         desc += describe_rows("training", m, w, {c: f"{c[0]} B{c[1]}" for c in w.columns})
         tests += test_rows("training", m, anovas[m], posthocs[m])
     pd.DataFrame(desc).to_csv(OUT["training"] / "training_descriptives.csv", index=False)
     pd.DataFrame(tests).to_csv(OUT["training"] / "training_tests.csv", index=False)
     plot_training(trials, wides, posthocs, colors)
+    plot_training_effect_curves(trials, anovas)
     training_table(wides, anovas, posthocs)
 
     # --- blind
@@ -602,13 +660,13 @@ def main():
     bw, ba, bp, desc, tests = {}, {}, {}, [], []
     for m, (abbr, label, unit, log, _) in BLIND.items():
         w = blind_wide(m)
-        bw[m], ba[m], bp[m] = w, anova(w, ["Test"], log), planned(w, BLIND_PAIRS, log)
+        bw[m], ba[m], bp[m] = w, anova(w, ["Test"], log), pairwise(w, BLIND_PAIRS, log)
         report.text(f"{abbr} – {label} ({unit})")
         report.text("  " + "  ".join(f"T{t}: {describe(w[t])['mean']:.2f} ± {describe(w[t])['sd']:.2f}" for t in TESTS))
         write_anova(report, ba[m], log)
         fr = friedman(w)
         report.text(f"  Friedman: chi2({fr['df']}) = {fr['statistic']:.2f}, p {p_text(fr['p'])}")
-        write_planned(report, bp[m])
+        write_pairwise(report, bp[m])
         report.text()
         desc += describe_rows("blind", m, w, {t: f"Test {t}" for t in TESTS})
         tests += test_rows("blind", m, ba[m], bp[m])
@@ -619,7 +677,7 @@ def main():
     write_anova(report, anova(w, ["Test"], False), False)
     fr = friedman(w)
     report.text(f"  Friedman: chi2({fr['df']}) = {fr['statistic']:.2f}, p {p_text(fr['p'])}")
-    write_planned(report, planned(w, BLIND_PAIRS, False))
+    write_pairwise(report, pairwise(w, BLIND_PAIRS, False))
     pd.DataFrame(desc).to_csv(OUT["blind"] / "blind_descriptives.csv", index=False)
     pd.DataFrame(tests).to_csv(OUT["blind"] / "blind_tests.csv", index=False)
     plot_blind(bw, bp, colors)
@@ -659,6 +717,30 @@ def main():
     robot_table(rw, ra, pholm, ct_other, p_other, a_other)
 
     report.save(OUT["robot"])
+    plot_ppt(bw, bp, colors)
+
+
+# grafici per la presentazione in plot_ppt/: solo nome dell'asse con l'unita', grafico, asterischi e
+# Test 1, 2, ...; niente legenda dei partecipanti ne' note sotto (richiesta di Elisa)
+PPT_DIR = BASE_DIR / "plot_ppt"
+PPT_BLIND = ["euclidean_error", "extent_error", "direction_error"]
+PPT_CURVES = {"training_movement_duration_curve": "movement_duration_curve_training_effect",
+              "training_direction_error_curve": "direction_error_curve_training_effect"}
+
+
+def plot_ppt(blind_wides, blind_posthocs, colors):
+    PPT_DIR.mkdir(exist_ok=True)
+    for m in PPT_BLIND:
+        fig, ax = plt.subplots(figsize=(4.6, 3.6))
+        blind_panel(ax, blind_wides[m], m, blind_posthocs[m], colors)
+        fig._has_stars = False   # niente legenda degli asterischi sotto
+        png = save_figure(fig, PPT_DIR, f"blind_{m}")   # save_figure scrive in PPT_DIR/plots: sposta su
+        for f in (png, png.with_suffix(".pdf")):
+            f.replace(PPT_DIR / f.name)
+    shutil.rmtree(PPT_DIR / "plots", ignore_errors=True)
+    for name, src in PPT_CURVES.items():   # le curve senza asterischi e senza note: copiate
+        for ext in (".png", ".pdf"):
+            shutil.copy(OUT["training"] / "plots" / "single" / f"{src}{ext}", PPT_DIR / f"{name}{ext}")
 
 
 if __name__ == "__main__":

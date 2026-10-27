@@ -1,0 +1,37 @@
+% generata da new_stats/new_stats_analysis.py: non modificare a mano
+\begin{table}[tbp]
+    \centering
+    \small
+    \setlength{\tabcolsep}{3pt}
+    \resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{%
+    \begin{tabular}{lcccccc}
+        \toprule
+        \multicolumn{7}{l}{\textbf{\boldmath Completion time (s)\textsuperscript{b}}} \\
+        & \textbf{Outbound} & \textbf{Grasp} & \textbf{Return} & \textbf{Placement} & \textbf{Total} & \begin{tabular}[b]{@{}c@{}}\textbf{Outbound}\\\textbf{+ return}\end{tabular} \\
+        \midrule
+        \textbf{\boldmath Test 1} & $311 \pm 77$ & $37 \pm 20$ & $295 \pm 96$ & $31 \pm 8$ & $674 \pm 169$ & $606 \pm 166$ \\
+        \textbf{\boldmath Test 2} & $234 \pm 71$ & $85 \pm 153$ & $235 \pm 53$ & $30 \pm 3$ & $584 \pm 192$ & $469 \pm 119$ \\
+        \textbf{\boldmath $p$ ($\eta^2_p$)} & $0.003$ ($0.69$) & $0.883$ ($0.07$) & $0.003$ ($0.70$) & $0.883$ ($0.02$) & $0.102$ ($0.27$) & ${<}0.001$ ($0.77$) \\
+        \bottomrule
+    \end{tabular}}
+
+    \vspace{1em}
+    \resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{%
+    \begin{tabular}{lcccc}
+        \toprule
+        & \begin{tabular}[b]{@{}c@{}}\textbf{Path}\\\textbf{\boldmath length (m)}\end{tabular} & \begin{tabular}[b]{@{}c@{}}\textbf{Mean}\\\textbf{\boldmath speed (m/s)}\end{tabular} & \begin{tabular}[b]{@{}c@{}}\textbf{Jerk}\\\textbf{\boldmath (m/s$^3$)}\end{tabular} & \begin{tabular}[b]{@{}c@{}}\textbf{Region}\\\textbf{\boldmath transitions}\end{tabular} \\
+        \midrule
+        \multicolumn{5}{l}{\textbf{\boldmath Outbound leg}} \\
+        \textbf{\boldmath Test 1} & $23.80 \pm 1.04$ & $0.09 \pm 0.02$ & $1.91 \pm 0.59$ & $110 \pm 39$ \\
+        \textbf{\boldmath Test 2} & $23.40 \pm 1.03$ & $0.12 \pm 0.03$ & $2.44 \pm 0.84$ & $102 \pm 35$ \\
+        \textbf{\boldmath $p$ ($\eta^2_p$)} & $0.289$ ($0.12$) & ${<}0.001$ ($0.76$) & $0.007$ ($0.63$) & $0.542$ ($0.04$) \\
+        \midrule
+        \multicolumn{5}{l}{\textbf{\boldmath Return leg}} \\
+        \textbf{\boldmath Test 1} & $25.66 \pm 0.88$ & $0.10 \pm 0.02$ & $2.07 \pm 0.64$ & $122 \pm 43$ \\
+        \textbf{\boldmath Test 2} & $25.26 \pm 0.62$ & $0.12 \pm 0.02$ & $2.36 \pm 0.61$ & $103 \pm 29$ \\
+        \textbf{\boldmath $p$ ($\eta^2_p$)} & $0.099$ ($0.36$) & ${<}0.001$ ($0.82$) & $0.036$ ($0.40$) & $0.154$ ($0.31$) \\
+        \bottomrule
+    \end{tabular}}
+    \caption[Test on the real robot: results]{Metrics of the test on the real robot in the two tests (mean $\pm$ SD across participants): completion time of each phase, of the whole test and of the two driving legs together (top), and metrics of the outbound and return legs (bottom). For every metric, $p$-value of the repeated-measures ANOVA between the tests, with the partial eta squared in brackets, Holm-corrected for the two legs of each metric and, for the completion time, within the pairs grasp--placement and total--outbound + return. \textsuperscript{b}~Tests on log-transformed data (values in the original units).}
+    \label{tab:results_robot}
+\end{table}

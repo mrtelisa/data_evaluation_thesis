@@ -55,7 +55,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from common.data import find_sessions   # noqa: E402
 from common.jamovi import write_tables   # noqa: E402
-from common.plots import (TRAINING_COLORS, MUTED, axis_label, brackets, save_figure, save_thesis_figure,   # noqa: E402
+from common.plots import (TRAINING_COLORS, MUTED, axis_label, wrap_unit, brackets, save_figure, save_thesis_figure,   # noqa: E402
                           setup_style)
 from common.reach_metrics import canvas_scale, canvas_to_cm, goals_from_raw, training_metrics   # noqa: E402
 from common.report import Report, analyse_metric, save_tables   # noqa: E402
@@ -244,11 +244,8 @@ def plot_training(trials: pd.DataFrame, metrics: dict, posthocs: dict, out: Path
         for ax, (m, (_, label, unit)), letter in zip(axes, metrics.items(), "ABCDEFGH"):
             figure4_panel(ax, trials, m, label, unit, posthocs.get(m))
             ax.set_title(f"({letter})")
-            # etichette lunghe (es. "Return movement duration (s)") su due righe, se no escono dal pannello
-            if len(ax.get_ylabel()) > 24:
-                words = ax.get_ylabel().split()
-                half = len(words) // 2
-                ax.set_ylabel(" ".join(words[:half]) + "\n" + " ".join(words[half:]))
+            # etichette lunghe: a capo solo l'unita' di misura, se no escono dal pannello
+            wrap_unit(ax)
         fig.tight_layout(h_pad=1.4)
         save_thesis_figure(fig, thesis_name, note=note)
 

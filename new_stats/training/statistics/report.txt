@@ -2,7 +2,7 @@ SECOND ANALYSIS (newStats of the PhD student): reaching training
 ================================================================
 
 Same data as the task analyses. GG = Greenhouse-Geisser (when Mauchly p < 0.05); p of the
-planned comparisons Holm-corrected within each metric; log only for the tests.
+post hoc comparisons between all pairs, Holm-corrected within each metric; log only for the tests.
 
 REACHING TRAINING – Training (T1, T2) x Block (3 blocks of 32 outward movements)
 --------------------------------------------------------------------------------
@@ -17,10 +17,21 @@ EE – Euclidean error at 1 s (cm)
   Block                F(1.21, 10.90) = 12.03, p = 0.004 (GG), eta2p = 0.57, Mauchly p = 0.015
   Training × Block     F(2, 18) = 0.09, p = 0.913, eta2p = 0.01, Mauchly p = 0.504
   Friedman (6 blocks): chi2(5) = 22.74, p < .001
-  T1 B1 vs T1 B3     F(1, 9) = 9.16, p = 0.014, p Holm = 0.031 * | Wilcoxon p Holm = 0.041
+  T1 B1 vs T1 B2     F(1, 9) = 5.67, p = 0.041, p Holm = 0.247 | Wilcoxon p Holm = 0.297
+  T1 B1 vs T1 B3     F(1, 9) = 9.16, p = 0.014, p Holm = 0.129 | Wilcoxon p Holm = 0.176
+  T1 B1 vs T2 B1     F(1, 9) = 12.81, p = 0.006, p Holm = 0.065 | Wilcoxon p Holm = 0.117
+  T1 B1 vs T2 B2     F(1, 9) = 18.48, p = 0.002, p Holm = 0.028 * | Wilcoxon p Holm = 0.117
+  T1 B1 vs T2 B3     F(1, 9) = 23.36, p < .001, p Holm = 0.014 * | Wilcoxon p Holm = 0.088
+  T1 B2 vs T1 B3     F(1, 9) = 2.99, p = 0.118, p Holm = 0.386 | Wilcoxon p Holm = 0.420
+  T1 B2 vs T2 B1     F(1, 9) = 0.97, p = 0.351, p Holm = 0.702 | Wilcoxon p Holm = 0.750
+  T1 B2 vs T2 B2     F(1, 9) = 6.34, p = 0.033, p Holm = 0.230 | Wilcoxon p Holm = 0.297
+  T1 B2 vs T2 B3     F(1, 9) = 15.88, p = 0.003, p Holm = 0.039 * | Wilcoxon p Holm = 0.088
   T1 B3 vs T2 B1     F(1, 9) = 0.12, p = 0.735, p Holm = 0.735 | Wilcoxon p Holm = 0.922
-  T2 B1 vs T2 B3     F(1, 9) = 10.41, p = 0.010, p Holm = 0.031 * | Wilcoxon p Holm = 0.041
-  T1 B1 vs T2 B3     F(1, 9) = 23.36, p < .001, p Holm = 0.004 ** | Wilcoxon p Holm = 0.023
+  T1 B3 vs T2 B2     F(1, 9) = 3.94, p = 0.078, p Holm = 0.386 | Wilcoxon p Holm = 0.420
+  T1 B3 vs T2 B3     F(1, 9) = 16.23, p = 0.003, p Holm = 0.039 * | Wilcoxon p Holm = 0.088
+  T2 B1 vs T2 B2     F(1, 9) = 7.08, p = 0.026, p Holm = 0.208 | Wilcoxon p Holm = 0.420
+  T2 B1 vs T2 B3     F(1, 9) = 10.41, p = 0.010, p Holm = 0.104 | Wilcoxon p Holm = 0.137
+  T2 B2 vs T2 B3     F(1, 9) = 3.98, p = 0.077, p Holm = 0.386 | Wilcoxon p Holm = 0.297
 
 DE – Direction error at 1 s (deg)
   T1 B1: 48.548 ± 8.496
@@ -33,10 +44,21 @@ DE – Direction error at 1 s (deg)
   Block                F(2, 18) = 13.53, p < .001, eta2p = 0.60, Mauchly p = 0.059
   Training × Block     F(2, 18) = 2.31, p = 0.128, eta2p = 0.20, Mauchly p = 0.156
   Friedman (6 blocks): chi2(5) = 21.37, p < .001
-  T1 B1 vs T1 B3     F(1, 9) = 21.12, p = 0.001, p Holm = 0.005 ** | Wilcoxon p Holm = 0.016
-  T1 B3 vs T2 B1     F(1, 9) = 0.00, p = 0.952, p Holm = 0.952 | Wilcoxon p Holm = 1.000
-  T2 B1 vs T2 B3     F(1, 9) = 2.64, p = 0.139, p Holm = 0.278 | Wilcoxon p Holm = 0.320
-  T1 B1 vs T2 B3     F(1, 9) = 18.58, p = 0.002, p Holm = 0.006 ** | Wilcoxon p Holm = 0.018
+  T1 B1 vs T1 B2     F(1, 9) = 9.57, p = 0.013, p Holm = 0.141 | Wilcoxon p Holm = 0.029
+  T1 B1 vs T1 B3     F(1, 9) = 21.12, p = 0.001, p Holm = 0.018 * | Wilcoxon p Holm = 0.055
+  T1 B1 vs T2 B1     F(1, 9) = 15.37, p = 0.004, p Holm = 0.042 * | Wilcoxon p Holm = 0.055
+  T1 B1 vs T2 B2     F(1, 9) = 28.75, p < .001, p Holm = 0.007 ** | Wilcoxon p Holm = 0.055
+  T1 B1 vs T2 B3     F(1, 9) = 18.58, p = 0.002, p Holm = 0.026 * | Wilcoxon p Holm = 0.064
+  T1 B2 vs T1 B3     F(1, 9) = 2.00, p = 0.191, p Holm = 0.877 | Wilcoxon p Holm = 0.967
+  T1 B2 vs T2 B1     F(1, 9) = 1.60, p = 0.238, p Holm = 0.877 | Wilcoxon p Holm = 0.967
+  T1 B2 vs T2 B2     F(1, 9) = 4.20, p = 0.071, p Holm = 0.530 | Wilcoxon p Holm = 0.756
+  T1 B2 vs T2 B3     F(1, 9) = 4.96, p = 0.053, p Holm = 0.530 | Wilcoxon p Holm = 0.756
+  T1 B3 vs T2 B1     F(1, 9) = 0.00, p = 0.952, p Holm = 0.992 | Wilcoxon p Holm = 1.000
+  T1 B3 vs T2 B2     F(1, 9) = 4.84, p = 0.055, p Holm = 0.530 | Wilcoxon p Holm = 0.645
+  T1 B3 vs T2 B3     F(1, 9) = 4.41, p = 0.065, p Holm = 0.530 | Wilcoxon p Holm = 0.756
+  T2 B1 vs T2 B2     F(1, 9) = 2.16, p = 0.175, p Holm = 0.877 | Wilcoxon p Holm = 0.967
+  T2 B1 vs T2 B3     F(1, 9) = 2.64, p = 0.139, p Holm = 0.833 | Wilcoxon p Holm = 0.961
+  T2 B2 vs T2 B3     F(1, 9) = 0.50, p = 0.496, p Holm = 0.992 | Wilcoxon p Holm = 1.000
 
 XE – Extent error at 1 s (cm)
   T1 B1: -2.247 ± 2.011
@@ -49,10 +71,21 @@ XE – Extent error at 1 s (cm)
   Block                F(2, 18) = 3.95, p = 0.038, eta2p = 0.31, Mauchly p = 0.066
   Training × Block     F(2, 18) = 0.39, p = 0.681, eta2p = 0.04, Mauchly p = 0.243
   Friedman (6 blocks): chi2(5) = 11.60, p = 0.041
-  T1 B1 vs T1 B3     F(1, 9) = 2.39, p = 0.156, p Holm = 0.313 | Wilcoxon p Holm = 0.252
-  T1 B3 vs T2 B1     F(1, 9) = 1.30, p = 0.284, p Holm = 0.313 | Wilcoxon p Holm = 0.252
-  T2 B1 vs T2 B3     F(1, 9) = 9.18, p = 0.014, p Holm = 0.057 | Wilcoxon p Holm = 0.148
-  T1 B1 vs T2 B3     F(1, 9) = 3.62, p = 0.089, p Holm = 0.268 | Wilcoxon p Holm = 0.252
+  T1 B1 vs T1 B2     F(1, 9) = 0.37, p = 0.558, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  T1 B1 vs T1 B3     F(1, 9) = 2.39, p = 0.156, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  T1 B1 vs T2 B1     F(1, 9) = 0.68, p = 0.430, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  T1 B1 vs T2 B2     F(1, 9) = 3.14, p = 0.110, p Holm = 1.000 | Wilcoxon p Holm = 0.773
+  T1 B1 vs T2 B3     F(1, 9) = 3.62, p = 0.089, p Holm = 1.000 | Wilcoxon p Holm = 0.924
+  T1 B2 vs T1 B3     F(1, 9) = 3.64, p = 0.089, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  T1 B2 vs T2 B1     F(1, 9) = 0.09, p = 0.772, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  T1 B2 vs T2 B2     F(1, 9) = 3.04, p = 0.115, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  T1 B2 vs T2 B3     F(1, 9) = 4.01, p = 0.076, p Holm = 0.991 | Wilcoxon p Holm = 0.520
+  T1 B3 vs T2 B1     F(1, 9) = 1.30, p = 0.284, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  T1 B3 vs T2 B2     F(1, 9) = 0.18, p = 0.683, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  T1 B3 vs T2 B3     F(1, 9) = 0.55, p = 0.476, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  T2 B1 vs T2 B2     F(1, 9) = 6.94, p = 0.027, p Holm = 0.380 | Wilcoxon p Holm = 0.410
+  T2 B1 vs T2 B3     F(1, 9) = 9.18, p = 0.014, p Holm = 0.214 | Wilcoxon p Holm = 0.520
+  T2 B2 vs T2 B3     F(1, 9) = 0.47, p = 0.511, p Holm = 1.000 | Wilcoxon p Holm = 1.000
 
 MD – Movement duration (s)
   T1 B1: 3.276 ± 0.615
@@ -66,10 +99,21 @@ MD – Movement duration (s)
   Training × Block     F(1.12, 10.11) = 10.44, p = 0.008 (GG), eta2p = 0.54, Mauchly p = 0.002
   (log-transformed data)
   Friedman (6 blocks): chi2(5) = 41.20, p < .001
-  T1 B1 vs T1 B3     F(1, 9) = 35.14, p < .001, p Holm < .001 *** | Wilcoxon p Holm = 0.008
-  T1 B3 vs T2 B1     F(1, 9) = 6.92, p = 0.027, p Holm = 0.033 * | Wilcoxon p Holm = 0.074
-  T2 B1 vs T2 B3     F(1, 9) = 8.68, p = 0.016, p Holm = 0.033 * | Wilcoxon p Holm = 0.074
-  T1 B1 vs T2 B3     F(1, 9) = 156.02, p < .001, p Holm < .001 *** | Wilcoxon p Holm = 0.008
+  T1 B1 vs T1 B2     F(1, 9) = 31.42, p < .001, p Holm = 0.003 ** | Wilcoxon p Holm = 0.029
+  T1 B1 vs T1 B3     F(1, 9) = 35.14, p < .001, p Holm = 0.002 ** | Wilcoxon p Holm = 0.029
+  T1 B1 vs T2 B1     F(1, 9) = 55.04, p < .001, p Holm < .001 *** | Wilcoxon p Holm = 0.029
+  T1 B1 vs T2 B2     F(1, 9) = 102.89, p < .001, p Holm < .001 *** | Wilcoxon p Holm = 0.029
+  T1 B1 vs T2 B3     F(1, 9) = 156.02, p < .001, p Holm < .001 *** | Wilcoxon p Holm = 0.029
+  T1 B2 vs T1 B3     F(1, 9) = 8.99, p = 0.015, p Holm = 0.060 | Wilcoxon p Holm = 0.109
+  T1 B2 vs T2 B1     F(1, 9) = 20.09, p = 0.002, p Holm = 0.009 ** | Wilcoxon p Holm = 0.031
+  T1 B2 vs T2 B2     F(1, 9) = 69.89, p < .001, p Holm < .001 *** | Wilcoxon p Holm = 0.029
+  T1 B2 vs T2 B3     F(1, 9) = 44.76, p < .001, p Holm < .001 *** | Wilcoxon p Holm = 0.031
+  T1 B3 vs T2 B1     F(1, 9) = 6.92, p = 0.027, p Holm = 0.060 | Wilcoxon p Holm = 0.111
+  T1 B3 vs T2 B2     F(1, 9) = 32.50, p < .001, p Holm = 0.003 ** | Wilcoxon p Holm = 0.029
+  T1 B3 vs T2 B3     F(1, 9) = 21.25, p = 0.001, p Holm = 0.009 ** | Wilcoxon p Holm = 0.031
+  T2 B1 vs T2 B2     F(1, 9) = 14.79, p = 0.004, p Holm = 0.020 * | Wilcoxon p Holm = 0.031
+  T2 B1 vs T2 B3     F(1, 9) = 8.68, p = 0.016, p Holm = 0.060 | Wilcoxon p Holm = 0.111
+  T2 B2 vs T2 B3     F(1, 9) = 0.81, p = 0.392, p Holm = 0.392 | Wilcoxon p Holm = 0.492
 
 LI – Linearity index
   T1 B1: 2.188 ± 0.422
@@ -82,8 +126,19 @@ LI – Linearity index
   Block                F(2, 18) = 12.72, p < .001, eta2p = 0.59, Mauchly p = 0.532
   Training × Block     F(1.13, 10.15) = 9.97, p = 0.009 (GG), eta2p = 0.53, Mauchly p = 0.003
   Friedman (6 blocks): chi2(5) = 32.80, p < .001
-  T1 B1 vs T1 B3     F(1, 9) = 18.05, p = 0.002, p Holm = 0.006 ** | Wilcoxon p Holm = 0.029
-  T1 B3 vs T2 B1     F(1, 9) = 8.82, p = 0.016, p Holm = 0.031 * | Wilcoxon p Holm = 0.039
-  T2 B1 vs T2 B3     F(1, 9) = 0.11, p = 0.753, p Holm = 0.753 | Wilcoxon p Holm = 0.695
-  T1 B1 vs T2 B3     F(1, 9) = 47.49, p < .001, p Holm < .001 *** | Wilcoxon p Holm = 0.008
+  T1 B1 vs T1 B2     F(1, 9) = 10.95, p = 0.009, p Holm = 0.073 | Wilcoxon p Holm = 0.137
+  T1 B1 vs T1 B3     F(1, 9) = 18.05, p = 0.002, p Holm = 0.021 * | Wilcoxon p Holm = 0.088
+  T1 B1 vs T2 B1     F(1, 9) = 35.67, p < .001, p Holm = 0.003 ** | Wilcoxon p Holm = 0.029
+  T1 B1 vs T2 B2     F(1, 9) = 58.89, p < .001, p Holm < .001 *** | Wilcoxon p Holm = 0.029
+  T1 B1 vs T2 B3     F(1, 9) = 47.49, p < .001, p Holm < .001 *** | Wilcoxon p Holm = 0.029
+  T1 B2 vs T1 B3     F(1, 9) = 4.26, p = 0.069, p Holm = 0.276 | Wilcoxon p Holm = 0.336
+  T1 B2 vs T2 B1     F(1, 9) = 11.65, p = 0.008, p Holm = 0.069 | Wilcoxon p Holm = 0.109
+  T1 B2 vs T2 B2     F(1, 9) = 36.45, p < .001, p Holm = 0.003 ** | Wilcoxon p Holm = 0.029
+  T1 B2 vs T2 B3     F(1, 9) = 9.68, p = 0.012, p Holm = 0.087 | Wilcoxon p Holm = 0.137
+  T1 B3 vs T2 B1     F(1, 9) = 8.82, p = 0.016, p Holm = 0.094 | Wilcoxon p Holm = 0.137
+  T1 B3 vs T2 B2     F(1, 9) = 21.55, p = 0.001, p Holm = 0.013 * | Wilcoxon p Holm = 0.029
+  T1 B3 vs T2 B3     F(1, 9) = 8.65, p = 0.016, p Holm = 0.094 | Wilcoxon p Holm = 0.059
+  T2 B1 vs T2 B2     F(1, 9) = 0.94, p = 0.358, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  T2 B1 vs T2 B3     F(1, 9) = 0.11, p = 0.753, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  T2 B2 vs T2 B3     F(1, 9) = 0.30, p = 0.595, p Holm = 1.000 | Wilcoxon p Holm = 1.000
 

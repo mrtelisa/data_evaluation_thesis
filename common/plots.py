@@ -129,6 +129,15 @@ def stars(p) -> str:
     return "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else ""
 
 
+def wrap_unit(ax, max_len=24):
+    """Etichetta dell'asse y su una riga; se e' piu' lunga di max_len caratteri va a capo solo l'unita'
+    di misura (tra parentesi tonde). Senza unita' resta su una riga."""
+    label = ax.get_ylabel()
+    if len(label) > max_len and " (" in label:
+        name, unit = label.rsplit(" (", 1)
+        ax.set_ylabel(f"{name}\n({unit}")
+
+
 def axis_label(label, unit) -> str:
     return f"{label} ({unit})" if unit else label
 
@@ -177,13 +186,67 @@ def condition_plot(ax, data: dict, groups: list, conditions: list, styles: dict,
     return xpos
 
 
-def brackets(ax, items: list):
+BRACKET_STEP_PT = 14   # distanza fra due livelli di parentesi (punti): asterischi e linee non si toccano
+BRACKET_GAP_PT = 5     # distanza del primo livello dai dati
+
+
+def _assign_levels(sig):
+    """Livello di ogni parentesi (prima le corte): il piu' basso in cui non tocca in orizzontale quelle
+    gia' messe. sig = [(a, b, testo)], ordinata qui. Restituisce [(a, b, testo, livello)] e n. livelli."""
+    levels, out = [], []
+    for a, b, txt in sorted(sig, key=lambda s_: s_[1] - s_[0]):
+        k = next((i for i, lv in enumerate(levels) if all(b < pa - 0.08 or a > pb + 0.08 for pa, pb in lv)), None)
+        if k is None:
+            levels.append([])
+            k = len(levels) - 1
+        levels[k].append((a, b))
+        out.append((a, b, txt, k))
+    return out, len(levels)
+
+
+def bracket_levels(items: list) -> int:
+    """Quanti livelli di parentesi servono per items = [(x1, x2, p)] (solo i significativi)."""
+    sig = [(min(x1, x2), max(x1, x2), stars(p)) for x1, x2, p in items if stars(p)]
+    return _assign_levels(sig)[1]
+
+
+def bracket_space_pt(n_levels: int) -> float:
+    """Spazio sopra l'asse occupato da n_levels livelli di parentesi (punti)."""
+    return BRACKET_GAP_PT + n_levels * BRACKET_STEP_PT if n_levels else 0.0
+
+
+def _brackets_outside(ax, sig):
+    """Parentesi a livelli sopra il bordo superiore dell'asse, a distanza fissa in punti, senza cambiare
+    la scala y: tante parentesi non schiacciano i dati e non si sovrappongono. Salva in ax._title_pad lo
+    spazio da lasciare per il titolo del pannello."""
+    from matplotlib.transforms import ScaledTranslation
+    placed, n = _assign_levels(sig)
+    tick = 3.0 / 72   # dentini di 3 pt verso il basso
+    for a, b, txt, k in placed:
+        y = (BRACKET_GAP_PT + k * BRACKET_STEP_PT) / 72
+        top = ax.get_xaxis_transform() + ScaledTranslation(0, y, ax.figure.dpi_scale_trans)
+        low = ax.get_xaxis_transform() + ScaledTranslation(0, y - tick, ax.figure.dpi_scale_trans)
+        ax.plot([a, b], [1, 1], color=SIG_COLOR, lw=0.9, clip_on=False, transform=top)
+        for x in (a, b):
+            ax.annotate("", xy=(x, 1), xycoords=low, xytext=(x, 1), textcoords=top,
+                        arrowprops=dict(arrowstyle="-", color=SIG_COLOR, lw=0.9, shrinkA=0, shrinkB=0))
+        ax.text((a + b) / 2, 1, txt, ha="center", va="bottom", color=SIG_COLOR, fontsize=11, clip_on=False,
+                transform=top)
+    ax._title_pad = max(6.0, bracket_space_pt(n) + 4)
+
+
+def brackets(ax, items: list, outside: bool = False):
     """items = [(x1, x2, p)]: parentesi grigie con gli asterischi, solo per i confronti
     significativi. Ogni parentesi sta appena sopra i dati fra x1 e x2 (se condition_plot
     li ha registrati, altrimenti sopra tutto il grafico); quelle che si sovrappongono
-    vengono impilate (come Najie)."""
+    vengono impilate (come Najie). outside=True: a livelli fissi sopra tutti i dati, anche fuori
+    dall'asse, senza sovrapposizioni (per i pannelli con tanti confronti)."""
     sig = [(min(x1, x2), max(x1, x2), stars(p)) for x1, x2, p in items if stars(p)]
     if not sig:
+        return
+    if outside:
+        ax.figure._has_stars = True
+        _brackets_outside(ax, sig)
         return
     ax.figure._has_stars = True   # save_figure aggiunge la legenda degli asterischi
     lo, hi = ax.get_ylim()
@@ -205,7 +268,14 @@ def brackets(ax, items: list):
 
 
 def subject_handles(colors: dict) -> list:
-    return [plt.Line2D([], [], ls="", marker="o", ms=4.5, color=c, label=s) for s, c in sorted(colors.items())]
+    return [plt.Line2D([], [], ls="", marker="o", ms=4.5, color=c, label=participant_label(s))
+            for s, c in sorted(colors.items())]
+
+
+def participant_label(s) -> str:
+    """Etichetta nelle figure della tesi: P01..P10 al posto dei codici soggetto S001..S010."""
+    s = str(s)
+    return f"P{int(s[1:]):02d}" if s[:1] == "S" and s[1:].isdigit() else s
 
 
 def side_legend(ax, handles: list):

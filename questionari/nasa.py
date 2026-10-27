@@ -101,8 +101,8 @@ def main():
     cp.condition_plot(ax, {(d, "NASA"): by_subject[d] for d in DIMENSIONS}, DIMENSIONS, ["NASA"],
                       {"NASA": ("#cde2fb", BLUE)}, colors, width=0.5, whisker_color=cp.INK2)
     ax.set_xticklabels(DIMENSIONS, rotation=20, ha="right")
-    ax.set_ylim(0, 21)
-    ax.set_yticks(range(0, 21, 5))
+    ax.set_ylim(0.5, 20.5)   # scala del questionario: 1-20
+    ax.set_yticks([1, 5, 10, 15, 20])
     ax.set_ylabel("Score (1-20)")
     cp.side_legend(ax, cp.subject_handles(colors))
     png = cp.save_figure(fig, args.out, "nasa_boxplot", note=cp.BOX_NOTE)
