@@ -6,9 +6,9 @@ The repository contains the raw results of each task, the scripts that compute t
 
 ## Experimental protocol
 
-Each participant went through four parts in a single session:
+Each participant went through four parts in a single session. The scripts come from two branches of the experiment repository: the full task on the real robot (`reachy_control.py`) from [`main`](https://github.com/mrtelisa/reachy2_teleop_grasping_and_simulation/tree/main), all the other steps from [`new_protocol`](https://github.com/mrtelisa/reachy2_teleop_grasping_and_simulation/tree/new_protocol).
 
-| Part | Step | Script (experiment repo) |
+| Part | Step | Script |
 |---|---|---|
 | **A. Questionnaires** | Subject information, Edinburgh Handedness Inventory | Google Forms |
 | **B. Simulation** | 1. BoMI customization | `customize_bomi.py` |
