@@ -1,38 +1,38 @@
 section,item,n,percent,mean,sd,var,sem,median,min,max
-Sample,Subjects,10,,,,,,,,
-Dimension,Mental demand,10,,11.1,3.03,9.21,0.96,11.0,7.0,16.0
-Dimension,Physical demand,10,,5.8,3.08,9.51,0.98,5.0,2.0,11.0
-Dimension,Temporal demand,10,,6.7,3.77,14.23,1.19,5.0,2.0,13.0
-Dimension,Performance,10,,14.2,2.66,7.07,0.84,15.0,10.0,18.0
-Dimension,Effort,10,,13.2,3.94,15.51,1.25,11.5,10.0,20.0
-Dimension,Frustration,10,,8.2,6.03,36.4,1.91,6.5,1.0,20.0
-Overall,Raw TLX (1-20),10,,8.63,2.24,5.01,0.71,8.91,4.5,11.33
-Overall,Raw TLX (0-100),10,,40.16,11.78,138.76,3.72,41.65,18.4,54.4
-Band – Mental demand,Low (1-7),1,10.0,,,,,,,
-Band – Mental demand,Medium (8-13),7,70.0,,,,,,,
-Band – Mental demand,High (14-20),2,20.0,,,,,,,
-Band – Mental demand,Total,10,100.0,,,,,,,
-Band – Physical demand,Low (1-7),7,70.0,,,,,,,
-Band – Physical demand,Medium (8-13),3,30.0,,,,,,,
+Sample,Subjects,11,,,,,,,,
+Dimension,Mental demand,11,,11.27,2.94,8.62,0.89,12.0,7.0,16.0
+Dimension,Physical demand,11,,6.27,3.32,11.02,1.0,5.0,2.0,11.0
+Dimension,Temporal demand,11,,7.45,4.37,19.07,1.32,5.0,2.0,15.0
+Dimension,Performance,11,,14.55,2.77,7.67,0.84,15.0,10.0,18.0
+Dimension,Effort,11,,13.27,3.74,14.02,1.13,12.0,10.0,20.0
+Dimension,Frustration,11,,8.18,5.72,32.76,1.73,8.0,1.0,20.0
+Overall,Raw TLX (1-20),11,,8.82,2.21,4.89,0.67,9.0,4.5,11.33
+Overall,Raw TLX (0-100),11,,41.14,11.63,135.37,3.51,42.1,18.4,54.4
+Band – Mental demand,Low (1-7),1,9.1,,,,,,,
+Band – Mental demand,Medium (8-13),8,72.7,,,,,,,
+Band – Mental demand,High (14-20),2,18.2,,,,,,,
+Band – Mental demand,Total,11,100.0,,,,,,,
+Band – Physical demand,Low (1-7),7,63.6,,,,,,,
+Band – Physical demand,Medium (8-13),4,36.4,,,,,,,
 Band – Physical demand,High (14-20),0,0.0,,,,,,,
-Band – Physical demand,Total,10,100.0,,,,,,,
-Band – Temporal demand,Low (1-7),6,60.0,,,,,,,
-Band – Temporal demand,Medium (8-13),4,40.0,,,,,,,
-Band – Temporal demand,High (14-20),0,0.0,,,,,,,
-Band – Temporal demand,Total,10,100.0,,,,,,,
+Band – Physical demand,Total,11,100.0,,,,,,,
+Band – Temporal demand,Low (1-7),6,54.5,,,,,,,
+Band – Temporal demand,Medium (8-13),4,36.4,,,,,,,
+Band – Temporal demand,High (14-20),1,9.1,,,,,,,
+Band – Temporal demand,Total,11,100.0,,,,,,,
 Band – Performance,Low (1-7),0,0.0,,,,,,,
-Band – Performance,Medium (8-13),4,40.0,,,,,,,
-Band – Performance,High (14-20),6,60.0,,,,,,,
-Band – Performance,Total,10,100.0,,,,,,,
+Band – Performance,Medium (8-13),4,36.4,,,,,,,
+Band – Performance,High (14-20),7,63.6,,,,,,,
+Band – Performance,Total,11,100.0,,,,,,,
 Band – Effort,Low (1-7),0,0.0,,,,,,,
-Band – Effort,Medium (8-13),7,70.0,,,,,,,
-Band – Effort,High (14-20),3,30.0,,,,,,,
-Band – Effort,Total,10,100.0,,,,,,,
-Band – Frustration,Low (1-7),5,50.0,,,,,,,
-Band – Frustration,Medium (8-13),3,30.0,,,,,,,
-Band – Frustration,High (14-20),2,20.0,,,,,,,
-Band – Frustration,Total,10,100.0,,,,,,,
-Band – Raw TLX (1-20),Low (1-7),3,30.0,,,,,,,
-Band – Raw TLX (1-20),Medium (8-13),7,70.0,,,,,,,
+Band – Effort,Medium (8-13),7,63.6,,,,,,,
+Band – Effort,High (14-20),4,36.4,,,,,,,
+Band – Effort,Total,11,100.0,,,,,,,
+Band – Frustration,Low (1-7),5,45.5,,,,,,,
+Band – Frustration,Medium (8-13),4,36.4,,,,,,,
+Band – Frustration,High (14-20),2,18.2,,,,,,,
+Band – Frustration,Total,11,100.0,,,,,,,
+Band – Raw TLX (1-20),Low (1-7),3,27.3,,,,,,,
+Band – Raw TLX (1-20),Medium (8-13),8,72.7,,,,,,,
 Band – Raw TLX (1-20),High (14-20),0,0.0,,,,,,,
-Band – Raw TLX (1-20),Total,10,100.0,,,,,,,
+Band – Raw TLX (1-20),Total,11,100.0,,,,,,,
