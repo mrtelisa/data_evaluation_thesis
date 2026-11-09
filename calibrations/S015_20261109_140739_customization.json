@@ -1,0 +1,262 @@
+{
+  "subject": "S015",
+  "map": "S015_20261109_140739",
+  "saved": "20261109_140739",
+  "base": "shared",
+  "steps": [
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.1,
+      "gain_y": 1.1,
+      "off_x": 0.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.1,
+      "gain_y": 1.1,
+      "off_x": 0.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": -10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": -10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": -10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": -10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 10.0,
+      "off_y": 0.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    }
+  ],
+  "n_steps": 33,
+  "rot_deg": 0.0,
+  "scale": 1.2100000000000004,
+  "flip_x": false,
+  "offset_x": 109.99999999999977,
+  "offset_y": -39.999999999999886,
+  "M": [
+    [
+      1.2100000000000002,
+      0.0
+    ],
+    [
+      0.0,
+      1.2100000000000004
+    ]
+  ],
+  "t": [
+    -157.75000000000045,
+    -197.50000000000023
+  ],
+  "residual": 2.220446049250313e-16,
+  "summary_text": "rotation +0.0 deg, scale x1.210, flip X no, offset (+110, -40) px",
+  "steps_text": "scale x1.10; scale x1.10; offset +0,-10; offset +0,+10; offset +0,+10; offset +0,+10; offset +10,+0; offset +10,+0; offset +10,+0; offset +10,+0; offset +10,+0; offset +10,+0; offset +10,+0; offset +10,+0; offset +10,+0; offset +10,+0; offset +10,+0; offset -10,+0; offset -10,+0; offset -10,+0; offset -10,+0; offset +10,+0; offset +10,+0; offset +10,+0; offset +10,+0; offset +0,+10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10"
+}
