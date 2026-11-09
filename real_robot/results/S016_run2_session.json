@@ -1,0 +1,1481 @@
+{
+  "subject": "S016",
+  "task": "reachy2_bomi_pick_and_place",
+  "protocol_step": "run2",
+  "run": 2,
+  "timestamp": "2026-11-09 16:51:42",
+  "session_start": "2026-11-09T16:51:42",
+  "session_end": "2026-11-09T16:59:29",
+  "test_start": "2026-11-09T16:51:53",
+  "test_end": "2026-11-09T16:59:08",
+  "files": {
+    "session": "S016_run2_session.json",
+    "odometry_csv": "S016_run2_odometry.csv",
+    "regions_csv": "S016_run2_regions.csv",
+    "cursor_csv": "S016_run2_cursor.csv",
+    "calibration_map": "S016_20261109_161231.npz"
+  },
+  "screen": {
+    "canvas_width": 2550,
+    "canvas_height": 1500,
+    "origin": "top-left",
+    "x_axis": "right",
+    "y_axis": "down (cursor up = forward)",
+    "regions": "3x3 grid, 1 2 3 / 4 5 6 / 7 8 9, 5 = stop",
+    "region_x_edges": [
+      847,
+      1697
+    ],
+    "region_y_edges": [
+      497,
+      997
+    ],
+    "dead_zone_px": 200,
+    "cursor_map_window": {
+      "width": 510,
+      "height": 300,
+      "position": [
+        0,
+        0
+      ]
+    },
+    "display": {
+      "output": "eDP-1",
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "mapping": {
+    "type": "autoencoder (markerlessBoMI), 42 hand features (21 landmarks x, y, mirrored image) -> 2D cursor",
+    "map_file": "S016_20261109_161231.npz",
+    "shared_map": "shared",
+    "calibration_samples": "shared_calib.npy",
+    "ae": {
+      "hidden_units": 32,
+      "activation": "tanh",
+      "latent_dim": 2,
+      "epochs": 3001,
+      "learning_rate": 0.02,
+      "test_split": 0.2,
+      "seed": 20,
+      "calibration_duration_s": 90.0
+    },
+    "ae_metrics": {
+      "n_train": 1286,
+      "n_test": 322,
+      "vaf_train": 95.58398462831974,
+      "cu_train": [
+        49.92723083496094,
+        50.07277297973633
+      ],
+      "vaf_test": 94.96869333088398,
+      "cu_test": [
+        53.964088439941406,
+        46.03591537475586
+      ]
+    },
+    "customization_steps": [
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": 10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.0,
+        "gain_y": 1.0,
+        "off_x": 0.0,
+        "off_y": -10.0
+      },
+      {
+        "rot_deg": 0.0,
+        "gain_x": 1.1,
+        "gain_y": 1.1,
+        "off_x": 0.0,
+        "off_y": 0.0
+      }
+    ],
+    "affine": {
+      "A": [
+        [
+          1080.2131518566503,
+          0.0
+        ],
+        [
+          0.0,
+          543.5629907252024
+        ]
+      ],
+      "b": [
+        1403.2562782473046,
+        670.8625756010102
+      ]
+    },
+    "vs_shared": {
+      "M": [
+        [
+          1.1,
+          0.0
+        ],
+        [
+          0.0,
+          1.1
+        ]
+      ],
+      "t": [
+        -127.50000000000023,
+        -284.0000000000001
+      ]
+    },
+    "filter": {
+      "type": "butterworth low-pass",
+      "order": 3,
+      "cutoff_hz": 4.0,
+      "sample_hz": 30.0
+    },
+    "velocity": {
+      "min_linear": 0.2,
+      "max_linear": 0.5,
+      "min_angular": 0.8,
+      "max_angular": 1.1,
+      "dead_zone_px": 200,
+      "reduced_speed_factor": 0.75,
+      "repositioning": "min_linear / min_angular"
+    },
+    "hand_tracking": {
+      "model": "hand_landmarker.task",
+      "num_hands": 1,
+      "min_detection_confidence": 0.7,
+      "min_presence_confidence": 0.5,
+      "min_tracking_confidence": 0.5
+    }
+  },
+  "fps": {
+    "webcam_index": 0,
+    "webcam_nominal": 30.0,
+    "webcam_resolution": [
+      640,
+      480
+    ],
+    "control_loop_hz": 20,
+    "robot_camera_stream_hz": 20.0
+  },
+  "task_config": {
+    "robot_ip": "10.186.13.13",
+    "mode_switch_dwell_s": 10.0,
+    "preview_dwell_s": 3.0,
+    "hover_select_dwell_s": 3.0,
+    "yolo_model": "yolov8n.pt",
+    "yolo_confidence": 0.5,
+    "lidar_slowdown_m": 0.5,
+    "lidar_critical_m": 0.2,
+    "lidar_critical_pre_grasp_m": 0.1
+  },
+  "n_trials_planned": 1,
+  "n_trials_completed": 1,
+  "frames": {
+    "n_frames": 5772,
+    "n_frames_lost": 5938,
+    "n_frames_read_failed": 0,
+    "n_frames_skipped": 5938,
+    "n_frames_no_hand": 0,
+    "no_hand_percent": 0.0,
+    "fps_mean": 14.685567095467803,
+    "tracking_time": 392.7665824890137
+  },
+  "end_reason": "finished",
+  "success": true,
+  "test_duration": 434.7680721282959,
+  "navigation_duration": 170.1474335193634,
+  "phase_durations": {
+    "outbound": 124.9830756187439,
+    "approach": 45.164355993270874,
+    "grasp": 27.83264994621277,
+    "return": 208.32286262512207,
+    "placement": 28.465124368667603
+  },
+  "phase_completed": {
+    "outbound": true,
+    "approach": true,
+    "grasp": true,
+    "return": true,
+    "placement": true
+  },
+  "reached_object_selection": true,
+  "n_repositioning": 0,
+  "n_repositioning_per_phase": {
+    "grasp": 0,
+    "placement": 0
+  },
+  "n_dwell": 3,
+  "n_dwell_declined": 0,
+  "n_dwell_per_phase": {
+    "outbound": 1,
+    "approach": 1,
+    "return": 1
+  },
+  "n_dwell_declined_per_phase": {},
+  "n_objects_moved": 1,
+  "objects_moved": [
+    "bottle"
+  ],
+  "manual": {
+    "n_collisions": 0,
+    "n_drops_grasp": 0,
+    "n_drops_transport": 0,
+    "notes": ""
+  },
+  "experimenter_notes": "",
+  "path_length_outbound": 21.021970419879818,
+  "path_length_return": 24.856706828419703,
+  "cumulative_rotation_outbound": 16.484939652495086,
+  "cumulative_rotation_return": 25.201377769284925,
+  "driving": {
+    "outbound": {
+      "driving_time": 110.79727101325989,
+      "path_length": 21.021970419879818,
+      "cumulative_rotation": 16.484939652495086,
+      "log_dimensionless_jerk": -13.198111853479714,
+      "stop_time": 14.596348285675049,
+      "stop_percent": 13.17392400750394,
+      "region_time_seconds": {
+        "region1": 8.28,
+        "region2": 77.79,
+        "region3": 5.52,
+        "region4": 1.08,
+        "region5": 14.6,
+        "region6": 3.53,
+        "region7": 0.0,
+        "region8": 0.0,
+        "region9": 0.0
+      },
+      "region_time_percent": {
+        "region1": 7.5,
+        "region2": 70.2,
+        "region3": 5.0,
+        "region4": 1.0,
+        "region5": 13.2,
+        "region6": 3.2,
+        "region7": 0.0,
+        "region8": 0.0,
+        "region9": 0.0
+      },
+      "n_commands": 69,
+      "n_command_changes": 68,
+      "command_changes_per_min": 36.824011662811785,
+      "mean_command_duration": 1.672400344882095,
+      "median_command_duration": 0.873314380645752,
+      "non_adjacent_percent": 0.0,
+      "n_non_adjacent": 0,
+      "n_motion_changes": 56,
+      "n_reversals": 12,
+      "reversal_percent": 21.428571428571427,
+      "stop_passage_percent": 19.642857142857142,
+      "sequence_entropy": 1.0567395669106427,
+      "command_sequences": [
+        [
+          5,
+          2,
+          1,
+          2,
+          5,
+          6,
+          3,
+          5,
+          2,
+          5,
+          6,
+          5,
+          6,
+          2,
+          4,
+          5,
+          4,
+          5,
+          2,
+          5,
+          6,
+          5,
+          2,
+          3,
+          2,
+          1,
+          2,
+          5,
+          2,
+          5,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          2,
+          5,
+          2,
+          1,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          2,
+          3,
+          2,
+          3,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          2
+        ]
+      ]
+    },
+    "approach": {
+      "driving_time": 17.6196391582489,
+      "path_length": 1.4282247279990568,
+      "cumulative_rotation": 1.207246482372284,
+      "log_dimensionless_jerk": -10.464260882819419,
+      "stop_time": 7.334615707397461,
+      "stop_percent": 41.62750236552744,
+      "region_time_seconds": {
+        "region1": 0.61,
+        "region2": 9.26,
+        "region3": 0.0,
+        "region4": 0.41,
+        "region5": 7.33,
+        "region6": 0.0,
+        "region7": 0.0,
+        "region8": 0.0,
+        "region9": 0.0
+      },
+      "region_time_percent": {
+        "region1": 3.5,
+        "region2": 52.6,
+        "region3": 0.0,
+        "region4": 2.3,
+        "region5": 41.6,
+        "region6": 0.0,
+        "region7": 0.0,
+        "region8": 0.0,
+        "region9": 0.0
+      },
+      "n_commands": 12,
+      "n_command_changes": 11,
+      "command_changes_per_min": 37.458201843538376,
+      "mean_command_duration": 1.4318219593593053,
+      "median_command_duration": 0.6816680431365967,
+      "non_adjacent_percent": 0.0,
+      "n_non_adjacent": 0,
+      "n_motion_changes": 6,
+      "n_reversals": 0,
+      "reversal_percent": 0.0,
+      "stop_passage_percent": 66.66666666666667,
+      "sequence_entropy": 0.6231593611157584,
+      "command_sequences": [
+        [
+          5,
+          2,
+          1,
+          2,
+          5,
+          2,
+          5,
+          4,
+          5,
+          2,
+          5,
+          2
+        ]
+      ]
+    },
+    "repositioning": {
+      "driving_time": 0.0,
+      "path_length": 0.0,
+      "cumulative_rotation": 0.0,
+      "log_dimensionless_jerk": null,
+      "stop_time": 0.0,
+      "stop_percent": null,
+      "region_time_seconds": {
+        "region1": 0.0,
+        "region2": 0.0,
+        "region3": 0.0,
+        "region4": 0.0,
+        "region5": 0.0,
+        "region6": 0.0,
+        "region7": 0.0,
+        "region8": 0.0,
+        "region9": 0.0
+      },
+      "region_time_percent": {
+        "region1": 0.0,
+        "region2": 0.0,
+        "region3": 0.0,
+        "region4": 0.0,
+        "region5": 0.0,
+        "region6": 0.0,
+        "region7": 0.0,
+        "region8": 0.0,
+        "region9": 0.0
+      },
+      "n_commands": 0,
+      "n_command_changes": 0,
+      "command_changes_per_min": null,
+      "mean_command_duration": null,
+      "median_command_duration": null,
+      "non_adjacent_percent": null,
+      "n_non_adjacent": 0,
+      "n_motion_changes": 0,
+      "n_reversals": 0,
+      "reversal_percent": null,
+      "stop_passage_percent": null,
+      "sequence_entropy": null,
+      "command_sequences": []
+    },
+    "return": {
+      "driving_time": 186.75965547561646,
+      "path_length": 24.856706828419703,
+      "cumulative_rotation": 25.201377769284925,
+      "log_dimensionless_jerk": -14.446276902460182,
+      "stop_time": 32.396493673324585,
+      "stop_percent": 17.346623172344792,
+      "region_time_seconds": {
+        "region1": 10.0,
+        "region2": 116.68,
+        "region3": 7.56,
+        "region4": 10.66,
+        "region5": 32.4,
+        "region6": 4.09,
+        "region7": 0.4,
+        "region8": 4.98,
+        "region9": 0.0
+      },
+      "region_time_percent": {
+        "region1": 5.4,
+        "region2": 62.5,
+        "region3": 4.0,
+        "region4": 5.7,
+        "region5": 17.3,
+        "region6": 2.2,
+        "region7": 0.2,
+        "region8": 2.7,
+        "region9": 0.0
+      },
+      "n_commands": 120,
+      "n_command_changes": 119,
+      "command_changes_per_min": 38.230955084044936,
+      "mean_command_duration": 1.6782166276659285,
+      "median_command_duration": 0.8073141574859619,
+      "non_adjacent_percent": 0.8403361344537815,
+      "n_non_adjacent": 1,
+      "n_motion_changes": 90,
+      "n_reversals": 28,
+      "reversal_percent": 31.11111111111111,
+      "stop_passage_percent": 31.11111111111111,
+      "sequence_entropy": 1.3145653781943056,
+      "command_sequences": [
+        [
+          5,
+          8,
+          5,
+          8,
+          5,
+          6,
+          5,
+          4,
+          5,
+          4,
+          5,
+          2,
+          4,
+          2,
+          1,
+          5,
+          2,
+          3,
+          2,
+          1,
+          2,
+          7,
+          5,
+          2,
+          3,
+          2,
+          3,
+          2,
+          1,
+          2,
+          6,
+          3,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          3,
+          2,
+          3,
+          2,
+          1,
+          2,
+          3,
+          2,
+          1,
+          2,
+          3,
+          2,
+          1,
+          2,
+          3,
+          2,
+          1,
+          2,
+          3,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          4,
+          2,
+          1,
+          2,
+          3,
+          2,
+          5,
+          4,
+          5,
+          2,
+          1,
+          2,
+          1,
+          2,
+          5,
+          2,
+          5,
+          4,
+          5,
+          2,
+          5,
+          4,
+          2,
+          5,
+          6,
+          5,
+          6,
+          5,
+          4,
+          2,
+          5,
+          6,
+          5,
+          4,
+          5,
+          2,
+          5,
+          6,
+          5,
+          4,
+          5,
+          4,
+          5,
+          2,
+          5,
+          4,
+          5,
+          2,
+          5,
+          2,
+          5,
+          2,
+          5,
+          2
+        ]
+      ]
+    },
+    "all": {
+      "driving_time": 315.17656564712524,
+      "path_length": 47.306901976298576,
+      "cumulative_rotation": 42.893563904152295,
+      "log_dimensionless_jerk": null,
+      "stop_time": 54.327457666397095,
+      "stop_percent": 17.237150089141668,
+      "region_time_seconds": {
+        "region1": 18.9,
+        "region2": 203.72,
+        "region3": 13.08,
+        "region4": 12.15,
+        "region5": 54.33,
+        "region6": 7.62,
+        "region7": 0.4,
+        "region8": 4.98,
+        "region9": 0.0
+      },
+      "region_time_percent": {
+        "region1": 6.0,
+        "region2": 64.6,
+        "region3": 4.2,
+        "region4": 3.9,
+        "region5": 17.2,
+        "region6": 2.4,
+        "region7": 0.1,
+        "region8": 1.6,
+        "region9": 0.0
+      },
+      "n_commands": 201,
+      "n_command_changes": 198,
+      "command_changes_per_min": 37.69315772448947,
+      "mean_command_duration": 1.6649502354283487,
+      "median_command_duration": 0.8112401962280273,
+      "non_adjacent_percent": 0.5050505050505051,
+      "n_non_adjacent": 1,
+      "n_motion_changes": 152,
+      "n_reversals": 40,
+      "reversal_percent": 26.31578947368421,
+      "stop_passage_percent": 28.289473684210527,
+      "sequence_entropy": 1.2854173328248697,
+      "command_sequences": [
+        [
+          5,
+          2,
+          1,
+          2,
+          5,
+          6,
+          3,
+          5,
+          2,
+          5,
+          6,
+          5,
+          6,
+          2,
+          4,
+          5,
+          4,
+          5,
+          2,
+          5,
+          6,
+          5,
+          2,
+          3,
+          2,
+          1,
+          2,
+          5,
+          2,
+          5,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          2,
+          5,
+          2,
+          1,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          2,
+          3,
+          2,
+          3,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          2
+        ],
+        [
+          5,
+          2,
+          1,
+          2,
+          5,
+          2,
+          5,
+          4,
+          5,
+          2,
+          5,
+          2
+        ],
+        [
+          5,
+          8,
+          5,
+          8,
+          5,
+          6,
+          5,
+          4,
+          5,
+          4,
+          5,
+          2,
+          4,
+          2,
+          1,
+          5,
+          2,
+          3,
+          2,
+          1,
+          2,
+          7,
+          5,
+          2,
+          3,
+          2,
+          3,
+          2,
+          1,
+          2,
+          6,
+          3,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          3,
+          2,
+          3,
+          2,
+          1,
+          2,
+          3,
+          2,
+          1,
+          2,
+          3,
+          2,
+          1,
+          2,
+          3,
+          2,
+          1,
+          2,
+          3,
+          2,
+          3,
+          2,
+          1,
+          2,
+          1,
+          4,
+          2,
+          1,
+          2,
+          3,
+          2,
+          5,
+          4,
+          5,
+          2,
+          1,
+          2,
+          1,
+          2,
+          5,
+          2,
+          5,
+          4,
+          5,
+          2,
+          5,
+          4,
+          2,
+          5,
+          6,
+          5,
+          6,
+          5,
+          4,
+          2,
+          5,
+          6,
+          5,
+          4,
+          5,
+          2,
+          5,
+          6,
+          5,
+          4,
+          5,
+          4,
+          5,
+          2,
+          5,
+          4,
+          5,
+          2,
+          5,
+          2,
+          5,
+          2,
+          5,
+          2
+        ]
+      ]
+    }
+  },
+  "path_length_max_speed": 21.021970419879818,
+  "path_length_reduced_speed": 1.4282247279990568,
+  "path_length_repositioning": 0.0,
+  "path_length_transport": 24.856706828419703,
+  "path_length_navigation": 22.450195147878873,
+  "path_length_total": 47.306901976298576,
+  "log_dimensionless_jerk": -13.985872607967837,
+  "region_time_percent": {
+    "region1": 6.0,
+    "region2": 64.6,
+    "region3": 4.2,
+    "region4": 3.9,
+    "region5": 17.2,
+    "region6": 2.4,
+    "region7": 0.1,
+    "region8": 1.6,
+    "region9": 0.0
+  },
+  "region_time_seconds": {
+    "region1": 18.9,
+    "region2": 203.72,
+    "region3": 13.08,
+    "region4": 12.15,
+    "region5": 54.33,
+    "region6": 7.62,
+    "region7": 0.4,
+    "region8": 4.98,
+    "region9": 0.0
+  },
+  "region5_dwell_time_removed": 30.0,
+  "n_odometry_samples": {
+    "max_speed": 1751,
+    "reduced_speed": 408,
+    "repositioning": 0,
+    "transport": 2873
+  },
+  "odometry_file": "S016_run2_odometry.csv",
+  "regions_file": "S016_run2_regions.csv",
+  "config": {
+    "min_command_s": 0.25,
+    "dwell_s": 10.0,
+    "region_tick_max_gap_s": 0.5,
+    "frame_max_gap_s": 0.5
+  }
+}

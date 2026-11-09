@@ -1,0 +1,619 @@
+{
+  "subject": "S016",
+  "map": "S016_20261109_161231",
+  "saved": "20261109_161231",
+  "base": "shared",
+  "steps": [
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": 10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.0,
+      "gain_y": 1.0,
+      "off_x": 0.0,
+      "off_y": -10.0
+    },
+    {
+      "rot_deg": 0.0,
+      "gain_x": 1.1,
+      "gain_y": 1.1,
+      "off_x": 0.0,
+      "off_y": 0.0
+    }
+  ],
+  "n_steps": 84,
+  "rot_deg": 0.0,
+  "scale": 1.1,
+  "flip_x": false,
+  "offset_x": -2.2737367544323206e-13,
+  "offset_y": -209.0,
+  "M": [
+    [
+      1.1,
+      0.0
+    ],
+    [
+      0.0,
+      1.1
+    ]
+  ],
+  "t": [
+    -127.50000000000023,
+    -284.0000000000001
+  ],
+  "residual": 0.0,
+  "summary_text": "rotation +0.0 deg, scale x1.100, flip X no, offset (-0, -209) px",
+  "steps_text": "offset +0,+10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,+10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; offset +0,-10; scale x1.10"
+}

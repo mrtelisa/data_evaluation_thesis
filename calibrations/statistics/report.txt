@@ -1,7 +1,7 @@
 CALIBRAZIONE BoMI – customizzazione per soggetto
 ================================================
 
-Soggetti: 12 (S001, S002, S003, S004, S005, S006, S007, S008, S009, S010, S014, S015)
+Soggetti: 13 (S001, S002, S003, S004, S005, S006, S007, S008, S009, S010, S014, S015, S016)
 
 Mappa condivisa
 ---------------
@@ -10,18 +10,18 @@ Mappa condivisa
 
 Customizzazione (descrittive tra soggetti)
 ------------------------------------------
-  Soggetti con almeno un passo: 9/12 (senza customizzazione: S002, S006, S007)
-  Scala cambiata: 9/12, offset cambiato: 5/12, rotazione cambiata: 0/12, flip X finale: 0/12
-  Customization steps (key presses): 4.00 [0.75, 28.50] (min 0.00, max 134.00)
-  Scale steps: 2.00 [0.75, 4.00] (min 0.00, max 6.00)
-  Offset steps: 0.00 [0.00, 23.50] (min 0.00, max 132.00)
+  Soggetti con almeno un passo: 10/13 (senza customizzazione: S002, S006, S007)
+  Scala cambiata: 10/13, offset cambiato: 6/13, rotazione cambiata: 0/13, flip X finale: 0/13
+  Customization steps (key presses): 4.00 [1.00, 33.00] (min 0.00, max 134.00)
+  Scale steps: 2.00 [1.00, 4.00] (min 0.00, max 6.00)
+  Offset steps: 0.00 [0.00, 31.00] (min 0.00, max 132.00)
   Flip steps: 0.00 [0.00, 0.00] (min 0.00, max 4.00)
   Rotation steps: 0.00 [0.00, 0.00] (min 0.00, max 0.00)
-  Final scale [x]: 1.21 [1.08, 1.33] (min 1.00, max 1.46)
+  Final scale [x]: 1.21 [1.10, 1.33] (min 1.00, max 1.46)
   Final rotation [deg]: 0.00 [0.00, 0.00] (min 0.00, max 0.00)
   Final offset X [px]: 0.00 [0.00, 0.00] (min -605.00, max 120.00)
-  Final offset Y [px]: 0.00 [0.00, 0.00] (min -90.00, max 266.20)
-  Final offset (distance) [px]: 0.00 [0.00, 125.29] (min 0.00, max 631.91)
+  Final offset Y [px]: 0.00 [0.00, 0.00] (min -209.00, max 266.20)
+  Final offset (distance) [px]: 0.00 [0.00, 150.00] (min 0.00, max 631.91)
 
 Per soggetto
 ------------
@@ -37,6 +37,7 @@ Per soggetto
   S010: scala x1.331, rotazione +0 deg, flip X no, offset (+0, +0) px | 5 passi (scala 5, offset 0, flip 0, rotazione 0)
   S014: scala x1.210, rotazione +0 deg, flip X no, offset (+120, -90) px | 27 passi (scala 6, offset 21, flip 0, rotazione 0)
   S015: scala x1.210, rotazione +0 deg, flip X no, offset (+110, -40) px | 33 passi (scala 2, offset 31, flip 0, rotazione 0)
+  S016: scala x1.100, rotazione +0 deg, flip X no, offset (+0, -209) px | 84 passi (scala 1, offset 83, flip 0, rotazione 0)
   Il numero di passi dipende anche da come e' stata fatta la sessione (es. l'offset
   si sposta di 10 px a tasto): e' una misura di quanto la mappa e' stata adattata,
   non della difficolta' del soggetto.
