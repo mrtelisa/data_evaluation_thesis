@@ -8,94 +8,94 @@ BLIND TEST – one value per test (mean of the 12 trials), Test 1-5
 -----------------------------------------------------------------
 Linearity index left out until the anomalous trial is corrected.
 HR – Hit rate (%)
-  T1: 3.21 ± 4.22  T2: 6.41 ± 6.04  T3: 8.97 ± 10.46  T4: 12.18 ± 11.08  T5: 3.21 ± 6.40
-  Test                 F(2.48, 29.75) = 4.24, p = 0.018 (GG), eta2p = 0.26, Mauchly p = 0.034
-  Friedman: chi2(4) = 13.61, p = 0.009
-  Test 1 vs 2        F(1, 12) = 2.54, p = 0.137, p Holm = 0.684 | Wilcoxon p Holm = 0.658
-  Test 1 vs 3        F(1, 12) = 3.60, p = 0.082, p Holm = 0.575 | Wilcoxon p Holm = 0.626
-  Test 1 vs 4        F(1, 12) = 7.26, p = 0.020, p Holm = 0.176 | Wilcoxon p Holm = 0.116
-  Test 1 vs 5        F(1, 12) = 0.00, p = 1.000, p Holm = 1.000 | Wilcoxon p Holm = 1.000
-  Test 2 vs 3        F(1, 12) = 1.68, p = 0.219, p Holm = 0.698 | Wilcoxon p Holm = 1.000
-  Test 2 vs 4        F(1, 12) = 3.28, p = 0.095, p Holm = 0.575 | Wilcoxon p Holm = 0.626
-  Test 2 vs 5        F(1, 12) = 2.08, p = 0.175, p Holm = 0.698 | Wilcoxon p Holm = 0.658
-  Test 3 vs 4        F(1, 12) = 0.92, p = 0.356, p Holm = 0.713 | Wilcoxon p Holm = 1.000
-  Test 3 vs 5        F(1, 12) = 3.98, p = 0.069, p Holm = 0.553 | Wilcoxon p Holm = 0.626
-  Test 4 vs 5        F(1, 12) = 20.28, p < .001, p Holm = 0.007 ** | Wilcoxon p Holm = 0.036
+  T1: 3.33 ± 4.23  T2: 8.33 ± 8.91  T3: 10.00 ± 10.06  T4: 12.78 ± 10.85  T5: 5.00 ± 8.21
+  Test                 F(4, 56) = 4.32, p = 0.004, eta2p = 0.24, Mauchly p = 0.244
+  Friedman: chi2(4) = 13.66, p = 0.008
+  Test 1 vs 2        F(1, 14) = 3.50, p = 0.082, p Holm = 0.577 | Wilcoxon p Holm = 0.493
+  Test 1 vs 3        F(1, 14) = 6.00, p = 0.028, p Holm = 0.225 | Wilcoxon p Holm = 0.269
+  Test 1 vs 4        F(1, 14) = 9.07, p = 0.009, p Holm = 0.084 | Wilcoxon p Holm = 0.072
+  Test 1 vs 5        F(1, 14) = 0.51, p = 0.486, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  Test 2 vs 3        F(1, 14) = 0.58, p = 0.458, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  Test 2 vs 4        F(1, 14) = 2.32, p = 0.150, p Holm = 0.600 | Wilcoxon p Holm = 0.822
+  Test 2 vs 5        F(1, 14) = 2.90, p = 0.111, p Holm = 0.577 | Wilcoxon p Holm = 0.493
+  Test 3 vs 4        F(1, 14) = 0.85, p = 0.371, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  Test 3 vs 5        F(1, 14) = 3.50, p = 0.082, p Holm = 0.577 | Wilcoxon p Holm = 0.493
+  Test 4 vs 5        F(1, 14) = 16.73, p = 0.001, p Holm = 0.011 * | Wilcoxon p Holm = 0.036
 
 EE – Euclidean error at 4 s (cm)
-  T1: 12.30 ± 1.28  T2: 9.54 ± 2.30  T3: 8.06 ± 3.25  T4: 7.72 ± 2.58  T5: 8.67 ± 3.49
-  Test                 F(2.42, 29.01) = 11.29, p < .001 (GG), eta2p = 0.48, Mauchly p = 0.000
+  T1: 11.94 ± 1.52  T2: 9.05 ± 2.50  T3: 7.60 ± 3.26  T4: 7.21 ± 2.75  T5: 8.12 ± 3.56
+  Test                 F(2.50, 34.93) = 16.61, p < .001 (GG), eta2p = 0.54, Mauchly p = 0.001
   (log-transformed data)
-  Friedman: chi2(4) = 24.68, p < .001
-  Test 1 vs 2        F(1, 12) = 12.53, p = 0.004, p Holm = 0.024 * | Wilcoxon p Holm = 0.014
-  Test 1 vs 3        F(1, 12) = 24.47, p < .001, p Holm = 0.003 ** | Wilcoxon p Holm = 0.005
-  Test 1 vs 4        F(1, 12) = 33.69, p < .001, p Holm < .001 *** | Wilcoxon p Holm = 0.005
-  Test 1 vs 5        F(1, 12) = 16.19, p = 0.002, p Holm = 0.013 * | Wilcoxon p Holm = 0.037
-  Test 2 vs 3        F(1, 12) = 4.32, p = 0.060, p Holm = 0.239 | Wilcoxon p Holm = 0.272
-  Test 2 vs 4        F(1, 12) = 16.49, p = 0.002, p Holm = 0.013 * | Wilcoxon p Holm = 0.014
-  Test 2 vs 5        F(1, 12) = 3.79, p = 0.076, p Holm = 0.239 | Wilcoxon p Holm = 0.488
-  Test 3 vs 4        F(1, 12) = 0.03, p = 0.871, p Holm = 0.949 | Wilcoxon p Holm = 0.893
-  Test 3 vs 5        F(1, 12) = 0.54, p = 0.475, p Holm = 0.949 | Wilcoxon p Holm = 0.382
-  Test 4 vs 5        F(1, 12) = 7.62, p = 0.017, p Holm = 0.086 | Wilcoxon p Holm = 0.107
+  Friedman: chi2(4) = 30.77, p < .001
+  Test 1 vs 2        F(1, 14) = 18.72, p < .001, p Holm = 0.004 ** | Wilcoxon p Holm = 0.003
+  Test 1 vs 3        F(1, 14) = 33.23, p < .001, p Holm < .001 *** | Wilcoxon p Holm = 0.001
+  Test 1 vs 4        F(1, 14) = 42.43, p < .001, p Holm < .001 *** | Wilcoxon p Holm = 0.001
+  Test 1 vs 5        F(1, 14) = 23.51, p < .001, p Holm = 0.002 ** | Wilcoxon p Holm = 0.009
+  Test 2 vs 3        F(1, 14) = 6.00, p = 0.028, p Holm = 0.104 | Wilcoxon p Holm = 0.141
+  Test 2 vs 4        F(1, 14) = 23.21, p < .001, p Holm = 0.002 ** | Wilcoxon p Holm = 0.003
+  Test 2 vs 5        F(1, 14) = 6.20, p = 0.026, p Holm = 0.104 | Wilcoxon p Holm = 0.362
+  Test 3 vs 4        F(1, 14) = 0.14, p = 0.709, p Holm = 0.959 | Wilcoxon p Holm = 0.934
+  Test 3 vs 5        F(1, 14) = 0.53, p = 0.480, p Holm = 0.959 | Wilcoxon p Holm = 0.362
+  Test 4 vs 5        F(1, 14) = 11.01, p = 0.005, p Holm = 0.025 * | Wilcoxon p Holm = 0.042
 
 XE – Extent error at 4 s (cm)
-  T1: 3.80 ± 2.66  T2: 2.49 ± 3.50  T3: 1.41 ± 2.43  T4: 1.79 ± 2.10  T5: 1.56 ± 3.28
-  Test                 F(4, 48) = 3.18, p = 0.021, eta2p = 0.21, Mauchly p = 0.077
-  Friedman: chi2(4) = 10.52, p = 0.032
-  Test 1 vs 2        F(1, 12) = 3.47, p = 0.087, p Holm = 0.609 | Wilcoxon p Holm = 0.482
-  Test 1 vs 3        F(1, 12) = 5.97, p = 0.031, p Holm = 0.250 | Wilcoxon p Holm = 0.240
-  Test 1 vs 4        F(1, 12) = 12.36, p = 0.004, p Holm = 0.043 * | Wilcoxon p Holm = 0.081
-  Test 1 vs 5        F(1, 12) = 6.26, p = 0.028, p Holm = 0.250 | Wilcoxon p Holm = 0.262
-  Test 2 vs 3        F(1, 12) = 1.05, p = 0.326, p Holm = 1.000 | Wilcoxon p Holm = 0.764
-  Test 2 vs 4        F(1, 12) = 1.80, p = 0.205, p Holm = 1.000 | Wilcoxon p Holm = 0.732
-  Test 2 vs 5        F(1, 12) = 1.64, p = 0.225, p Holm = 1.000 | Wilcoxon p Holm = 0.335
-  Test 3 vs 4        F(1, 12) = 0.27, p = 0.615, p Holm = 1.000 | Wilcoxon p Holm = 1.000
-  Test 3 vs 5        F(1, 12) = 0.03, p = 0.871, p Holm = 1.000 | Wilcoxon p Holm = 1.000
-  Test 4 vs 5        F(1, 12) = 0.20, p = 0.662, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  T1: 3.80 ± 2.47  T2: 2.41 ± 3.30  T3: 1.22 ± 2.32  T4: 1.47 ± 2.14  T5: 1.37 ± 3.13
+  Test                 F(4, 56) = 5.02, p = 0.002, eta2p = 0.26, Mauchly p = 0.090
+  Friedman: chi2(4) = 15.04, p = 0.005
+  Test 1 vs 2        F(1, 14) = 5.11, p = 0.040, p Holm = 0.281 | Wilcoxon p Holm = 0.212
+  Test 1 vs 3        F(1, 14) = 9.20, p = 0.009, p Holm = 0.073 | Wilcoxon p Holm = 0.092
+  Test 1 vs 4        F(1, 14) = 18.56, p < .001, p Holm = 0.007 ** | Wilcoxon p Holm = 0.020
+  Test 1 vs 5        F(1, 14) = 9.50, p = 0.008, p Holm = 0.073 | Wilcoxon p Holm = 0.092
+  Test 2 vs 3        F(1, 14) = 1.70, p = 0.213, p Holm = 0.853 | Wilcoxon p Holm = 0.378
+  Test 2 vs 4        F(1, 14) = 3.81, p = 0.071, p Holm = 0.428 | Wilcoxon p Holm = 0.277
+  Test 2 vs 5        F(1, 14) = 2.69, p = 0.123, p Holm = 0.616 | Wilcoxon p Holm = 0.126
+  Test 3 vs 4        F(1, 14) = 0.15, p = 0.702, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  Test 3 vs 5        F(1, 14) = 0.04, p = 0.841, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  Test 4 vs 5        F(1, 14) = 0.04, p = 0.840, p Holm = 1.000 | Wilcoxon p Holm = 1.000
 
 DE – Direction error at 4 s (deg)
-  T1: 40.14 ± 7.79  T2: 33.54 ± 11.15  T3: 29.58 ± 12.87  T4: 26.96 ± 11.38  T5: 31.18 ± 12.75
-  Test                 F(2.34, 28.04) = 4.44, p = 0.017 (GG), eta2p = 0.27, Mauchly p = 0.004
-  Friedman: chi2(4) = 15.02, p = 0.005
-  Test 1 vs 2        F(1, 12) = 4.25, p = 0.062, p Holm = 0.309 | Wilcoxon p Holm = 0.344
-  Test 1 vs 3        F(1, 12) = 6.42, p = 0.026, p Holm = 0.184 | Wilcoxon p Holm = 0.229
-  Test 1 vs 4        F(1, 12) = 14.67, p = 0.002, p Holm = 0.024 * | Wilcoxon p Holm = 0.011
-  Test 1 vs 5        F(1, 12) = 5.43, p = 0.038, p Holm = 0.229 | Wilcoxon p Holm = 0.344
-  Test 2 vs 3        F(1, 12) = 0.99, p = 0.339, p Holm = 1.000 | Wilcoxon p Holm = 1.000
-  Test 2 vs 4        F(1, 12) = 12.95, p = 0.004, p Holm = 0.033 * | Wilcoxon p Holm = 0.007
-  Test 2 vs 5        F(1, 12) = 1.94, p = 0.189, p Holm = 0.758 | Wilcoxon p Holm = 1.000
-  Test 3 vs 4        F(1, 12) = 0.36, p = 0.561, p Holm = 1.000 | Wilcoxon p Holm = 1.000
-  Test 3 vs 5        F(1, 12) = 0.17, p = 0.689, p Holm = 1.000 | Wilcoxon p Holm = 1.000
-  Test 4 vs 5        F(1, 12) = 8.56, p = 0.013, p Holm = 0.102 | Wilcoxon p Holm = 0.084
+  T1: 39.60 ± 7.37  T2: 32.48 ± 11.13  T3: 28.40 ± 12.41  T4: 26.37 ± 11.38  T5: 29.29 ± 12.96
+  Test                 F(2.45, 34.35) = 6.01, p = 0.004 (GG), eta2p = 0.30, Mauchly p = 0.008
+  Friedman: chi2(4) = 18.83, p < .001
+  Test 1 vs 2        F(1, 14) = 6.20, p = 0.026, p Holm = 0.156 | Wilcoxon p Holm = 0.129
+  Test 1 vs 3        F(1, 14) = 9.54, p = 0.008, p Holm = 0.064 | Wilcoxon p Holm = 0.082
+  Test 1 vs 4        F(1, 14) = 18.24, p < .001, p Holm = 0.008 ** | Wilcoxon p Holm = 0.003
+  Test 1 vs 5        F(1, 14) = 8.88, p = 0.010, p Holm = 0.069 | Wilcoxon p Holm = 0.126
+  Test 2 vs 3        F(1, 14) = 1.40, p = 0.257, p Holm = 0.771 | Wilcoxon p Holm = 0.563
+  Test 2 vs 4        F(1, 14) = 14.15, p = 0.002, p Holm = 0.019 * | Wilcoxon p Holm = 0.003
+  Test 2 vs 5        F(1, 14) = 4.00, p = 0.065, p Holm = 0.327 | Wilcoxon p Holm = 0.333
+  Test 3 vs 4        F(1, 14) = 0.28, p = 0.606, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  Test 3 vs 5        F(1, 14) = 0.07, p = 0.797, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  Test 4 vs 5        F(1, 14) = 3.28, p = 0.092, p Holm = 0.367 | Wilcoxon p Holm = 0.277
 
 MD – Movement duration (s)
-  T1: 3.27 ± 0.53  T2: 3.15 ± 0.50  T3: 3.10 ± 0.55  T4: 2.98 ± 0.54  T5: 3.09 ± 0.44
-  Test                 F(4, 48) = 1.63, p = 0.181, eta2p = 0.12, Mauchly p = 0.114
-  Friedman: chi2(4) = 4.86, p = 0.302
-  Test 1 vs 2        F(1, 12) = 1.24, p = 0.287, p Holm = 1.000 | Wilcoxon p Holm = 1.000
-  Test 1 vs 3        F(1, 12) = 1.18, p = 0.299, p Holm = 1.000 | Wilcoxon p Holm = 1.000
-  Test 1 vs 4        F(1, 12) = 3.66, p = 0.080, p Holm = 0.798 | Wilcoxon p Holm = 0.681
-  Test 1 vs 5        F(1, 12) = 2.35, p = 0.151, p Holm = 1.000 | Wilcoxon p Holm = 1.000
-  Test 2 vs 3        F(1, 12) = 0.21, p = 0.655, p Holm = 1.000 | Wilcoxon p Holm = 1.000
-  Test 2 vs 4        F(1, 12) = 3.41, p = 0.090, p Holm = 0.808 | Wilcoxon p Holm = 0.723
-  Test 2 vs 5        F(1, 12) = 0.20, p = 0.663, p Holm = 1.000 | Wilcoxon p Holm = 1.000
-  Test 3 vs 4        F(1, 12) = 2.68, p = 0.128, p Holm = 1.000 | Wilcoxon p Holm = 1.000
-  Test 3 vs 5        F(1, 12) = 0.00, p = 0.970, p Holm = 1.000 | Wilcoxon p Holm = 1.000
-  Test 4 vs 5        F(1, 12) = 1.36, p = 0.266, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  T1: 3.30 ± 0.52  T2: 3.12 ± 0.49  T3: 3.10 ± 0.51  T4: 2.96 ± 0.51  T5: 3.08 ± 0.41
+  Test                 F(4, 56) = 2.35, p = 0.065, eta2p = 0.14, Mauchly p = 0.138
+  Friedman: chi2(4) = 6.99, p = 0.137
+  Test 1 vs 2        F(1, 14) = 1.82, p = 0.199, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  Test 1 vs 3        F(1, 14) = 1.89, p = 0.191, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  Test 1 vs 4        F(1, 14) = 5.48, p = 0.035, p Holm = 0.346 | Wilcoxon p Holm = 0.256
+  Test 1 vs 5        F(1, 14) = 3.48, p = 0.083, p Holm = 0.666 | Wilcoxon p Holm = 0.749
+  Test 2 vs 3        F(1, 14) = 0.07, p = 0.791, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  Test 2 vs 4        F(1, 14) = 3.35, p = 0.089, p Holm = 0.666 | Wilcoxon p Holm = 0.666
+  Test 2 vs 5        F(1, 14) = 0.13, p = 0.727, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  Test 3 vs 4        F(1, 14) = 4.17, p = 0.060, p Holm = 0.544 | Wilcoxon p Holm = 0.657
+  Test 3 vs 5        F(1, 14) = 0.01, p = 0.917, p Holm = 1.000 | Wilcoxon p Holm = 1.000
+  Test 4 vs 5        F(1, 14) = 1.93, p = 0.186, p Holm = 1.000 | Wilcoxon p Holm = 0.749
 
 
 EXPLORATORY (in the thesis): trials ending in the region of the target (%)
 --------------------------------------------------------------------------
-  T1: 19.9 ± 9.9  T2: 26.9 ± 12.3  T3: 39.7 ± 20.5  T4: 37.8 ± 15.4  T5: 32.7 ± 18.8
-  Test                 F(4, 48) = 5.90, p < .001, eta2p = 0.33, Mauchly p = 0.058
-  Friedman: chi2(4) = 17.60, p = 0.001
-  Test 1 vs 2        F(1, 12) = 6.31, p = 0.027, p Holm = 0.191 | Wilcoxon p Holm = 0.163
-  Test 1 vs 3        F(1, 12) = 14.52, p = 0.002, p Holm = 0.025 * | Wilcoxon p Holm = 0.076
-  Test 1 vs 4        F(1, 12) = 12.12, p = 0.005, p Holm = 0.041 * | Wilcoxon p Holm = 0.076
-  Test 1 vs 5        F(1, 12) = 4.66, p = 0.052, p Holm = 0.259 | Wilcoxon p Holm = 0.352
-  Test 2 vs 3        F(1, 12) = 5.66, p = 0.035, p Holm = 0.209 | Wilcoxon p Holm = 0.226
-  Test 2 vs 4        F(1, 12) = 7.67, p = 0.017, p Holm = 0.136 | Wilcoxon p Holm = 0.226
-  Test 2 vs 5        F(1, 12) = 1.42, p = 0.257, p Holm = 0.542 | Wilcoxon p Holm = 0.517
-  Test 3 vs 4        F(1, 12) = 0.13, p = 0.726, p Holm = 0.726 | Wilcoxon p Holm = 0.537
-  Test 3 vs 5        F(1, 12) = 2.34, p = 0.152, p Holm = 0.542 | Wilcoxon p Holm = 0.517
-  Test 4 vs 5        F(1, 12) = 2.56, p = 0.136, p Holm = 0.542 | Wilcoxon p Holm = 0.517
+  T1: 20.6 ± 9.4  T2: 28.9 ± 12.9  T3: 42.8 ± 21.1  T4: 42.8 ± 19.6  T5: 36.7 ± 20.4
+  Test                 F(2.58, 36.09) = 9.09, p < .001 (GG), eta2p = 0.39, Mauchly p = 0.044
+  Friedman: chi2(4) = 23.36, p < .001
+  Test 1 vs 2        F(1, 14) = 9.55, p = 0.008, p Holm = 0.056 | Wilcoxon p Holm = 0.062
+  Test 1 vs 3        F(1, 14) = 20.36, p < .001, p Holm = 0.005 ** | Wilcoxon p Holm = 0.020
+  Test 1 vs 4        F(1, 14) = 17.10, p = 0.001, p Holm = 0.009 ** | Wilcoxon p Holm = 0.027
+  Test 1 vs 5        F(1, 14) = 8.27, p = 0.012, p Holm = 0.064 | Wilcoxon p Holm = 0.108
+  Test 2 vs 3        F(1, 14) = 8.66, p = 0.011, p Holm = 0.064 | Wilcoxon p Holm = 0.094
+  Test 2 vs 4        F(1, 14) = 12.32, p = 0.003, p Holm = 0.028 * | Wilcoxon p Holm = 0.074
+  Test 2 vs 5        F(1, 14) = 2.91, p = 0.110, p Holm = 0.331 | Wilcoxon p Holm = 0.282
+  Test 3 vs 4        F(1, 14) = 0.00, p = 1.000, p Holm = 1.000 | Wilcoxon p Holm = 0.782
+  Test 3 vs 5        F(1, 14) = 1.98, p = 0.181, p Holm = 0.362 | Wilcoxon p Holm = 0.493
+  Test 4 vs 5        F(1, 14) = 3.90, p = 0.068, p Holm = 0.273 | Wilcoxon p Holm = 0.282
